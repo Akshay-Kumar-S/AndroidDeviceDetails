@@ -114,7 +114,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         if (hasGps || hasNetwork) {
@@ -213,9 +212,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
                     val res = countLocation()
                     geoHashView.post {
                         geoHashView.text = ""
-                        for (hash in res) {
+                        for (hash in res)
                             geoHashView.append("GeoHash:" + hash.geoHash + " = " + hash.count + "\n")
-                        }
                     }
                 }
             }
