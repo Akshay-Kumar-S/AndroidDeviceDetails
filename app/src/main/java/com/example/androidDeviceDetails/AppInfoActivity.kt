@@ -29,10 +29,11 @@ class AppInfoActivity : AppCompatActivity() {
             this.startService(Intent(this, CollectorService::class.java))
         }
 
-        val binding:ActivityAppInfoBinding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
+        val binding: ActivityAppInfoBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_app_info)
         var appList: List<CookedData>
         val today: Calendar = Calendar.getInstance()
-       binding.datePicker.init(
+        binding.datePicker.init(
             today.get(Calendar.YEAR), today.get(Calendar.MONTH),
             today.get(Calendar.DAY_OF_MONTH)
         )
@@ -52,9 +53,9 @@ class AppInfoActivity : AppCompatActivity() {
                     swapText =
                         swapText + app.appName + " | " + app.eventType.name + "\n"
                 }
-                    binding.textView.post {
-                      binding.textView.text  = swapText
-                    }
+                binding.textView.post {
+                    binding.textView.text = swapText
+                }
 
             }
         }
