@@ -3,13 +3,14 @@ package com.example.androidDeviceDetails
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.AppHistory
+import com.example.androidDeviceDetails.models.CookedData
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.EventType
@@ -32,7 +33,7 @@ class AppInfoActivity : AppCompatActivity() {
             this.startService(Intent(this, CollectorService::class.java))
         }
 
-        var appList: List<AppHistory>
+        var appList: List<CookedData>
         val button = findViewById<Button>(R.id.button)
         val text = findViewById<TextView>(R.id.textView)
         var datePicker: DatePicker = findViewById(R.id.date_Picker)
@@ -54,7 +55,7 @@ class AppInfoActivity : AppCompatActivity() {
                 val eventArray = EventType.values()
                 for (app in appList) {
                     swapText =
-                        swapText + app.appTitle + " | " + app.versionName + " | " + app.currentVersionCode + " | " + app.appSize + " | " + eventArray[app.eventType!!] + "\n"
+                        swapText + app.appName + " | " + app.eventType.name + "\n"
                 }
                 runOnUiThread {
                     text.text = swapText
@@ -70,7 +71,7 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
 
-        button?.setOnClickListener()
+        /*button?.setOnClickListener()
         {
             GlobalScope.launch(Dispatchers.IO) {
                 appList = getChangedApps()
@@ -90,42 +91,31 @@ class AppInfoActivity : AppCompatActivity() {
                         .show()
                 }
             }
-        }
+        }*/
     }
 
-    init {
-    }
 
-    private fun getAppsBetween(startTime: Long, endTime: Long): List<AppHistory> {
+    private fun getAppsBetween(startTime: Long, endTime: Long): List<CookedData> {
         val db = RoomDB.getDatabase(this)!!
-        val appList = listOf<AppHistory>().toMutableList()
+        val appList = listOf<CookedData>().toMutableList()
         var allRecords = db.appHistoryDao().getAppsBetween(startTime, endTime)
-//        val ids = db.appHistoryDao().getIdsBetween(startTime, endTime)
-//        for (id in ids) {
-//            val initialAppState = db.appHistoryDao().getLastRecordBeforeTime(id,startTime) //TODO will crash
-//            if(initialAppState == null)
-//            {
-//
-//            }
-//            val latestAppState = db.appHistoryDao().getLatestRecordBetween(id, startTime, endTime)
-//
-//            if (latestAppState.versionCode != null) {
-//                if (initialAppState.versionCode!! < latestAppState.versionCode!!) {
-//                    appList.add(latestAppState)
-//
-//                } else if (initialAppState.appTitle!! < latestAppState.appTitle!!) {
-//                    appList.add(latestAppState)
-//
-//                } else if (latestAppState.eventType == EventType.APP_UNINSTALLED.ordinal) {
-//                    appList.add(latestAppState)
-//
-//                } else if (initialAppState.versionCode == latestAppState.versionCode && latestAppState.timestamp != -1L) {
-//                    appList.add(latestAppState)
-//
-//                }
-//            }
-//        }
-        return allRecords
+        val ids = db.appHistoryDao().getIdsBetween(startTime, endTime)
+        for (id in ids) {
+            var lastRecord = db.appHistoryDao().getLatestRecordBetween(id, startTime, endTime)
+            var initialRecord = db.appHistoryDao().getInitialRecordBetween(id, startTime, endTime)
+            if (lastRecord.eventType == EventType.APP_ENROLL.ordinal) {
+                appList.add(CookedData(lastRecord.appTitle, EventType.APP_ENROLL))
+            } else if (lastRecord.eventType == EventType.APP_UNINSTALLED.ordinal) {
+                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UNINSTALLED))
+            } else if (initialRecord.previousVersionCode != lastRecord.currentVersionCode) {
+                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UPDATED))
+            }
+            if (initialRecord.previousVersionCode == EventType.APP_INSTALLED.ordinal.toLong()) {
+                appList.add(CookedData(lastRecord.appTitle, EventType.APP_INSTALLED))
+            }
+        }
+
+        return appList
 
     }
 
