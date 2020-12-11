@@ -34,7 +34,6 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
         var appList: List<CookedData>
-        val button = findViewById<Button>(R.id.button)
         val text = findViewById<TextView>(R.id.textView)
         var datePicker: DatePicker = findViewById(R.id.date_Picker)
         var today: Calendar = Calendar.getInstance()
