@@ -8,10 +8,9 @@ import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.managers.AppStateCooker
 import com.example.androidDeviceDetails.models.CookedData
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
-import com.example.androidDeviceDetails.utils.EventType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -48,8 +47,8 @@ class AppInfoActivity : AppCompatActivity() {
             val endTime = startTime + (((((23 * 60) + 59) * 60) + 59) * 1000)
             var swapText = ""
             GlobalScope.launch(Dispatchers.IO) {
-                appList = getAppsBetween(startTime, endTime)
-
+                appList = AppStateCooker.createInstance().getAppsBetween(startTime,endTime,applicationContext)
+                appList = appList.sortedBy { it.appName }
                 for (app in appList) {
                     swapText =
                         swapText + app.appName + " | " + app.eventType.name + "\n"
@@ -64,35 +63,9 @@ class AppInfoActivity : AppCompatActivity() {
                         .show()
                 }
             }
-
         }
-
-
     }
 
 
-    private fun getAppsBetween(startTime: Long, endTime: Long): List<CookedData> {
-        val db = RoomDB.getDatabase(this)!!
-        val appList = listOf<CookedData>().toMutableList()
-        val ids = db.appHistoryDao().getIdsBetween(startTime, endTime)
-        for (id in ids) {
-            val lastRecord = db.appHistoryDao().getLatestRecordBetween(id, startTime, endTime)
-            val initialRecord = db.appHistoryDao().getInitialRecordBetween(id, startTime, endTime)
-            @Suppress("CascadeIf")
-            if (lastRecord.eventType == EventType.APP_ENROLL.ordinal) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_ENROLL))
-            } else if (lastRecord.eventType == EventType.APP_UNINSTALLED.ordinal) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UNINSTALLED))
-            } else if (initialRecord.previousVersionCode != lastRecord.currentVersionCode) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UPDATED))
-            }
-            if (initialRecord.previousVersionCode == EventType.APP_INSTALLED.ordinal.toLong()) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_INSTALLED))
-            }
-        }
-
-        return appList
-
-    }
 
 }
