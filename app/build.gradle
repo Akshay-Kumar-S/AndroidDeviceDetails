@@ -20,6 +20,8 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -32,10 +34,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    buildFeatures {
-        viewBinding true
-        dataBinding true
     }
 }
 repositories {
@@ -58,7 +56,6 @@ dependencies {
 
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //gauge
     implementation 'com.github.Pygmalion69:Gauge:1.5.2'
 
@@ -72,7 +69,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.github.Pygmalion69:Gauge:1.5.2'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     implementation 'com.github.drfonfon:android-kotlin-geohash:1.0'
 
