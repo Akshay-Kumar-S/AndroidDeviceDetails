@@ -19,10 +19,12 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class AppInfoActivity : AppCompatActivity() {
+
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_app_info)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CollectorService::class.java))
@@ -33,9 +35,8 @@ class AppInfoActivity : AppCompatActivity() {
         var appList: List<AppHistory>
         val button = findViewById<Button>(R.id.button)
         val text = findViewById<TextView>(R.id.textView)
-
-        val today = Calendar.getInstance()
-        val datePicker = findViewById<DatePicker>(R.id.date_Picker)
+        var datePicker: DatePicker = findViewById(R.id.date_Picker)
+        var today: Calendar = Calendar.getInstance()
         datePicker.init(
             today.get(Calendar.YEAR), today.get(Calendar.MONTH),
             today.get(Calendar.DAY_OF_MONTH)
@@ -57,7 +58,11 @@ class AppInfoActivity : AppCompatActivity() {
                 }
                 runOnUiThread {
                     text.text = swapText
-                    Toast.makeText(this@AppInfoActivity, appList.size.toString(), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@AppInfoActivity,
+                        appList.size.toString(),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -77,11 +82,18 @@ class AppInfoActivity : AppCompatActivity() {
                 }
                 runOnUiThread {
                     text.text = swaptext
-                    Toast.makeText(this@AppInfoActivity, appList.size.toString(), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@AppInfoActivity,
+                        appList.size.toString(),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
         }
+    }
+
+    init {
     }
 
     private fun getAppsBetween(startTime: Long, endTime: Long): List<AppHistory> {
