@@ -6,11 +6,15 @@ import com.example.androidDeviceDetails.models.Apps
 import com.example.androidDeviceDetails.models.RoomDB
 
 object DbHelper {
-    fun writeToAppsDb(id: Int, packageName: String, db: RoomDB) {
+    fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
         db.appsDao().insertAll(
             Apps(
                 uid = id,
                 packageName = packageName,
+                currentVersionCode = appDetails.versionCode,
+                versionName = appDetails.versionName,
+                appSize = appDetails.appSize,
+                appTitle = appDetails.appTitle
             )
         )
     }
@@ -20,6 +24,7 @@ object DbHelper {
         eventType: Int,
         appDetails: AppDetails,
         db: RoomDB,
+        previousVersionCode : Long? = 0,
         timestamp:Long=System.currentTimeMillis()
     ) {
         db.appHistoryDao().insertAll(
@@ -28,7 +33,8 @@ object DbHelper {
                 appId = id,
                 timestamp =timestamp ,
                 eventType = eventType,
-                versionCode = appDetails.versionCode,
+                previousVersionCode = previousVersionCode,
+                currentVersionCode = appDetails.versionCode,
                 versionName = appDetails.versionName,
                 appSize = appDetails.appSize,
                 appTitle = appDetails.appTitle

@@ -10,7 +10,8 @@ data class AppHistory(
     @ColumnInfo(name = "timestamp") var timestamp: Long?,
     @ColumnInfo(name = "event_type") var eventType: Int?,
     @ColumnInfo(name = "version_name") var versionName: String?,
-    @ColumnInfo(name = "version_code") var versionCode: Long?,
+    @ColumnInfo(name = "previous_version_code") var previousVersionCode: Long?,
+    @ColumnInfo(name = "current_version_code") var currentVersionCode: Long?,
     @ColumnInfo(name = "apk_size") var appSize: Long?,
     @ColumnInfo(name = "apk_title") var appTitle: String?
 )

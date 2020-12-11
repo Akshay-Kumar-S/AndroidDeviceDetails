@@ -54,7 +54,7 @@ class AppInfoActivity : AppCompatActivity() {
                 val eventArray = EventType.values()
                 for (app in appList) {
                     swapText =
-                        swapText + app.appTitle + " | " + app.versionName + " | " + app.versionCode + " | " + app.appSize + " | " + eventArray[app.eventType!!] + "\n"
+                        swapText + app.appTitle + " | " + app.versionName + " | " + app.currentVersionCode + " | " + app.appSize + " | " + eventArray[app.eventType!!] + "\n"
                 }
                 runOnUiThread {
                     text.text = swapText
@@ -78,7 +78,7 @@ class AppInfoActivity : AppCompatActivity() {
                 val eventArray = EventType.values()
                 for (app in appList) {
                     swaptext =
-                        swaptext + app.appTitle + " | " + app.versionName + " | " + app.versionCode + " | " + app.appSize + " | " + eventArray[app.eventType!!] + "\n"
+                        swaptext + app.appTitle + " | " + app.versionName + " | " + app.currentVersionCode + " | " + app.appSize + " | " + eventArray[app.eventType!!] + "\n"
                 }
                 runOnUiThread {
                     text.text = swaptext
@@ -138,8 +138,8 @@ class AppInfoActivity : AppCompatActivity() {
             val initialAppState = db.appHistoryDao().getInitialData(app.uid)
             val latestAppState = db.appHistoryDao().getLastRecord(app.uid)
 
-            if (latestAppState.versionCode != null) {
-                if (initialAppState.versionCode!! < latestAppState.versionCode!!) {
+            if (latestAppState.currentVersionCode != null) {
+                if (initialAppState.currentVersionCode!! < latestAppState.currentVersionCode!!) {
                     appList.add(latestAppState)
 
                 } else if (initialAppState.appTitle!! < latestAppState.appTitle!!) {
@@ -148,7 +148,7 @@ class AppInfoActivity : AppCompatActivity() {
                 } else if (latestAppState.eventType == EventType.APP_UNINSTALLED.ordinal) {
                     appList.add(latestAppState)
 
-                } else if (initialAppState.versionCode == latestAppState.versionCode && latestAppState.timestamp != -1L) {
+                } else if (initialAppState.currentVersionCode == latestAppState.currentVersionCode && latestAppState.timestamp != -1L) {
                     appList.add(latestAppState)
 
                 }
