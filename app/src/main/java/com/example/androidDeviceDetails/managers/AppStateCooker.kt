@@ -32,8 +32,6 @@ class AppStateCooker {
                 appList.add(CookedData(lastRecord.appTitle, EventType.APP_INSTALLED))
             }
         }
-
         return appList
-
     }
 }
