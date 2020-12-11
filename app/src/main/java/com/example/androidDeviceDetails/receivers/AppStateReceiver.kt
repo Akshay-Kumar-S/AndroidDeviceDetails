@@ -9,19 +9,19 @@ class AppStateReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
-        val packageName = intent.data?.schemeSpecificPart ?: "Not Found"
+        val packageName = intent.data?.schemeSpecificPart ?: "not found"
 
-        if (action == Intent.ACTION_PACKAGE_ADDED && !intent.getBooleanExtra(
-                Intent.EXTRA_REPLACING, false
-            )
-        ) AddData.appInstalled(context, packageName)
+        if (action == Intent.ACTION_PACKAGE_ADDED ) {
+            if(!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false))
+                AddData.appInstalled(context, packageName)
+            else
+                AddData.appUpgraded(context, packageName)
+        }
 
-        if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED)
+        if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
             AddData.appUninstalled(context, packageName)
-
-        if (action == Intent.ACTION_PACKAGE_REPLACED)
-            AddData.appUpgraded(context, packageName)
-
+        }
     }
+
 }
 

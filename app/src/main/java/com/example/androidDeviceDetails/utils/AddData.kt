@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 object AddData {
 
     fun appInstalled(context: Context, packageName: String) {
-        val newVersionDetails = Utils.getVersion(context, packageName)
-        val db = RoomDB.getDatabase()!!
+        val newVersionDetails = Utils.getAppDetails(context, packageName)
+        val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
             var id = db.appsDao().getIdByName(packageName)
             if (id == 0) {
@@ -25,66 +25,48 @@ object AddData {
                 )
             } else {
                 val currentAppHistory = db.appHistoryDao().getLastRecord(id)
-                val event = if (currentAppHistory.versionCode!! >= newVersionDetails.versionCode) {
-                    EventType.APP_INSTALLED.ordinal
-                } else {
-                    EventType.APP_UPDATED.ordinal
-                }
-                DbHelper.writeToAppHistoryDb(
-                    id,
-                    event,
-                    newVersionDetails,
-                    db
-                )
+                val event =
+                    if (currentAppHistory.appTitle != newVersionDetails.appTitle!! ||
+                        currentAppHistory.versionCode!! < newVersionDetails.versionCode!!
+                    ) {
+                        EventType.APP_UPDATED.ordinal
+                    } else {
+                        EventType.APP_INSTALLED.ordinal
+                    }
+                DbHelper.writeToAppHistoryDb(id, event, newVersionDetails, db)
             }
         }
     }
 
     fun appUninstalled(context: Context, packageName: String) {
-        val db = RoomDB.getDatabase()!!
+        val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appHistoryDao().getLastRecord(id)
             val appDetails =
-                currentAppHistory.versionName?.let {
-                    currentAppHistory.versionCode?.let { it1 ->
-                        currentAppHistory.appSize?.let { it2 ->
-                            currentAppHistory.appTitle?.let { it3 ->
-                                AppDetails(
-                                    it1, it, it2, it3
-                                )
-                            }
-                        }
-                    }
-                }
-            if (appDetails != null) {
-                DbHelper.writeToAppHistoryDb(id, EventType.APP_UNINSTALLED.ordinal, appDetails, db)
-            }
+                AppDetails(
+                    currentAppHistory.versionCode,
+                    currentAppHistory.versionName,
+                    currentAppHistory.appSize,
+                    currentAppHistory.appTitle
+                )
+            DbHelper.writeToAppHistoryDb(id, EventType.APP_UNINSTALLED.ordinal, appDetails, db)
         }
     }
 
     fun appUpgraded(context: Context, packageName: String) {
-        val db = RoomDB.getDatabase()!!
+        val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
-            val newVersionDetails = Utils.getVersion(context, packageName)
+            val newVersionDetails = Utils.getAppDetails(context, packageName)
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appHistoryDao().getLastRecord(id)
-            if (currentAppHistory.versionCode!! < newVersionDetails.versionCode) {
+            if (currentAppHistory.versionCode!! < newVersionDetails.versionCode!! || currentAppHistory.appTitle != newVersionDetails.appTitle) {
                 DbHelper.writeToAppHistoryDb(
                     id,
                     EventType.APP_UPDATED.ordinal,
                     newVersionDetails,
                     db
                 )
-            } else {
-                if (currentAppHistory.appTitle != newVersionDetails.appTitle) {
-                    DbHelper.writeToAppHistoryDb(
-                        id,
-                        EventType.APP_UPDATED.ordinal,
-                        newVersionDetails,
-                        db
-                    )
-                }
             }
         }
     }

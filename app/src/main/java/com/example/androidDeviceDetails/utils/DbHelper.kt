@@ -20,13 +20,13 @@ object DbHelper {
         eventType: Int,
         appDetails: AppDetails,
         db: RoomDB,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp:Long=System.currentTimeMillis()
     ) {
         db.appHistoryDao().insertAll(
             AppHistory(
                 rowId = 0,
                 appId = id,
-                timestamp = timestamp,
+                timestamp =timestamp ,
                 eventType = eventType,
                 versionCode = appDetails.versionCode,
                 versionName = appDetails.versionName,

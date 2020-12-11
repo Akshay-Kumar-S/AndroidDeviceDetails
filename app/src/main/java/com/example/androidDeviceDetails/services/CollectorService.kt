@@ -45,7 +45,6 @@ class CollectorService : Service() {
         mAppStateReceiver = AppStateReceiver()
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
         filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
         filter.addDataScheme("package")
         this.registerReceiver(mAppStateReceiver, filter)
