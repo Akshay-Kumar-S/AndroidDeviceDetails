@@ -26,7 +26,7 @@ object AddData {
             } else {
                 val currentAppHistory = db.appsDao().getById(id)
                 val event =
-                    if (currentAppHistory.appTitle != latestAppDetails.appTitle!! ||
+                    if (currentAppHistory.appTitle != latestAppDetails.appTitle ||
                         currentAppHistory.currentVersionCode!! < latestAppDetails.versionCode!!
                     ) {
                         EventType.APP_UPDATED.ordinal

@@ -22,29 +22,14 @@ interface AppHistoryDao {
     @Query("SELECT * FROM AppHistory")
     fun getAll(): List<AppHistory>
 
-    @Query("SELECT * FROM AppHistory WHERE appId IN (:appId)")
-    fun getById(appId: Int): AppHistory
-
-    @Query("SELECT * FROM AppHistory WHERE appId == (:appId) ORDER BY rowId DESC LIMIT 1")
-    fun getLastRecord(appId: Int): AppHistory
-
-    @Query("SELECT * FROM AppHistory WHERE appId == (:appId) ORDER BY rowId ASC LIMIT 1")
-    fun getInitialData(appId: Int): AppHistory
-
     @Query("SELECT DISTINCT appId FROM AppHistory WHERE timestamp BETWEEN (:startTime) AND (:endTime) ")
-    fun getIdsBetween(startTime:Long, endTime:Long): List<Int>
-
-    @Query("SELECT * FROM AppHistory WHERE appId == (:appId) AND timestamp <(:startTime) ORDER BY rowId DESC  LIMIT 1 ")
-    fun getLastRecordBeforeTime(appId: Int, startTime: Long): AppHistory
+    fun getIdsBetween(startTime: Long, endTime: Long): List<Int>
 
     @Query("SELECT * FROM AppHistory WHERE appId == (:appId) AND timestamp BETWEEN (:startTime) AND (:endTime) ORDER BY rowId DESC LIMIT 1")
     fun getLatestRecordBetween(appId: Int, startTime: Long, endTime: Long): AppHistory
 
     @Query("SELECT * FROM AppHistory WHERE appId == (:appId) AND timestamp BETWEEN (:startTime) AND (:endTime) ORDER BY rowId ASC LIMIT 1")
     fun getInitialRecordBetween(appId: Int, startTime: Long, endTime: Long): AppHistory
-
-    @Query("SELECT * FROM AppHistory WHERE timestamp BETWEEN (:startTime) AND (:endTime) ")
-    fun getAppsBetween(startTime:Long, endTime:Long): List<AppHistory>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: AppHistory)

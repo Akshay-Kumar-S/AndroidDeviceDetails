@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.models.AppHistory
 import com.example.androidDeviceDetails.models.CookedData
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
@@ -35,8 +33,8 @@ class AppInfoActivity : AppCompatActivity() {
 
         var appList: List<CookedData>
         val text = findViewById<TextView>(R.id.textView)
-        var datePicker: DatePicker = findViewById(R.id.date_Picker)
-        var today: Calendar = Calendar.getInstance()
+        val datePicker: DatePicker = findViewById(R.id.date_Picker)
+        val today: Calendar = Calendar.getInstance()
         datePicker.init(
             today.get(Calendar.YEAR), today.get(Calendar.MONTH),
             today.get(Calendar.DAY_OF_MONTH)
@@ -51,7 +49,7 @@ class AppInfoActivity : AppCompatActivity() {
             var swapText = ""
             GlobalScope.launch(Dispatchers.IO) {
                 appList = getAppsBetween(startTime, endTime)
-                val eventArray = EventType.values()
+
                 for (app in appList) {
                     swapText =
                         swapText + app.appName + " | " + app.eventType.name + "\n"
@@ -70,38 +68,17 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
 
-        /*button?.setOnClickListener()
-        {
-            GlobalScope.launch(Dispatchers.IO) {
-                appList = getChangedApps()
-                var swaptext = ""
-                val eventArray = EventType.values()
-                for (app in appList) {
-                    swaptext =
-                        swaptext + app.appTitle + " | " + app.versionName + " | " + app.currentVersionCode + " | " + app.appSize + " | " + eventArray[app.eventType!!] + "\n"
-                }
-                runOnUiThread {
-                    text.text = swaptext
-                    Toast.makeText(
-                        this@AppInfoActivity,
-                        appList.size.toString(),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
-            }
-        }*/
     }
 
 
     private fun getAppsBetween(startTime: Long, endTime: Long): List<CookedData> {
         val db = RoomDB.getDatabase(this)!!
         val appList = listOf<CookedData>().toMutableList()
-        var allRecords = db.appHistoryDao().getAppsBetween(startTime, endTime)
         val ids = db.appHistoryDao().getIdsBetween(startTime, endTime)
         for (id in ids) {
-            var lastRecord = db.appHistoryDao().getLatestRecordBetween(id, startTime, endTime)
-            var initialRecord = db.appHistoryDao().getInitialRecordBetween(id, startTime, endTime)
+            val lastRecord = db.appHistoryDao().getLatestRecordBetween(id, startTime, endTime)
+            val initialRecord = db.appHistoryDao().getInitialRecordBetween(id, startTime, endTime)
+            @Suppress("CascadeIf")
             if (lastRecord.eventType == EventType.APP_ENROLL.ordinal) {
                 appList.add(CookedData(lastRecord.appTitle, EventType.APP_ENROLL))
             } else if (lastRecord.eventType == EventType.APP_UNINSTALLED.ordinal) {
@@ -118,31 +95,4 @@ class AppInfoActivity : AppCompatActivity() {
 
     }
 
-    private fun getChangedApps(): List<AppHistory> {
-        val db = RoomDB.getDatabase(this)!!
-        val apps = db.appsDao().getAll()
-        val appList = listOf<AppHistory>().toMutableList()
-        appList.clear()
-        for (app in apps) {
-            val initialAppState = db.appHistoryDao().getInitialData(app.uid)
-            val latestAppState = db.appHistoryDao().getLastRecord(app.uid)
-
-            if (latestAppState.currentVersionCode != null) {
-                if (initialAppState.currentVersionCode!! < latestAppState.currentVersionCode!!) {
-                    appList.add(latestAppState)
-
-                } else if (initialAppState.appTitle!! < latestAppState.appTitle!!) {
-                    appList.add(latestAppState)
-
-                } else if (latestAppState.eventType == EventType.APP_UNINSTALLED.ordinal) {
-                    appList.add(latestAppState)
-
-                } else if (initialAppState.currentVersionCode == latestAppState.currentVersionCode && latestAppState.timestamp != -1L) {
-                    appList.add(latestAppState)
-
-                }
-            }
-        }
-        return appList
-    }
 }
