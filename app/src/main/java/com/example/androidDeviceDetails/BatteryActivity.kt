@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
+import com.example.androidDeviceDetails.managers.AppEntry
 
 
 class BatteryActivity : AppCompatActivity() {
@@ -19,13 +20,13 @@ class BatteryActivity : AppCompatActivity() {
         val batteryListView = findViewById<ListView>(R.id.batteryListView)
         val totalTextView = findViewById<TextView>(R.id.total)
 
-//        val items = arrayListOf<AppEntry>()
-//        items.add(AppEntry("com.whatsapp", 6))
-//        items.add(AppEntry("com.example.Broadband", 4))
-//        items.add(AppEntry("com.android.packageinstaller", 4))
-//        items.add(AppEntry("com.microsoft.teams", 4))
-//        items.add(AppEntry("com.google.android.apps.photos", 4))
-//        batteryListView.adapter = BatteryListAdapter(this, R.layout.battery_tile, items)
+        val items = arrayListOf<AppEntry>()
+        items.add(AppEntry("com.whatsapp", 6))
+        items.add(AppEntry("com.example.Broadband", 4))
+        items.add(AppEntry("com.android.packageinstaller", 4))
+        items.add(AppEntry("com.microsoft.teams", 4))
+        items.add(AppEntry("com.google.android.apps.photos", 4))
+        batteryListView.adapter = BatteryListAdapter(this, R.layout.battery_tile, items)
 
         AppBatteryUsageManager().cookBatteryData(this, batteryListView, totalTextView)
         batteryListView.setOnItemClickListener { parent, _, position, _ ->
