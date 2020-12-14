@@ -82,8 +82,8 @@ class CollectorService : Service() {
 
         mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS)
         val intentWifi = IntentFilter()
+        intentWifi.addAction(WifiManager.RSSI_CHANGED_ACTION)
         intentWifi.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
-
         this.registerReceiver(mBatteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         this.registerReceiver(mWifiReceiver, intentWifi)
 

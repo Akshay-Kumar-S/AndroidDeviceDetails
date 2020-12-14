@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.util.Log
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
@@ -103,6 +103,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             } catch (e: Exception) {
             }
         }
+        Toast.makeText(context,"this is toast message   $strength", Toast.LENGTH_SHORT).show()
         Log.d("tagdata1", "data: $strength, $level,$asuLevel,$type")
 
         cellularRaw = CellularRaw(
