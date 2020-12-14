@@ -29,7 +29,7 @@ class AppInfoListAdapter(
 
         appNameView.text = items[position].appName
         versionCodeTextView.text = "Version Code : " + items[position].versionCode.toString()
-        eventTypeTextView.text = "Event " + items[position].eventType.toString()
+        eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
         appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
 
         return view
