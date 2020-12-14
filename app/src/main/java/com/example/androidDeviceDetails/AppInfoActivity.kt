@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppStateCooker
-import com.example.androidDeviceDetails.models.CookedData
+import com.example.androidDeviceDetails.models.AppInfoCookedData
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,7 +31,7 @@ class AppInfoActivity : AppCompatActivity() {
 
         val binding: ActivityAppInfoBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        var appList: List<CookedData>
+        var appList: List<AppInfoCookedData>
         val today: Calendar = Calendar.getInstance()
         binding.datePicker.init(
             today.get(Calendar.YEAR), today.get(Calendar.MONTH),
