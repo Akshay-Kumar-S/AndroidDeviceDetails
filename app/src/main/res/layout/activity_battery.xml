@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Total drop is 56%"
+        android:text="@string/no_usage_recorded"
+        android:textColor="?attr/batteryTitle"
         android:textAlignment="center"
-        android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,8 +21,8 @@
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Till today"
+        android:paddingBottom="10dp"
+        android:text="@string/till_today"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/total" />
 

@@ -16,7 +16,7 @@ class BatteryListAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: ArrayList<AppEntry>
-): ArrayAdapter<AppEntry>(_context, resource, items){
+) : ArrayAdapter<AppEntry>(_context, resource, items) {
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
@@ -27,7 +27,7 @@ class BatteryListAdapter(
         val appIconView = view.findViewById<ImageView>(R.id.appIcon)
 
         appNameView.text = Utils.getApplicationLabel(items[position].packageId)
-        dropTextView.text = "Total drop is " + items[position].drop.toString()
+        dropTextView.text = "Total drop is " + items[position].drop.toString() + "%"
         appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
 
         return view

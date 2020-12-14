@@ -13,6 +13,8 @@
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
     <string name="info">Info</string>
+    <string name="till_today">Till today</string>
+    <string name="no_usage_recorded">No usage recorded</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="strength"> dBm</string>
     <string name="linkspeed"> MHz</string>
