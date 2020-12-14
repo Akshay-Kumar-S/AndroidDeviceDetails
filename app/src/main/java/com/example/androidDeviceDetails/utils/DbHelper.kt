@@ -24,7 +24,7 @@ object DbHelper {
         eventType: Int,
         appDetails: AppDetails,
         db: RoomDB,
-        previousVersionCode : Long? = 0,
+        previousVersionCode : Long = 0,
         timestamp:Long=System.currentTimeMillis()
     ) {
         db.appHistoryDao().insertAll(

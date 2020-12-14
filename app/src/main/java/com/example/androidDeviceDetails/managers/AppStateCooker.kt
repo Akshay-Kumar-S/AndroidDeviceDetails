@@ -23,16 +23,16 @@ class AppStateCooker {
             @Suppress("CascadeIf")
             var evt : CookedData? = null
             if (lastRecord.eventType == EventType.APP_ENROLL.ordinal) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_ENROLL))
+                appList.add(CookedData(lastRecord.appTitle, EventType.APP_ENROLL,lastRecord.currentVersionCode))
                 continue
             } else if (lastRecord.eventType == EventType.APP_UNINSTALLED.ordinal) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UNINSTALLED))
+                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UNINSTALLED,lastRecord.previousVersionCode))
                 continue
             } else if (initialRecord.previousVersionCode != lastRecord.currentVersionCode) {
-                evt =  CookedData(lastRecord.appTitle, EventType.APP_UPDATED)
+                evt =  CookedData(lastRecord.appTitle, EventType.APP_UPDATED,lastRecord.currentVersionCode)
             }
             if (initialRecord.previousVersionCode == 0L) {
-                evt = CookedData(lastRecord.appTitle, EventType.APP_INSTALLED)
+                evt = CookedData(lastRecord.appTitle, EventType.APP_INSTALLED,lastRecord.currentVersionCode)
             }
             if (evt != null) {
                 appList.add(evt)

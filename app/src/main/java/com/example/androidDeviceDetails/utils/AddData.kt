@@ -27,7 +27,7 @@ object AddData {
                 val currentAppHistory = db.appsDao().getById(id)
                 val event =
                     if (currentAppHistory.appTitle != latestAppDetails.appTitle ||
-                        currentAppHistory.currentVersionCode!! < latestAppDetails.versionCode!!
+                        currentAppHistory.currentVersionCode < latestAppDetails.versionCode
                     ) {
                         EventType.APP_UPDATED.ordinal
                     } else {
@@ -62,7 +62,7 @@ object AddData {
             val latestAppDetails = Utils.getAppDetails(context, packageName)
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appsDao().getById(id)
-            if (currentAppHistory.currentVersionCode!! < latestAppDetails.versionCode!! || currentAppHistory.appTitle != latestAppDetails.appTitle) {
+            if (currentAppHistory.currentVersionCode < latestAppDetails.versionCode || currentAppHistory.appTitle != latestAppDetails.appTitle) {
                 DbHelper.writeToAppHistoryDb(
                     id,
                     EventType.APP_UPDATED.ordinal,

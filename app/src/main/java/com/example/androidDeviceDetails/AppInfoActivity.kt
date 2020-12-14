@@ -51,7 +51,7 @@ class AppInfoActivity : AppCompatActivity() {
                 appList = appList.sortedBy { it.appName }
                 for (app in appList) {
                     swapText =
-                        swapText + app.appName + " | " + app.eventType.name + "\n"
+                        swapText + app.appName + " | " + app.eventType.name +" | "+ app.versionCode + "\n"
                 }
                 binding.textView.post {
                     binding.textView.text = swapText

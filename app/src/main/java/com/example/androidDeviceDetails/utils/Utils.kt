@@ -71,7 +71,7 @@ object Utils {
             val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                appDetails.versionCode = pInfo?.longVersionCode
+                appDetails.versionCode = pInfo.longVersionCode
             } else {
                 @Suppress("DEPRECATION")
                 appDetails.versionCode = pInfo.versionCode.toLong()
