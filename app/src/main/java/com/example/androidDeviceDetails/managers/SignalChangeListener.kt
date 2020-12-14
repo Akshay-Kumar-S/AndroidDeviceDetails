@@ -14,72 +14,59 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
 
     private var signalDB = RoomDB.getDatabase()
 
+
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
         val cellularRaw: CellularRaw
         var level = 0
         var strength = 0
         var type = ""
         var asuLevel = 0
-        val lteData: CellSignalStrengthLte
-        val gsmData: CellSignalStrengthGsm
-        val cdmaData: CellSignalStrengthCdma
-        val wcdmaData: CellSignalStrengthWcdma
-        val nrData: CellSignalStrengthNr
-        val tscdmaData: CellSignalStrengthTdscdma
 
-
-        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            when {
-                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthLte -> {
-                    lteData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthLte
-                    strength = lteData.rsrp
-                    level = lteData.level
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val data = signalStrength.getCellSignalStrengths()[0]
+            when (data) {
+                is CellSignalStrengthLte -> {
+                    strength = data.rsrp
+                    level = data.level
                     type = "LTE"
-                    asuLevel = lteData.asuLevel
+                    asuLevel = data.asuLevel
                 }
-                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthGsm -> {
-                    gsmData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthGsm
-                    strength = gsmData.dbm
-                    level = gsmData.level
+                is CellSignalStrengthGsm -> {
+                    strength = data.dbm
+                    level = data.level
                     type = "GSM"
-                    asuLevel = gsmData.asuLevel
+                    asuLevel = data.asuLevel
                 }
-                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthCdma -> {
-                    cdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthCdma
-                    strength = cdmaData.cdmaDbm
+                is CellSignalStrengthCdma -> {
+                    strength = data.cdmaDbm
                     type = "CDMA"
-                    level = cdmaData.level
-                    asuLevel = cdmaData.asuLevel
+                    level = data.level
+                    asuLevel = data.asuLevel
                 }
-                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthWcdma -> {
-                    wcdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthWcdma
-                    strength = wcdmaData.dbm
+                is CellSignalStrengthWcdma -> {
+                    strength = data.dbm
                     type = "WCDMA"
-                    level = wcdmaData.level
-                    asuLevel = wcdmaData.asuLevel
+                    level = data.level
+                    asuLevel = data.asuLevel
                 }
-                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthNr -> {
-                    nrData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthNr
-                    strength = nrData.csiRsrp
+                is CellSignalStrengthNr -> {
+                    strength = data.csiRsrp
                     type = "CDMA"
-                    level = nrData.level
-                    asuLevel = nrData.asuLevel
+                    level = data.level
+                    asuLevel = data.asuLevel
                 }
-                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthTdscdma -> {
-                    tscdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthTdscdma
-                    strength = tscdmaData.dbm
+                is CellSignalStrengthTdscdma -> {
+                    strength = data.dbm
                     type = "WCDMA"
-                    level = tscdmaData.level
-                    asuLevel = tscdmaData.asuLevel
+                    level = data.level
+                    asuLevel = data.asuLevel
                 }
             }
-
         } else {
             try {
                 val telephonyManager =
                     context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                 val cellInfo = telephonyManager.allCellInfo[0]
-                Log.d("test", "onSignalStrengthsChanged: ")
                 when (cellInfo) {
                     is CellInfoLte -> {
                         type = "LTE"
