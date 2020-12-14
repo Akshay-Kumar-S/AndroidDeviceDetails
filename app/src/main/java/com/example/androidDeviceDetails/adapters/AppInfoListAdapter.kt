@@ -15,7 +15,7 @@ import com.example.androidDeviceDetails.utils.Utils
 class AppInfoListAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: ArrayList<AppInfoCookedData>
+    private var items: List<AppInfoCookedData>
 ): ArrayAdapter<AppInfoCookedData>(_context, resource, items){
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -23,14 +23,14 @@ class AppInfoListAdapter(
         val view = layoutInflater.inflate(resource, null)
 
         val appNameView = view.findViewById<TextView>(R.id.appName)
-        val versionCodeTextView = view.findViewById<TextView>(R.id.dropText)
-        val eventTypeTextView = view.findViewById<TextView>(R.id.eventType)
+        val versionCodeTextView = view.findViewById<TextView>(R.id.appVersionCode)
+        val eventTypeTextView = view.findViewById<TextView>(R.id.appEvent)
         val appIconView = view.findViewById<ImageView>(R.id.appIcon)
 
-        appNameView.text = Utils.getApplicationLabel(items[position].appName)
+        appNameView.text = items[position].appName
         versionCodeTextView.text = "Version Code : " + items[position].versionCode.toString()
         eventTypeTextView.text = "Event " + items[position].eventType.toString()
-        appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].appName))
+        appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
 
         return view
     }

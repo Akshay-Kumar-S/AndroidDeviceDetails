@@ -24,6 +24,9 @@ interface AppsDao {
     @Query("Select uid from Apps WHERE package_name=(:pName)")
     fun getIdByName(pName: String?): Int
 
+    @Query("Select package_name from Apps WHERE uid =(:appId)")
+    fun getPackageByID(appId: Int): String
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg apps: Apps)
 

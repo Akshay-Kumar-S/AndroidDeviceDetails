@@ -6,9 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
+import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppStateCooker
 import com.example.androidDeviceDetails.models.AppInfoCookedData
+import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -48,14 +51,16 @@ class AppInfoActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 appList = AppStateCooker.createInstance()
                     .getAppsBetween(startTime, endTime, applicationContext)
-                appList = appList.sortedBy { it.appName }
+                val db = RoomDB.getDatabase(applicationContext)!!
                 for (app in appList) {
-                    swapText =
-                        swapText + app.appName + " | " + app.eventType.name +" | "+ app.versionCode + "\n"
+                    app.packageName = db.appsDao().getPackageByID(app.appId)
                 }
-                binding.textView.post {
-                    binding.textView.text = swapText
+                appList = appList.sortedBy { it.appName }
+                binding.appInfoListView.post {
+                    binding.appInfoListView.adapter =
+                        AppInfoListAdapter(applicationContext, R.layout.appinfo_tile, appList)
                 }
+
 
             }
         }
