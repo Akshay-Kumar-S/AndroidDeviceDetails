@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.util.Log
+import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.models.AppDetails
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
@@ -55,6 +57,20 @@ object Utils {
         }
         return "UNDEFINED"
     }
+
+    fun getApplicationLabel(packageName: String): String {
+        val packageManager = DeviceDetailsApplication.instance.packageManager
+        val info = packageManager.getApplicationInfo(
+            packageName,
+            PackageManager.GET_META_DATA
+        )
+        return packageManager.getApplicationLabel(info) as String
+    }
+
+    fun getApplicationIcon(packageName: String): Drawable {
+        return DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
+    }
+
 
     fun isMyServiceRunning(serviceClass: Class<CollectorService>, context: Context): Boolean {
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

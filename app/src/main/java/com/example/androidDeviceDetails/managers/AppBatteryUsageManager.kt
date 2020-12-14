@@ -2,8 +2,8 @@ package com.example.androidDeviceDetails.managers
 
 import android.content.Context
 import android.widget.ListView
-import com.example.androidDeviceDetails.BatteryListAdapter
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.models.AppUsageModel
 import com.example.androidDeviceDetails.models.BatteryRawModel
 import com.example.androidDeviceDetails.models.RoomDB
@@ -15,32 +15,25 @@ class AppBatteryUsageManager {
 
     private fun getCombinedList(
         appEventList: List<AppUsageModel>,
-        batteryList: List<BatteryRawModel>
+        batteryListModel: List<BatteryRawModel>
     ): MutableList<MergedEventData> {
+
         val mergedList = mutableListOf<MergedEventData>()
-        for (it in appEventList)
+        val batteryIterator = batteryListModel.iterator()
+        var preBattery = batteryListModel.first()
+
+        for (it in appEventList) {
+            while ((it.timeStamp > preBattery.timeStamp || preBattery.health == 0) && batteryIterator.hasNext())
+                preBattery = batteryIterator.next()
             mergedList.add(
                 MergedEventData(
                     it.timeStamp,
-                    -1,
-                    -1,
+                    preBattery.level,
+                    preBattery.plugged,
                     it.packageName,
                 )
             )
-        for (it in batteryList)
-            mergedList.add(MergedEventData(it.timeStamp, it.level, it.plugged, " "))
-        mergedList.sortBy { it.timestamp }
-        var fillerLevel = batteryList[0].level
-        var fillerPlugged = batteryList[0].plugged
-        mergedList.forEach {
-            if (it.batteryLevel == -1) {
-                it.batteryLevel = fillerLevel
-                it.plugged = fillerPlugged
-            }
-            fillerLevel = it.batteryLevel
-            fillerPlugged = it.plugged
         }
-        mergedList.removeAll { it.packageName == " " }
         return mergedList
     }
 
@@ -59,19 +52,20 @@ class AppBatteryUsageManager {
             var previousData = mergedList.first()
             for ((i, mergedEventData) in mergedList.withIndex()) {
                 if (mergedEventData.plugged == 0 && previousData.batteryLevel!! > mergedEventData.batteryLevel!!)
-                    if (appEntryList.none { it.packageId == mergedEventData.packageName })
+                    if (appEntryList.none { it.packageId == previousData.packageName })
                         appEntryList.add(
                             AppEntry(
-                                mergedEventData.packageName,
+                                previousData.packageName,
                                 previousData.batteryLevel!!.minus(mergedEventData.batteryLevel!!)
                             )
                         )
-                    else appEntryList.first { it.packageId == mergedList[i - 1].packageName }.drop +=
+                    else appEntryList.first { it.packageId == previousData.packageName }.drop +=
                         previousData.batteryLevel!!.minus(mergedEventData.batteryLevel!!)
                 previousData = mergedEventData
             }
             batteryListView.post {
-                batteryListView.adapter = BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
+                batteryListView.adapter =
+                    BatteryListAdapter(context, R.layout.battery_tile, appEntryList)
             }
         }
     }
