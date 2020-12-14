@@ -6,11 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/container"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,17 +45,17 @@
                     android:id="@+id/button2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="10dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/ic_baseline_calendar_today_24"
-                    android:layout_margin="10dp" />
+                    android:padding="10dp" />
 
                 <TextView
                     android:id="@+id/enddateView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
                     android:hint="End Date/Time Here"
-                    android:padding="6dp"
-                    android:layout_margin="10dp"/>
+                    android:padding="6dp" />
             </LinearLayout>
 
 
