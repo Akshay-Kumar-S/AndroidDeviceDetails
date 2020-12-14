@@ -14,8 +14,6 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
 
     private var signalDB = RoomDB.getDatabase()
 
-
-
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
         val cellularRaw: CellularRaw
         var level = 0
@@ -26,40 +24,57 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
         val gsmData: CellSignalStrengthGsm
         val cdmaData: CellSignalStrengthCdma
         val wcdmaData: CellSignalStrengthWcdma
+        val nrData: CellSignalStrengthNr
+        val tscdmaData: CellSignalStrengthTdscdma
 
 
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            if (signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthLte) {
-                lteData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthLte
-                strength = lteData.rsrp
-                level = lteData.level
-                type = "LTE"
-                asuLevel = lteData.asuLevel
+            when {
+                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthLte -> {
+                    lteData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthLte
+                    strength = lteData.rsrp
+                    level = lteData.level
+                    type = "LTE"
+                    asuLevel = lteData.asuLevel
+                }
+                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthGsm -> {
+                    gsmData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthGsm
+                    strength = gsmData.dbm
+                    level = gsmData.level
+                    type = "GSM"
+                    asuLevel = gsmData.asuLevel
+                }
+                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthCdma -> {
+                    cdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthCdma
+                    strength = cdmaData.cdmaDbm
+                    type = "CDMA"
+                    level = cdmaData.level
+                    asuLevel = cdmaData.asuLevel
+                }
+                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthWcdma -> {
+                    wcdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthWcdma
+                    strength = wcdmaData.dbm
+                    type = "WCDMA"
+                    level = wcdmaData.level
+                    asuLevel = wcdmaData.asuLevel
+                }
+                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthNr -> {
+                    nrData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthNr
+                    strength = nrData.csiRsrp
+                    type = "CDMA"
+                    level = nrData.level
+                    asuLevel = nrData.asuLevel
+                }
+                signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthTdscdma -> {
+                    tscdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthTdscdma
+                    strength = tscdmaData.dbm
+                    type = "WCDMA"
+                    level = tscdmaData.level
+                    asuLevel = tscdmaData.asuLevel
+                }
             }
-            if (signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthGsm) {
-                gsmData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthGsm
-                strength = gsmData.dbm
-                level = gsmData.level
-                type = "GSM"
-                asuLevel = gsmData.asuLevel
-            }
-            if (signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthCdma) {
-                cdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthCdma
-                strength = cdmaData.cdmaDbm
-                type = "CDMA"
-                level = cdmaData.level
-                asuLevel = cdmaData.asuLevel
-            }
-            if (signalStrength.getCellSignalStrengths()[0] is CellSignalStrengthWcdma) {
-                wcdmaData = signalStrength.getCellSignalStrengths()[0] as CellSignalStrengthWcdma
-                strength = wcdmaData.dbm
-                type = "WCDMA"
-                level = wcdmaData.level
-                asuLevel = wcdmaData.asuLevel
-            }
-        }
 
-        else {
+        } else {
             try {
                 val telephonyManager =
                     context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -100,10 +115,12 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
                 }
 
             } catch (e: SecurityException) {
-            } catch (e: Exception) {
             }
+//            catch (e: Exception) {
+//                Log.d("tagdata1", "datacrash: $strength, $level,$asuLevel,$type")
+//            }
         }
-        Toast.makeText(context,"this is toast message   $strength", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "this is toast message   $strength", Toast.LENGTH_SHORT).show()
         Log.d("tagdata1", "data: $strength, $level,$asuLevel,$type")
 
         cellularRaw = CellularRaw(
