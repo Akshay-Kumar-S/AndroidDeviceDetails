@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toLocationActivityButton.setOnClickListener(this)
         appInfoButton = findViewById(R.id.appInfo)
         batteryInfoButton = findViewById(R.id.batteryInfo)
-//        text = findViewById(R.id.textView)
         appInfoButton.setOnClickListener(this)
         batteryInfoButton.setOnClickListener(this)
         toggleServiceButton = findViewById(R.id.toggleSwitch)

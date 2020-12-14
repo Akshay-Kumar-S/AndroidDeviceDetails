@@ -27,6 +27,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails">
+        <activity android:name=".AppInfoActivity"
+            android:label="Application Info"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".BatteryActivity"
             android:label="Battery Usage"
