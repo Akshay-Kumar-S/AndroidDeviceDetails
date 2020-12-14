@@ -9,7 +9,7 @@ import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
 class BatteryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setContentView(R.layout.activity_battery)
         val batteryListView = findViewById<ListView>(R.id.batteryListView)
         AppBatteryUsageManager().cookBatteryData(this,batteryListView)

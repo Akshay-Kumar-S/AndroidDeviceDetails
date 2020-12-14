@@ -47,7 +47,7 @@ class AppBatteryUsageManager {
             val batteryList = db.batteryInfoDao().getAll()
             val mergedList = getCombinedList(appEventList, batteryList)
             var previousData = mergedList.first()
-            for ((i, mergedEventData) in mergedList.withIndex()) {
+            for (mergedEventData in mergedList) {
                 if (mergedEventData.plugged == 0 && previousData.batteryLevel!! > mergedEventData.batteryLevel!!)
                     if (appEntryList.none { it.packageId == previousData.packageName })
                         appEntryList.add(

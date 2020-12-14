@@ -12,6 +12,7 @@
     <string name="battery_info">Battery Info</string>
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
+    <string name="info">Info</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="strength"> dBm</string>
     <string name="linkspeed"> MHz</string>
