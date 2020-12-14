@@ -6,12 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".BatteryActivity">
 
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Total drop is 56%"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Till today"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/total" />
+
     <ListView
         android:id="@+id/batteryListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
