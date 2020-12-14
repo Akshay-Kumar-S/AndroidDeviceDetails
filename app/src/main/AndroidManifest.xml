@@ -21,16 +21,17 @@
 
     <application
         android:name=".DeviceDetailsApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails">
-        <activity android:name=".BatteryActivity"/>
-        <activity android:name=".NavActivity"></activity>
+        <activity
+            android:name=".BatteryActivity"
+            android:label="Battery Usage"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
-        <activity android:name=".AppInfoActivity"></activity>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
