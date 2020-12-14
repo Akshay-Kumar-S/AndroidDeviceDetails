@@ -28,7 +28,7 @@ class BatteryListAdapter(
         val appIconView = view.findViewById<ImageView>(R.id.appIcon)
 
         appNameView.text = Utils.getApplicationLabel(items[position].packageId)
-        dropTextView.text = items[position].drop.toString()+ " % Used"
+        dropTextView.text = "Total drop is " + items[position].drop.toString()
         appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageId))
 
         return view

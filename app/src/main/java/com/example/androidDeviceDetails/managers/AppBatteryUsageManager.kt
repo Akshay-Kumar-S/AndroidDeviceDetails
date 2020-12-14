@@ -40,14 +40,11 @@ class AppBatteryUsageManager {
     fun cookBatteryData(
         context: Context,
         batteryListView: ListView,
-        beginTime: Long,
-        endTime: Long = System.currentTimeMillis()
     ) {
         val appEntryList = arrayListOf<AppEntry>()
         GlobalScope.launch {
-            val appEventList = db.appUsageInfoDao().getAllBetween(beginTime, endTime)
-            val batteryList = db.batteryInfoDao().getAllBetween(beginTime, endTime)
-
+            val appEventList = db.appUsageInfoDao().getAll()
+            val batteryList = db.batteryInfoDao().getAll()
             val mergedList = getCombinedList(appEventList, batteryList)
             var previousData = mergedList.first()
             for ((i, mergedEventData) in mergedList.withIndex()) {

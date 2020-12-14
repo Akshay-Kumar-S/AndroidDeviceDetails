@@ -12,7 +12,7 @@ class BatteryActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_battery)
         val batteryListView = findViewById<ListView>(R.id.batteryListView)
-        AppBatteryUsageManager().cookBatteryData(this,batteryListView,System.currentTimeMillis()-24*60*60*1000)
+        AppBatteryUsageManager().cookBatteryData(this,batteryListView)
     }
 }
 
