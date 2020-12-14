@@ -17,9 +17,4 @@ class MainController {
         else
             context.stopService(Intent(context, CollectorService::class.java))
     }
-
-    fun getAppBatteryUsage(beginTime: Long, endTime: Long) {
-        val appBatteryUsageManager = AppBatteryUsageManager()
-        appBatteryUsageManager.cookBatteryData(beginTime, endTime)
-    }
 }

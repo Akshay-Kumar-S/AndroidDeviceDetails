@@ -9,6 +9,8 @@
     <string name="location">Location</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
+    <string name="battery_info">Battery Info</string>
+    <string name="icon">Icon</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="strength"> dBm</string>
     <string name="linkspeed"> MHz</string>

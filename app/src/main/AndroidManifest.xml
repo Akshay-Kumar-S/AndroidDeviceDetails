@@ -27,10 +27,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails">
+        <activity android:name=".BatteryActivity"/>
         <activity android:name=".NavActivity"></activity>
         <activity android:name=".MainActivity">
         <activity android:name=".AppInfoActivity"></activity>
-        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -25,6 +25,7 @@ val permissions: Array<String> =
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var toLocationActivityButton: Button
     private lateinit var appInfoButton: Button
+    private lateinit var batteryInfoButton: Button
     private lateinit var toggleServiceButton: Button
     private lateinit var text: TextView
     private lateinit var signalButton: Button
@@ -53,8 +54,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toLocationActivityButton = findViewById(R.id.toLocationActivity)
         toLocationActivityButton.setOnClickListener(this)
         appInfoButton = findViewById(R.id.appInfo)
-        text = findViewById(R.id.textView)
+        batteryInfoButton = findViewById(R.id.batteryInfo)
+//        text = findViewById(R.id.textView)
         appInfoButton.setOnClickListener(this)
+        batteryInfoButton.setOnClickListener(this)
         toggleServiceButton = findViewById(R.id.toggleSwitch)
         toggleServiceButton.setOnClickListener(this)
         signalButton = findViewById(R.id.signal)
@@ -66,6 +69,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.toLocationActivity -> {
                 val intent = Intent(this, LocationActivity::class.java).apply {}
+                startActivity(intent)
+            }
+            R.id.batteryInfo -> {
+                val intent = Intent(this, BatteryActivity::class.java).apply {}
                 startActivity(intent)
             }
             R.id.appInfo ->{
