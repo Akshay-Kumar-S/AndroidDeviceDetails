@@ -21,15 +21,21 @@ class AppStateCooker {
             val lastRecord = db.appHistoryDao().getLatestRecordBetween(id, startTime, endTime)
             val initialRecord = db.appHistoryDao().getInitialRecordBetween(id, startTime, endTime)
             @Suppress("CascadeIf")
+            var evt : CookedData? = null
             if (lastRecord.eventType == EventType.APP_ENROLL.ordinal) {
                 appList.add(CookedData(lastRecord.appTitle, EventType.APP_ENROLL))
+                continue
             } else if (lastRecord.eventType == EventType.APP_UNINSTALLED.ordinal) {
                 appList.add(CookedData(lastRecord.appTitle, EventType.APP_UNINSTALLED))
+                continue
             } else if (initialRecord.previousVersionCode != lastRecord.currentVersionCode) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_UPDATED))
+                evt =  CookedData(lastRecord.appTitle, EventType.APP_UPDATED)
             }
-            if (initialRecord.previousVersionCode == EventType.APP_INSTALLED.ordinal.toLong()) {
-                appList.add(CookedData(lastRecord.appTitle, EventType.APP_INSTALLED))
+            if (initialRecord.previousVersionCode == 0L) {
+                evt = CookedData(lastRecord.appTitle, EventType.APP_INSTALLED)
+            }
+            if (evt != null) {
+                appList.add(evt)
             }
         }
         return appList
