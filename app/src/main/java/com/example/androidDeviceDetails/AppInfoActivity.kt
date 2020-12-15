@@ -55,12 +55,15 @@ class AppInfoActivity : AppCompatActivity() {
             if(startTimeFlag){
                 startTime = calendar.timeInMillis
                 binding.startdateView.text = time
+                if(startTime != 0L && endTime != 0L )
+                    setAppIfoData(startTime,endTime)
             }
 
             else{
                 endTime = calendar.timeInMillis
                 binding.enddateView.text = time
-                setAppIfoData(startTime,endTime)
+                if(startTime != 0L && endTime != 0L )
+                    setAppIfoData(startTime,endTime)
             }
 
 //            val endTime = startTime + (((((23 * 60) + 59) * 60) + 59) * 1000)
