@@ -185,7 +185,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Enroll"
+                        android:text="Enroll : "
+                        android:textColor="?attr/batteryTitle"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/enroll_count"
                         android:textColor="?attr/batteryTitle"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="2dp">
@@ -206,11 +214,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Install"
+                        android:text="Install : "
                         android:textColor="?attr/batteryTitle"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="2dp">
                     </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/install_count"
+                        android:textColor="?attr/batteryTitle"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -227,7 +242,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Update"
+                        android:text="Update : "
+                        android:textColor="?attr/batteryTitle"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/update_count"
                         android:textColor="?attr/batteryTitle"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="2dp">
@@ -248,7 +271,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Uninstall"
+                        android:text="Uninstall : "
+                        android:textColor="?attr/batteryTitle"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp">
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/uninstall_count"
                         android:textColor="?attr/batteryTitle"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="2dp">

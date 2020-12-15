@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -25,7 +24,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
-import kotlin.math.log
 
 
 class AppInfoActivity : AppCompatActivity() {
@@ -37,13 +35,14 @@ class AppInfoActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
     val context = this
+
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        binding.statisticsContainer.isVisible=false
+        binding.statisticsContainer.isVisible = false
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -66,7 +65,7 @@ class AppInfoActivity : AppCompatActivity() {
 
         binding.enddateView.setOnClickListener {
             startTimeFlag = false
-             val datePickerDialog = getCalendarDialog()
+            val datePickerDialog = getCalendarDialog()
             if (startTime != 0L) {
                 datePickerDialog.datePicker.minDate = startTime
                 datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
@@ -111,21 +110,22 @@ class AppInfoActivity : AppCompatActivity() {
         }
     }
 
-    private val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        calendar.set(year, month, dayOfMonth)
-        calendar[Calendar.HOUR_OF_DAY] = 0
-        calendar[Calendar.MINUTE] = 0
-        calendar[Calendar.SECOND] = 0
-        val hour = calendar.get(Calendar.HOUR)
-        val minute = calendar.get(Calendar.MINUTE)
-        val timePickerDialog = TimePickerDialog(
-            this@AppInfoActivity, timePickerListener, hour, minute,
-            DateFormat.is24HourFormat(this)
-        )
-        timePickerDialog.show()
-    }
+    private val datePickerListener =
+        DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            calendar.set(year, month, dayOfMonth)
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            val hour = calendar.get(Calendar.HOUR)
+            val minute = calendar.get(Calendar.MINUTE)
+            val timePickerDialog = TimePickerDialog(
+                this@AppInfoActivity, timePickerListener, hour, minute,
+                DateFormat.is24HourFormat(this)
+            )
+            timePickerDialog.show()
+        }
 
-    private fun getCalendarDialog():DatePickerDialog{
+    private fun getCalendarDialog(): DatePickerDialog {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
@@ -157,62 +157,41 @@ class AppInfoActivity : AppCompatActivity() {
                         appList
                     )
             }
-            var installed = 0.toDouble()
-            var updated = 0.toDouble()
-            var uninstalled = 0.toDouble()
-            var enrolled=0.toDouble()
+
 
             val total = appList.size.toDouble()
-            var eapps = appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                .eachCount()
-            try {
-                enrolled = ceil((eapps[true]?.toDouble()?.div(total)!!) * 100)
-            }catch (e:Exception){}
-            var x = appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                .eachCount()
-            try {
-                installed = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
+            val enrolledAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+                    .eachCount()
+            val enrolled = ceil(((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
-            } catch (e: Exception) {
-            }
-            x = appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                .eachCount()
-            try {
-                updated = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
-            } catch (e: Exception) {
-            }
-            x = appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                .eachCount()
-            try {
-                uninstalled = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
-            } catch (e: Exception) {
-            }
+            val installedAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+                    .eachCount()
+            val installed = ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
+            val updateAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+                    .eachCount()
+            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
-            binding.enrollProgressbar.post {
-                binding.enrollProgressbar.setOnClickListener {
-                    Log.d("TAG", "setAppIfoData: ${eapps[true]}")
-
-                }
-            }
-
-            Log.d("TAG", "enrolled: $enrolled")
-            Log.d("TAG", "installed: $installed")
-            Log.d("TAG", "updated: $updated")
-            Log.d("TAG", "uninstalled: $uninstalled")
-            Log.d("TAG", "listsize: ${appList.size}")
-
-
-
-
+            val uninstalledAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+                    .eachCount()
+            val uninstalled =
+                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
             binding.updatedProgressBar.progress = (updated.toInt())
             binding.installedProgressBar.progress = (updated + installed).toInt()
             binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
-            binding.uninstalledProgressbar.progress = (updated + installed + enrolled + uninstalled).toInt()
+            binding.uninstalledProgressbar.progress =
+                (updated + installed + enrolled + uninstalled).toInt()
             binding.pieChartConstraintLayout.post {
-                binding.statisticsContainer.isVisible=true
-
+                binding.statisticsContainer.isVisible = true
+                binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
+                binding.installCount.text = (installedAppCount[true] ?: 0).toString()
+                binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
+                binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
             }
 
 
