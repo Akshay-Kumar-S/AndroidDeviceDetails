@@ -7,6 +7,7 @@ import android.text.format.DateFormat
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
@@ -85,7 +86,7 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
 
-        binding.button.setOnClickListener {
+        binding.startdateView.setOnClickListener {
             startTimeFlag = true
             day = calendar.get(Calendar.DAY_OF_MONTH)
             month = calendar.get(Calendar.MONTH)
@@ -101,7 +102,7 @@ class AppInfoActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        binding.button2.setOnClickListener {
+        binding.enddateView.setOnClickListener {
             startTimeFlag = false
             day = calendar.get(Calendar.DAY_OF_MONTH)
             month = calendar.get(Calendar.MONTH)
