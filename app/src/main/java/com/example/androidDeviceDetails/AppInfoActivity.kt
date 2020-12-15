@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -17,14 +16,11 @@ import com.example.androidDeviceDetails.managers.AppStateCooker
 import com.example.androidDeviceDetails.models.AppInfoCookedData
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
-import com.example.androidDeviceDetails.utils.EventType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.ceil
-import kotlin.math.log
 
 
 class AppInfoActivity : AppCompatActivity() {
@@ -46,7 +42,6 @@ class AppInfoActivity : AppCompatActivity() {
         var hour: Int
         var minute: Int
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CollectorService::class.java))
         } else {
@@ -60,18 +55,32 @@ class AppInfoActivity : AppCompatActivity() {
             val time = simpleDateFormat.format(calendar.timeInMillis)
             if (startTimeFlag) {
                 startTime = calendar.timeInMillis
-                binding.startdateView.text = time
-                if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime)
+                if (startTime < endTime || endTime == 0L) {
+                    binding.startdateView.text = time
+                    if (startTime != 0L && endTime != 0L)
+                        setAppIfoData(startTime, endTime)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Start time must be lower than end time",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
                 endTime = calendar.timeInMillis
-                binding.enddateView.text = time
-                if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime)
+                if (startTime < endTime || startTime == 0L) {
+                    binding.enddateView.text = time
+                    if (startTime != 0L && endTime != 0L)
+                        setAppIfoData(startTime, endTime)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "End time must be greater than start time",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
-
-//            val endTime = startTime + (((((23 * 60) + 59) * 60) + 59) * 1000)
-
         }
 
         val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -89,7 +98,7 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
 
-        binding.startdateView.setOnClickListener {
+        binding.button.setOnClickListener {
             startTimeFlag = true
             day = calendar.get(Calendar.DAY_OF_MONTH)
             month = calendar.get(Calendar.MONTH)
@@ -102,10 +111,15 @@ class AppInfoActivity : AppCompatActivity() {
                     month,
                     day
                 )
+            if (endTime != 0L) {
+                datePickerDialog.datePicker.maxDate = endTime
+            } else {
+                datePickerDialog.datePicker.maxDate = Date().time
+            }
             datePickerDialog.show()
         }
 
-        binding.enddateView.setOnClickListener {
+        binding.button2.setOnClickListener {
             startTimeFlag = false
             day = calendar.get(Calendar.DAY_OF_MONTH)
             month = calendar.get(Calendar.MONTH)
@@ -118,6 +132,13 @@ class AppInfoActivity : AppCompatActivity() {
                     month,
                     day
                 )
+            datePickerDialog.show()
+            if (startTime != 0L) {
+                datePickerDialog.datePicker.minDate = startTime
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            } else {
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            }
             datePickerDialog.show()
         }
     }
@@ -141,61 +162,6 @@ class AppInfoActivity : AppCompatActivity() {
                         appList
                     )
             }
-            var installed = 0.toDouble()
-            var updated = 0.toDouble()
-            var uninstalled = 0.toDouble()
-            var enrolled=0.toDouble()
-
-            val total = appList.size.toDouble()
-            var eapps = appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                .eachCount()
-            try {
-                enrolled = ceil((eapps[true]?.toDouble()?.div(total)!!) * 100)
-            }catch (e:Exception){}
-            var x = appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                .eachCount()
-            try {
-                installed = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
-
-            } catch (e: Exception) {
-            }
-            x = appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                .eachCount()
-            try {
-                updated = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
-            } catch (e: Exception) {
-            }
-            x = appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                .eachCount()
-            try {
-                uninstalled = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
-            } catch (e: Exception) {
-            }
-
-            binding.enrollProgressbar.post {
-                binding.enrollProgressbar.setOnClickListener {
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-                    Log.d("TAG", "setAppIfoData: $eapps[true]")
-
-                }
-            }
-            Log.d("TAG", "enrolled: $enrolled")
-            Log.d("TAG", "installed: $installed")
-            Log.d("TAG", "updated: $updated")
-            Log.d("TAG", "uninstalled: $uninstalled")
-            Log.d("TAG", "listsize: ${appList.size}")
-
-
-
-
-
-            binding.updatedProgressBar.progress = (updated.toInt())
-            binding.installedProgressBar.progress = (updated + installed).toInt()
-            binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
-            binding.uninstalledProgressbar.progress = (updated + installed + enrolled + uninstalled).toInt()
-
         }
     }
 }
