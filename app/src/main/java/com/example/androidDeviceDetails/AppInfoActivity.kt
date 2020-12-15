@@ -16,6 +16,7 @@ import com.example.androidDeviceDetails.managers.AppStateCooker
 import com.example.androidDeviceDetails.models.AppInfoCookedData
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
+import com.example.androidDeviceDetails.utils.EventType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,15 +33,12 @@ class AppInfoActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
     val context = this
+    @SuppressLint("SimpleDateFormat")
+    private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        var day: Int
-        var month: Int
-        var year: Int
-        var hour: Int
-        var minute: Int
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CollectorService::class.java))
@@ -48,69 +46,10 @@ class AppInfoActivity : AppCompatActivity() {
             this.startService(Intent(this, CollectorService::class.java))
         }
 
-        val timePickerListener = TimePickerDialog.OnTimeSetListener { i, hourOfDay, minute ->
-            calendar[Calendar.HOUR_OF_DAY] = hourOfDay
-            calendar[Calendar.MINUTE] = minute
-            val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
-            val time = simpleDateFormat.format(calendar.timeInMillis)
-            if (startTimeFlag) {
-                startTime = calendar.timeInMillis
-                if (startTime < endTime || endTime == 0L) {
-                    binding.startdateView.text = time
-                    if (startTime != 0L && endTime != 0L)
-                        setAppIfoData(startTime, endTime)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Start time must be lower than end time",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else {
-                endTime = calendar.timeInMillis
-                if (startTime < endTime || startTime == 0L) {
-                    binding.enddateView.text = time
-                    if (startTime != 0L && endTime != 0L)
-                        setAppIfoData(startTime, endTime)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "End time must be greater than start time",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            }
-        }
-
-        val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            calendar.set(year, month, dayOfMonth)
-            calendar[Calendar.HOUR_OF_DAY] = 0
-            calendar[Calendar.MINUTE] = 0
-            calendar[Calendar.SECOND] = 0
-            hour = calendar.get(Calendar.HOUR)
-            minute = calendar.get(Calendar.MINUTE)
-            val timePickerDialog = TimePickerDialog(
-                this@AppInfoActivity, timePickerListener, hour, minute,
-                DateFormat.is24HourFormat(this)
-            )
-            timePickerDialog.show()
-        }
-
 
         binding.button.setOnClickListener {
             startTimeFlag = true
-            day = calendar.get(Calendar.DAY_OF_MONTH)
-            month = calendar.get(Calendar.MONTH)
-            year = calendar.get(Calendar.YEAR)
-            @Suppress("RedundantSamConstructor") val datePickerDialog =
-                DatePickerDialog(
-                    this@AppInfoActivity,
-                    datePickerListener,
-                    year,
-                    month,
-                    day
-                )
+            val datePickerDialog = getCalendarDialog()
             if (endTime != 0L) {
                 datePickerDialog.datePicker.maxDate = endTime
             } else {
@@ -121,18 +60,7 @@ class AppInfoActivity : AppCompatActivity() {
 
         binding.button2.setOnClickListener {
             startTimeFlag = false
-            day = calendar.get(Calendar.DAY_OF_MONTH)
-            month = calendar.get(Calendar.MONTH)
-            year = calendar.get(Calendar.YEAR)
-            @Suppress("RedundantSamConstructor") val datePickerDialog =
-                DatePickerDialog(
-                    this@AppInfoActivity,
-                    datePickerListener,
-                    year,
-                    month,
-                    day
-                )
-            datePickerDialog.show()
+             val datePickerDialog = getCalendarDialog()
             if (startTime != 0L) {
                 datePickerDialog.datePicker.minDate = startTime
                 datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
@@ -141,6 +69,67 @@ class AppInfoActivity : AppCompatActivity() {
             }
             datePickerDialog.show()
         }
+    }
+
+    private val timePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+        calendar[Calendar.HOUR_OF_DAY] = hourOfDay
+        calendar[Calendar.MINUTE] = minute
+        val time = simpleDateFormat.format(calendar.timeInMillis)
+        if (startTimeFlag) {
+            startTime = calendar.timeInMillis
+            if (startTime < endTime || endTime == 0L) {
+                binding.startdateView.text = time
+                if (startTime != 0L && endTime != 0L)
+                    setAppIfoData(startTime, endTime)
+            } else {
+                Toast.makeText(
+                    this,
+                    "Start time must be lower than end time",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } else {
+            endTime = calendar.timeInMillis
+            if (startTime < endTime || startTime == 0L) {
+                binding.enddateView.text = time
+                if (startTime != 0L && endTime != 0L)
+                    setAppIfoData(startTime, endTime)
+            } else {
+                Toast.makeText(
+                    this,
+                    "End time must be greater than start time",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        }
+    }
+
+    private val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        calendar.set(year, month, dayOfMonth)
+        calendar[Calendar.HOUR_OF_DAY] = 0
+        calendar[Calendar.MINUTE] = 0
+        calendar[Calendar.SECOND] = 0
+        val hour = calendar.get(Calendar.HOUR)
+        val minute = calendar.get(Calendar.MINUTE)
+        val timePickerDialog = TimePickerDialog(
+            this@AppInfoActivity, timePickerListener, hour, minute,
+            DateFormat.is24HourFormat(this)
+        )
+        timePickerDialog.show()
+    }
+
+    private fun getCalendarDialog():DatePickerDialog{
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
+        return DatePickerDialog(
+            this@AppInfoActivity,
+            datePickerListener,
+            year,
+            month,
+            day
+        )
     }
 
     @SuppressLint("SimpleDateFormat")
