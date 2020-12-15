@@ -43,7 +43,7 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        binding.pieChartConstraintLayout.isVisible=false
+        binding.statisticsContainer.isVisible=false
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -211,7 +211,7 @@ class AppInfoActivity : AppCompatActivity() {
             binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
             binding.uninstalledProgressbar.progress = (updated + installed + enrolled + uninstalled).toInt()
             binding.pieChartConstraintLayout.post {
-                binding.pieChartConstraintLayout.isVisible=true
+                binding.statisticsContainer.isVisible=true
 
             }
 
