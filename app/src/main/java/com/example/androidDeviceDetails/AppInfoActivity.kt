@@ -7,8 +7,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
@@ -22,6 +24,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.ceil
+import kotlin.math.log
 
 
 class AppInfoActivity : AppCompatActivity() {
@@ -39,6 +43,8 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
+        binding.pieChartConstraintLayout.isVisible=false
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CollectorService::class.java))
@@ -47,7 +53,7 @@ class AppInfoActivity : AppCompatActivity() {
         }
 
 
-        binding.button.setOnClickListener {
+        binding.startdateView.setOnClickListener {
             startTimeFlag = true
             val datePickerDialog = getCalendarDialog()
             if (endTime != 0L) {
@@ -58,7 +64,7 @@ class AppInfoActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        binding.button2.setOnClickListener {
+        binding.enddateView.setOnClickListener {
             startTimeFlag = false
              val datePickerDialog = getCalendarDialog()
             if (startTime != 0L) {
@@ -151,6 +157,65 @@ class AppInfoActivity : AppCompatActivity() {
                         appList
                     )
             }
+            var installed = 0.toDouble()
+            var updated = 0.toDouble()
+            var uninstalled = 0.toDouble()
+            var enrolled=0.toDouble()
+
+            val total = appList.size.toDouble()
+            var eapps = appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+                .eachCount()
+            try {
+                enrolled = ceil((eapps[true]?.toDouble()?.div(total)!!) * 100)
+            }catch (e:Exception){}
+            var x = appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+                .eachCount()
+            try {
+                installed = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
+
+            } catch (e: Exception) {
+            }
+            x = appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+                .eachCount()
+            try {
+                updated = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
+            } catch (e: Exception) {
+            }
+            x = appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+                .eachCount()
+            try {
+                uninstalled = ceil((x[true]?.toDouble()?.div(total)!!) * 100)
+            } catch (e: Exception) {
+            }
+
+
+            binding.enrollProgressbar.post {
+                binding.enrollProgressbar.setOnClickListener {
+                    Log.d("TAG", "setAppIfoData: ${eapps[true]}")
+
+                }
+            }
+
+            Log.d("TAG", "enrolled: $enrolled")
+            Log.d("TAG", "installed: $installed")
+            Log.d("TAG", "updated: $updated")
+            Log.d("TAG", "uninstalled: $uninstalled")
+            Log.d("TAG", "listsize: ${appList.size}")
+
+
+
+
+
+            binding.updatedProgressBar.progress = (updated.toInt())
+            binding.installedProgressBar.progress = (updated + installed).toInt()
+            binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
+            binding.uninstalledProgressbar.progress = (updated + installed + enrolled + uninstalled).toInt()
+            binding.pieChartConstraintLayout.post {
+                binding.pieChartConstraintLayout.isVisible=true
+
+            }
+
+
         }
     }
 }

@@ -18,6 +18,7 @@
     <string name="right">Right</string>
     <string name="left">Left</string>
     <string name="date">Mon, 14 Dec</string>
+    <string name="pie_chart_size">200dp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="strength"> dBm</string>
     <string name="linkspeed"> MHz</string>
