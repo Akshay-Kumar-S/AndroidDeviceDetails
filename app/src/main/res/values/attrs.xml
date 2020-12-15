@@ -3,4 +3,10 @@
     <declare-styleable name="FullscreenAttrs">
         <attr name="batteryTitle" format="color" />
     </declare-styleable>
+    <declare-styleable name="TimeDateBubbleColor">
+        <attr name="TimeDateBackground" format="color" />
+    </declare-styleable>
+    <declare-styleable name="IconTint">
+        <attr name="iconTint" format="color"/>
+    </declare-styleable>
 </resources>

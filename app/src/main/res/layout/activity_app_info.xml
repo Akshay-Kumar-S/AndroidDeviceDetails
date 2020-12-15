@@ -12,7 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/gray_400">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,6 +25,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
+                    android:backgroundTint="?attr/iconTint"
                     android:background="@drawable/ic_baseline_calendar_today_24"
                     android:padding="10dp" />
 
@@ -32,7 +34,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/mode_selector_bg"
+                    android:backgroundTint="?attr/TimeDateBackground"
                     android:hint="Start Date/Time Here"
+                    android:textColor="?attr/batteryTitle"
                     android:padding="6dp" />
             </LinearLayout>
 
@@ -46,6 +51,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
+                    android:backgroundTint="?attr/iconTint"
                     android:background="@drawable/ic_baseline_calendar_today_24"
                     android:padding="10dp" />
 
@@ -53,7 +59,10 @@
                     android:id="@+id/enddateView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/mode_selector_bg"
+                    android:backgroundTint="?attr/TimeDateBackground"
                     android:layout_margin="10dp"
+                    android:textColor="?attr/batteryTitle"
                     android:hint="End Date/Time Here"
                     android:padding="6dp" />
             </LinearLayout>
