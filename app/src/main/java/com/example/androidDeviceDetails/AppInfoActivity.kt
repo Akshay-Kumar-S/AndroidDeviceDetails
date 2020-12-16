@@ -13,9 +13,7 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -36,6 +34,7 @@ import kotlin.math.ceil
 
 class AppInfoActivity : AppCompatActivity() {
 
+    private val allEvents = 4
     private val calendar: Calendar = Calendar.getInstance()
     private lateinit var appList: List<AppInfoCookedData>
     private lateinit var binding: ActivityAppInfoBinding
@@ -43,6 +42,7 @@ class AppInfoActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
     val context = this
+    private var eventFilter = allEvents
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
@@ -51,6 +51,7 @@ class AppInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
         binding.statisticsContainer.isVisible = false
+        binding.statsMap.isVisible = false
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -100,12 +101,24 @@ class AppInfoActivity : AppCompatActivity() {
                 ).show()
 
         }
+
+        val items = listOf("Enrolled", "Installed", "Updated", "Uninstalled", "All")
+        val adapter = ArrayAdapter(this, R.layout.filter_list_item, items)
+        (binding.filter.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+        binding.filters.setText("All",false)
+
+        binding.filters.setOnItemClickListener { _, _, position, _ ->
+            eventFilter = position
+            if (startTime != 0L && endTime != 0L) {
+                setAppIfoData(startTime, endTime)
+            }
+        }
     }
 
-    fun justifyListViewHeightBasedOnChildren(listView: ListView) {
+    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
         val adapter: ListAdapter = listView.adapter ?: return
         val vg: ViewGroup = listView
-        var totalHeight = 0
+        val totalHeight: Int
         val listItem: View = adapter.getView(0, null, vg)
         listItem.measure(0, 0)
         totalHeight = listItem.measuredHeight * appList.size
@@ -116,6 +129,13 @@ class AppInfoActivity : AppCompatActivity() {
 //        }
         val par: ViewGroup.LayoutParams = listView.layoutParams
         par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
+        listView.layoutParams = par
+        listView.requestLayout()
+    }
+
+    private fun resetListViewHeight(listView: ListView){
+        val par: ViewGroup.LayoutParams = listView.layoutParams
+        par.height = listView.dividerHeight
         listView.layoutParams = par
         listView.requestLayout()
     }
@@ -200,16 +220,25 @@ class AppInfoActivity : AppCompatActivity() {
             for (app in appList) {
                 app.packageName = db.appsDao().getPackageByID(app.appId)
             }
-            appList = appList.sortedBy { it.appName }
+            val filteredList  = appList as MutableList<AppInfoCookedData>
+            if (eventFilter != allEvents) {
+                filteredList.removeAll { it.eventType.ordinal != eventFilter }
+            }
+            filteredList.sortedBy { it.appName }
             binding.appInfoListView.post {
                 binding.appInfoListView.adapter = null
-                binding.appInfoListView.adapter =
-                    AppInfoListAdapter(
-                        context,
-                        R.layout.appinfo_tile,
-                        appList
-                    )
-                justifyListViewHeightBasedOnChildren(binding.appInfoListView)
+                if (filteredList.isNotEmpty()) {
+                    binding.appInfoListView.adapter =
+                        AppInfoListAdapter(
+                            context,
+                            R.layout.appinfo_tile,
+                            filteredList
+                        )
+                    justifyListViewHeightBasedOnChildren(binding.appInfoListView)
+                } else {
+                    resetListViewHeight(binding.appInfoListView)
+                    binding.statsMap.post{ binding.statsMap.isVisible = false }
+                }
             }
 
 
@@ -242,6 +271,7 @@ class AppInfoActivity : AppCompatActivity() {
                 (updated + installed + enrolled + uninstalled).toInt()
             binding.pieChartConstraintLayout.post {
                 binding.statisticsContainer.isVisible = true
+                binding.statsMap.isVisible = true
                 binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
                 binding.installCount.text = (installedAppCount[true] ?: 0).toString()
                 binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
