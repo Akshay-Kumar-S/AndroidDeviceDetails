@@ -231,11 +231,11 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             for (app in appList) {
                 app.packageName = db.appsDao().getPackageByID(app.appId)
             }
-            val filteredList  = appList as MutableList<AppInfoCookedData>
+            var filteredList  = appList as MutableList<AppInfoCookedData>
             if (eventFilter != allEvents) {
                 filteredList.removeAll { it.eventType.ordinal != eventFilter }
             }
-            filteredList.sortedBy { it.appName }
+            filteredList = filteredList.sortedBy { it.appName }.toMutableList()
             binding.appInfoListView.post {
                 binding.appInfoListView.adapter = null
                 if (filteredList.isNotEmpty()) {
