@@ -25,11 +25,14 @@ internal class WifiReceiver(private val context: Context) : BroadcastReceiver() 
             context.applicationContext.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
         strength = wifiManager.connectionInfo.rssi
         frequency = wifiManager.connectionInfo.linkSpeed
-        linkSpeed=wifiManager.connectionInfo.frequency
+        linkSpeed = wifiManager.connectionInfo.frequency
         level = getLevel(strength)
 
+        WifiActivity.Wifi.strength = strength.toDouble()
+        WifiActivity.Wifi.time = System.currentTimeMillis()
+
         wifiRaw = WifiRaw(
-            System.currentTimeMillis(), strength, level,frequency,linkSpeed
+            System.currentTimeMillis(), strength, level, frequency, linkSpeed
         )
         Log.d("wifi", "onReceive: $strength,$level,$frequency,$linkSpeed")
         GlobalScope.launch {

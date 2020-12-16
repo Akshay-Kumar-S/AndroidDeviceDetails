@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var appInfoButton: Button
     private lateinit var toggleServiceButton: Button
     private lateinit var text: TextView
+    private lateinit var signalButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,6 +46,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         appInfoButton.setOnClickListener(this)
         toggleServiceButton = findViewById(R.id.toggleSwitch)
         toggleServiceButton.setOnClickListener(this)
+
+        signalButton = findViewById(R.id.signal)
+        signalButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.appInfo -> appInfoFunction()
             R.id.toggleSwitch -> toggleService()
+            R.id.signal -> startActivity(Intent(this, SignalStrengthActivity::class.java))
         }
     }
 

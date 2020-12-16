@@ -19,23 +19,23 @@
         android:name="android.permission.BROADCAST_PACKAGE_REMOVED"
         tools:ignore="ProtectedPermissions" />
 
-
     <application
         android:name=".DeviceDetailsApplication"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails">
-
-        <activity android:name="com.example.androidDeviceDetails.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".SignalStrengthActivity" />
+        <activity android:name=".utils.WifiActivity" />
         <activity android:name=".LocationActivity" />
 
         <service
@@ -49,7 +49,6 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receivers.OnBootReceiver"
             android:enabled="true">
@@ -57,7 +56,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
