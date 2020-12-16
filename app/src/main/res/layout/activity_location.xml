@@ -13,30 +13,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/countLocation"
+        app:layout_constraintBottom_toTopOf="@id/nav"
         />
 
-    <Button
-        android:id="@+id/countLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/count_location"
+    <LinearLayout
+        android:id="@+id/nav"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barChart"
-        app:layout_constraintBottom_toTopOf="@id/geoHashView"/>
-
-    <TextView
-        android:id="@+id/geoHashView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/tableView"
+        android:orientation="horizontal"
         android:gravity="center"
-        tools:layout_editor_absoluteY="51dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/countLocation"
-        app:layout_constraintBottom_toTopOf="@id/tableView"/>
+        android:layout_margin="10dp">
+<!--        <ImageButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:src="@drawable/ic_chevron_left"/>-->
+        <Button
+            android:id="@+id/selectDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_date"
+            android:textSize="12sp"/>
+
+        <!--        <ImageButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:src="@drawable/ic_chevron_right"/>-->
+
+    </LinearLayout>
 
     <TableLayout
         android:id="@+id/tableView"
@@ -45,7 +54,7 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/geoHashView"
+        app:layout_constraintTop_toBottomOf="@id/nav"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TableRow
@@ -61,7 +70,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="GeoHash"
-                android:background="#D3CECE"/>
+                android:background="@color/labelBackGround"/>
 
             <TextView
                 android:id="@+id/count"

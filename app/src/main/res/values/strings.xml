@@ -9,4 +9,5 @@
     <string name="location">Location</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
+    <string name="select_date">select Date</string>
 </resources>
