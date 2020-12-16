@@ -11,6 +11,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ListAdapter
+import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -96,6 +100,24 @@ class AppInfoActivity : AppCompatActivity() {
                 ).show()
 
         }
+    }
+
+    fun justifyListViewHeightBasedOnChildren(listView: ListView) {
+        val adapter: ListAdapter = listView.adapter ?: return
+        val vg: ViewGroup = listView
+        var totalHeight = 0
+        val listItem: View = adapter.getView(0, null, vg)
+        listItem.measure(0, 0)
+        totalHeight = listItem.measuredHeight * appList.size
+//        for (i in 0 until adapter.count) {
+//            val listItem: View = adapter.getView(i, null, vg)
+//            listItem.measure(0, 0)
+//            totalHeight += listItem.measuredHeight
+//        }
+        val par: ViewGroup.LayoutParams = listView.layoutParams
+        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
+        listView.layoutParams = par
+        listView.requestLayout()
     }
 
     private fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
@@ -187,6 +209,7 @@ class AppInfoActivity : AppCompatActivity() {
                         R.layout.appinfo_tile,
                         appList
                     )
+                justifyListViewHeightBasedOnChildren(binding.appInfoListView)
             }
 
 
