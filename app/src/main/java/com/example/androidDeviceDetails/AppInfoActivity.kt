@@ -4,9 +4,13 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.format.DateFormat
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -73,6 +77,35 @@ class AppInfoActivity : AppCompatActivity() {
                 datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
             }
             datePickerDialog.show()
+        }
+
+        binding.appInfoListView.setOnItemClickListener { parent, _, position, _ ->
+            val adapter = parent.adapter as AppInfoListAdapter
+            val item = adapter.getItem(position)
+            Log.d("TAG", "onCreate: $position")
+            if (item != null) {
+                if(item.eventType != EventType.APP_UNINSTALLED) {
+                    val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
+                    infoIntent.data = Uri.parse("package:${item.packageName}")
+                    if(isPackageInstalled(item.packageName, packageManager)) {
+                        startActivity(infoIntent)
+                    } else {
+                        Toast.makeText(this, "App is currently uninstalled", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else
+                    Toast.makeText(this, "App info unavailable", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 
