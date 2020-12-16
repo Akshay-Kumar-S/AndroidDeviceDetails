@@ -83,20 +83,18 @@ class AppInfoActivity : AppCompatActivity() {
             val adapter = parent.adapter as AppInfoListAdapter
             val item = adapter.getItem(position)
             Log.d("TAG", "onCreate: $position")
-            if (item != null) {
-                if(item.eventType != EventType.APP_UNINSTALLED) {
-                    val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
-                    infoIntent.data = Uri.parse("package:${item.packageName}")
-                    if(isPackageInstalled(item.packageName, packageManager)) {
-                        startActivity(infoIntent)
-                    } else {
-                        Toast.makeText(this, "App is currently uninstalled", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                else
-                    Toast.makeText(this, "App info unavailable", Toast.LENGTH_SHORT).show()
-            }
+            if (item != null && isPackageInstalled(item.packageName, packageManager)) {
+                val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
+                infoIntent.data = Uri.parse("package:${item.packageName}")
+                startActivity(infoIntent)
+            } else
+                Toast.makeText(
+                    this,
+                    "App is currently uninstalled, info unavailable",
+                    Toast.LENGTH_SHORT
+                ).show()
+
         }
     }
 
