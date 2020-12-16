@@ -32,7 +32,7 @@ import java.util.*
 import kotlin.math.ceil
 
 
-class AppInfoActivity : AppCompatActivity() {
+class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private val allEvents = 4
     private val calendar: Calendar = Calendar.getInstance()
@@ -102,17 +102,28 @@ class AppInfoActivity : AppCompatActivity() {
 
         }
 
-        val items = listOf("Enrolled", "Installed", "Updated", "Uninstalled", "All")
-        val adapter = ArrayAdapter(this, R.layout.filter_list_item, items)
-        (binding.filter.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-        binding.filters.setText("All",false)
+//        val items = listOf("Enrolled", "Installed", "Updated", "Uninstalled", "All")
+//        val adapter = ArrayAdapter(this, R.layout.filter_list_item, items)
+//        (binding.filter.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+//        binding.filters.setText(items.last(),false)
+//
+//        binding.filters.setOnItemClickListener { _, _, position, _ ->
+//            eventFilter = position
+//            if (startTime != 0L && endTime != 0L) {
+//                setAppIfoData(startTime, endTime)
+//            }
+//        }
 
-        binding.filters.setOnItemClickListener { _, _, position, _ ->
-            eventFilter = position
-            if (startTime != 0L && endTime != 0L) {
-                setAppIfoData(startTime, endTime)
-            }
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.filter_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.filterSpinner.adapter = adapter
+            binding.filterSpinner.setSelection(allEvents)
         }
+        binding.filterSpinner.onItemSelectedListener = this
     }
 
     private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
@@ -280,6 +291,17 @@ class AppInfoActivity : AppCompatActivity() {
 
 
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        eventFilter = position
+        if (startTime != 0L && endTime != 0L) {
+            setAppIfoData(startTime, endTime)
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        eventFilter = allEvents
     }
 }
 
