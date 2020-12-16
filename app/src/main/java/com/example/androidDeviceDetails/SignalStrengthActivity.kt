@@ -8,6 +8,7 @@ class SignalStrengthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signal_strength)
-        val gauge: Gauge = findViewById(R.id.gauge)
+        val gaugeWifi: Gauge = findViewById(R.id.gaugeWifi)
+        val gaugeCellular: Gauge = findViewById(R.id.gaugeCellular)
     }
 }
