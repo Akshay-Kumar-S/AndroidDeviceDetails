@@ -9,9 +9,17 @@
 
 
    <de.nitri.gauge.Gauge
-       android:id="@+id/gauge"
+       android:id="@+id/gaugeCellular"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       tools:layout_editor_absoluteX="-16dp"
+       tools:layout_editor_absoluteY="-34dp" />
+
+   <de.nitri.gauge.Gauge
+       android:id="@+id/gaugeWifi"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        tools:layout_editor_absoluteX="0dp"
-       tools:layout_editor_absoluteY="1dp" />
+       tools:layout_editor_absoluteY="341dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignalStrengthActivity" />
-        <activity android:name=".utils.WifiActivity" />
         <activity android:name=".LocationActivity" />
 
         <service
