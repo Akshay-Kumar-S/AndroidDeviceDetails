@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".LocationActivity">
 
-    <Button
-        android:id="@+id/btnGetLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/get_location"
-        app:layout_constraintBottom_toTopOf="@id/geoHashView"
-        app:layout_constraintEnd_toStartOf="@id/countLocation"
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/countLocation"
+        />
 
     <Button
         android:id="@+id/countLocation"
@@ -23,37 +22,57 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/count_location"
-        app:layout_constraintBottom_toTopOf="@id/geoHashView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnGetLocation"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/barChart"
+        app:layout_constraintBottom_toTopOf="@id/geoHashView"/>
 
     <TextView
         android:id="@+id/geoHashView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/locationScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="51dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnGetLocation"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="58dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countLocation"
+        app:layout_constraintBottom_toTopOf="@id/tableView"/>
 
-    <ScrollView
-        android:id="@+id/locationScrollView"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/tableView"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/geoHashView"
-        tools:layout_editor_absoluteX="206dp">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        <TableRow
+            android:id="@+id/tableRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/geoHash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="GeoHash"
+                android:background="#D3CECE"/>
+
+            <TextView
+                android:id="@+id/count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Count"
+                android:background="#D3CECE"/>
+        </TableRow>
+    </TableLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
