@@ -10,11 +10,9 @@ import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class SignalChangeListener(private val context: Context) : PhoneStateListener() {
-
     private var signalDB = RoomDB.getDatabase()
-
-
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
         val cellularRaw: CellularRaw
         var level = 0
@@ -109,12 +107,14 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
         }
         Toast.makeText(context, "this is toast message   $strength", Toast.LENGTH_SHORT).show()
         Log.d("tagdata1", "data: $strength, $level,$asuLevel,$type")
-
         cellularRaw = CellularRaw(
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
         GlobalScope.launch {
             signalDB?.cellularDao()?.insertAll(cellularRaw)
         }
+
     }
+
+
 }

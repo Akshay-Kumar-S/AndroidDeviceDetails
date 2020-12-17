@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         appInfoButton.setOnClickListener(this)
         toggleServiceButton = findViewById(R.id.toggleSwitch)
         toggleServiceButton.setOnClickListener(this)
-
         signalButton = findViewById(R.id.signal)
         signalButton.setOnClickListener(this)
     }

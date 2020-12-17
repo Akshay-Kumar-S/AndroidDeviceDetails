@@ -28,8 +28,7 @@ internal class WifiReceiver(private val context: Context) : BroadcastReceiver() 
         linkSpeed = wifiManager.connectionInfo.frequency
         level = getLevel(strength)
 
-        WifiActivity.Wifi.strength = strength.toDouble()
-        WifiActivity.Wifi.time = System.currentTimeMillis()
+
 
         wifiRaw = WifiRaw(
             System.currentTimeMillis(), strength, level, frequency, linkSpeed
