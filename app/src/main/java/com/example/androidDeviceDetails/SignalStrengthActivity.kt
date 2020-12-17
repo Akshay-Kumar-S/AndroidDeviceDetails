@@ -47,10 +47,10 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
         updateGauge()
         db.wifiDao().getLastLive().observe(this) {
-            updateWifiGauge(it)
+            if(it!=null)updateWifiGauge(it)
         }
         db.cellularDao().getLastLive().observe(this) {
-            updateCellularGauge(it)
+            if(it!=null)updateCellularGauge(it)
         }
         pickDate()
 
