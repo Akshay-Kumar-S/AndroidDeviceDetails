@@ -10,6 +10,7 @@ import android.widget.Toast.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.utils.Utils
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -68,7 +69,16 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.selectDate -> selectDate()
+            R.id.selectDate -> Utils.showDatePicker(this, DatePickerDialog.OnDateSetListener{ _, year, monthOfYear, dayOfMonth ->
+                mYear = year
+                mMonth = monthOfYear
+                mDay = dayOfMonth
+                makeText(
+                    this,
+                    mDay.toString() + "-" + (mMonth + 1) + "-" + mYear,
+                    LENGTH_SHORT
+                ).show()
+            }).show()
             R.id.timeView -> sortByTime()
             R.id.countView -> sortByCount()
         }
@@ -153,27 +163,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener {
             timeViewArrow.setImageResource(R.drawable.ic_arrow_downward)
         }
         makeText(this, "by time", LENGTH_SHORT).show()
-    }
-
-    private fun selectDate() {
-        val c = Calendar.getInstance()
-        mYear = c[Calendar.YEAR]
-        mMonth = c[Calendar.MONTH]
-        mDay = c[Calendar.DAY_OF_MONTH]
-        val datePickerDialog = DatePickerDialog(
-            this, { _, year, monthOfYear, dayOfMonth ->
-                mYear = year
-                mMonth = monthOfYear
-                mDay = dayOfMonth
-                makeText(
-                    this,
-                    mDay.toString() + "-" + (mMonth + 1) + "-" + mYear,
-                    LENGTH_SHORT
-                ).show()
-            },
-            mYear, mMonth, mDay
-        )
-        datePickerDialog.show()
     }
 
     private fun refreshData(
