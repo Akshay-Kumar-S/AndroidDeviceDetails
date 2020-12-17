@@ -14,7 +14,8 @@ object DbHelper {
                 currentVersionCode = appDetails.versionCode,
                 versionName = appDetails.versionName,
                 appSize = appDetails.appSize,
-                appTitle = appDetails.appTitle
+                appTitle = appDetails.appTitle,
+                isSystemApp = appDetails.isSystemApp
             )
         )
     }
@@ -37,7 +38,8 @@ object DbHelper {
                 currentVersionCode = appDetails.versionCode,
                 versionName = appDetails.versionName,
                 appSize = appDetails.appSize,
-                appTitle = appDetails.appTitle
+                appTitle = appDetails.appTitle,
+                isSystemApp = appDetails.isSystemApp
             )
         )
     }

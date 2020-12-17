@@ -7,5 +7,6 @@ data class AppInfoCookedData(
     var eventType: EventType,
     var versionCode: Long,
     var appId: Int,
+    var isSystemApp : Boolean,
     var packageName : String = "null"
 )

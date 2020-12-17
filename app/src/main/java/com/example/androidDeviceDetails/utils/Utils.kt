@@ -1,12 +1,13 @@
 package com.example.androidDeviceDetails.utils
 
+import android.R.id
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.AppDetails
@@ -16,9 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
@@ -90,7 +91,7 @@ object Utils {
     }
 
     fun getAppDetails(context: Context, packageName: String): AppDetails {
-        val appDetails = AppDetails(-1, "Null", -1, "Not Found")
+        val appDetails = AppDetails(-1, "Null", -1, "Not Found", false)
         try {
             val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
@@ -104,7 +105,9 @@ object Utils {
             val file = File(pInfo2.sourceDir)
             appDetails.appSize = file.length() / 1024
             appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()
-            Log.d("AppName", "getVersion: " + appDetails.appTitle)
+            val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
+            appDetails.isSystemApp = (pInfo2.flags and mask == 0).not()
+            Log.d("isSystem App", " ${appDetails.appTitle} is system App : ${appDetails.isSystemApp}")
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }

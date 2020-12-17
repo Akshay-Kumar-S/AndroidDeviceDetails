@@ -42,6 +42,8 @@ class CollectorService : Service() {
         mPhoneStateListener = SignalChangeListener(this)
         mWifiReceiver = WifiReceiver()
         mTelephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+
+
         mAppStateReceiver = AppStateReceiver()
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)

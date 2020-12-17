@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -46,13 +48,35 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.app_info_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.spinner_all ->  eventFilter = allEvents
+            R.id.spinner_enrolled ->  eventFilter = EventType.APP_ENROLL.ordinal
+            R.id.spinner_installed -> eventFilter = EventType.APP_INSTALLED.ordinal
+            R.id.spinner_updated ->eventFilter = EventType.APP_UPDATED.ordinal
+            R.id.spinner_uninstalled -> eventFilter = EventType.APP_UNINSTALLED.ordinal
+            else -> super.onOptionsItemSelected(item)
+        }
+        if (startTime != 0L && endTime != 0L) {
+            setAppIfoData(startTime, endTime)
+        }
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
         binding.statisticsContainer.isVisible = false
         binding.statsMap.isVisible = false
+        binding.appInfoListView.isEnabled = false
 
         loadPreviousDayTime()
+        setAppIfoData(startTime, endTime)
         binding.startdateView.text = simpleDateFormat.format(startTime)
         binding.enddateView.text = simpleDateFormat.format(endTime)
 
@@ -86,45 +110,17 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             datePickerDialog.show()
         }
 
-        binding.appInfoListView.setOnItemClickListener { parent, _, position, _ ->
-            val adapter = parent.adapter as AppInfoListAdapter
-            val item = adapter.getItem(position)
-            Log.d("TAG", "onCreate: $position")
-            if (item != null && isPackageInstalled(item.packageName, packageManager)) {
-                val packageURI = Uri.parse("package:${item.packageName}")
-                val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
-                startActivity(uninstallIntent)
-            } else
-                Toast.makeText(
-                    this,
-                    "App is currently uninstalled",
-                    Toast.LENGTH_SHORT
-                ).show()
 
-        }
-
-//        val items = listOf("Enrolled", "Installed", "Updated", "Uninstalled", "All")
-//        val adapter = ArrayAdapter(this, R.layout.filter_list_item, items)
-//        (binding.filter.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-//        binding.filters.setText(items.last(),false)
-//
-//        binding.filters.setOnItemClickListener { _, _, position, _ ->
-//            eventFilter = position
-//            if (startTime != 0L && endTime != 0L) {
-//                setAppIfoData(startTime, endTime)
-//            }
+//        ArrayAdapter.createFromResource(
+//            this,
+//            R.array.filter_array,
+//            android.R.layout.simple_spinner_item
+//        ).also { adapter ->
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            binding.filterSpinner.adapter = adapter
+//            binding.filterSpinner.setSelection(allEvents)
 //        }
-
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.filter_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.filterSpinner.adapter = adapter
-            binding.filterSpinner.setSelection(allEvents)
-        }
-        binding.filterSpinner.onItemSelectedListener = this
+//        binding.filterSpinner.onItemSelectedListener = this
     }
 
     private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
@@ -258,7 +254,8 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
                     justifyListViewHeightBasedOnChildren(binding.appInfoListView)
                 } else {
                     resetListViewHeight(binding.appInfoListView)
-                    binding.statsMap.post { binding.statsMap.isVisible = false }
+//                    binding.statsMap.post { binding.statsMap.isVisible = false }
+//                    binding.statisticsContainer.post { binding.statisticsContainer.isVisible = false }
                 }
             }
 
@@ -267,7 +264,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             val enrolledAppCount =
                 appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
                     .eachCount()
-            val enrolled = ceil(((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100)))
+            val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
 
             val installedAppCount =
                 appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
@@ -302,6 +299,21 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
 
         }
     }
+
+    fun deleteApp(view: View) {
+        val packageName = view.tag as String
+        if (isPackageInstalled(packageName, packageManager)) {
+            val packageURI = Uri.parse("package:${packageName}")
+            val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
+            startActivity(uninstallIntent)
+        } else
+            Toast.makeText(
+                this,
+                "App is currently uninstalled",
+                Toast.LENGTH_SHORT
+            ).show()
+    }
+
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         eventFilter = position

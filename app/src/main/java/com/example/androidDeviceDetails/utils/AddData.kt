@@ -49,7 +49,8 @@ object AddData {
                     0,
                     currentAppHistory.versionName,
                     currentAppHistory.appSize,
-                    currentAppHistory.appTitle
+                    currentAppHistory.appTitle,
+                    currentAppHistory.isSystemApp
                 )
             DbHelper.writeToAppHistoryDb(id, EventType.APP_UNINSTALLED.ordinal, appDetails, db,currentAppHistory.currentVersionCode)
             DbHelper.writeToAppsDb(id,packageName,appDetails,db)

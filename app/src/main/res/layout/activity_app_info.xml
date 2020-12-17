@@ -72,29 +72,12 @@
                     android:textColor="?attr/batteryTitle" />
             </LinearLayout>
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                android:id="@+id/filter"-->
-<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--            <Spinner-->
+<!--                android:id="@+id/filter_spinner"-->
 <!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:hint="@string/label">-->
-
-<!--                <AutoCompleteTextView-->
-<!--                    android:id="@+id/filters"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:inputType="none"-->
-<!--                    />-->
-
-
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-            <Spinner
-                android:id="@+id/filter_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:layout_marginTop="10dp"/>
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textAlignment="textEnd"-->
+<!--                android:layout_marginTop="10dp"/>-->
 
         </LinearLayout>
 
@@ -336,7 +319,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/statisticsContainer" />
+                    app:layout_constraintTop_toBottomOf="@id/statisticsContainer"
+                    tools:ignore="NestedScrolling" />
 
 
             </LinearLayout>

@@ -13,7 +13,8 @@ data class AppHistory(
     @ColumnInfo(name = "previous_version_code") var previousVersionCode: Long,
     @ColumnInfo(name = "current_version_code") var currentVersionCode: Long,
     @ColumnInfo(name = "apk_size") var appSize: Long,
-    @ColumnInfo(name = "apk_title") var appTitle: String
+    @ColumnInfo(name = "apk_title") var appTitle: String,
+    @ColumnInfo(name = "is_system_app") var isSystemApp: Boolean
 )
 
 
