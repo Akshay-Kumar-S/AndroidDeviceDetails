@@ -9,8 +9,10 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.AppInfoCookedData
+import com.example.androidDeviceDetails.utils.EventType
 import com.example.androidDeviceDetails.utils.Utils
 
 class AppInfoListAdapter(
@@ -41,6 +43,10 @@ class AppInfoListAdapter(
             else -> R.color.teal_700
         }
         eventBadge.setColorFilter(ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY)
+        if(items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal)
+        {
+            eventBadge.isVisible = false
+        }
         return view
     }
 }

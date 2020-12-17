@@ -231,7 +231,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             for (app in appList) {
                 app.packageName = db.appsDao().getPackageByID(app.appId)
             }
-            var filteredList  = appList as MutableList<AppInfoCookedData>
+            var filteredList  = appList.toMutableList()
             if (eventFilter != allEvents) {
                 filteredList.removeAll { it.eventType.ordinal != eventFilter }
             }
