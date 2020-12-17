@@ -10,16 +10,36 @@
 
    <de.nitri.gauge.Gauge
        android:id="@+id/gaugeCellular"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       tools:layout_editor_absoluteX="-16dp"
-       tools:layout_editor_absoluteY="-34dp" />
+       android:layout_width="305dp"
+       android:layout_height="293dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.406"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.041" />
 
    <de.nitri.gauge.Gauge
        android:id="@+id/gaugeWifi"
+       android:layout_width="305dp"
+       android:layout_height="393dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.452"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.828" />
+
+   <TextView
+       android:id="@+id/textView2"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       tools:layout_editor_absoluteX="0dp"
-       tools:layout_editor_absoluteY="341dp" />
+       android:text="TextView"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.742"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.964" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
