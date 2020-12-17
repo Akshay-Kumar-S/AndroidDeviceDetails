@@ -53,6 +53,9 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         binding.statisticsContainer.isVisible = false
         binding.statsMap.isVisible = false
 
+        loadPreviousDayTime()
+        binding.startdateView.text = simpleDateFormat.format(startTime)
+        binding.enddateView.text = simpleDateFormat.format(endTime)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CollectorService::class.java))
@@ -222,8 +225,16 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun setAppIfoData(startTime: Long, endTime: Long) {
+    private fun loadPreviousDayTime(){
+        val cal = Calendar.getInstance()
+        cal[Calendar.HOUR] = 0
+        cal[Calendar.MINUTE] = 0
+        endTime = cal.timeInMillis
+        cal.add(Calendar.DAY_OF_MONTH, -1)
+        startTime = cal.timeInMillis
+    }
+
+    private fun setAppIfoData(startTime: Long, endTime: Long) {
         GlobalScope.launch(Dispatchers.IO) {
             appList = AppStateCooker.createInstance()
                 .getAppsBetween(startTime, endTime, applicationContext)
