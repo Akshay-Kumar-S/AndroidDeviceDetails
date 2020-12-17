@@ -22,6 +22,6 @@ interface ILocationDao {
     @Query("SELECT geoHash, count(geoHash) AS count FROM Location_Data GROUP BY geoHash")
     fun countHash(): List<CountModel>
 
-//    @Query("SELECT geoHash From location_data where time= ")
-//    fun selectDataOn(): List<CountModel>
+//    @Query("SELECT geoHash From location_data where time=time ")
+//    fun selectDataOn(time : String): List<LocationModel>
 }
