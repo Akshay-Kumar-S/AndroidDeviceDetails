@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
@@ -92,14 +91,13 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             val item = adapter.getItem(position)
             Log.d("TAG", "onCreate: $position")
             if (item != null && isPackageInstalled(item.packageName, packageManager)) {
-                val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
-                infoIntent.data = Uri.parse("package:${item.packageName}")
-                startActivity(infoIntent)
+                val packageURI = Uri.parse("package:${item.packageName}")
+                val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
+                startActivity(uninstallIntent)
             } else
                 Toast.makeText(
                     this,
-                    "App is currently uninstalled, info unavailable",
+                    "App is currently uninstalled",
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -147,7 +145,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         listView.requestLayout()
     }
 
-    private fun resetListViewHeight(listView: ListView){
+    private fun resetListViewHeight(listView: ListView) {
         val par: ViewGroup.LayoutParams = listView.layoutParams
         par.height = listView.dividerHeight
         listView.layoutParams = par
@@ -225,11 +223,12 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         )
     }
 
-    private fun loadPreviousDayTime(){
+    private fun loadPreviousDayTime() {
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR] = 0
         cal[Calendar.MINUTE] = 0
-        endTime = cal.timeInMillis
+//        endTime = cal.timeInMillis
+        endTime = System.currentTimeMillis()
         cal.add(Calendar.DAY_OF_MONTH, -1)
         startTime = cal.timeInMillis
     }
@@ -242,7 +241,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             for (app in appList) {
                 app.packageName = db.appsDao().getPackageByID(app.appId)
             }
-            var filteredList  = appList.toMutableList()
+            var filteredList = appList.toMutableList()
             if (eventFilter != allEvents) {
                 filteredList.removeAll { it.eventType.ordinal != eventFilter }
             }
@@ -259,7 +258,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
                     justifyListViewHeightBasedOnChildren(binding.appInfoListView)
                 } else {
                     resetListViewHeight(binding.appInfoListView)
-                    binding.statsMap.post{ binding.statsMap.isVisible = false }
+                    binding.statsMap.post { binding.statsMap.isVisible = false }
                 }
             }
 
