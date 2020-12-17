@@ -1,30 +1,62 @@
 package com.example.androidDeviceDetails
 
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import de.nitri.gauge.Gauge
+import androidx.databinding.DataBindingUtil
+import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
+import com.example.androidDeviceDetails.models.CellularRaw
+import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.WifiRaw
 
-class SignalStrengthActivity : AppCompatActivity()  {
-   lateinit var gaugeWifi:Gauge
+class SignalStrengthActivity : AppCompatActivity() {
+    private var db = RoomDB.getDatabase()!!
+
+    private lateinit var binding: ActivitySignalStrengthBinding
+    private var cellStrength: Int = -100
+    private var wifiStrength: Int = -80
+    private var linkspeed: String = "0"
+    private var cellInfoType: String = "LTE"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signal_strength)
-
-
-        val ha = Handler()
-        ha.postDelayed(object : Runnable {
-            override fun run() {
-                updateStrength()
-                ha.postDelayed(this, 1000)
-            }
-        }, 1000)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
+        updateGauge()
+        db.wifiDao().getLastLive().observe(this) {
+            updateWifiGauge(it)
+        }
+        db.cellularDao().getLastLive().observe(this) {
+            updateCellularGauge(it)
+        }
 
     }
-     fun updateStrength() {
-        gaugeWifi = findViewById(R.id.gaugeWifi)
-        val gaugeCellular: Gauge = findViewById(R.id.gaugeCellular)
-        gaugeWifi.moveToValue(80F)
+
+    private fun updateGauge() {
+        binding.gaugeCellular.moveToValue(cellStrength.toFloat())
+        binding.gaugeCellular.setLowerText(cellInfoType)
+        binding.gaugeCellular.setUpperText(cellStrength.toString())
+        binding.gaugeWifi.moveToValue(wifiStrength.toFloat())
+        binding.gaugeWifi.setLowerText(linkspeed)
+        binding.gaugeWifi.setUpperText(wifiStrength.toString())
+    }
+
+    private fun updateWifiGauge(wifiRaw: WifiRaw) {
+        Log.d("test", "updateWifiGauge: ")
+        wifiStrength = wifiRaw.strength!!
+        linkspeed = wifiRaw.linkSpeed.toString()
+        binding.gaugeWifi.moveToValue(wifiStrength.toFloat())
+        binding.gaugeWifi.setLowerText(linkspeed)
+        binding.gaugeWifi.setUpperText(wifiStrength.toString())
+    }
+
+    private fun updateCellularGauge(cellularRaw: CellularRaw) {
+        Log.d("tag", "updateCellularGauge: ")
+        cellStrength = cellularRaw.strength!!
+        cellInfoType = cellularRaw.type.toString()
+        binding.gaugeCellular.moveToValue(cellStrength.toFloat())
+        binding.gaugeCellular.setLowerText(cellInfoType)
+        binding.gaugeCellular.setUpperText(cellStrength.toString())
     }
 
 }

@@ -11,15 +11,16 @@ import com.example.androidDeviceDetails.models.WifiRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-internal class WifiReceiver(private val context: Context) : BroadcastReceiver() {
-    private var signalDB = RoomDB.getDatabase()!!
+
+internal class WifiReceiver() : BroadcastReceiver() {
+    private var db = RoomDB.getDatabase()!!
 
     override fun onReceive(context: Context, intent: Intent) {
         val wifiRaw: WifiRaw
-        var level = 0
-        var strength = 0
-        var frequency = 0
-        var linkSpeed = 0
+        val level: Int
+        val strength: Int
+        val frequency: Int
+        val linkSpeed: Int
 
         val wifiManager =
             context.applicationContext.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
@@ -28,14 +29,12 @@ internal class WifiReceiver(private val context: Context) : BroadcastReceiver() 
         linkSpeed = wifiManager.connectionInfo.frequency
         level = getLevel(strength)
 
-
-
         wifiRaw = WifiRaw(
             System.currentTimeMillis(), strength, level, frequency, linkSpeed
         )
         Log.d("wifi", "onReceive: $strength,$level,$frequency,$linkSpeed")
         GlobalScope.launch {
-            signalDB.wifiDao().insertAll(wifiRaw)
+            db.wifiDao().insertAll(wifiRaw)
         }
     }
 

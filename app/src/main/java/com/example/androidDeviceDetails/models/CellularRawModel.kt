@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.models
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Entity
@@ -21,4 +22,13 @@ interface CellularDao {
 
     @Delete
     fun delete(cellularRaw: CellularRaw)
+
+    @Query("SELECT * FROM cellularraw ORDER BY timeStamp DESC LIMIT 1")
+    fun getLastLive(): LiveData<CellularRaw>
+
+    @Query("SELECT * FROM cellularraw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<CellularRaw>
+
+    @Query("DELETE FROM CellularRaw")
+    fun deleteAll()
 }

@@ -4,15 +4,15 @@ import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.util.Log
-import android.widget.Toast
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 class SignalChangeListener(private val context: Context) : PhoneStateListener() {
-    private var signalDB = RoomDB.getDatabase()
+
+    private var db = RoomDB.getDatabase()
+
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
         val cellularRaw: CellularRaw
         var level = 0
@@ -64,8 +64,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             try {
                 val telephonyManager =
                     context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                val cellInfo = telephonyManager.allCellInfo[0]
-                when (cellInfo) {
+                when (val cellInfo = telephonyManager.allCellInfo[0]) {
                     is CellInfoLte -> {
                         type = "LTE"
                         strength = cellInfo.cellSignalStrength.dbm
@@ -101,20 +100,14 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
 
             } catch (e: SecurityException) {
             }
-//            catch (e: Exception) {
-//                Log.d("tagdata1", "datacrash: $strength, $level,$asuLevel,$type")
-//            }
         }
-        Toast.makeText(context, "this is toast message   $strength", Toast.LENGTH_SHORT).show()
-        Log.d("tagdata1", "data: $strength, $level,$asuLevel,$type")
+        Log.d("data", "data: $strength, $level,$asuLevel,$type")
+
         cellularRaw = CellularRaw(
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
         GlobalScope.launch {
-            signalDB?.cellularDao()?.insertAll(cellularRaw)
+            db?.cellularDao()?.insertAll(cellularRaw)
         }
-
     }
-
-
 }

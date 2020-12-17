@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.models
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Entity
@@ -21,4 +22,13 @@ interface WifiDao {
 
     @Delete
     fun delete(wifiRaw: WifiRaw)
+
+    @Query("SELECT * FROM wifiraw ORDER BY timeStamp DESC LIMIT 1")
+    fun getLastLive(): LiveData<WifiRaw>
+
+    @Query("SELECT * FROM wifiraw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<WifiRaw>
+
+    @Query("DELETE FROM WifiRaw")
+    fun deleteAll()
 }
