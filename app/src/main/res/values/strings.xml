@@ -47,4 +47,8 @@
     <string name="time">Time</string>
     <string name="no_records_found">No records found</string>
     <string name="default_text">DEFAULT TEXT</string>
+    <string name="select_date">select Date</string>
+    <string name="time">Time</string>
+    <string name="count">Count</string>
+    <string name="geohash">GeoHash</string>
 </resources>
