@@ -8,7 +8,7 @@ data class LocationModel(
     val latitude: Double?,
     val longitude: Double?,
     val geoHash: String?,
-    val time: String?
+    val time: Long?
 )
 
 @Dao

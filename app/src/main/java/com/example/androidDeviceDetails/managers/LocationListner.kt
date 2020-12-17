@@ -9,7 +9,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 import android.annotation.SuppressLint
-import android.app.Service
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager.GPS_PROVIDER
@@ -72,13 +71,13 @@ class LocationListner(var locationManager: LocationManager,var context: Context)
             location.longitude,
             6
         ).toString()
-        Log.d("Time", Calendar.getInstance().time.toString())
         Log.d("CodeAndroidLocation", "Latitude : " + location.latitude)
         Log.d("CodeAndroidLocation", "Longitude : " + location.longitude)
         Log.d("CodeAndroidLocation", "GeoHash : $geoHash")
+        Log.d("Date", "${Date(System.currentTimeMillis())}")
         val locationObj = LocationModel(
             0, location.latitude, location.longitude, geoHash,
-            Calendar.getInstance().time.toString()
+            System.currentTimeMillis()
         )
         GlobalScope.launch {
             locationDatabase.locationDao().insertLocation(locationObj)
