@@ -12,6 +12,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="TimeDateBackground">#E1E1E1</item>
         <item name="iconTint">@color/gray_600</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

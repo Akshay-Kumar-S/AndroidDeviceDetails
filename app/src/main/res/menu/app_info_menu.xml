@@ -6,13 +6,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-<!--    <item-->
-<!--        android:id="@+id/appInfoListView"-->
-<!--        android:icon= "@drawable/ic_launcher_background"-->
-<!--        android:iconTint="@color/white"-->
-<!--        android:orderInCategory="100"-->
-<!--        android:title="LOL"-->
-<!--        app:showAsAction="always" />-->
+
     <item
         android:id="@+id/spinner_all"
         app:actionViewClass="android.widget.Spinner"

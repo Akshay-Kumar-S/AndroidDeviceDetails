@@ -53,6 +53,10 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         return true
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return super.onSupportNavigateUp()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.spinner_all ->  eventFilter = allEvents
@@ -60,7 +64,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             R.id.spinner_installed -> eventFilter = EventType.APP_INSTALLED.ordinal
             R.id.spinner_updated ->eventFilter = EventType.APP_UPDATED.ordinal
             R.id.spinner_uninstalled -> eventFilter = EventType.APP_UNINSTALLED.ordinal
-            else -> super.onOptionsItemSelected(item)
+            else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
             setAppIfoData(startTime, endTime)
@@ -71,6 +75,9 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         binding.statisticsContainer.isVisible = false
         binding.statsMap.isVisible = false
         binding.appInfoListView.isEnabled = false

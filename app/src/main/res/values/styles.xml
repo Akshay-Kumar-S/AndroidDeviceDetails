@@ -2,5 +2,11 @@
 
     <style name="Widget.Theme.AndroidDeviceDetails.MyView" parent="">
         <item name="android:background">@color/gray_400</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+    </style>
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_baseline_arrow_drop_down_24</item>
+        <item name="tint">@color/white</item>
     </style>
 </resources>
