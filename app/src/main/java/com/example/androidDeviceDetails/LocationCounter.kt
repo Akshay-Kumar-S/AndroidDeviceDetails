@@ -22,4 +22,16 @@ class LocationCounter {
         }
         return locationHashList.groupingBy { it }.eachCount()
     }
+
+    fun countLocation1(locationList: List<LocationModel>): MutableList<LocationModel> {
+        val cookedLocationList = emptyList<LocationModel>().toMutableList()
+        var prevLocationHash = ""
+        for (location in locationList) {
+            if (location.geoHash!= prevLocationHash) {
+                prevLocationHash = location.geoHash!!
+                cookedLocationList.add(location)
+            }
+        }
+        return cookedLocationList
+    }
 }
