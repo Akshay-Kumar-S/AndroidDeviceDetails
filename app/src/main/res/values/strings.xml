@@ -13,4 +13,5 @@
     <string name="time">Time</string>
     <string name="count">Count</string>
     <string name="geohash">GeoHash</string>
+    <string name="tillToday">Till Today</string>
 </resources>
