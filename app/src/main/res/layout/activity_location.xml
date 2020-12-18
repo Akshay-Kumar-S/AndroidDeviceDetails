@@ -36,8 +36,10 @@
             android:id="@+id/selectDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#595959"
             android:text="@string/select_date"
-            android:textSize="12sp" />
+            android:background="@drawable/location_date_select_button"/>
 
         <!--        <ImageButton-->
         <!--            android:layout_width="wrap_content"-->
@@ -58,9 +60,10 @@
         app:layout_constraintTop_toBottomOf="@id/nav">
 
         <TableRow
-            android:id="@+id/tableRow"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:background="@color/labelBackGround"
             android:orientation="horizontal">
 
@@ -110,7 +113,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#D3CECE"
                     android:gravity="center"
                     android:text="@string/count" />
 
