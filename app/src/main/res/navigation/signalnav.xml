@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signalnav"
+    app:startDestination="@id/cellularStrength">
+
+    <fragment
+        android:id="@+id/cellularStrength"
+        android:name="com.example.androidDeviceDetails.cellularStrength"
+        android:label="fragment_cellular_strength"
+        tools:layout="@layout/fragment_cellular_strength" />
+    <fragment
+        android:id="@+id/wifiStrength"
+        android:name="com.example.androidDeviceDetails.wifiStrength"
+        android:label="fragment_wifi_strength"
+        tools:layout="@layout/fragment_wifi_strength" />
+</navigation>

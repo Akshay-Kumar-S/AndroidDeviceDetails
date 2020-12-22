@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var toggleServiceButton: Button
     private lateinit var text: TextView
     private lateinit var signalButton: Button
+    private lateinit var strength:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +36,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         requestPermissions()
         if (PrefManager.initialLaunch(this))
             Utils.addInitialData(this)
+        strength=findViewById(R.id.button)
+        strength.setOnClickListener(){
+            val send = Intent(this@MainActivity, NavActivity::class.java)
+            startActivity(send)
+        }
         init()
+
     }
 
     private fun init() {
@@ -48,6 +55,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toggleServiceButton.setOnClickListener(this)
         signalButton = findViewById(R.id.signal)
         signalButton.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
