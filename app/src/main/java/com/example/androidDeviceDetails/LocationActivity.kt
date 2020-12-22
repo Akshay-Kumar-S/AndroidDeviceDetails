@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.utils.Utils
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -35,6 +36,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     private lateinit var locationCounter: LocationCounter
     private lateinit var locationDatabase: RoomDB
     private val calendar = Calendar.getInstance()
+    private var mYear = Calendar.YEAR
+    private var mMonth = Calendar.MONTH
+    private var mDay = Calendar.DAY_OF_MONTH
 
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: TableRow
@@ -186,18 +190,16 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     }
 
     private fun selectDate() {
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, year, monthOfYear, dayOfMonth ->
-                calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
-                loadData(calendar.timeInMillis)
-                refreshData()
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.show()
+        return Utils.showDatePicker(this, DatePickerDialog.OnDateSetListener{ _, year, monthOfYear, dayOfMonth ->
+            mYear = year
+            mMonth = monthOfYear
+            mDay = dayOfMonth
+            Toast.makeText(
+                this,
+                mDay.toString() + "-" + (mMonth + 1) + "-" + mYear,
+                LENGTH_SHORT
+            ).show()
+        }).show()
     }
 
     private fun refreshData(
