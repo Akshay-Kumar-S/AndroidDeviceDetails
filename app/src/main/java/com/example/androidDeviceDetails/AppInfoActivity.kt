@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import com.example.androidDeviceDetails.interfaces.IAppInfoPopulateView
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppStateCooker
@@ -32,7 +33,7 @@ import java.util.*
 import kotlin.math.ceil
 
 
-class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class AppInfoActivity : AppCompatActivity() {
 
     private val allEvents = 4
     private val calendar: Calendar = Calendar.getInstance()
@@ -46,6 +47,70 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
+
+    private val populateView = object : IAppInfoPopulateView{
+        override fun populateView(filteredList: MutableList<AppInfoCookedData>) {
+            binding.appInfoListView.post {
+                binding.appInfoListView.adapter = null
+                if (filteredList.isNotEmpty()) {
+                    binding.appInfoListView.adapter =
+                        AppInfoListAdapter(
+                            context,
+                            R.layout.appinfo_tile,
+                            filteredList
+                        )
+                    justifyListViewHeightBasedOnChildren(binding.appInfoListView , filteredList.size)
+                } else {
+                    resetListViewHeight(binding.appInfoListView)
+                    binding.statsMap.post { binding.statsMap.isVisible = false }
+                    binding.statisticsContainer.post {
+                        binding.statisticsContainer.isVisible = false
+                    }
+                }
+            }
+
+
+            val total = appList.size.toDouble()
+            val enrolledAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+                    .eachCount()
+            val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
+
+            val installedAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+                    .eachCount()
+            val installed = ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
+
+            val updateAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+                    .eachCount()
+            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
+
+            val uninstalledAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+                    .eachCount()
+            val uninstalled =
+                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
+
+            binding.updatedProgressBar.progress = (updated.toInt())
+            binding.installedProgressBar.progress = (updated + installed).toInt()
+            binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
+            binding.uninstalledProgressbar.progress =
+                (updated + installed + enrolled + uninstalled).toInt()
+            binding.pieChartConstraintLayout.post {
+                binding.statisticsContainer.isVisible = true
+                binding.statsMap.isVisible = true
+                binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
+                binding.installCount.text = (installedAppCount[true] ?: 0).toString()
+                binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
+                binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
+            }
+
+
+
+        }
+
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)
@@ -77,10 +142,11 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
                 eventFilter = EventType.APP_UNINSTALLED.ordinal
                 title.text = "Uninstalled"
             }
+            R.id.filter_text -> null
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
-            setAppIfoData(startTime, endTime)
+            setAppIfoData(startTime, endTime,populateView)
         }
         return true
     }
@@ -96,7 +162,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         binding.appInfoListView.isEnabled = false
 
         loadPreviousDayTime()
-        setAppIfoData(startTime, endTime)
+        setAppIfoData(startTime, endTime,populateView)
         binding.startdateView.text = simpleDateFormat.format(startTime)
         binding.enddateView.text = simpleDateFormat.format(endTime)
 
@@ -143,18 +209,13 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
 //        binding.filterSpinner.onItemSelectedListener = this
     }
 
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
+    private fun justifyListViewHeightBasedOnChildren(listView: ListView, size : Int) {
         val adapter: ListAdapter = listView.adapter ?: return
         val vg: ViewGroup = listView
         val totalHeight: Int
         val listItem: View = adapter.getView(0, null, vg)
         listItem.measure(0, 0)
         totalHeight = listItem.measuredHeight * appList.size
-//        for (i in 0 until adapter.count) {
-//            val listItem: View = adapter.getView(i, null, vg)
-//            listItem.measure(0, 0)
-//            totalHeight += listItem.measuredHeight
-//        }
         val par: ViewGroup.LayoutParams = listView.layoutParams
         par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
         listView.layoutParams = par
@@ -186,7 +247,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             if (startTime < endTime || endTime == 0L) {
                 binding.startdateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime)
+                    setAppIfoData(startTime, endTime, populateView)
             } else {
                 Toast.makeText(
                     this,
@@ -199,7 +260,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             if (startTime < endTime || startTime == 0L) {
                 binding.enddateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime)
+                    setAppIfoData(startTime, endTime, populateView)
             } else {
                 Toast.makeText(
                     this,
@@ -249,7 +310,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         startTime = cal.timeInMillis
     }
 
-    private fun setAppIfoData(startTime: Long, endTime: Long) {
+    private fun setAppIfoData(startTime: Long, endTime: Long, populateView: IAppInfoPopulateView) {
         GlobalScope.launch(Dispatchers.IO) {
             appList = AppStateCooker.createInstance()
                 .getAppsBetween(startTime, endTime, applicationContext)
@@ -263,63 +324,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             }
             filteredList = filteredList.sortedBy { it.appName }.toMutableList()
             filteredList.removeAll { it.packageName == applicationContext.packageName }
-            binding.appInfoListView.post {
-                binding.appInfoListView.adapter = null
-                if (filteredList.isNotEmpty()) {
-                    binding.appInfoListView.adapter =
-                        AppInfoListAdapter(
-                            context,
-                            R.layout.appinfo_tile,
-                            filteredList
-                        )
-                    justifyListViewHeightBasedOnChildren(binding.appInfoListView)
-                } else {
-                    resetListViewHeight(binding.appInfoListView)
-                    binding.statsMap.post { binding.statsMap.isVisible = false }
-                    binding.statisticsContainer.post {
-                        binding.statisticsContainer.isVisible = false
-                    }
-                }
-            }
-
-
-            val total = appList.size.toDouble()
-            val enrolledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                    .eachCount()
-            val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
-
-            val installedAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                    .eachCount()
-            val installed = ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val updateAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                    .eachCount()
-            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val uninstalledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                    .eachCount()
-            val uninstalled =
-                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            binding.updatedProgressBar.progress = (updated.toInt())
-            binding.installedProgressBar.progress = (updated + installed).toInt()
-            binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
-            binding.uninstalledProgressbar.progress =
-                (updated + installed + enrolled + uninstalled).toInt()
-            binding.pieChartConstraintLayout.post {
-                binding.statisticsContainer.isVisible = true
-                binding.statsMap.isVisible = true
-                binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
-                binding.installCount.text = (installedAppCount[true] ?: 0).toString()
-                binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
-                binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
-            }
-
-
+            populateView.populateView(filteredList)
         }
     }
 
@@ -337,16 +342,5 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             ).show()
     }
 
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        eventFilter = position
-        if (startTime != 0L && endTime != 0L) {
-            setAppIfoData(startTime, endTime)
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        eventFilter = allEvents
-    }
 }
 

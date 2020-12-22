@@ -10,7 +10,7 @@
         android:id="@+id/filter_text"
         android:orderInCategory="100"
         android:title="All"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom|withText"/>
 
     <item
         android:id="@+id/spinner_all"
