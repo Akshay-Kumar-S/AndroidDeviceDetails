@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toLocationActivityButton = findViewById(R.id.toLocationActivity)
         toLocationActivityButton.setOnClickListener(this)
         appInfoButton = findViewById(R.id.appInfo)
-        text = findViewById(R.id.textView)
+       // text = findViewById(R.id.textView)
         appInfoButton.setOnClickListener(this)
         toggleServiceButton = findViewById(R.id.toggleSwitch)
         toggleServiceButton.setOnClickListener(this)

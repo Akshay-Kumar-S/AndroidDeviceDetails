@@ -33,10 +33,10 @@
 
                 <de.nitri.gauge.Gauge
                     android:id="@+id/cellularGauge"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_width="152dp"
+                    android:layout_height="141dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     app:faceColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -51,8 +51,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     android:padding="16dp"
                     app:layout_constraintStart_toEndOf="@+id/cellularGauge"
@@ -66,8 +66,8 @@
                         android:textAppearance="?attr/textAppearanceHeadline6" />
 
                     <TextView
-                        android:layout_width="wrap_content"
                         android:id="@+id/cellularStrengthText"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="90dbm"
@@ -81,9 +81,9 @@
                         android:textAppearance="?attr/textAppearanceHeadline6" />
 
                     <TextView
+                        android:id="@+id/cellularType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/cellularType"
                         android:layout_marginTop="8dp"
                         android:text="secondary_text"
                         android:textAppearance="?attr/textAppearanceBody2"
@@ -97,4 +97,31 @@
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <TableLayout
+        android:layout_width="388dp"
+        android:layout_height="521dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cellularCard"
+        app:layout_constraintVertical_bias="0.92">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
