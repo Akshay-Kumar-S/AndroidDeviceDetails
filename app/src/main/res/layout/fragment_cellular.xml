@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black_overlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CellularFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/cellular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="52dp"
+            android:padding="6dp"
+            android:paddingStart="5dp"
+            android:text="CELLULAR"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.nitri.gauge.Gauge
+            android:id="@+id/gaugeCellular"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="2dp"
+            app:faceColor="@color/black"
+            app:initialValue="-75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lowerText="lte"
+            app:maxValue="-50"
+            app:minValue="-150"
+            app:needleColor="@color/soti_coral"
+            app:scaleColor="@color/green"
+            app:totalNicks="120"
+            app:upperText="-90dbm"
+            app:valuePerNick="1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
