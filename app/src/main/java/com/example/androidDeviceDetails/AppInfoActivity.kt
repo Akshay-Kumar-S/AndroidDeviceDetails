@@ -9,12 +9,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ListAdapter
+import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -51,10 +53,6 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)
         return true
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return super.onSupportNavigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -249,6 +247,7 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
                 filteredList.removeAll { it.eventType.ordinal != eventFilter }
             }
             filteredList = filteredList.sortedBy { it.appName }.toMutableList()
+            filteredList.removeAll { it.packageName == applicationContext.packageName }
             binding.appInfoListView.post {
                 binding.appInfoListView.adapter = null
                 if (filteredList.isNotEmpty()) {
