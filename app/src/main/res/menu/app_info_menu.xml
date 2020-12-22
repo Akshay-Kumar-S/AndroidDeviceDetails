@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+    <item
+        android:id="@+id/filter_text"
+        android:orderInCategory="100"
+        android:title="All"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/spinner_all"

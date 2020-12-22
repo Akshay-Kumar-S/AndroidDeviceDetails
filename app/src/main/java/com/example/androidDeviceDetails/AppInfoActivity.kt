@@ -13,10 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ListAdapter
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -55,13 +52,31 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         return true
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val title = findViewById<TextView>(R.id.filter_text)
         when (item.itemId) {
-            R.id.spinner_all ->  eventFilter = allEvents
-            R.id.spinner_enrolled ->  eventFilter = EventType.APP_ENROLL.ordinal
-            R.id.spinner_installed -> eventFilter = EventType.APP_INSTALLED.ordinal
-            R.id.spinner_updated ->eventFilter = EventType.APP_UPDATED.ordinal
-            R.id.spinner_uninstalled -> eventFilter = EventType.APP_UNINSTALLED.ordinal
+            R.id.spinner_all -> {
+                eventFilter = allEvents
+                title.text = "All"
+            }
+            R.id.spinner_enrolled -> {
+                eventFilter = EventType.APP_ENROLL.ordinal
+                title.text = "Enrolled"
+
+            }
+            R.id.spinner_installed -> {
+                eventFilter = EventType.APP_INSTALLED.ordinal
+                title.text = "Installed"
+            }
+            R.id.spinner_updated -> {
+                eventFilter = EventType.APP_UPDATED.ordinal
+                title.text = "Updated"
+            }
+            R.id.spinner_uninstalled -> {
+                eventFilter = EventType.APP_UNINSTALLED.ordinal
+                title.text = "Uninstalled"
+            }
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
@@ -260,8 +275,10 @@ class AppInfoActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
                     justifyListViewHeightBasedOnChildren(binding.appInfoListView)
                 } else {
                     resetListViewHeight(binding.appInfoListView)
-//                    binding.statsMap.post { binding.statsMap.isVisible = false }
-//                    binding.statisticsContainer.post { binding.statisticsContainer.isVisible = false }
+                    binding.statsMap.post { binding.statsMap.isVisible = false }
+                    binding.statisticsContainer.post {
+                        binding.statisticsContainer.isVisible = false
+                    }
                 }
             }
 
