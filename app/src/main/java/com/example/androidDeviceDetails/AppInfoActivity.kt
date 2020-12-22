@@ -62,10 +62,6 @@ class AppInfoActivity : AppCompatActivity() {
                     justifyListViewHeightBasedOnChildren(binding.appInfoListView , filteredList.size)
                 } else {
                     resetListViewHeight(binding.appInfoListView)
-                    binding.statsMap.post { binding.statsMap.isVisible = false }
-                    binding.statisticsContainer.post {
-                        binding.statisticsContainer.isVisible = false
-                    }
                 }
             }
 
@@ -154,9 +150,7 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         binding.statisticsContainer.isVisible = false
         binding.statsMap.isVisible = false
         binding.appInfoListView.isEnabled = false
@@ -171,7 +165,6 @@ class AppInfoActivity : AppCompatActivity() {
         } else {
             this.startService(Intent(this, CollectorService::class.java))
         }
-
 
         binding.startdateView.setOnClickListener {
             startTimeFlag = true
@@ -196,7 +189,6 @@ class AppInfoActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-
     }
 
     private fun justifyListViewHeightBasedOnChildren(listView: ListView, size : Int) {
@@ -205,7 +197,7 @@ class AppInfoActivity : AppCompatActivity() {
         val totalHeight: Int
         val listItem: View = adapter.getView(0, null, vg)
         listItem.measure(0, 0)
-        totalHeight = listItem.measuredHeight * appList.size
+        totalHeight = listItem.measuredHeight * size
         val par: ViewGroup.LayoutParams = listView.layoutParams
         par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
         listView.layoutParams = par
