@@ -65,7 +65,6 @@ class AppInfoActivity : AppCompatActivity() {
                 }
             }
 
-
             val total = appList.size.toDouble()
             val enrolledAppCount =
                 appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
@@ -101,11 +100,7 @@ class AppInfoActivity : AppCompatActivity() {
                 binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
                 binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
             }
-
-
-
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -138,7 +133,7 @@ class AppInfoActivity : AppCompatActivity() {
                 eventFilter = EventType.APP_UNINSTALLED.ordinal
                 title.text = "Uninstalled"
             }
-            R.id.filter_text -> null
+            R.id.filter_text -> {}
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
