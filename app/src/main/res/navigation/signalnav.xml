@@ -8,11 +8,11 @@
     <fragment
         android:id="@+id/cellularStrength"
         android:name="com.example.androidDeviceDetails.cellularStrength"
-        android:label="fragment_cellular_strength"
+        android:label="Cellular Strength"
         tools:layout="@layout/fragment_cellular_strength" />
     <fragment
         android:id="@+id/wifiStrength"
         android:name="com.example.androidDeviceDetails.wifiStrength"
-        android:label="fragment_wifi_strength"
+        android:label="Wifi Strength"
         tools:layout="@layout/fragment_wifi_strength" />
 </navigation>
