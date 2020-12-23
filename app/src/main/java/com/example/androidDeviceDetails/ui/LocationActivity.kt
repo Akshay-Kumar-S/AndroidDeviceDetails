@@ -13,32 +13,28 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.utils.Utils
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
+@SuppressLint("SimpleDateFormat")
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
 
-    private lateinit var locationCounter: LocationCounter
+    private lateinit var locationCooker: LocationCooker
     private lateinit var locationDatabase: RoomDB
     private val calendar = Calendar.getInstance()
-    private var mYear = Calendar.YEAR
-    private var mMonth = Calendar.MONTH
-    private var mDay = Calendar.DAY_OF_MONTH
+    private var prevDate: Long = 0L
+    private val formatter = SimpleDateFormat("dd-MM-yyyy")
 
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: TableRow
@@ -57,7 +53,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         binding.timeView.setOnClickListener(this)
         binding.countView.setOnClickListener(this)
         binding.barChart.setOnClickListener(this)
-        locationCounter = LocationCounter()
+        locationCooker = LocationCooker()
         locationDatabase = RoomDB.getDatabase()!!
         binding.selectDate.text = getString(R.string.tillToday)
         loadData()
@@ -105,19 +101,15 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         }
         val set = BarDataSet(entries, "Location Count")
         val data = BarData(set)
-        val xAxis: XAxis = binding.barChart.xAxis
-        val yAxisL: YAxis = binding.barChart.axisLeft
+//        val yAxisL: YAxis = binding.barChart.axisLeft
         val yAxisR: YAxis = binding.barChart.axisRight
-        val formatterx: ValueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                return labels[value.toInt()]
-            }
-        }
+//        val formatterX: ValueFormatter = object : ValueFormatter() {
+//            override fun getAxisLabel(value: Float, axis: AxisBase): String {
+//                return labels[value.toInt()]
+//            }
+//        }
         data.barWidth = 0.9f // set custom bar width
         yAxisR.isEnabled = false
-        xAxis.granularity = 1f // minimum axis-step (interval) is 1
-        xAxis.valueFormatter = formatterx
-        xAxis.position = BOTTOM
         binding.barChart.setDrawGridBackground(false)
         binding.barChart.isAutoScaleMinMaxEnabled = false
         binding.barChart.setDrawGridBackground(false)
@@ -152,15 +144,20 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             res = getData(date)
             Log.d("LocationData", "loadData: $res")
             if (res.isNotEmpty()) {
-                cookedData = locationCounter.cookData(res)
-                countedData = locationCounter.countData(cookedData)
+                binding.selectDate.post {
+                    binding.selectDate.text = formatter.format(calendar.time)
+                }
+                cookedData = locationCooker.cookData(res)
+                countedData = locationCooker.countData(cookedData)
                 refreshData()
             } else {
                 runOnUiThread {
                     Toast.makeText(
                         this@LocationActivity,
-                        "No Data on Selected Date ${calendar.time}", LENGTH_SHORT
+                        "No Data on Selected Date ${formatter.format(calendar.time)}", LENGTH_SHORT
                     ).show()
+                    calendar.timeInMillis = prevDate
+                    binding.selectDate.text = formatter.format(calendar.time)
                 }
             }
         }
@@ -186,25 +183,28 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             binding.timeViewArrow.tag = "down"
             binding.timeViewArrow.setImageResource(R.drawable.ic_arrow_downward)
         }
-        Toast.makeText(this, "by time", LENGTH_SHORT).show()
+//        Toast.makeText(this, "by time", LENGTH_SHORT).show()
     }
 
     private fun selectDate() {
-        return Utils.showDatePicker(this, DatePickerDialog.OnDateSetListener{ _, year, monthOfYear, dayOfMonth ->
-            mYear = year
-            mMonth = monthOfYear
-            mDay = dayOfMonth
-            Toast.makeText(
-                this,
-                mDay.toString() + "-" + (mMonth + 1) + "-" + mYear,
-                LENGTH_SHORT
-            ).show()
-        }).show()
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, monthOfYear, dayOfMonth ->
+                prevDate = calendar.timeInMillis
+                calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
+                loadData(calendar.timeInMillis)
+                refreshData()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.show()
     }
 
     private fun refreshData(
         isCount: Boolean = false,
-        isTime: Boolean = false,
+//        isTime: Boolean = false,
         isDescending: Boolean = false
     ) {
         when {
@@ -222,14 +222,16 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-
-        if (this::selectedRow.isInitialized){
+        if (this::selectedRow.isInitialized) {
             selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
         selectedRow = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            binding.scrollView.scrollToDescendant(selectedRow)
+        } else
+            e?.x?.let { binding.scrollView.scrollTo(0, it.toInt()) }
         selectedRow.setBackgroundColor(Color.parseColor("#6FCDF8"))
         Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
-        Toast.makeText(this, e.toString(), LENGTH_SHORT).show()
     }
 
     override fun onNothingSelected() {
