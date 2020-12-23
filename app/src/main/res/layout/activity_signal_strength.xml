@@ -1,103 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SettingsActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cellularCard"
         android:layout_width="match_parent"
-        android:layout_height="593dp"
-        android:background="@color/black_overlay"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="0.2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/soti_pebble"
+        app:strokeWidth="1dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/cellular"
-                android:layout_width="wrap_content"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="52dp"
-                android:padding="6dp"
-                android:paddingStart="5dp"
-                android:text="CELLULAR"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <de.nitri.gauge.Gauge
-                android:id="@+id/gaugeCellular"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="2dp"
-                app:faceColor="@color/black"
-                app:initialValue="-75"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lowerText="lte"
-                app:maxValue="-50"
-                app:minValue="-150"
-                app:needleColor="@color/soti_coral"
-                app:scaleColor="@color/green"
-                app:totalNicks="120"
-                app:upperText="-90dbm"
-                app:valuePerNick="1" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:orientation="horizontal"
+                android:padding="10dp">
 
 
-        <View
-            android:id="@+id/line"
+                <de.nitri.gauge.Gauge
+                    android:id="@+id/cellularGauge"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    app:faceColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:maxValue="-50"
+                    app:minValue="-150"
+                    app:needleColor="@color/soti_coral"
+                    app:scaleColor="@color/green"
+                    app:totalNicks="120"
+                    app:upperText="value"
+                    app:valuePerNick="1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/cellularGauge"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Title, secondary and supporting text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Strength:"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                    <TextView
+                        android:id="@+id/cellularStrengthText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="90dbm"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type:"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                    <TextView
+                        android:id="@+id/cellularType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="secondary_text"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <TableLayout
+        android:layout_width="388dp"
+        android:layout_height="521dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cellularCard"
+        app:layout_constraintVertical_bias="0.92">
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="10dp"
-            android:background="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/gaugeWifi"
-            app:layout_constraintTop_toBottomOf="@+id/gaugeCellular" />
+            android:layout_height="61dp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/wifi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:padding="6dp"
-                android:paddingStart="25dp"
-                android:text="WIFI"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <de.nitri.gauge.Gauge
-                android:id="@+id/gaugeWifi"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_marginStart="52dp"
-                android:layout_marginTop="1dp"
-                app:faceColor="@color/black"
-                app:initialValue="-100"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lowerText="bandwidth"
-                app:maxValue="0"
-                app:minValue="-100"
-                app:needleColor="@color/soti_coral"
-                app:scaleColor="@color/green"
-                app:totalNicks="120"
-                app:upperText="value"
-                app:valuePerNick="1" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
 
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</layout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="385dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/strengthmenu" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ class CellularFragment : Fragment() {
     private var db = RoomDB.getDatabase()!!
     private var cellStrength: Int = -100
     private var cellInfoType: String = "LTE"
-    private lateinit var type : TextView
+    private lateinit var type: TextView
     private lateinit var strength: TextView
     private lateinit var gauge: Gauge
     lateinit var view: ViewGroup
@@ -26,8 +26,8 @@ class CellularFragment : Fragment() {
         view = inflater.inflate(R.layout.fragment_cellular_strength, container, false) as ViewGroup
 
         gauge = view.findViewById(R.id.cellularGauge)
-        strength=view.findViewById(R.id.cellularStrengthText)
-        type=view.findViewById(R.id.cellularType)
+        strength = view.findViewById(R.id.cellularStrengthText)
+        type = view.findViewById(R.id.cellularType)
         updateGauge()
         db.cellularDao().getLastLive().observe(viewLifecycleOwner) {
             updateCellularGauge(it)
@@ -42,8 +42,8 @@ class CellularFragment : Fragment() {
         gauge.moveToValue(cellStrength.toFloat())
         gauge.setLowerText(cellInfoType)
         gauge.setUpperText(cellStrength.toString())
-        strength.text=cellStrength.toString()
-        type.text= cellInfoType
+        strength.text = (cellStrength.toString() + R.string.strength)
+        type.text = cellInfoType
     }
 
     private fun updateCellularGauge(cellularRaw: CellularRaw) {

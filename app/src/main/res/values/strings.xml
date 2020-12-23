@@ -35,4 +35,8 @@
     <string name="delete_icon">delete Icon</string>
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="strength"> dBm</string>
+    <string name="linkspeed"> MHz</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
