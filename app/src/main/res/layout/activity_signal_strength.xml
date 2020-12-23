@@ -20,7 +20,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -45,6 +45,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical"
                 android:padding="20dp"
                 app:layout_constraintStart_toEndOf="@+id/gauge"
@@ -55,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Strength:"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
@@ -63,15 +65,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="90dbm"
-                    android:textAppearance="?attr/textAppearanceBody2" />
+                    android:text="90 dbm"
+                    android:textAppearance="?attr/textAppearanceHeadline5" />
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Type:"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
@@ -80,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="secondary_text"
-                    android:textAppearance="?attr/textAppearanceBody2" />
+                    android:textAppearance="?attr/textAppearanceHeadline5" />
 
             </LinearLayout>
 
@@ -89,68 +91,64 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="492dp"
-        android:src="@drawable/ic_baseline_calendar_today_24"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintTop_toBottomOf="@id/card">
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_calendar_today_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.347" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="START TIME"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.035"
-        app:layout_constraintStart_toEndOf="@+id/imageView9"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.308" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="END TIME"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.035"
-        app:layout_constraintStart_toEndOf="@+id/imageView10"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:text="  START TIME"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.035"
+                app:layout_constraintStart_toEndOf="@+id/start"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.308"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="  END TIME"
+                app:layout_constraintHorizontal_bias="0.035"
+                app:layout_constraintStart_toEndOf="@+id/end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.351"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/filter"
+            android:text="FILTER"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="5dp"
+            tools:ignore="RtlSymmetry" />
+
     </LinearLayout>
 
     <ScrollView
-        android:layout_width="381dp"
-        android:layout_height="351dp"
+        android:id="@+id/scrollView"
+
+        android:layout_width="416dp"
+        android:layout_height="353dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.433"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card"
+        app:layout_constraintTop_toBottomOf="@id/datePicker"
         app:layout_constraintVertical_bias="0.649">
 
 
@@ -161,13 +159,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.347"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cellularCard"
             app:layout_constraintVertical_bias="0.92">
 
             <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="61dp" />
+                android:layout_width="401dp"
+                android:layout_height="83dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:text="Time" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -179,22 +182,19 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="108dp" />
         </TableLayout>
     </ScrollView>
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="385dp"
-        android:layout_height="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/strengthmenu" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

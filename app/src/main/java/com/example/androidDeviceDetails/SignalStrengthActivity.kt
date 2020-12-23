@@ -6,13 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.WifiRaw
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -69,13 +64,13 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     }
     private fun pickDate() {
         val txt: TextView
-        imageFrom = findViewById(R.id.imageView9)
+        imageFrom = findViewById(R.id.start)
         imageFrom.setOnClickListener {
             toggle=1
             getDateTimeCalender()
             DatePickerDialog(this, this, year, month, day).show()
         }
-        imageTo = findViewById(R.id.imageView10)
+        imageTo = findViewById(R.id.end)
         imageTo.setOnClickListener {
             toggle=2
             getDateTimeCalender()
@@ -114,8 +109,8 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         TimePickerDialog(this, this, hour, minute, true).show()
     }
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        txtFrom=findViewById(R.id.textView6)
-        txtTo=findViewById(R.id.textView7)
+        txtFrom=findViewById(R.id.startTime)
+        txtTo=findViewById(R.id.endTime)
         savedHour = hourOfDay
         savedMinute = minute
         Log.d("calender", "$savedDay,$savedMonth,$savedYear")
