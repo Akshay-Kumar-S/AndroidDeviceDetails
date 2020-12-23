@@ -3,7 +3,7 @@ package com.example.androidDeviceDetails.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.androidDeviceDetails.utils.AddData
+import com.example.androidDeviceDetails.appInfo.collectionHelper.AddData
 
 class AppStateReceiver : BroadcastReceiver() {
 

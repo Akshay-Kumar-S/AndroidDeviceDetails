@@ -1,8 +1,10 @@
-package com.example.androidDeviceDetails.utils
+package com.example.androidDeviceDetails.appInfo.collectionHelper
 
 import android.content.Context
-import com.example.androidDeviceDetails.models.AppDetails
+import com.example.androidDeviceDetails.appInfo.models.AppDetails
+import com.example.androidDeviceDetails.appInfo.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -15,7 +17,7 @@ object AddData {
         GlobalScope.launch(Dispatchers.IO) {
             var id = db.appsDao().getIdByName(packageName)
             if (id == 0) {
-                DbHelper.writeToAppsDb(0, packageName, latestAppDetails,db)
+                DbHelper.writeToAppsDb(0, packageName, latestAppDetails, db)
                 id = db.appsDao().getIdByName(packageName)
                 DbHelper.writeToAppHistoryDb(
                     id,
@@ -33,8 +35,14 @@ object AddData {
                     } else {
                         EventType.APP_INSTALLED.ordinal
                     }
-                DbHelper.writeToAppHistoryDb(id, event, latestAppDetails, db, currentAppHistory.currentVersionCode)
-                DbHelper.writeToAppsDb(id,packageName,latestAppDetails,db)
+                DbHelper.writeToAppHistoryDb(
+                    id,
+                    event,
+                    latestAppDetails,
+                    db,
+                    currentAppHistory.currentVersionCode
+                )
+                DbHelper.writeToAppsDb(id, packageName, latestAppDetails, db)
             }
         }
     }
@@ -52,8 +60,14 @@ object AddData {
                     currentAppHistory.appTitle,
                     currentAppHistory.isSystemApp
                 )
-            DbHelper.writeToAppHistoryDb(id, EventType.APP_UNINSTALLED.ordinal, appDetails, db,currentAppHistory.currentVersionCode)
-            DbHelper.writeToAppsDb(id,packageName,appDetails,db)
+            DbHelper.writeToAppHistoryDb(
+                id,
+                EventType.APP_UNINSTALLED.ordinal,
+                appDetails,
+                db,
+                currentAppHistory.currentVersionCode
+            )
+            DbHelper.writeToAppsDb(id, packageName, appDetails, db)
         }
     }
 

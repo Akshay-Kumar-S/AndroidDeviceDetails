@@ -4,104 +4,39 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.example.androidDeviceDetails.interfaces.IAppInfoPopulateView
-import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
+import com.example.androidDeviceDetails.appInfo.AppInfoController
+import com.example.androidDeviceDetails.appInfo.AppInfoManager
+import com.example.androidDeviceDetails.appInfo.models.EventType
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.managers.AppStateCooker
-import com.example.androidDeviceDetails.models.AppInfoCookedData
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
-import com.example.androidDeviceDetails.utils.EventType
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.androidDeviceDetails.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.ceil
 
 
 class AppInfoActivity : AppCompatActivity() {
 
-    private val allEvents = 4
     private val calendar: Calendar = Calendar.getInstance()
-    private lateinit var appList: List<AppInfoCookedData>
     private lateinit var binding: ActivityAppInfoBinding
     private var startTime: Long = 0
     private var endTime: Long = 0
     private var startTimeFlag: Boolean = true
-    val context = this
-    private var eventFilter = allEvents
+    private var eventFilter = EventType.ALL_EVENTS.ordinal
+    private lateinit var controller : AppInfoController
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm',' dd/MM/yyyy")
-
-    private val populateView = object : IAppInfoPopulateView{
-        override fun populateView(filteredList: MutableList<AppInfoCookedData>) {
-            binding.appInfoListView.post {
-                binding.appInfoListView.adapter = null
-                if (filteredList.isNotEmpty()) {
-                    binding.appInfoListView.adapter =
-                        AppInfoListAdapter(
-                            context,
-                            R.layout.appinfo_tile,
-                            filteredList
-                        )
-                    justifyListViewHeightBasedOnChildren(binding.appInfoListView , filteredList.size)
-                } else {
-                    resetListViewHeight(binding.appInfoListView)
-                }
-            }
-
-            val total = appList.size.toDouble()
-            val enrolledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                    .eachCount()
-            val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
-
-            val installedAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                    .eachCount()
-            val installed = ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val updateAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                    .eachCount()
-            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val uninstalledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                    .eachCount()
-            val uninstalled =
-                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            binding.updatedProgressBar.progress = (updated.toInt())
-            binding.installedProgressBar.progress = (updated + installed).toInt()
-            binding.enrollProgressbar.progress = (updated + installed + enrolled.toInt()).toInt()
-            binding.uninstalledProgressbar.progress =
-                (updated + installed + enrolled + uninstalled).toInt()
-            binding.pieChartConstraintLayout.post {
-                binding.statisticsContainer.isVisible = true
-                binding.statsMap.isVisible = true
-                binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
-                binding.installCount.text = (installedAppCount[true] ?: 0).toString()
-                binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
-                binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
-            }
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)
@@ -113,7 +48,7 @@ class AppInfoActivity : AppCompatActivity() {
         val title = findViewById<TextView>(R.id.filter_text)
         when (item.itemId) {
             R.id.spinner_all -> {
-                eventFilter = allEvents
+                eventFilter = EventType.ALL_EVENTS.ordinal
                 title.text = "All"
             }
             R.id.spinner_enrolled -> {
@@ -137,7 +72,7 @@ class AppInfoActivity : AppCompatActivity() {
             else -> super.onSupportNavigateUp()
         }
         if (startTime != 0L && endTime != 0L) {
-            setAppIfoData(startTime, endTime,populateView)
+            controller.setAppIfoData(startTime, endTime, eventFilter)
         }
         return true
     }
@@ -145,13 +80,14 @@ class AppInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
+        controller = AppInfoController(binding,this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.statisticsContainer.isVisible = false
-        binding.statsMap.isVisible = false
         binding.appInfoListView.isEnabled = false
 
-        loadPreviousDayTime()
-        setAppIfoData(startTime, endTime,populateView)
+        startTime = Utils.loadPreviousDayTime()
+        endTime = System.currentTimeMillis()
+        controller.setAppIfoData(startTime, endTime, eventFilter)
         binding.startdateView.text = simpleDateFormat.format(startTime)
         binding.enddateView.text = simpleDateFormat.format(endTime)
 
@@ -183,36 +119,6 @@ class AppInfoActivity : AppCompatActivity() {
             }
             datePickerDialog.show()
         }
-
-    }
-
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView, size : Int) {
-        val adapter: ListAdapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        val totalHeight: Int
-        val listItem: View = adapter.getView(0, null, vg)
-        listItem.measure(0, 0)
-        totalHeight = listItem.measuredHeight * size
-        val par: ViewGroup.LayoutParams = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
-
-    private fun resetListViewHeight(listView: ListView) {
-        val par: ViewGroup.LayoutParams = listView.layoutParams
-        par.height = listView.dividerHeight
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
-
-    private fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
-        return try {
-            packageManager.getPackageInfo(packageName, 0)
-            true
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
     }
 
     private val timePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
@@ -224,7 +130,7 @@ class AppInfoActivity : AppCompatActivity() {
             if (startTime < endTime || endTime == 0L) {
                 binding.startdateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime, populateView)
+                    controller.setAppIfoData(startTime, endTime, eventFilter)
             } else {
                 Toast.makeText(
                     this,
@@ -237,7 +143,7 @@ class AppInfoActivity : AppCompatActivity() {
             if (startTime < endTime || startTime == 0L) {
                 binding.enddateView.text = time
                 if (startTime != 0L && endTime != 0L)
-                    setAppIfoData(startTime, endTime, populateView)
+                    controller.setAppIfoData(startTime, endTime, eventFilter)
             } else {
                 Toast.makeText(
                     this,
@@ -277,47 +183,8 @@ class AppInfoActivity : AppCompatActivity() {
         )
     }
 
-    private fun loadPreviousDayTime() {
-        val cal = Calendar.getInstance()
-        cal[Calendar.HOUR] = 0
-        cal[Calendar.MINUTE] = 0
-//        endTime = cal.timeInMillis
-        endTime = System.currentTimeMillis()
-        cal.add(Calendar.DAY_OF_MONTH, -1)
-        startTime = cal.timeInMillis
-    }
-
-    private fun setAppIfoData(startTime: Long, endTime: Long, populateView: IAppInfoPopulateView) {
-        GlobalScope.launch(Dispatchers.IO) {
-            appList = AppStateCooker.createInstance()
-                .getAppsBetween(startTime, endTime, applicationContext)
-            val db = RoomDB.getDatabase(applicationContext)!!
-            for (app in appList) {
-                app.packageName = db.appsDao().getPackageByID(app.appId)
-            }
-            var filteredList = appList.toMutableList()
-            if (eventFilter != allEvents) {
-                filteredList.removeAll { it.eventType.ordinal != eventFilter }
-            }
-            filteredList = filteredList.sortedBy { it.appName }.toMutableList()
-            filteredList.removeAll { it.packageName == applicationContext.packageName }
-            populateView.populateView(filteredList)
-        }
-    }
-
     fun deleteApp(view: View) {
-        val packageName = view.tag as String
-        if (isPackageInstalled(packageName, packageManager)) {
-            val packageURI = Uri.parse("package:${packageName}")
-            val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
-            startActivity(uninstallIntent)
-        } else
-            Toast.makeText(
-                this,
-                "App is currently uninstalled",
-                Toast.LENGTH_SHORT
-            ).show()
+        AppInfoManager.deleteApp(view,packageManager,this)
     }
 
 }
-

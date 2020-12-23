@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models
+package com.example.androidDeviceDetails.appInfo.models
 
 import androidx.room.*
 

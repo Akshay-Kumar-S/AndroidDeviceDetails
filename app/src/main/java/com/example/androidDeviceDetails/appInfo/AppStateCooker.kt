@@ -1,9 +1,9 @@
-package com.example.androidDeviceDetails.managers
+package com.example.androidDeviceDetails.appInfo
 
-import android.content.Context
-import com.example.androidDeviceDetails.models.AppInfoCookedData
+import com.example.androidDeviceDetails.appInfo.interfaces.IAppInfoCookedData
+import com.example.androidDeviceDetails.appInfo.models.AppInfoCookedData
+import com.example.androidDeviceDetails.appInfo.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.utils.EventType
 
 class AppStateCooker {
 
@@ -13,8 +13,13 @@ class AppStateCooker {
         }
     }
 
-    fun getAppsBetween(startTime: Long, endTime: Long, context: Context): List<AppInfoCookedData> {
-        val db = RoomDB.getDatabase(context)!!
+    fun getAppsBetween(
+        startTime: Long,
+        endTime: Long,
+        eventFilter : Int,
+        appInfoCookedData: IAppInfoCookedData
+    ) {
+        val db = RoomDB.getDatabase()!!
         val appList = listOf<AppInfoCookedData>().toMutableList()
         val ids = db.appHistoryDao().getIdsBetween(startTime, endTime)
         for (id in ids) {
@@ -67,6 +72,14 @@ class AppStateCooker {
                 appList.add(evt)
             }
         }
-        return appList
+
+        if (appList.isEmpty())
+            appInfoCookedData.onNoData()
+        else {
+            for (app in appList) {
+                app.packageName = db.appsDao().getPackageByID(app.appId)
+            }
+            appInfoCookedData.onDataReceived(appList, eventFilter)
+        }
     }
 }

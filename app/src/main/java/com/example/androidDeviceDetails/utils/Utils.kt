@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.utils
 
-import android.R.id
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
@@ -10,7 +9,9 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.AppDetails
+import com.example.androidDeviceDetails.appInfo.collectionHelper.DbHelper
+import com.example.androidDeviceDetails.appInfo.models.AppDetails
+import com.example.androidDeviceDetails.appInfo.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
@@ -130,6 +131,23 @@ object Utils {
                     db
                 )
             }
+        }
+    }
+
+    fun loadPreviousDayTime() : Long {
+        val cal = Calendar.getInstance()
+        cal[Calendar.HOUR] = 0
+        cal[Calendar.MINUTE] = 0
+        cal.add(Calendar.DAY_OF_MONTH, -1)
+        return cal.timeInMillis
+    }
+
+    fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 
