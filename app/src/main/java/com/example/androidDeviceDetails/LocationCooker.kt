@@ -2,7 +2,7 @@ package com.example.androidDeviceDetails
 
 import com.example.androidDeviceDetails.models.LocationModel
 
-class LocationCounter {
+class LocationCooker {
     private val geoHashLength: Int = 6
 
     fun cookData(locationList: List<LocationModel>): MutableList<LocationModel> {
