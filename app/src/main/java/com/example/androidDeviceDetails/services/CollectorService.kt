@@ -8,17 +8,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.location.Location
 import android.location.LocationManager
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.IBinder
-import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
+import com.example.androidDeviceDetails.location.LocationListener
 import com.example.androidDeviceDetails.managers.AppUsage
-import com.example.androidDeviceDetails.managers.LocationListner
-import com.example.androidDeviceDetails.managers.SignalChangeListener
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
 import com.example.androidDeviceDetails.receivers.WifiReceiver
@@ -32,7 +29,8 @@ class CollectorService : Service() {
     private lateinit var mBatteryReceiver: BroadcastReceiver
     private lateinit var mAppStateReceiver: BroadcastReceiver
     private lateinit var mTelephonyManager: TelephonyManager
-//    private lateinit var mPhoneStateListener: SignalChangeListener
+
+    //    private lateinit var mPhoneStateListener: SignalChangeListener
     private lateinit var mWifiReceiver: WifiReceiver
     private lateinit var locationManager: LocationManager
     override fun onBind(intent: Intent): IBinder {
@@ -89,7 +87,7 @@ class CollectorService : Service() {
 
         this.registerReceiver(mBatteryReceiver, IntentFilter(LocationManager.KEY_LOCATION_CHANGED))
         this.registerReceiver(mWifiReceiver, intentWifi)
-        LocationListner(locationManager,this).getLocation()
+        LocationListener(locationManager, this).getLocation()
         return super.onStartCommand(intent, flags, startId)
     }
 

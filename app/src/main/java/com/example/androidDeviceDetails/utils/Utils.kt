@@ -6,7 +6,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
-import android.widget.Toast
 import com.example.androidDeviceDetails.models.AppDetails
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.services.CollectorService
@@ -109,7 +108,10 @@ object Utils {
 
     }
 
-    fun showDatePicker(context: Context,datePickerListener:DatePickerDialog.OnDateSetListener) : DatePickerDialog {
+    fun showDatePicker(
+        context: Context,
+        datePickerListener: DatePickerDialog.OnDateSetListener
+    ): DatePickerDialog {
         val calendar: Calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH)

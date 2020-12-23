@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.location.models.ILocationDao
+import com.example.androidDeviceDetails.location.models.LocationModel
 
 
 @Database(

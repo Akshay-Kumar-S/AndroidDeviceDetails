@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models
+package com.example.androidDeviceDetails.location.models
 
 import androidx.room.*
 
@@ -23,7 +23,7 @@ interface ILocationDao {
     fun countHash(): List<CountModel>
 
     @Query("SELECT * FROM Location_Data where time between :sDate and :eDate")
-    fun readDataFromDate(sDate: Long,eDate:Long): List<LocationModel>
+    fun readDataFromDate(sDate: Long, eDate: Long): List<LocationModel>
 
 //    @Query("SELECT geoHash From location_data where time=time ")
 //    fun selectDataOn(time : String): List<LocationModel>

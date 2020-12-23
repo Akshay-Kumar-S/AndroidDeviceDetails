@@ -1,6 +1,6 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.location
 
-import com.example.androidDeviceDetails.models.LocationModel
+import com.example.androidDeviceDetails.location.models.LocationModel
 
 class LocationCooker {
     private val geoHashLength: Int = 6
@@ -9,7 +9,7 @@ class LocationCooker {
         val cookedLocationList = emptyList<LocationModel>().toMutableList()
         var prevLocationHash = ""
         for (location in locationList) {
-            if (location.geoHash!= prevLocationHash) {
+            if (location.geoHash != prevLocationHash) {
                 prevLocationHash = location.geoHash!!
                 cookedLocationList.add(location)
             }

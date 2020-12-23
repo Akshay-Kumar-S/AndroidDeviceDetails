@@ -14,4 +14,6 @@
     <string name="count">Count</string>
     <string name="geohash">GeoHash</string>
     <string name="tillToday">Till Today</string>
+    <string name="no_data">No Data</string>
+    <string name="sort_direction_arrow">sort direction arrow</string>
 </resources>

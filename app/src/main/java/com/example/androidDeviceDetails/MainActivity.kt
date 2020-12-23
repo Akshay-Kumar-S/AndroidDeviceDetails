@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.androidDeviceDetails.location.LocationActivity
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.utils.EventType
 import com.example.androidDeviceDetails.utils.PrefManager
