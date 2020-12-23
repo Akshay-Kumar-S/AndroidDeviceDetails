@@ -35,8 +35,6 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     private lateinit var filter: Button
     private lateinit var binding: ActivitySignalStrengthBinding
-    private var maxValue = -50
-    private var minValue = -150
 
     private var fromTimestamp: Long = 0
     private var toTimestamp: Long = 0
@@ -44,38 +42,35 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private var strength: Int = -100
     private var linkspeed: String = "0"
     private var cellInfoType: String = "LTE"
-    private var text2 = cellInfoType
-    private var text1 = "Type"
-
+    private var signal = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
-        updateGauge()
-
         db.cellularDao().getLastLive().observe(this) {
-            updateCellularGauge(it)
+            if (signal == 0)
+                updateCellularGauge(it)
         }
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellularStrength -> {
-                    minValue = -150
-                    maxValue = -50
-                    text1 = "Type"
-                    text2 = "LTE"
+                    binding.gauge.setMaxValue(-50f)
+                    binding.gauge.setMinValue(-150f)
+                    signal = 0
                     db.cellularDao().getLastLive().observe(this) {
-                        updateCellularGauge(it)
+                        if (signal == 0)
+                            updateCellularGauge(it)
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifiStrength -> {
-                    maxValue = 0
-                    minValue = -100
-                    text1 = "Linkspeed"
-                    text2 = "0 MHz"
+                    binding.gauge.setMaxValue(0f)
+                    binding.gauge.setMinValue(-100f)
+                    signal = 1
                     db.wifiDao().getLastLive().observe(this) {
-                        updateWifiGauge(it)
+                        if (signal == 1)
+                            updateWifiGauge(it)
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -107,30 +102,27 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
 
     @SuppressLint("SetTextI18n")
-    private fun updateGauge() {
-        binding.gauge.setMaxValue(maxValue.toFloat())
-        binding.gauge.setMinValue(minValue.toFloat())
-        binding.gauge.moveToValue(strength.toFloat())
-        binding.gauge.setLowerText(strength.toString())
-        binding.textStrength.text = "${strength.toString()} dBm"
-        binding.textView3.text = text1
-        binding.textView4.text = text2
-    }
-
     private fun updateWifiGauge(wifiRaw: WifiRaw) {
         Log.d("test", "updateWifiGauge: ")
         strength = wifiRaw.strength!!
         linkspeed = wifiRaw.linkSpeed.toString()
-        text2 = "$linkspeed MHz"
-        updateGauge()
+        binding.gauge.moveToValue(strength.toFloat())
+        binding.gauge.setLowerText(strength.toString())
+        binding.textStrength.text = "${strength.toString()} dBm"
+        binding.textView3.text = "Linkspeed"
+        binding.textView4.text = "$linkspeed MHz"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateCellularGauge(cellularRaw: CellularRaw) {
         Log.d("tag", "updateCellularGauge: ")
         strength = cellularRaw.strength!!
         cellInfoType = cellularRaw.type.toString()
-        text2 = cellInfoType
-        updateGauge()
+        binding.gauge.moveToValue(strength.toFloat())
+        binding.gauge.setLowerText(strength.toString())
+        binding.textStrength.text = "${strength.toString()} dBm"
+        binding.textView3.text = "Type"
+        binding.textView4.text = cellInfoType
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -141,6 +133,7 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         TimePickerDialog(this, this, hour, minute, true).show()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         savedHour = hourOfDay
         savedMinute = minute
@@ -154,7 +147,8 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         }
         if (toggle == 2) {
             toTimestamp = getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
-            binding.endTime.text = "    $savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
+            binding.endTime.text =
+                "    $savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
         }
 
 //        GlobalScope.launch {

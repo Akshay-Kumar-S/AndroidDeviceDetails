@@ -35,6 +35,7 @@ class WifiFragment : Fragment() {
         }
         return view
     }
+
     fun setTextViewText(value: String?) {
         linkspeedText.setText(value)
     }
@@ -44,8 +45,8 @@ class WifiFragment : Fragment() {
         gauge.moveToValue(wifiStrength.toFloat())
         gauge.setLowerText(linkspeed.toString())
         gauge.setUpperText(wifiStrength.toString())
-        strength.text = (wifiStrength.toString() + R.string.strength)
-        linkspeedText.text = (linkspeed.toString() + R.string.linkspeed)
+        strength.text = wifiStrength.toString()
+        linkspeedText.text = linkspeed.toString()
     }
 
     private fun updateWifiGauge(wifiRaw: WifiRaw) {
