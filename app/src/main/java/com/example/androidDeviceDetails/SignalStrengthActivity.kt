@@ -4,9 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.TimePicker
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
@@ -32,6 +30,16 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    lateinit var button:Button
+    lateinit var imageFrom: ImageView
+    lateinit var imageTo: ImageView
+    lateinit var txtFrom:TextView
+    lateinit var txtTo:TextView
+    var fromTimestamp:Long=0
+    var toTimestamp:Long=0
+    var toggle=0
+
 
     private lateinit var binding: ActivitySignalStrengthBinding
     private var cellStrength: Int = -100
@@ -61,8 +69,15 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     }
     private fun pickDate() {
         val txt: TextView
-        txt = findViewById(R.id.cellular)
-        txt.setOnClickListener {
+        imageFrom = findViewById(R.id.imageView9)
+        imageFrom.setOnClickListener {
+            toggle=1
+            getDateTimeCalender()
+            DatePickerDialog(this, this, year, month, day).show()
+        }
+        imageTo = findViewById(R.id.imageView10)
+        imageTo.setOnClickListener {
+            toggle=2
             getDateTimeCalender()
             DatePickerDialog(this, this, year, month, day).show()
         }
@@ -99,38 +114,44 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         TimePickerDialog(this, this, hour, minute, true).show()
     }
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        txtFrom=findViewById(R.id.textView6)
+        txtTo=findViewById(R.id.textView7)
         savedHour = hourOfDay
         savedMinute = minute
         Log.d("calender", "$savedDay,$savedMonth,$savedYear")
         Log.d("calender", "$savedHour,$savedMinute")
-        GlobalScope.launch {
-            val wifiList=  db.wifiDao().getAllBetween(
-                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute),
-                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
-            )
-            val cellularList=db.cellularDao().getAllBetween(
-                getTimeStamp(
-                    savedDay,
-                    savedMonth + 1,
-                    savedYear,
-                    savedHour,
-                    savedMinute
-                ),
-                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
-            )
-            Log.d(
-                "calenderdata",
-                cellularList.toString()
-            )
-            Log.d(
-                "calenderdata1",
-                wifiList.toString()
-            )
-            runOnUiThread {
-                val text:TextView=findViewById(R.id.wifi)
-                text.text=cellularList.toString()
-            }
-        }
+        if(toggle==1){fromTimestamp=getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
+            txtFrom.text="$savedDay/${savedMonth+1}/$savedYear  $savedHour:$savedMinute"}
+        if(toggle==2){toTimestamp=getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
+            txtTo.text="$savedDay/${savedMonth+1}/$savedYear  $savedHour:$savedMinute"}
+//        GlobalScope.launch {
+//            val wifiList=  db.wifiDao().getAllBetween(
+//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute),
+//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
+//            )
+//            val cellularList=db.cellularDao().getAllBetween(
+//                getTimeStamp(
+//                    savedDay,
+//                    savedMonth + 1,
+//                    savedYear,
+//                    savedHour,
+//                    savedMinute
+//                ),
+//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
+//            )
+//            Log.d(
+//                "calenderdata",
+//                cellularList.toString()
+//            )
+//            Log.d(
+//                "calenderdata1",
+//                wifiList.toString()
+//            )
+//            runOnUiThread {
+//                val text:TextView=findViewById(R.id.textView3)
+//                text.text=cellularList.toString()
+//            }
+//        }
     }
     fun getTimeStamp(day: Int, month: Int, year: Int, hour: Int, minute: Int): Long {
         val hexString = Integer.toHexString(hour * 60 * 60 + minute * 60)
@@ -144,160 +165,3 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         return timestamp*1000
     }
 }
-
-/*
-class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
-    private var db = RoomDB.getDatabase()!!
-
-    var day = 0
-    var month = 0
-    var year = 0
-    var hour = 0
-    var minute = 0
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
-    var savedHour = 0
-    var savedMinute = 0
-
-
-    private var cellStrength: Int = -100
-    private var wifiStrength: Int = -80
-    private var linkspeed: String = "0"
-    private var cellInfoType: String = "LTE"
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-
-    fun updateGauge()
-        db.wifiDao().getLastLive().observe(this) {
-            if (it != null) updateWifiGauge(it)
-        }
-        db.cellularDao().getLastLive().observe(this) {
-            if(it!=null)updateCellularGauge(it)
-        }
-        pickDate()
-
-    }
-
-    private fun getDateTimeCalender() {
-        val cal: Calendar = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
-        minute = cal.get(Calendar.MINUTE)
-    }
-
-    private fun pickDate() {
-        val txt: TextView
-        txt = findViewById(R.id.cellular)
-        txt.setOnClickListener {
-            getDateTimeCalender()
-            DatePickerDialog(this, this, year, month, day).show()
-        }
-            if (it != null) updateCellularGauge(it)
-        }
-
-    }
-
-
-     private fun updateGauge() {
-          binding.gaugeCellular.moveToValue(cellStrength.toFloat())
-          binding.gaugeCellular.setLowerText(cellInfoType)
-          binding.gaugeCellular.setUpperText(cellStrength.toString())
-          binding.gaugeWifi.moveToValue(wifiStrength.toFloat())
-          binding.gaugeWifi.setLowerText(linkspeed)
-          binding.gaugeWifi.setUpperText(wifiStrength.toString())
-      }
-
-      private fun updateWifiGauge(wifiRaw: WifiRaw) {
-          Log.d("test", "updateWifiGauge: ")
-          wifiStrength = wifiRaw.strength!!
-          linkspeed = wifiRaw.linkSpeed.toString()
-          binding.gaugeWifi.moveToValue(wifiStrength.toFloat())
-          binding.gaugeWifi.setLowerText(linkspeed)
-          binding.gaugeWifi.setUpperText(wifiStrength.toString())
-      }
-
-    private fun updateCellularGauge(cellularRaw: CellularRaw) {
-        Log.d("tag", "updateCellularGauge: ")
-        cellStrength = cellularRaw.strength!!
-        cellInfoType = cellularRaw.type.toString()
-        binding.gaugeCellular.moveToValue(cellStrength.toFloat())
-        binding.gaugeCellular.setLowerText(cellInfoType)
-        binding.gaugeCellular.setUpperText(cellStrength.toString())
-    }
-
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        savedDay = dayOfMonth
-        savedMonth = month
-        savedYear = year
-        getDateTimeCalender()
-        TimePickerDialog(this, this, hour, minute, true).show()
-
-    }
-
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        savedHour = hourOfDay
-        savedMinute = minute
-        Log.d("calender", "$savedDay,$savedMonth,$savedYear")
-        Log.d("calender", "$savedHour,$savedMinute")
-
-        GlobalScope.launch {
-            val wifiList=  db.wifiDao().getAllBetween(
-                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute),
-                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
-            )
-          val cellularList=db.cellularDao().getAllBetween(
-              getTimeStamp(
-                  savedDay,
-                  savedMonth + 1,
-                  savedYear,
-                  savedHour,
-                  savedMinute
-              ),
-              getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
-          )
-            Log.d(
-                "calenderdata",
-                cellularList.toString()
-            )
-            Log.d(
-                "calenderdata1",
-                wifiList.toString()
-            )
-            runOnUiThread {
-                val text:TextView=findViewById(R.id.wifi)
-                text.text=cellularList.toString()
-            }
-
-        }
-      private fun updateCellularGauge(cellularRaw: CellularRaw) {
-          Log.d("tag", "updateCellularGauge: ")
-          cellStrength = cellularRaw.strength!!
-          cellInfoType = cellularRaw.type.toString()
-          binding.gaugeCellular.moveToValue(cellStrength.toFloat())
-          binding.gaugeCellular.setLowerText(cellInfoType)
-          binding.gaugeCellular.setUpperText(cellStrength.toString())
-      }
-
-}
-
-    }
-
-    fun getTimeStamp(day: Int, month: Int, year: Int, hour: Int, minute: Int): Long {
-        val hexString = Integer.toHexString(hour * 60 * 60 + minute * 60)
-        val str_date = "$day-$month-$year"
-        val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy")
-        val date = formatter.parse(str_date) as Date
-        var timestamp = date.time
-        Log.d("calender", "${hexString.toLong(16)}")
-        timestamp = timestamp / 1000 + hexString.toLong(16)
-        Log.d("calender", "${timestamp * 1000}")
-        return timestamp*1000
-    }
-}*/
