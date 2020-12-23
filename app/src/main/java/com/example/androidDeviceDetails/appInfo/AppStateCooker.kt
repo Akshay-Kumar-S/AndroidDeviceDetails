@@ -1,6 +1,6 @@
 package com.example.androidDeviceDetails.appInfo
 
-import com.example.androidDeviceDetails.appInfo.interfaces.IAppInfoCookedData
+import com.example.androidDeviceDetails.interfaces.IAppInfoCookedData
 import com.example.androidDeviceDetails.appInfo.models.AppInfoCookedData
 import com.example.androidDeviceDetails.appInfo.models.EventType
 import com.example.androidDeviceDetails.models.RoomDB
@@ -16,7 +16,6 @@ class AppStateCooker {
     fun getAppsBetween(
         startTime: Long,
         endTime: Long,
-        eventFilter : Int,
         appInfoCookedData: IAppInfoCookedData
     ) {
         val db = RoomDB.getDatabase()!!
@@ -79,7 +78,7 @@ class AppStateCooker {
             for (app in appList) {
                 app.packageName = db.appsDao().getPackageByID(app.appId)
             }
-            appInfoCookedData.onDataReceived(appList, eventFilter)
+            appInfoCookedData.onDataReceived(appList)
         }
     }
 }

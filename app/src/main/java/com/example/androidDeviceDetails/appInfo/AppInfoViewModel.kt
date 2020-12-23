@@ -8,9 +8,9 @@ import com.example.androidDeviceDetails.appInfo.models.EventType
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import kotlin.math.ceil
 
-class AppInfoViewModel(private val binding: ActivityAppInfoBinding){
+class AppInfoViewModel(private val binding: ActivityAppInfoBinding) {
 
-    fun updateDonutChart(appList : List<AppInfoCookedData>){
+    fun updateDonutChart(appList: List<AppInfoCookedData>) {
         val total = appList.size.toDouble()
         val enrolledAppCount =
             appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
@@ -48,7 +48,7 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding){
         }
     }
 
-    fun updateAppList(filteredList: MutableList<AppInfoCookedData>,context : Context){
+    fun updateAppList(filteredList: MutableList<AppInfoCookedData>, context: Context) {
         if (filteredList.isNotEmpty()) {
             binding.root.post {
                 binding.appInfoListView.adapter = null
@@ -65,15 +65,14 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding){
                     filteredList.size
                 )
             }
-        }
-        else{
+        } else {
             binding.root.post {
                 binding.appInfoListView.isVisible = false
             }
         }
     }
 
-    fun clearDisplay(){
+    fun clearDisplay() {
         binding.root.post {
             binding.appInfoListView.adapter = null
             binding.statisticsContainer.isVisible = false
