@@ -1,59 +1,101 @@
 package com.example.androidDeviceDetails
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
+import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.WifiRaw
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
+
     private var db = RoomDB.getDatabase()!!
-    var day = 0
-    var month = 0
-    var year = 0
-    var hour = 0
-    var minute = 0
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
-    var savedHour = 0
-    var savedMinute = 0
 
-    lateinit var button:Button
-    lateinit var imageFrom: ImageView
-    lateinit var imageTo: ImageView
-    lateinit var txtFrom:TextView
-    lateinit var txtTo:TextView
-    var fromTimestamp:Long=0
-    var toTimestamp:Long=0
-    var toggle=0
+    private var day = 0
+    private var month = 0
+    private var year = 0
+    private var hour = 0
+    private var minute = 0
+    private var savedDay = 0
+    private var savedMonth = 0
+    private var savedYear = 0
+    private var savedHour = 0
+    private var savedMinute = 0
 
-
+    private lateinit var filter: Button
     private lateinit var binding: ActivitySignalStrengthBinding
-    private var cellStrength: Int = -100
-    private var wifiStrength: Int = -80
+    private var maxValue = -50
+    private var minValue = -150
+
+    private var fromTimestamp: Long = 0
+    private var toTimestamp: Long = 0
+    private var toggle = 0
+    private var strength: Int = -100
     private var linkspeed: String = "0"
     private var cellInfoType: String = "LTE"
+    private var text2 = cellInfoType
+    private var text1 = "Type"
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        setContentView(R.layout.activity_signal_strength)
-       /* updateGauge()
-        db.wifiDao().getLastLive().observe(this) {
-            updateWifiGauge(it)
-        }
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
+        updateGauge()
+
         db.cellularDao().getLastLive().observe(this) {
             updateCellularGauge(it)
-        }*/
-        pickDate()
+        }
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.cellularStrength -> {
+                    minValue = -150
+                    maxValue = -50
+                    text1 = "Type"
+                    text2 = "LTE"
+                    db.cellularDao().getLastLive().observe(this) {
+                        updateCellularGauge(it)
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.wifiStrength -> {
+                    maxValue = 0
+                    minValue = -100
+                    text1 = "Linkspeed"
+                    text2 = "0 MHz"
+                    db.wifiDao().getLastLive().observe(this) {
+                        updateWifiGauge(it)
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            return@setOnNavigationItemSelectedListener false
+        }
+
+        binding.startTime.setOnClickListener {
+            toggle = 1
+            getDateTimeCalender()
+            DatePickerDialog(this, this, year, month, day).show()
+        }
+        binding.endTime.setOnClickListener {
+            toggle = 2
+            getDateTimeCalender()
+            DatePickerDialog(this, this, year, month, day).show()
+        }
+
     }
+
     private fun getDateTimeCalender() {
         val cal: Calendar = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
@@ -62,45 +104,35 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         hour = cal.get(Calendar.HOUR)
         minute = cal.get(Calendar.MINUTE)
     }
-    private fun pickDate() {
-        val txt: TextView
-        imageFrom = findViewById(R.id.start)
-        imageFrom.setOnClickListener {
-            toggle=1
-            getDateTimeCalender()
-            DatePickerDialog(this, this, year, month, day).show()
-        }
-        imageTo = findViewById(R.id.end)
-        imageTo.setOnClickListener {
-            toggle=2
-            getDateTimeCalender()
-            DatePickerDialog(this, this, year, month, day).show()
-        }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun updateGauge() {
+        binding.gauge.setMaxValue(maxValue.toFloat())
+        binding.gauge.setMinValue(minValue.toFloat())
+        binding.gauge.moveToValue(strength.toFloat())
+        binding.gauge.setLowerText(strength.toString())
+        binding.textStrength.text = "${strength.toString()} dBm"
+        binding.textView3.text = text1
+        binding.textView4.text = text2
     }
-/*    private fun updateGauge() {
-        binding.gaugeCellular.moveToValue(cellStrength.toFloat())
-        binding.gaugeCellular.setLowerText(cellInfoType)
-        binding.gaugeCellular.setUpperText(cellStrength.toString())
-        binding.gaugeWifi.moveToValue(wifiStrength.toFloat())
-        binding.gaugeWifi.setLowerText(linkspeed)
-        binding.gaugeWifi.setUpperText(wifiStrength.toString())
-    }
+
     private fun updateWifiGauge(wifiRaw: WifiRaw) {
         Log.d("test", "updateWifiGauge: ")
-        wifiStrength = wifiRaw.strength!!
+        strength = wifiRaw.strength!!
         linkspeed = wifiRaw.linkSpeed.toString()
-        binding.gaugeWifi.moveToValue(wifiStrength.toFloat())
-        binding.gaugeWifi.setLowerText(linkspeed)
-        binding.gaugeWifi.setUpperText(wifiStrength.toString())
+        text2 = "$linkspeed MHz"
+        updateGauge()
     }
+
     private fun updateCellularGauge(cellularRaw: CellularRaw) {
         Log.d("tag", "updateCellularGauge: ")
-        cellStrength = cellularRaw.strength!!
+        strength = cellularRaw.strength!!
         cellInfoType = cellularRaw.type.toString()
-        binding.gaugeCellular.moveToValue(cellStrength.toFloat())
-        binding.gaugeCellular.setLowerText(cellInfoType)
-        binding.gaugeCellular.setUpperText(cellStrength.toString())
-    }*/
+        text2 = cellInfoType
+        updateGauge()
+    }
+
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         savedDay = dayOfMonth
         savedMonth = month
@@ -108,17 +140,23 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         getDateTimeCalender()
         TimePickerDialog(this, this, hour, minute, true).show()
     }
+
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        txtFrom=findViewById(R.id.startTime)
-        txtTo=findViewById(R.id.endTime)
         savedHour = hourOfDay
         savedMinute = minute
         Log.d("calender", "$savedDay,$savedMonth,$savedYear")
         Log.d("calender", "$savedHour,$savedMinute")
-        if(toggle==1){fromTimestamp=getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
-            txtFrom.text="$savedDay/${savedMonth+1}/$savedYear  $savedHour:$savedMinute"}
-        if(toggle==2){toTimestamp=getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
-            txtTo.text="$savedDay/${savedMonth+1}/$savedYear  $savedHour:$savedMinute"}
+        if (toggle == 1) {
+            fromTimestamp =
+                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
+            binding.startTime.text =
+                "    $savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
+        }
+        if (toggle == 2) {
+            toTimestamp = getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
+            binding.endTime.text = "    $savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
+        }
+
 //        GlobalScope.launch {
 //            val wifiList=  db.wifiDao().getAllBetween(
 //                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute),
@@ -148,7 +186,8 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 //            }
 //        }
     }
-    fun getTimeStamp(day: Int, month: Int, year: Int, hour: Int, minute: Int): Long {
+
+    private fun getTimeStamp(day: Int, month: Int, year: Int, hour: Int, minute: Int): Long {
         val hexString = Integer.toHexString(hour * 60 * 60 + minute * 60)
         val str_date = "$day-$month-$year"
         val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy")
@@ -157,6 +196,6 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         Log.d("calender", "${hexString.toLong(16)}")
         timestamp = timestamp / 1000 + hexString.toLong(16)
         Log.d("calender", "${timestamp * 1000}")
-        return timestamp*1000
+        return timestamp * 1000
     }
 }
