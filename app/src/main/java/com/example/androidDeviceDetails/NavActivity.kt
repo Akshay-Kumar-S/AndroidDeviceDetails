@@ -79,6 +79,7 @@ class NavActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener,TimeP
             }
             false
         }
+
         pickDate()
         button=findViewById(R.id.button2)
         button.setOnClickListener(){

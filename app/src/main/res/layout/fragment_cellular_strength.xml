@@ -33,10 +33,10 @@
 
                 <de.nitri.gauge.Gauge
                     android:id="@+id/cellularGauge"
-                    android:layout_width="152dp"
-                    android:layout_height="141dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     app:faceColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -105,7 +105,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cellularCard"
+        app:layout_constraintTop_toBottomOf="@+id/cellularCard"
         app:layout_constraintVertical_bias="0.92">
 
         <TableRow

@@ -15,10 +15,11 @@ class WifiFragment : Fragment() {
     private var db = RoomDB.getDatabase()!!
     private var wifiStrength: Int = -80
     private var linkspeed: Int = 0
-    private lateinit var linkspeedText : TextView
+    private lateinit var linkspeedText: TextView
     private lateinit var strength: TextView
     lateinit private var gauge: Gauge
     lateinit var view: ViewGroup
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +27,8 @@ class WifiFragment : Fragment() {
     ): View {
         view = inflater.inflate(R.layout.fragment_wifi_strength, container, false) as ViewGroup
         gauge = view.findViewById(R.id.wifiGauge)
-        strength=view.findViewById(R.id.wifiStrengthText)
-        linkspeedText=view.findViewById(R.id.linkspeed)
+        strength = view.findViewById(R.id.wifiStrengthText)
+        linkspeedText = view.findViewById(R.id.linkspeed)
         updateGauge()
         db.wifiDao().getLastLive().observe(viewLifecycleOwner) {
             updateWifiGauge(it)
@@ -43,8 +44,8 @@ class WifiFragment : Fragment() {
         gauge.moveToValue(wifiStrength.toFloat())
         gauge.setLowerText(linkspeed.toString())
         gauge.setUpperText(wifiStrength.toString())
-        strength.text=wifiStrength.toString()
-        linkspeedText.text=linkspeed.toString()
+        strength.text = (wifiStrength.toString() + R.string.strength)
+        linkspeedText.text = (linkspeed.toString() + R.string.linkspeed)
     }
 
     private fun updateWifiGauge(wifiRaw: WifiRaw) {
