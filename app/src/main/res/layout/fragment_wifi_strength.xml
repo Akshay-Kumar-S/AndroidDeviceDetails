@@ -99,13 +99,14 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TableLayout
-        android:layout_width="361dp"
-        android:layout_height="559dp"
+        android:layout_width="370dp"
+        android:layout_height="511dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.88">
+        app:layout_constraintVertical_bias="0.877">
 
         <TableRow
             android:layout_width="match_parent"

@@ -2,11 +2,11 @@ package com.example.androidDeviceDetails
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.WifiRaw
 import de.nitri.gauge.Gauge
@@ -34,6 +34,10 @@ class WifiFragment : Fragment() {
         }
         return view
     }
+    fun setTextViewText(value: String?) {
+        linkspeedText.setText(value)
+    }
+
 
     private fun updateGauge() {
         gauge.moveToValue(wifiStrength.toFloat())

@@ -82,7 +82,7 @@ class NavActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener,TimeP
         pickDate()
         button=findViewById(R.id.button2)
         button.setOnClickListener(){
-           //call table update
+           wifiFragment.setTextViewText("working")
         }
     }
     private fun getDateTimeCalender() {
