@@ -13,27 +13,24 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardElevation="0.2dp"
+            android:layout_margin="8sp"
+            app:cardElevation="0.2sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="@color/soti_pebble"
-            app:strokeWidth="1dp">
+            app:strokeWidth="1sp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10sp">
 
 
                 <de.nitri.gauge.Gauge
                     android:id="@+id/gauge"
-                    app:initialValue="-110"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="150sp"
+                    android:layout_height="150sp"
                     app:faceColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -42,17 +39,16 @@
                     app:needleColor="@color/soti_coral"
                     app:scaleColor="@color/green"
                     app:totalNicks="120"
-                    app:upperText=""
+                    app:upperText="value"
                     app:valuePerNick="1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="20sp"
                     android:orientation="vertical"
-                    android:padding="20dp"
-                    app:layout_constraintStart_toEndOf="@+id/gauge"
+                    android:padding="10sp"
+                    app:layout_constraintStart_toEndOf="@id/gauge"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <!-- Title, secondary and supporting text -->
@@ -67,8 +63,8 @@
                         android:id="@+id/textStrength"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="90 dbm"
+                        android:layout_marginTop="8sp"
+                        android:text="90 dBm"
                         android:textAppearance="?attr/textAppearanceHeadline5" />
 
                     <TextView
@@ -83,7 +79,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="8sp"
                         android:text="secondary_text"
                         android:textAppearance="?attr/textAppearanceHeadline5" />
 
@@ -94,71 +90,101 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/datePicker"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="150dp"-->
-<!--            android:orientation="vertical"-->
-<!--            android:paddingStart="20dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/card"-->
-<!--            app:layout_constraintVertical_bias="0.423">-->
-
-
-<!--            <TextView-->
-<!--                android:id="@+id/startTime"-->
-<!--                android:layout_width="120dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:paddingStart="10dp"-->
-<!--                android:paddingTop="10dp"-->
-<!--                android:text="  START TIME"-->
-<!--                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.035"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/start"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintVertical_bias="0.308" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/endTime"-->
-<!--                android:layout_width="120dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="10dp"-->
-<!--                android:text="  END TIME"-->
-<!--                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"-->
-<!--                app:layout_constraintHorizontal_bias="0.035"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/end"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintVertical_bias="0.351" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/filter"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:text="FILTER"-->
-<!--                tools:ignore="RtlSymmetry" />-->
-
-<!--        </LinearLayout>-->
-
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="388dp"
-            android:layout_height="301dp"
-            android:background="@color/light_grey"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+        <LinearLayout
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="150sp"
+            android:orientation="vertical"
+            android:paddingStart="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.347"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.834" />
+            app:layout_constraintTop_toBottomOf="@id/card">
+
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10sp"
+                android:paddingTop="10sp"
+                android:text="  START TIME"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.035"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.308" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10sp"
+                android:text="  END TIME"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
+                app:layout_constraintHorizontal_bias="0.035"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.351" />
+
+            <Button
+                android:id="@+id/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp"
+                android:text="FILTER"
+                tools:ignore="RtlSymmetry" />
+
+        </LinearLayout>
+
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="300sp"
+            android:padding="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/datePicker"
+            app:layout_constraintVertical_bias="0.649">
+
+
+            <TableLayout
+                android:id="@+id/table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.347"
+                app:layout_constraintVertical_bias="0.92">
+
+                <TableRow
+                    android:layout_width="401sp"
+                    android:layout_height="83sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:text="Time" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </TableLayout>
+        </ScrollView>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
@@ -168,66 +194,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/strengthmenu" />
-
-        <TextView
-            android:id="@+id/startTime"
-            android:layout_width="111dp"
-            android:layout_height="34dp"
-            android:text="START TIME"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.206"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.341" />
-
-        <TextView
-            android:id="@+id/endTime"
-            android:layout_width="111dp"
-            android:layout_height="34dp"
-            android:text="END TIME"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.946"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.341" />
-
-        <ImageView
-            android:id="@+id/imageView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_calendar_today_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.041"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.336" />
-
-        <ImageView
-            android:id="@+id/imageView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_calendar_today_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.594"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.336" />
-
-        <Button
-            android:id="@+id/filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FILTER"
-            app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.913"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.398" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
