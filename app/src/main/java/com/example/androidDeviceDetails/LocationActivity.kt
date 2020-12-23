@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.utils.Utils
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
@@ -102,7 +101,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         }
         val set = BarDataSet(entries, "Location Count")
         val data = BarData(set)
-        val yAxisL: YAxis = binding.barChart.axisLeft
+//        val yAxisL: YAxis = binding.barChart.axisLeft
         val yAxisR: YAxis = binding.barChart.axisRight
 //        val formatterX: ValueFormatter = object : ValueFormatter() {
 //            override fun getAxisLabel(value: Float, axis: AxisBase): String {
@@ -145,7 +144,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             res = getData(date)
             Log.d("LocationData", "loadData: $res")
             if (res.isNotEmpty()) {
-                binding.selectDate.post {  binding.selectDate.text = formatter.format(calendar.time) }
+                binding.selectDate.post {
+                    binding.selectDate.text = formatter.format(calendar.time)
+                }
                 cookedData = locationCooker.cookData(res)
                 countedData = locationCooker.countData(cookedData)
                 refreshData()
@@ -153,7 +154,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
                 runOnUiThread {
                     Toast.makeText(
                         this@LocationActivity,
-                        "No Data on Selected Date ${calendar.time}", LENGTH_SHORT
+                        "No Data on Selected Date ${formatter.format(calendar.time)}", LENGTH_SHORT
                     ).show()
                     calendar.timeInMillis = prevDate
                     binding.selectDate.text = formatter.format(calendar.time)
@@ -203,7 +204,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     private fun refreshData(
         isCount: Boolean = false,
-        isTime: Boolean = false,
+//        isTime: Boolean = false,
         isDescending: Boolean = false
     ) {
         when {
@@ -231,7 +232,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             e?.x?.let { binding.scrollView.scrollTo(0, it.toInt()) }
         selectedRow.setBackgroundColor(Color.parseColor("#6FCDF8"))
         Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
-//        Toast.makeText(this, e.toString(), LENGTH_SHORT).show()
     }
 
     override fun onNothingSelected() {
