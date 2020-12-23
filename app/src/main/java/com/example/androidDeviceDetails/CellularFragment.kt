@@ -42,7 +42,7 @@ class CellularFragment : Fragment() {
         gauge.moveToValue(cellStrength.toFloat())
         gauge.setLowerText(cellInfoType)
         gauge.setUpperText(cellStrength.toString())
-        strength.text = (cellStrength.toString() + R.string.strength)
+        strength.text = cellStrength.toString()
         type.text = cellInfoType
     }
 
