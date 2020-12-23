@@ -1,21 +1,21 @@
-package com.example.androidDeviceDetails.managers
+package com.example.androidDeviceDetails.location
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Location
 import android.location.LocationManager
+import android.location.LocationManager.GPS_PROVIDER
+import android.location.LocationManager.NETWORK_PROVIDER
+import android.util.Log
 import android.widget.Toast
-import com.example.androidDeviceDetails.models.LocationModel
+import com.example.androidDeviceDetails.location.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
 import com.fonfon.kgeohash.GeoHash
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import android.annotation.SuppressLint
-import android.content.Context
-import android.location.Location
-import android.location.LocationManager.GPS_PROVIDER
-import android.location.LocationManager.NETWORK_PROVIDER
-import android.util.Log
 
-class LocationListner(var locationManager: LocationManager,var context: Context) {
+class LocationListener(var locationManager: LocationManager, var context: Context) {
     private var hasGps = false
     private var hasNetwork = false
     private var locationGps: Location? = null
@@ -26,16 +26,16 @@ class LocationListner(var locationManager: LocationManager,var context: Context)
     fun getLocation() {
         hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
-        Log.d("Location", "getLocationp: $hasGps $hasNetwork ")
+        Log.d("Location", "getLocation: $hasGps $hasNetwork ")
         if (hasGps || hasNetwork) {
             if (hasGps) {
                 Log.d("CodeAndroidLocation", "hasGpsp")
                 locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
+                    GPS_PROVIDER,
                     5000,
                     0F
                 ) { location ->
-                    Log.d("CodeAndroidLocation", "gpsLocation not nullp $location")
+                    Log.d("CodeAndroidLocation", "gpsLocation not null $location")
                     locationGps = location
                     insert(locationGps, "GPS")
                 }
@@ -43,17 +43,17 @@ class LocationListner(var locationManager: LocationManager,var context: Context)
             if (hasNetwork) {
                 Log.d("CodeAndroidLocation", "hasNetworkGpsp")
                 locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER,
+                    NETWORK_PROVIDER,
                     5000,
                     0F
                 ) { location ->
-                    Log.d("CodeAndroidLocation", "networkLocation not nullp $location")
+                    Log.d("CodeAndroidLocation", "networkLocation not null $location")
                     locationNetwork = location
                     insert(locationNetwork, "Network")
                 }
             }
             if (locationGps != null && locationNetwork != null) {
-                Log.d("CodeAndroidLocation", "has bothp")
+                Log.d("CodeAndroidLocation", "has both")
                 if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
                     insert(locationNetwork, "mNetwork")
                 } else {
@@ -71,9 +71,9 @@ class LocationListner(var locationManager: LocationManager,var context: Context)
             location.longitude,
             6
         ).toString()
-        Log.d("CodeAndroidLocation", "Latitude : " + location.latitude)
-        Log.d("CodeAndroidLocation", "Longitude : " + location.longitude)
-        Log.d("CodeAndroidLocation", "GeoHash : $geoHash")
+        Log.d("CodeAndroidLocation $tag", "Latitude : " + location.latitude)
+        Log.d("CodeAndroidLocation $tag", "Longitude : " + location.longitude)
+        Log.d("CodeAndroidLocation $tag", "GeoHash : $geoHash")
         Log.d("Date", "${Date(System.currentTimeMillis())}")
         val locationObj = LocationModel(
             0, location.latitude, location.longitude, geoHash,

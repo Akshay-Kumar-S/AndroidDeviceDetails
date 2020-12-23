@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="#595959"
-            android:text="@string/select_date"
+            android:text="@string/tillToday"
             android:background="@drawable/location_date_select_button"/>
 
         <!--        <ImageButton-->
@@ -83,13 +83,13 @@
                     android:gravity="center"
                     android:text="@string/time" />
 
-                <ImageView
-                    android:id="@+id/timeViewArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/ic_arrow_downward"
-                    android:tag="down"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/timeViewArrow"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="5dp"-->
+<!--                    android:src="@drawable/ic_arrow_downward"-->
+<!--                    android:tag="down"/>-->
             </LinearLayout>
 
             <TextView
@@ -108,7 +108,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,7 +123,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:src="@drawable/ic_arrow_downward"
-                    android:tag="down"/>
+                    android:tag="down"
+                    android:contentDescription="@string/sort_direction_arrow" />
             </LinearLayout>
         </TableRow>
 
@@ -135,8 +137,21 @@
                 android:id="@+id/tableView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical" >
+                <TableRow
+                    android:id="@+id/noData"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    tools:ignore="UselessParent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_data" />
+                </TableRow>
+            </TableLayout>
         </ScrollView>
+
     </TableLayout>
 
 
