@@ -6,14 +6,13 @@ import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBindin
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.WifiRaw
 
-class SignalViewModel(private val binding:ActivitySignalStrengthBinding) {
-    private var strength:Int = 0
-    private var cellInfoType:String="LTE"
-    private var linkspeed:String="0"
-
+class SignalViewModel(private val binding: ActivitySignalStrengthBinding) {
+    private var strength: Int = 0
+    private var cellInfoType: String = "LTE"
+    private var linkspeed: String = "0"
 
     @SuppressLint("SetTextI18n")
-   fun updateCellularGauge(cellularRaw: CellularRaw) {
+    fun updateCellularGauge(cellularRaw: CellularRaw) {
         Log.d("tag", "updateCellularGauge: ")
         strength = cellularRaw.strength!!
         cellInfoType = cellularRaw.type.toString()

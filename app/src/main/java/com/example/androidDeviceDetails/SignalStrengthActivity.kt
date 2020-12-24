@@ -13,6 +13,7 @@ import com.example.androidDeviceDetails.controllers.SignalController
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.Signal
 import com.example.androidDeviceDetails.models.WifiRaw
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -41,7 +42,6 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private var fromTimestamp: Long = 0
     private var toTimestamp: Long = 0
     private var toggle = 0
-    private var signal = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,24 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
         controller = SignalController(binding,this,lifecycleOwner = this)
 
-        controller.observeCellular(signal)
+        controller.observeSignal(Signal.CELLULAR.ordinal)
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.cellularStrength -> {
+                    binding.gauge.setMaxValue(-50f)
+                    binding.gauge.setMinValue(-150f)
+                    controller.observeSignal(Signal.CELLULAR.ordinal)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.wifiStrength -> {
+                    binding.gauge.setMaxValue(0f)
+                    binding.gauge.setMinValue(-100f)
+                    controller.observeSignal(Signal.WIFI.ordinal)
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            return@setOnNavigationItemSelectedListener false
+        }
 
         binding.startTime.setOnClickListener {
             toggle = 1
@@ -64,25 +81,6 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.cellularStrength -> {
-                binding.gauge.setMaxValue(-50f)
-                binding.gauge.setMinValue(-150f)
-                signal = 0
-                controller.observeCellular(signal)
-                return true
-            }
-            R.id.wifiStrength -> {
-                binding.gauge.setMaxValue(0f)
-                binding.gauge.setMinValue(-100f)
-                signal = 1
-                controller.observeWifi(signal)
-                return true
-            }
-        }
-        return false
-    }
 
     private fun getDateTimeCalender() {
         val cal: Calendar = Calendar.getInstance()
@@ -119,35 +117,6 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             binding.endTime.text =
                 "    $savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
         }
-
-//        GlobalScope.launch {
-//            val wifiList=  db.wifiDao().getAllBetween(
-//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute),
-//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
-//            )
-//            val cellularList=db.cellularDao().getAllBetween(
-//                getTimeStamp(
-//                    savedDay,
-//                    savedMonth + 1,
-//                    savedYear,
-//                    savedHour,
-//                    savedMinute
-//                ),
-//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour + 1, savedMinute)
-//            )
-//            Log.d(
-//                "calenderdata",
-//                cellularList.toString()
-//            )
-//            Log.d(
-//                "calenderdata1",
-//                wifiList.toString()
-//            )
-//            runOnUiThread {
-//                val text:TextView=findViewById(R.id.textView3)
-//                text.text=cellularList.toString()
-//            }
-//        }
     }
 
     private fun getTimeStamp(day: Int, month: Int, year: Int, hour: Int, minute: Int): Long {
