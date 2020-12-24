@@ -47,8 +47,8 @@ class LocationController(val context: Context, binding: ActivityLocationBinding)
             Log.d("LocationData", "loadData: $res")
             if (res.isNotEmpty()) {
                 locationViewModel.setDate(formatter.format(calendar.time))
-                cookedData = locationCooker.cookData(res)
-                countedData = locationCooker.countData(cookedData)
+                //cookedData = locationCooker.cookData(res)
+                countedData = locationCooker.cookData(res)
                 refreshData()
             } else {
                 locationViewModel.toast("No Data on Selected Date ${formatter.format(calendar.time)}")
@@ -63,12 +63,7 @@ class LocationController(val context: Context, binding: ActivityLocationBinding)
         isDescending: Boolean = false
     ) {
         when {
-            isCount -> {
-                countedData =
-                    if (isDescending) countedData.toList().sortedBy { (_, value) -> value }
-                        .reversed().toMap()
-                    else countedData.toList().sortedBy { (_, value) -> value }.toMap()
-            }
+            isCount -> countedData = locationCooker.sortDate(countedData,isDescending)
         }
         locationViewModel.buildGraph(countedData)
         locationViewModel.buildTable(countedData)
@@ -86,15 +81,14 @@ class LocationController(val context: Context, binding: ActivityLocationBinding)
         prevDate = calendar.timeInMillis
         calendar.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
         loadData(calendar.timeInMillis)
-        refreshData()
     }
 
     fun sortByTime() {
-        locationViewModel.toggleSortButton(false)
+        locationViewModel.toggleSortButton()
     }
 
     fun sortByCount(isDescending: Boolean) {
-        locationViewModel.toggleSortButton(isDescending)
+        locationViewModel.toggleSortButton()
         if (isDescending) {
             refreshData(isDescending = true, isCount = true)
         } else {
