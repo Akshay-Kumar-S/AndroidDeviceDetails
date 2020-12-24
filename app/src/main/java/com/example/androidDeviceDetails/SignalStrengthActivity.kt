@@ -47,7 +47,7 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
-        controller = SignalController(binding,this)
+        controller = SignalController(binding,this,lifecycleOwner = this)
 
         controller.observeCellular(signal)
 
