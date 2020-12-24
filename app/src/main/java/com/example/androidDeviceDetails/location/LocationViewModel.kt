@@ -108,8 +108,8 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
         selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
     }
 
-    fun toggleSortButton(isDescending: Boolean) {
-        if (isDescending) {
+    fun toggleSortButton() {
+        if (binding.countViewArrow.tag == "down") {
             binding.countViewArrow.tag = "up"
             binding.countViewArrow.setImageResource(R.drawable.ic_arrow_upward)
 
