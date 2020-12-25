@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TableRow
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.AppController
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.utils.Utils
@@ -15,9 +16,14 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
 
-    private lateinit var locationController: LocationController
+    private lateinit var locationController: AppController
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: TableRow
+    private var locationViewModel: LocationViewModel = LocationViewModel(this, binding)
+
+    companion object{
+        const val NAME="LOCATION_ACTIVITY"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
