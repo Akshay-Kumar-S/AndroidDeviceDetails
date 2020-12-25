@@ -1,21 +1,47 @@
 package com.example.androidDeviceDetails.location
 
+import android.util.Log
+import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.location.models.LocationModel
+import com.example.androidDeviceDetails.models.RoomDB
 import com.fonfon.kgeohash.GeoHash
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
-class LocationCooker {
+class LocationCooker : BaseCooker(){
     private val geoHashLength: Int = 6
+    private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
+    private lateinit var res: List<LocationModel>
+    private lateinit var countedData: Map<String, Int>
+    private var prevDate: Long = 0L
 
-    fun cookData1(locationList: List<LocationModel>): MutableList<LocationModel> {
-        val cookedLocationList = emptyList<LocationModel>().toMutableList()
-        var prevLocationHash = ""
-        for (location in locationList) {
-            if (location.geoHash != prevLocationHash) {
-                prevLocationHash = location.geoHash!!
-                cookedLocationList.add(location)
+
+    private suspend fun getData(date: Long?): List<LocationModel> =
+        withContext(Dispatchers.Default) {
+            if (date != null) {
+                return@withContext locationDatabase.locationDao()
+                    .readDataFromDate(date, date + TimeUnit.DAYS.toMillis(1))
             }
+            return@withContext locationDatabase.locationDao().readAll()
         }
-        return cookedLocationList
+
+    fun loadData(date: Long? = null) =
+    GlobalScope.launch {
+        res = getData(date)
+        Log.d("LocationData", "loadData: $res")
+        if (res.isNotEmpty()) {
+            locationViewModel.setDate(formatter.format(calendar.time))
+            //cookedData = locationCooker.cookData(res)
+            countedData = locationCooker.cookData(res)
+            refreshData()
+        } else {
+            locationViewModel.toast("No Data on Selected Date ${formatter.format(calendar.time)}")
+            calendar.timeInMillis = prevDate
+            locationViewModel.setDate(formatter.format(calendar.time))
+        }
     }
 
     fun countData(cookedData: MutableList<LocationModel>): Map<String, Int> {
@@ -26,21 +52,18 @@ class LocationCooker {
         val cookedLocationList = emptyList<LocationModel>().toMutableList()
         var prevLocationHash = ""
         for (location in locationList) {
-            val newHash = GeoHash(location.latitude!!,location.longitude!!,geoHashLength).toString()
+            val newHash =
+                GeoHash(location.latitude!!, location.longitude!!, geoHashLength).toString()
             if (newHash != prevLocationHash) {
                 prevLocationHash = location.geoHash!!
                 cookedLocationList.add(location)
             }
         }
-//        return cookedLocationList
-       return cookedLocationList.groupingBy { it.geoHash!! }.eachCount()
+        return cookedLocationList.groupingBy { it.geoHash!! }.eachCount()
     }
 
-    fun sortDate(countedData: Map<String, Int>,isDescending: Boolean): Map<String, Int> {
-        return if (isDescending)
-            countedData.toList().sortedBy { (_, value) -> value }.reversed().toMap()
-        else
-            countedData.toList().sortedBy { (_, value) -> value }.toMap()
 
+    override fun cook(time: Long) {
+        TODO("Not yet implemented")
     }
 }

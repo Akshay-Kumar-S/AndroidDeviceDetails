@@ -21,41 +21,16 @@ import java.util.concurrent.TimeUnit
 class LocationController(val context: Context, binding: ActivityLocationBinding) {
     private var locationCooker: LocationCooker = LocationCooker()
     private var locationViewModel: LocationViewModel = LocationViewModel(context, binding)
-    private lateinit var res: List<LocationModel>
-    private lateinit var cookedData: MutableList<LocationModel>
-    private lateinit var countedData: Map<String, Int>
-    private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
-    private var prevDate: Long = 0L
+
     private val calendar = Calendar.getInstance()
 
     @SuppressLint("SimpleDateFormat")
     private val formatter = SimpleDateFormat("dd-MM-yyyy")
 
 
-    private suspend fun getData(date: Long?): List<LocationModel> =
-        withContext(Dispatchers.Default) {
-            if (date != null) {
-                return@withContext locationDatabase.locationDao()
-                    .readDataFromDate(date, date + TimeUnit.DAYS.toMillis(1))
-            }
-            return@withContext locationDatabase.locationDao().readAll()
-        }
 
-    fun loadData(date: Long? = null) =
-        GlobalScope.launch {
-            res = getData(date)
-            Log.d("LocationData", "loadData: $res")
-            if (res.isNotEmpty()) {
-                locationViewModel.setDate(formatter.format(calendar.time))
-                //cookedData = locationCooker.cookData(res)
-                countedData = locationCooker.cookData(res)
-                refreshData()
-            } else {
-                locationViewModel.toast("No Data on Selected Date ${formatter.format(calendar.time)}")
-                calendar.timeInMillis = prevDate
-                locationViewModel.setDate(formatter.format(calendar.time))
-            }
-        }
+
+
 
     private fun refreshData(
         isCount: Boolean = false,
@@ -63,7 +38,7 @@ class LocationController(val context: Context, binding: ActivityLocationBinding)
         isDescending: Boolean = false
     ) {
         when {
-            isCount -> countedData = locationCooker.sortDate(countedData,isDescending)
+            isCount -> countedData = locationCooker.sortDate(countedData, isDescending)
         }
         locationViewModel.buildGraph(countedData)
         locationViewModel.buildTable(countedData)

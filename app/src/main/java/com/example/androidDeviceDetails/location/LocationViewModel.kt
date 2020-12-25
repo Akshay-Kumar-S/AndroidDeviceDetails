@@ -10,7 +10,9 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.location.models.LocationModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
@@ -18,7 +20,11 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 
-class LocationViewModel(val context: Context, private val binding: ActivityLocationBinding) {
+class LocationViewModel(val context: Context, private val binding: ActivityLocationBinding) :
+    BaseViewModel<LocationModel>() {
+
+    lateinit var countedData: Map<String, Int>
+
 
     private fun getTextView(text: String): TextView {
         val textView = TextView(context)
@@ -46,6 +52,13 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
                 context, msg, Toast.LENGTH_SHORT
             ).show()
         }
+
+    fun sortDate(countedData: Map<String, Int>, isDescending: Boolean): Map<String, Int> {
+        return if (isDescending)
+            countedData.toList().sortedBy { (_, value) -> value }.reversed().toMap()
+        else
+            countedData.toList().sortedBy { (_, value) -> value }.toMap()
+    }
 
     @SuppressLint("ResourceAsColor")
     fun buildTable(countLocation: Map<String, Int>) {
@@ -117,6 +130,10 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
             binding.countViewArrow.tag = "down"
             binding.countViewArrow.setImageResource(R.drawable.ic_arrow_downward)
         }
+    }
+
+    override fun populateList(data: ArrayList<LocationModel>) {
+        countedData
     }
 
 }
