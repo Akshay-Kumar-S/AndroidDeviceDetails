@@ -8,9 +8,11 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.androidDeviceDetails.controllers.SignalController
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.Signal
 import com.example.androidDeviceDetails.models.WifiRaw
 import com.example.androidDeviceDetails.utils.ListAdaptor
 import kotlinx.coroutines.GlobalScope
@@ -28,6 +30,7 @@ class SignalStrengthActivity : AppCompatActivity(){
     private var toTimestamp: Long = 0
     private var toggle = 0
     private var signal = 0
+    lateinit var controller:SignalController
 
     lateinit var signalStrengthViewModel:SignalStrengthViewModel
     lateinit var signalStrengthCooker:SignalStrengthCooker
@@ -39,30 +42,21 @@ class SignalStrengthActivity : AppCompatActivity(){
          signalStrengthViewModel = SignalStrengthViewModel(binding, this)
          signalStrengthCooker=SignalStrengthCooker(binding,this)
         signalStrengthCooker.onCreate()
-        db.cellularDao().getLastLive().observe(this) {
-            if (signal == 0)
-                  signalStrengthViewModel.updateCellularGauge(it)
-        }
+
+        controller = SignalController(binding,this,lifecycleOwner = this)
+        controller.observeSignal(Signal.CELLULAR.ordinal)
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellularStrength -> {
                     binding.gauge.setMaxValue(-50f)
                     binding.gauge.setMinValue(-150f)
-                    signal = 0
-                    db.cellularDao().getLastLive().observe(this) {
-                        if (signal == 0)
-                                signalStrengthViewModel.updateCellularGauge(it)
-                    }
+                    controller.observeSignal(Signal.CELLULAR.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifiStrength -> {
                     binding.gauge.setMaxValue(0f)
                     binding.gauge.setMinValue(-100f)
-                    signal = 1
-                    db.wifiDao().getLastLive().observe(this) {
-                        if (signal == 1)
-                        signalStrengthViewModel.updateWifiGauge(it)
-                    }
+                    controller.observeSignal(Signal.WIFI.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
             }
