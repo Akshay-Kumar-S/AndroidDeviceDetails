@@ -36,6 +36,7 @@ class SignalStrengthActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private var savedHour = 0
     private var savedMinute = 0
 
+
     private lateinit var filter: Button
     private lateinit var binding: ActivitySignalStrengthBinding
 
