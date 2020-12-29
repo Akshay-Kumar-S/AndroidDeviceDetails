@@ -15,7 +15,7 @@ class SignalStrengthViewModel(
     private var strength: Int = -100
     private var linkspeed: String = "0"
     private var cellInfoType: String = "LTE"
-    private var signal = 0
+   // private var signal = 0
 
     @SuppressLint("SetTextI18n")
      fun updateWifiGauge(wifiRaw: WifiRaw) {
@@ -25,7 +25,7 @@ class SignalStrengthViewModel(
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
         signalStrengthBinding.gauge.setLowerText(strength.toString())
         signalStrengthBinding.textStrength.text = "$strength dBm"
-        signalStrengthBinding.textView3.text = "Linkspeed"
+        signalStrengthBinding.textView3.text = "LinkSpeed"
         signalStrengthBinding.textView4.text = "$linkspeed MHz"
     }
 
@@ -42,7 +42,10 @@ class SignalStrengthViewModel(
     }
 
     fun updateListView(cellularList: List<CellularRaw>) {
+
+
         val adapter = ListAdaptor(context, R.layout.signal_tile, cellularList)
         signalStrengthBinding.listView.adapter = adapter
+
     }
 }
