@@ -24,7 +24,7 @@ class SignalStrengthViewModel(
         linkspeed = wifiRaw.linkSpeed.toString()
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
         signalStrengthBinding.gauge.setLowerText(strength.toString())
-        signalStrengthBinding.textStrength.text = "${strength.toString()} dBm"
+        signalStrengthBinding.textStrength.text = "$strength dBm"
         signalStrengthBinding.textView3.text = "Linkspeed"
         signalStrengthBinding.textView4.text = "$linkspeed MHz"
     }
@@ -36,16 +36,13 @@ class SignalStrengthViewModel(
         cellInfoType = cellularRaw.type.toString()
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
         signalStrengthBinding.gauge.setLowerText(strength.toString())
-        signalStrengthBinding.textStrength.text = "${strength.toString()} dBm"
+        signalStrengthBinding.textStrength.text = "$strength dBm"
         signalStrengthBinding.textView3.text = "Type"
         signalStrengthBinding.textView4.text = cellInfoType
     }
 
     fun updateListView(cellularList: List<CellularRaw>) {
-
-
         val adapter = ListAdaptor(context, R.layout.signal_tile, cellularList)
         signalStrengthBinding.listView.adapter = adapter
-
     }
 }
