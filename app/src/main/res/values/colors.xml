@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#F1614F</color>
     <color name="purple_700">#7C7C81</color>
@@ -27,14 +26,4 @@
     <color name="sendBubbleBackground">#9CDCFA</color>
     <color name="transparent_blue">#8370AFCC</color>
     <color name="light_grey">#70D3D3D3</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="anthracite">#2B292E</color>
-    <color name="orangeRed">#FF4500</color>
-    <color name="green">#008000</color>
-
-    <color name="debug_red">#F00</color>
-    <color name="debug_green">#0F0</color>
-    <color name="debug_blue">#00F</color>
 </resources>

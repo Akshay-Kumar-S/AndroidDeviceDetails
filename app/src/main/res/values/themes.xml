@@ -1,23 +1,26 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.AndroidDeviceDetails" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.AndroidDeviceDetails" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@string/default_font</item>
+        <item name="android:textColorHint">#676767</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#1A73E8</item>
-        <item name="colorPrimaryVariant">#1A73E8</item>
+        <item name="colorPrimary">@color/soti_wave</item>
+        <item name="colorPrimaryVariant">@color/soti_electric</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="batteryTitle">@color/black</item>
         <item name="mainButtonBg">#EAE9E9</item>
         <item name="startBlue">#1A73E8</item>
         <item name="endOrange">#1A73E8</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondary">@color/soti_wave</item>
+        <item name="colorSecondaryVariant">@color/soti_electric</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="TimeDateBackground">#E1E1E1</item>
         <item name="iconTint">@color/gray_600</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/soti_blue</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

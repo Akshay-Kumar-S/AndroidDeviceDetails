@@ -23,7 +23,7 @@ class SignalStrengthViewModel(
         strength = wifiRaw.strength!!
         linkspeed = wifiRaw.linkSpeed.toString()
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
-        signalStrengthBinding.gauge.setLowerText(strength.toString())
+        //signalStrengthBinding.gauge.setLowerText(strength.toString())
         signalStrengthBinding.textStrength.text = "$strength dBm"
         signalStrengthBinding.textView3.text = "LinkSpeed"
         signalStrengthBinding.textView4.text = "$linkspeed MHz"
@@ -35,7 +35,7 @@ class SignalStrengthViewModel(
         strength = cellularRaw.strength!!
         cellInfoType = cellularRaw.type.toString()
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
-        signalStrengthBinding.gauge.setLowerText(strength.toString())
+        //signalStrengthBinding.gauge.setLowerText(strength.toString())
         signalStrengthBinding.textStrength.text = "$strength dBm"
         signalStrengthBinding.textView3.text = "Type"
         signalStrengthBinding.textView4.text = cellInfoType
