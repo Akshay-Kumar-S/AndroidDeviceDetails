@@ -16,7 +16,7 @@ class SignalController(
     var context: Context,
     var lifecycleOwner: LifecycleOwner
 ) {
-    private var viewModel: SignalViewModel = SignalViewModel(binding)
+    private var viewModel: SignalViewModel = SignalViewModel(binding,context)
     private var db = RoomDB.getDatabase()!!
     private var signal = 0
 

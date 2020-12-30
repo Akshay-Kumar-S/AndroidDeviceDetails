@@ -7,7 +7,6 @@ import androidx.room.*
 data class WifiRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "strength") val strength: Int?,
-    @ColumnInfo(name = "level") val level: Int?,
     @ColumnInfo(name = "frequency") val frequency: Int?,
     @ColumnInfo(name = "linkSpeed") val linkSpeed: Int?
 )

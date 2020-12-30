@@ -1,39 +1,49 @@
 package com.example.androidDeviceDetails
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.WifiRaw
+import com.example.androidDeviceDetails.utils.ListAdaptor
 
-class SignalViewModel(private val binding: ActivitySignalStrengthBinding) {
-    private var strength: Int = 0
-    private var cellInfoType: String = "LTE"
+class SignalViewModel(
+    private val signalStrengthBinding: ActivitySignalStrengthBinding,
+    val context: Context
+) {
+    private var strength: Int = -100
     private var linkspeed: String = "0"
+    private var cellInfoType: String = "LTE"
 
     @SuppressLint("SetTextI18n")
-    fun updateCellularGauge(cellularRaw: CellularRaw) {
-        Log.d("tag", "updateCellularGauge: ")
-        strength = cellularRaw.strength!!
-        cellInfoType = cellularRaw.type.toString()
-        binding.gauge.moveToValue(strength.toFloat())
-        binding.gauge.setLowerText(strength.toString())
-        binding.textStrength.text = "$strength dBm"
-        binding.textView3.text = "Type"
-        binding.textView4.text = cellInfoType
-    }
-
-    @SuppressLint("SetTextI18n")
-    fun updateWifiGauge(wifiRaw: WifiRaw) {
+     fun updateWifiGauge(wifiRaw: WifiRaw) {
         Log.d("test", "updateWifiGauge: ")
         strength = wifiRaw.strength!!
         linkspeed = wifiRaw.linkSpeed.toString()
-        binding.gauge.moveToValue(strength.toFloat())
-        binding.gauge.setLowerText(strength.toString())
-        binding.textStrength.text = "$strength dBm"
-        binding.textView3.text = "Linkspeed"
-        binding.textView4.text = "$linkspeed MHz"
+        signalStrengthBinding.gauge.moveToValue(strength.toFloat())
+        signalStrengthBinding.gauge.setLowerText(strength.toString())
+        signalStrengthBinding.textStrength.text = "$strength dBm"
+        signalStrengthBinding.textView3.text = "LinkSpeed"
+        signalStrengthBinding.textView4.text = "$linkspeed MHz"
     }
 
-    
+    @SuppressLint("SetTextI18n")
+     fun updateCellularGauge(cellularRaw: CellularRaw) {
+        Log.d("tag", "updateCellularGauge: ")
+        strength = cellularRaw.strength!!
+        cellInfoType = cellularRaw.type.toString()
+        signalStrengthBinding.gauge.moveToValue(strength.toFloat())
+        signalStrengthBinding.gauge.setLowerText(strength.toString())
+        signalStrengthBinding.textStrength.text = "$strength dBm"
+        signalStrengthBinding.textView3.text = "Type"
+        signalStrengthBinding.textView4.text = cellInfoType
+    }
+
+    fun updateListView(cellularList: List<CellularRaw>) {
+        val adapter = ListAdaptor(context, R.layout.signal_tile, cellularList)
+        signalStrengthBinding.listView.adapter = adapter
+    }
+
+
 }

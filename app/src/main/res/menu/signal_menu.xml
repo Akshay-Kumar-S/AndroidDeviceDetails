@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/cellularStrength"
-        android:icon="@drawable/ic_baseline_signal_cellular_0_bar_24"
-        android:title="cellular" />
-    <item
-        android:id="@+id/wifiStrength"
-        android:icon="@drawable/ic_baseline_wifi_24"
-        android:title="wifi" />
+<item
+    android:id="@+id/cellularStrength"
+    android:icon="@drawable/ic_baseline_signal_cellular_0_bar_24"
+    android:title="cellular" />
+<item
+    android:id="@+id/wifiStrength"
+    android:icon="@drawable/ic_baseline_wifi_24"
+    android:title="wifi" />
 </menu>
