@@ -3,39 +3,44 @@ package com.example.androidDeviceDetails.controllers
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.SignalCookingInterface
 import com.example.androidDeviceDetails.SignalStrengthCooker
-import com.example.androidDeviceDetails.SignalViewModel
+import com.example.androidDeviceDetails.SignalStrengthViewModel
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.Signal
-import com.example.androidDeviceDetails.utils.ListAdaptor
 
 class SignalController(
-    var binding: ActivitySignalStrengthBinding,
+    var signalBinding: ActivitySignalStrengthBinding,
     var context: Context,
     var lifecycleOwner: LifecycleOwner
 ) {
-    private var viewModel: SignalViewModel = SignalViewModel(binding,context)
+    private var viewModel: SignalStrengthViewModel = SignalStrengthViewModel(signalBinding, context)
     private var db = RoomDB.getDatabase()!!
     private var signal = 0
+    lateinit var signalCooker: SignalStrengthCooker
+    private val onCookingDone = object : SignalCookingInterface<CellularRaw> {
+        override fun updateListView(outputList: ArrayList<CellularRaw>) =
+            viewModel.updateListView(outputList)
 
-    lateinit var signalStrengthCooker: SignalStrengthCooker
+    }
 
     fun onCreate() {
-        signalStrengthCooker = SignalStrengthCooker(binding, context)
+        signalCooker = SignalStrengthCooker(signalBinding, context)
+        signalCooker.onCreate()
         observeSignal(Signal.CELLULAR.ordinal)
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellularStrength -> {
-                   binding.gauge.setMaxValue(-50f)
-                    binding.gauge.setMinValue(-150f)
+                    signalBinding.gauge.setMaxValue(-50f)
+                    signalBinding.gauge.setMinValue(-150f)
                     observeSignal(Signal.CELLULAR.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifiStrength -> {
-                    binding.gauge.setMaxValue(0f)
-                    binding.gauge.setMinValue(-100f)
+                    signalBinding.gauge.setMaxValue(0f)
+                    signalBinding.gauge.setMinValue(-100f)
                     observeSignal(Signal.WIFI.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -43,7 +48,6 @@ class SignalController(
             return@setOnNavigationItemSelectedListener false
         }
     }
-
 
     fun observeSignal(signal: Int) {
         when (signal) {
@@ -71,8 +75,9 @@ class SignalController(
                 viewModel.updateWifiGauge(it)
         }
     }
-    fun updateListView() {
-        signalStrengthCooker.getDbData()
 
+    fun setCooker() {
+
+        signalCooker.cookSignalData(onCookingDone,signalCooker.getFromTimestamp(),signalCooker.getToTimestamp(),signal)
     }
 }

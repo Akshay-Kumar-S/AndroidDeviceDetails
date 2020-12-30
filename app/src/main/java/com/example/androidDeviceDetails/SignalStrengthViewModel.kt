@@ -7,8 +7,9 @@ import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBindin
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.WifiRaw
 import com.example.androidDeviceDetails.utils.ListAdaptor
+import java.util.ArrayList
 
-class SignalViewModel(
+class SignalStrengthViewModel(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
     val context: Context
 ) {
@@ -40,9 +41,14 @@ class SignalViewModel(
         signalStrengthBinding.textView4.text = cellInfoType
     }
 
-    fun updateListView(cellularList: List<CellularRaw>) {
-        val adapter = ListAdaptor(context, R.layout.signal_tile, cellularList)
-        signalStrengthBinding.listView.adapter = adapter
+    fun updateListView(cellularList: ArrayList<CellularRaw>) {
+
+            signalStrengthBinding.root.post{val adapter = ListAdaptor(context, R.layout.signal_tile, cellularList)
+                signalStrengthBinding.listView.adapter = adapter
+            }
+
+
+
     }
 
 

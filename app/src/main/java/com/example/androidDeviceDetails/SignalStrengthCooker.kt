@@ -10,17 +10,17 @@ import android.widget.TimePicker
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.utils.ListAdaptor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class SignalStrengthCooker (
+class SignalStrengthCooker(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
     val context: Context
-): DatePickerDialog.OnDateSetListener,
+) : DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
     private var db = RoomDB.getDatabase()!!
     private var day = 0
@@ -36,7 +36,6 @@ class SignalStrengthCooker (
     private var fromTimestamp: Long = 0
     private var toTimestamp: Long = 0
     private var toggle = 0
-    lateinit var signalStrengthViewModel: SignalStrengthViewModel
 
     fun onCreate() {
 
@@ -68,7 +67,7 @@ class SignalStrengthCooker (
         savedMonth = month
         savedYear = year
         getDateTimeCalender()
-        TimePickerDialog(context, this, hour, minute, true).show()
+        TimePickerDialog(context, this, hour, minute, false).show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -88,8 +87,7 @@ class SignalStrengthCooker (
             signalStrengthBinding.endTime.text =
                 "$savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
         }
-
-
+        Log.e("timegettera","$fromTimestamp   $toTimestamp")
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -104,35 +102,28 @@ class SignalStrengthCooker (
         Log.d("calender", "${timestamp * 1000}")
         return timestamp * 1000
     }
-
-    fun fromTimeStamp(): Long {
-        return fromTimestamp
-    }
-
-    fun toTimeStamp(): Long {
-        return toTimestamp
-    }
-
-    fun getDbData() {
-        signalStrengthViewModel = SignalStrengthViewModel(signalStrengthBinding,context)
-        fromTimestamp =fromTimeStamp()
-        toTimestamp =toTimeStamp()
+    fun getFromTimestamp():Long{return fromTimestamp}
+    fun getToTimestamp():Long{return toTimestamp}
+    fun cookSignalData(
+        callback: SignalCookingInterface<CellularRaw>,beginTime:Long,endTime:Long,type:Int
+    ) {
+        Log.e("path","")
         GlobalScope.launch {
+            Log.e("timegetter","$beginTime   $endTime")
+            val cellularList = db.cellularDao().getAllBetween(
+                beginTime,
+               endTime
+
+            )
             val wifiList = db.wifiDao().getAllBetween(
-                fromTimestamp,
-                toTimestamp
+                beginTime,
+                endTime
             )
-            val cellularList:List<CellularRaw> = db.cellularDao().getAllBetween(
-                fromTimestamp,
-                toTimestamp
-            )
-              signalStrengthBinding.root.post{ val adapter = ListAdaptor(context, R.layout.signal_tile, cellularList)
-                  signalStrengthBinding.listView.adapter = adapter}
-
-
-            
+            // cooking
+            if (cellularList.isNotEmpty()){
+                callback.updateListView(cellularList as ArrayList<CellularRaw>)
+            }
 
         }
-
     }
 }
