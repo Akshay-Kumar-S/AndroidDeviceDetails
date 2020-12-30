@@ -48,4 +48,10 @@ class SignalStrengthViewModel(
         signalStrengthBinding.listView.adapter = adapter
 
     }
+
+    fun addWifiList(list: List<WifiRaw>) {
+    }
+
+    fun addCellularList(list: List<CellularRaw>) {
+    }
 }

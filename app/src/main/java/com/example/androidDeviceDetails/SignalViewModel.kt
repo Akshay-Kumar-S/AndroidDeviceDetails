@@ -35,4 +35,5 @@ class SignalViewModel(private val binding: ActivitySignalStrengthBinding) {
         binding.textView4.text = "$linkspeed MHz"
     }
 
+    
 }
