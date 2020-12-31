@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.location
 
 import android.util.Log
+import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.location.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class LocationCooker : BaseCooker(){
@@ -28,27 +30,11 @@ class LocationCooker : BaseCooker(){
             return@withContext locationDatabase.locationDao().readAll()
         }
 
-    fun loadData(date: Long? = null) =
-    GlobalScope.launch {
-        res = getData(date)
-        Log.d("LocationData", "loadData: $res")
-        if (res.isNotEmpty()) {
-            locationViewModel.setDate(formatter.format(calendar.time))
-            //cookedData = locationCooker.cookData(res)
-            countedData = locationCooker.cookData(res)
-            refreshData()
-        } else {
-            locationViewModel.toast("No Data on Selected Date ${formatter.format(calendar.time)}")
-            calendar.timeInMillis = prevDate
-            locationViewModel.setDate(formatter.format(calendar.time))
-        }
-    }
-
     fun countData(cookedData: MutableList<LocationModel>): Map<String, Int> {
         return cookedData.groupingBy { it.geoHash!! }.eachCount()
     }
 
-    fun cookData(locationList: List<LocationModel>): Map<String, Int> {
+    private fun cookData(locationList: List<LocationModel>): MutableList<LocationModel> {
         val cookedLocationList = emptyList<LocationModel>().toMutableList()
         var prevLocationHash = ""
         for (location in locationList) {
@@ -59,11 +45,16 @@ class LocationCooker : BaseCooker(){
                 cookedLocationList.add(location)
             }
         }
-        return cookedLocationList.groupingBy { it.geoHash!! }.eachCount()
+        return cookedLocationList
+    }
+
+    override fun <T> cook(onCookingDone: ICookingDone<T>, time: Long) {
+        GlobalScope.launch {
+            res = locationDatabase.locationDao().readAll()
+            onCookingDone.onData(cookData(res) as MutableList<T>)
+            Log.d("LocationData", "loadData: $res")
+        }
     }
 
 
-    override fun cook(time: Long) {
-        TODO("Not yet implemented")
-    }
 }

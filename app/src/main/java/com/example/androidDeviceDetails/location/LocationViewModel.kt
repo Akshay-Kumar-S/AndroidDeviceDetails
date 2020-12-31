@@ -21,9 +21,13 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 
 class LocationViewModel(val context: Context, private val binding: ActivityLocationBinding) :
-    BaseViewModel<LocationModel>() {
+    BaseViewModel() {
 
-    lateinit var countedData: Map<String, Int>
+    companion object {
+        const val NAME = "LOCATION_ACTIVITY"
+    }
+
+    private lateinit var countedData: Map<String, Int>
 
 
     private fun getTextView(text: String): TextView {
@@ -53,7 +57,7 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
             ).show()
         }
 
-    fun sortDate(countedData: Map<String, Int>, isDescending: Boolean): Map<String, Int> {
+    fun sortData( isDescending: Boolean): Map<String, Int> {
         return if (isDescending)
             countedData.toList().sortedBy { (_, value) -> value }.reversed().toMap()
         else
@@ -79,7 +83,7 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
         }
     }
 
-    fun buildGraph(countData: Map<String, Int>) {
+    private fun buildGraph(countData: Map<String, Int>) {
         val entries: MutableList<BarEntry> = emptyList<BarEntry>().toMutableList()
         val labels = emptyList<String>().toMutableList()
         var index = 0f
@@ -132,8 +136,14 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
         }
     }
 
-    override fun populateList(data: ArrayList<LocationModel>) {
-        countedData
+    override fun <T> populateList(data: MutableList<T>) {
+        val data1 = data as MutableList<LocationModel>
+        countedData = data1.groupingBy { it.geoHash!! }.eachCount()
+        buildGraph(countedData)
+        buildTable(countedData)    }
+
+    override fun onNoData() {
+        toast("No data on selected date")
     }
 
 }
