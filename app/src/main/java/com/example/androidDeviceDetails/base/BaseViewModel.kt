@@ -1,16 +1,20 @@
 package com.example.androidDeviceDetails.base
 
-import com.example.androidDeviceDetails.battery.BatteryActivity
-import com.example.androidDeviceDetails.battery.BatteryAppEntry
-import com.example.androidDeviceDetails.battery.BatteryViewModel
+import android.content.Context
+import androidx.viewbinding.ViewBinding
+import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.location.LocationViewModel
 
-abstract class BaseViewModel<T> {
-    abstract fun populateList(data: ArrayList<T>)
+
+abstract class BaseViewModel {
+    abstract fun <T> populateList(data: MutableList<T>)
+    abstract fun onNoData()
 
     companion object {
-        fun getViewModel(type: String): BaseViewModel<BatteryAppEntry> {
-            if (BatteryActivity.NAME == type) {
-                return BatteryViewModel(null, null)
+        fun getViewModel(type: String, context: Context, binding: ViewBinding): BaseViewModel {
+            return when (type) {
+                LocationViewModel.NAME -> LocationViewModel(context,binding as ActivityLocationBinding)
+                else -> LocationViewModel(context,binding as ActivityLocationBinding)
             }
         }
     }

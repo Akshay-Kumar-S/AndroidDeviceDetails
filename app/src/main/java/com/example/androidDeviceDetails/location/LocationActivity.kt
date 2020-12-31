@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.AppController
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.location.models.LocationModel
 import com.example.androidDeviceDetails.utils.Utils
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
@@ -16,20 +17,21 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
 
-    private lateinit var locationController: AppController
+    private lateinit var locationController: AppController<LocationModel>
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: TableRow
-    private var locationViewModel: LocationViewModel = LocationViewModel(this, binding)
+    private lateinit var locationViewModel: LocationViewModel
 
-    companion object{
-        const val NAME="LOCATION_ACTIVITY"
+    companion object {
+        const val NAME = "LOCATION_ACTIVITY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        locationController = LocationController(this, binding)
+        locationController = AppController("LOCATION_ACTIVITY", this, binding)
+        locationViewModel = LocationViewModel(this, binding)
         binding.selectDate.setOnClickListener(this)
         binding.timeView.setOnClickListener(this)
         binding.countView.setOnClickListener(this)
@@ -39,20 +41,19 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     private fun init() {
         selectedRow = binding.noData
-        locationController.loadData()
+        locationController.start()
     }
 
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.selectDate -> selectDate()
-            R.id.timeView -> locationController.sortByTime()
+//            R.id.timeView -> locationController.sortByTime()
             R.id.countView -> {
                 if (binding.countViewArrow.tag == "down") {
-                    locationController.sortByCount(true)
+                    locationViewModel.sortData(true)
                 } else
-                    locationController.sortByCount(false)
-
+                    locationViewModel.sortData(false)
             }
         }
     }
@@ -60,19 +61,19 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     private fun selectDate() {
         return Utils.showDatePicker(this)
         { _, year, monthOfYear, dayOfMonth ->
-            locationController.onDateSelect(year, monthOfYear, dayOfMonth)
+//            locationController.onDateSelect(year, monthOfYear, dayOfMonth)
         }.show()
     }
 
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-        locationController.onValueSelected(e, selectedRow)
+        locationViewModel.onValueSelected(e, selectedRow)
         selectedRow = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
         Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
     }
 
     override fun onNothingSelected() {
-        locationController.onNothingSelected(selectedRow)
+        locationViewModel.onNothingSelected(selectedRow)
     }
 
 }
