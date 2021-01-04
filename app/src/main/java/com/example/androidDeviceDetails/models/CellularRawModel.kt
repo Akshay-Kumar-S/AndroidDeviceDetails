@@ -16,8 +16,8 @@ data class CellularRaw(
 interface CellularDao {
     @Query("SELECT * FROM CellularRaw")
     fun getAll(): List<CellularRaw>
-
-    @Insert
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg cellularRaw: CellularRaw)
 
     @Delete
