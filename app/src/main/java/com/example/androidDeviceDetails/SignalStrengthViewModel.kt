@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
+import com.example.androidDeviceDetails.models.Signal
 import com.example.androidDeviceDetails.models.WifiRaw
 import com.example.androidDeviceDetails.utils.ListAdaptor
 import java.util.ArrayList
@@ -50,6 +51,10 @@ class SignalStrengthViewModel(
 
 
     }
+    fun setGuage(maxValue:Float,minValue:Float){
+        signalStrengthBinding.gauge.setMaxValue(maxValue)
+        signalStrengthBinding.gauge.setMinValue(minValue)
 
+    }
 
 }

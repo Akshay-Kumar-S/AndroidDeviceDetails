@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.CellularRaw
-import com.example.androidDeviceDetails.models.WifiRaw
 import java.text.SimpleDateFormat
 
-class ListAdaptor(
+
+class WifiAdaptor(
     private var _context: Context,
     private var resource: Int,
     private var items: List<CellularRaw>
@@ -19,7 +19,7 @@ class ListAdaptor(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        val formatter=SimpleDateFormat("dd/MM/yyyy HH:mm")
+        val formatter= SimpleDateFormat("dd/MM/yyyy HH:mm")
 
 
         val layoutInflater = LayoutInflater.from(_context)

@@ -10,12 +10,12 @@ import android.widget.TimePicker
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.SignalCookedData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SignalStrengthCooker(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
@@ -37,7 +37,7 @@ class SignalStrengthCooker(
     private var toTimestamp: Long = 0
     private var toggle = 0
 
-    fun onCreate() {
+    fun listionDate() {
 
         signalStrengthBinding.startTime.setOnClickListener {
             toggle = 1
@@ -87,7 +87,7 @@ class SignalStrengthCooker(
             signalStrengthBinding.endTime.text =
                 "$savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
         }
-        Log.e("timegettera","$fromTimestamp   $toTimestamp")
+        Log.e("timegettera", "$fromTimestamp   $toTimestamp")
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -102,27 +102,44 @@ class SignalStrengthCooker(
         Log.d("calender", "${timestamp * 1000}")
         return timestamp * 1000
     }
-    fun getFromTimestamp():Long{return fromTimestamp}
-    fun getToTimestamp():Long{return toTimestamp}
+
+    fun getFromTimestamp(): Long {
+        return fromTimestamp
+    }
+
+    fun getToTimestamp(): Long {
+        return toTimestamp
+    }
+
     fun cookSignalData(
-        callback: SignalCookingInterface<CellularRaw>,beginTime:Long,endTime:Long,type:Int
+        callback: SignalCookingInterface<CellularRaw>, beginTime: Long, endTime: Long, type: Int
     ) {
-        Log.e("path","")
+        Log.e("path", "")
         GlobalScope.launch {
-            Log.e("timegetter","$beginTime   $endTime")
+            var cookedList:List<SignalCookedData>
+            var cookedData:SignalCookedData
+            Log.e("timegetter", "$beginTime   $endTime")
             val cellularList = db.cellularDao().getAllBetween(
                 beginTime,
-               endTime
+                endTime
 
             )
             val wifiList = db.wifiDao().getAllBetween(
                 beginTime,
                 endTime
             )
-            // cooking
-            if (cellularList.isNotEmpty()){
+//            for (i in cellularList) {
+//                cookedData=SignalCookedData(i.strength,i.level,i.timeStamp,i.type)
+//
+//            }
+
+
+            if (cellularList.isNotEmpty()) {
                 callback.updateListView(cellularList as ArrayList<CellularRaw>)
             }
+//            if (wifiList.isNotEmpty()) {
+//                callback.updateListView(wifiList as ArrayList<wifiList>)
+//            }
 
         }
     }

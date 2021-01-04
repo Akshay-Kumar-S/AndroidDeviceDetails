@@ -28,19 +28,21 @@ class SignalController(
 
     fun onCreate() {
         signalCooker = SignalStrengthCooker(signalBinding, context)
-        signalCooker.onCreate()
+        signalCooker.listionDate()
         observeSignal(Signal.CELLULAR.ordinal)
         signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellularStrength -> {
-                    signalBinding.gauge.setMaxValue(-50f)
-                    signalBinding.gauge.setMinValue(-150f)
+//                    signalBinding.gauge.setMaxValue(-50f)
+//                    signalBinding.gauge.setMinValue(-150f)
+                    viewModel.setGuage(-50f,-150f)
                     observeSignal(Signal.CELLULAR.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifiStrength -> {
-                    signalBinding.gauge.setMaxValue(0f)
-                    signalBinding.gauge.setMinValue(-100f)
+//                    signalBinding.gauge.setMaxValue(0f)
+//                    signalBinding.gauge.setMinValue(-100f)
+                    viewModel.setGuage(0f,-100f)
                     observeSignal(Signal.WIFI.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
