@@ -21,8 +21,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
         var asuLevel = 0
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val data = signalStrength.getCellSignalStrengths()[0]
-            when (data) {
+            when (val data = signalStrength.cellSignalStrengths[0]) {
                 is CellSignalStrengthLte -> {
                     strength = data.rsrp
                     level = data.level

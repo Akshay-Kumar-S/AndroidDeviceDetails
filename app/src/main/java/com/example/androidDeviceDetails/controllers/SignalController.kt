@@ -33,15 +33,11 @@ class SignalController(
         signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellularStrength -> {
-//                    signalBinding.gauge.setMaxValue(-50f)
-//                    signalBinding.gauge.setMinValue(-150f)
                     viewModel.setGuage(-50f,-150f)
                     observeSignal(Signal.CELLULAR.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifiStrength -> {
-//                    signalBinding.gauge.setMaxValue(0f)
-//                    signalBinding.gauge.setMinValue(-100f)
                     viewModel.setGuage(0f,-100f)
                     observeSignal(Signal.WIFI.ordinal)
                     return@setOnNavigationItemSelectedListener true
