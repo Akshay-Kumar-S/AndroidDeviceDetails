@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails.activities
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.MainController
 import com.example.androidDeviceDetails.R
