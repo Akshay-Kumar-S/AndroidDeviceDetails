@@ -15,12 +15,12 @@ class SignalAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: List<SignalRaw>
-): ArrayAdapter<SignalRaw>(_context, resource, items){
+) : ArrayAdapter<SignalRaw>(_context, resource, items) {
 
     @SuppressLint("SimpleDateFormat")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        var formatter=SimpleDateFormat("dd/mm/yyyy HH:mm")
+        var formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
         val layoutInflater = LayoutInflater.from(_context)
         val view = layoutInflater.inflate(resource, null)
@@ -29,10 +29,10 @@ class SignalAdapter(
         val general = view.findViewById<TextView>(R.id.general)
         val level = view.findViewById<TextView>(R.id.level)
 
-        timeStamp.text =formatter.format(items[position].timeStamp)
-        strength.text=items[position].strength.toString()
-        general.text=items[2].general.toString()
-        level.text=items[3].level.toString()
+        timeStamp.text = formatter.format(items[position].timeStamp)
+        strength.text = items[position].strength.toString()
+        general.text = items[position].general.toString()
+        level.text = items[position].level.toString()
         return view
     }
 }
