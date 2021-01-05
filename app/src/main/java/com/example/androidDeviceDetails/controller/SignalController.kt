@@ -10,7 +10,7 @@ import com.example.androidDeviceDetails.models.SignalRaw
 import com.example.androidDeviceDetails.models.TimeInterval
 
 class SignalController(
-    var signalBinding: ActivitySignalStrengthBinding,
+    signalBinding: ActivitySignalStrengthBinding,
     var context: Context,
 ) {
     private var viewModel: SignalViewModel = SignalViewModel(signalBinding, context)

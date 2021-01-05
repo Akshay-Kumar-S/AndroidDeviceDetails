@@ -21,6 +21,7 @@ class SignalActivity : AppCompatActivity() {
     private lateinit var controller: SignalController
     private var signal = Signal.CELLULAR.ordinal
     private lateinit var signalUtil: SignalUtil
+    private var listSet:Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class SignalActivity : AppCompatActivity() {
                 R.id.cellularStrength -> {
                     signal = Signal.CELLULAR.ordinal
                     viewModel.updateGauge(-50f, -150f, signal)
+                    if(listSet==1)controller.cook(signal,TimeInterval(signalUtil.getStartTimestamp(), signalUtil.getEndTimestamp()))
                     mainController.observeSignal(
                         Signal.CELLULAR.ordinal,
                         viewModel,
@@ -47,6 +49,7 @@ class SignalActivity : AppCompatActivity() {
                 R.id.wifiStrength -> {
                     signal = Signal.WIFI.ordinal
                     viewModel.updateGauge(0f, -100f, signal)
+                    if(listSet==1)controller.cook(signal,TimeInterval(signalUtil.getStartTimestamp(), signalUtil.getEndTimestamp()))
                     mainController.observeSignal(
                         Signal.WIFI.ordinal,
                         viewModel,
@@ -60,6 +63,7 @@ class SignalActivity : AppCompatActivity() {
         signalUtil.onCreate()
         signalBinding.filter.setOnClickListener()
         {
+            listSet=1
             signalUtil.onCreate()
             val startTime = signalUtil.getStartTimestamp()
             val endTime = signalUtil.getEndTimestamp()
