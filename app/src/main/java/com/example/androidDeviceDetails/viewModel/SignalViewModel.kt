@@ -1,13 +1,13 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import android.view.View
 import androidx.core.view.isVisible
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.*
-import com.example.androidDeviceDetails.utils.SignalAdapter
+import com.example.androidDeviceDetails.adapters.SignalAdapter
 
 class SignalViewModel(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,

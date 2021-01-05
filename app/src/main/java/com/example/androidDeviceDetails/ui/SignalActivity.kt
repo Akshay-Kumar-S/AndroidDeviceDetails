@@ -1,20 +1,24 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.example.androidDeviceDetails.controllers.Controller
+import com.example.androidDeviceDetails.MainController
+import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.SignalUtil
+import com.example.androidDeviceDetails.controller.SignalController
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.Signal
 import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 class SignalActivity : AppCompatActivity() {
     private lateinit var signalBinding: ActivitySignalStrengthBinding
     private lateinit var viewModel: SignalViewModel
     private var mainController: MainController = MainController()
-    private lateinit var controller: Controller
+    private lateinit var controller: SignalController
     private var signal = Signal.CELLULAR.ordinal
     private lateinit var signalUtil: SignalUtil
 
@@ -22,7 +26,7 @@ class SignalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         signalBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
-        controller = Controller(signalBinding, this)
+        controller = SignalController(signalBinding, this)
         viewModel = SignalViewModel(signalBinding, this)
         mainController.observeSignal(Signal.CELLULAR.ordinal, viewModel, lifecycleOwner = this)
         signalUtil = SignalUtil(signalBinding, this)
@@ -59,7 +63,6 @@ class SignalActivity : AppCompatActivity() {
             signalUtil.onCreate()
             val startTime = signalUtil.getStartTimestamp()
             val endTime = signalUtil.getEndTimestamp()
-            Log.d("neena", "onCreate: $startTime $endTime")
             controller.cook(signal,TimeInterval(startTime, endTime))
         }
     }

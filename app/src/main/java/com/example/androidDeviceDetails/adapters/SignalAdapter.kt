@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.utils
+package com.example.androidDeviceDetails.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context

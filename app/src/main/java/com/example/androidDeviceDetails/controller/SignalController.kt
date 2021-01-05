@@ -1,7 +1,7 @@
-package com.example.androidDeviceDetails.controllers
+package com.example.androidDeviceDetails.controller
 
 import android.content.Context
-import com.example.androidDeviceDetails.SignalViewModel
+import com.example.androidDeviceDetails.viewModel.SignalViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.interfaces.ICookingDone
@@ -9,7 +9,7 @@ import com.example.androidDeviceDetails.models.Signal
 import com.example.androidDeviceDetails.models.SignalRaw
 import com.example.androidDeviceDetails.models.TimeInterval
 
-class Controller(
+class SignalController(
     var signalBinding: ActivitySignalStrengthBinding,
     var context: Context,
 ) {
