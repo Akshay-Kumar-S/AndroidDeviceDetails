@@ -1,39 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="100">
-
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <TextView
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="TextView1"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/textViewTile1"
-        android:layout_weight="66.6"/>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="33.3">
+        android:text="Timestamp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:gravity="center"
-            android:text="TextView2"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/textViewTile2"/>
+    <TextView
+        android:id="@+id/strength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strength"
+        android:layout_marginStart="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/general"
+        app:layout_constraintStart_toEndOf="@id/timestamp"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/textViewTile3"
-            android:layout_below="@+id/textViewTile2"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/general"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:layout_marginStart="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/level"
+        app:layout_constraintStart_toEndOf="@id/strength"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/level"
+        android:layout_marginStart="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/general"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

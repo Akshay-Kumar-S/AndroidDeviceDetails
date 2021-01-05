@@ -8,21 +8,15 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.CellularRaw
-import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.SignalCookedData
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SignalStrengthCooker(
+class SignalUtil(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
     val context: Context
 ) : DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
-    private var db = RoomDB.getDatabase()!!
     private var day = 0
     private var month = 0
     private var year = 0
@@ -37,14 +31,11 @@ class SignalStrengthCooker(
     private var toTimestamp: Long = 0
     private var toggle = 0
 
-    fun listionDate() {
-
+    fun onCreate() {
         signalStrengthBinding.startTime.setOnClickListener {
             toggle = 1
             getDateTimeCalender()
             DatePickerDialog(context, this, year, month, day).show()
-
-
         }
         signalStrengthBinding.endTime.setOnClickListener {
             toggle = 2
@@ -103,44 +94,11 @@ class SignalStrengthCooker(
         return timestamp * 1000
     }
 
-    fun getFromTimestamp(): Long {
+    fun getStartTimestamp(): Long {
         return fromTimestamp
     }
 
-    fun getToTimestamp(): Long {
+    fun getEndTimestamp(): Long {
         return toTimestamp
-    }
-
-    fun cookSignalData(
-        callback: SignalCookingInterface<CellularRaw>, beginTime: Long, endTime: Long, type: Int
-    ) {
-        Log.e("path", "")
-        GlobalScope.launch {
-            var cookedList:List<SignalCookedData>
-            var cookedData:SignalCookedData
-            Log.e("timegetter", "$beginTime   $endTime")
-            val cellularList = db.cellularDao().getAllBetween(
-                beginTime,
-                endTime
-
-            )
-            val wifiList = db.wifiDao().getAllBetween(
-                beginTime,
-                endTime
-            )
-//            for (i in cellularList) {
-//                cookedData=SignalCookedData(i.strength,i.level,i.timeStamp,i.type)
-//
-//            }
-
-
-            if (cellularList.isNotEmpty()) {
-                callback.updateListView(cellularList as ArrayList<CellularRaw>)
-            }
-//            if (wifiList.isNotEmpty()) {
-//                callback.updateListView(wifiList as ArrayList<wifiList>)
-//            }
-
-        }
     }
 }

@@ -6,7 +6,6 @@ import android.telephony.*
 import android.util.Log
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.utils.SignalDbHelper
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -106,7 +105,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
         GlobalScope.launch {
-            SignalDbHelper.writeToCellularDB(cellularRaw,db)
+            db.cellularDao().insertAll(cellularRaw)
         }
     }
 }

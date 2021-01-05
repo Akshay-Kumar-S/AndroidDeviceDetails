@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.WifiRaw
-import com.example.androidDeviceDetails.utils.SignalDbHelper
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -32,7 +31,7 @@ internal class WifiReceiver() : BroadcastReceiver() {
         )
         Log.d("wifi", "onReceive: $strength,$frequency,$linkSpeed")
         GlobalScope.launch {
-            SignalDbHelper.writeToWifiDB(wifiRaw, db)
+            db.wifiDao().insertAll(wifiRaw)
         }
     }
 }
