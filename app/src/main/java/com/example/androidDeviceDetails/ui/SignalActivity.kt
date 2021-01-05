@@ -23,6 +23,10 @@ class SignalActivity : AppCompatActivity() {
     private lateinit var signalUtil: SignalUtil
     private var listSet:Int=0
 
+    companion object {
+        const val NAME = "signal"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -8,14 +8,15 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.*
 import com.example.androidDeviceDetails.adapters.SignalAdapter
+import com.example.androidDeviceDetails.base.BaseViewModel
 
 class SignalViewModel(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
     val context: Context
-) {
+) : BaseViewModel() {
     private var signal = Signal.CELLULAR.ordinal
     private var strength: Int = -100
-    private var linkspeed: String = "0"
+    private var linkspeed: String = "0 MHz"
     private var cellInfoType: String = "LTE"
 
     @SuppressLint("SetTextI18n")
@@ -48,7 +49,7 @@ class SignalViewModel(
         signal = ordinal
     }
 
-    fun updateListView(signalList: ArrayList<SignalRaw>) {
+/*    fun updateListView(signalList: ArrayList<SignalRaw>) {
         Log.d("neena", "updateListView: $signalList")
         if (signalList.isNotEmpty()) {
             signalStrengthBinding.root.post {
@@ -58,19 +59,36 @@ class SignalViewModel(
             }
         } else
             signalStrengthBinding.root.post {
-                signalStrengthBinding.display.isVisible=true
+                signalStrengthBinding.display.isVisible = true
                 signalStrengthBinding.list.isVisible = false
             }
-    }
+    }*/
 
     @SuppressLint("SetTextI18n")
     fun displayList() {
-        signalStrengthBinding.display.isVisible=false
+        signalStrengthBinding.display.isVisible = false
         signalStrengthBinding.list.isVisible = true
+        signalStrengthBinding.listView.isVisible = true
         if (signal == Signal.CELLULAR.ordinal)
             signalStrengthBinding.general.text = "Type"
         else
             signalStrengthBinding.general.text = "Linkspeed"
+    }
+
+    override fun <T> onData(outputList: ArrayList<T>) {
+        if (outputList.isNotEmpty()) {
+            signalStrengthBinding.root.post {
+                displayList()
+                val adapter =
+                    SignalAdapter(context, R.layout.signal_tile, outputList as ArrayList<SignalRaw>)
+                signalStrengthBinding.listView.adapter = adapter
+            }
+        } else
+            signalStrengthBinding.root.post {
+                signalStrengthBinding.listView.isVisible = false
+                signalStrengthBinding.display.isVisible = true
+                signalStrengthBinding.list.isVisible = false
+            }
     }
 
 }

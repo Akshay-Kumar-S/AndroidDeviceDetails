@@ -144,8 +144,9 @@
             android:layout_height="wrap_content"
             android:background="@color/light_grey"
             android:orientation="horizontal"
-            android:paddingStart="5dp"
             android:padding="5dp"
+            android:paddingStart="5dp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/datePicker"
             tools:ignore="RtlSymmetry">
@@ -215,6 +216,7 @@
             android:layout_height="0dp"
             android:background="@color/light_grey"
             android:divider="@null"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

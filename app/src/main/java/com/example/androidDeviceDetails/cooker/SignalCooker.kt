@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.cooker
 
+import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.SignalRaw
@@ -7,10 +8,10 @@ import com.example.androidDeviceDetails.models.TimeInterval
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SignalCooker {
+class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
-    fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
         val wifiEntryList = arrayListOf<SignalRaw>()
         GlobalScope.launch {
             val wifiList = db.wifiDao().getAllBetween(time.startTime, time.endTime)
@@ -63,4 +64,6 @@ class SignalCooker {
             } else callback.onDone(arrayListOf())
         }
     }
+
+
 }
