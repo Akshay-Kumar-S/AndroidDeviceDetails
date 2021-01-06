@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import com.example.androidDeviceDetails.MainController
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.SignalUtil
@@ -18,8 +19,6 @@ class SignalActivity : AppCompatActivity() {
     private lateinit var signalBinding: ActivitySignalStrengthBinding
     private lateinit var viewModel: SignalViewModel
     private lateinit var signalController: AppController<ActivitySignalStrengthBinding, SignalRaw>
-    private var mainController: MainController = MainController()
-    private var signal = Signal.CELLULAR.ordinal
     private lateinit var signalUtil: SignalUtil
     private var displayList: Int = 0
     private var startTime: Long = 0
@@ -27,6 +26,8 @@ class SignalActivity : AppCompatActivity() {
 
     companion object {
         const val NAME = "signal"
+        const val WIFI = "signal"
+        const val CELLULAR = "signal"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,35 +35,22 @@ class SignalActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         signalBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
         viewModel = SignalViewModel(signalBinding, this)
-        mainController.observeSignal(Signal.CELLULAR.ordinal, viewModel, lifecycleOwner = this)
         signalUtil = SignalUtil(signalBinding, this)
-        signalController = AppController(SignalActivity.NAME, signalBinding, this)
+        signalController = AppController(NAME, signalBinding, this)
 
-
+        viewModel.observeSignal(lifecycleOwner = this)
         signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellularStrength -> {
-                    signal = Signal.CELLULAR.ordinal
-                    viewModel.updateGauge(-50f, -150f, signal)
+                    viewModel.updateGauge(-50f, -150f)
                     if (displayList == 1)
                         signalController.cook(TimeInterval(startTime, endTime))
-                    mainController.observeSignal(
-                        Signal.CELLULAR.ordinal,
-                        viewModel,
-                        lifecycleOwner = this
-                    )
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifiStrength -> {
-                    signal = Signal.WIFI.ordinal
-                    viewModel.updateGauge(0f, -100f, signal)
+                    viewModel.updateGauge(0f, -100f)
                     if (displayList == 1)
                         signalController.cook(TimeInterval(startTime, endTime))
-                    mainController.observeSignal(
-                        Signal.WIFI.ordinal,
-                        viewModel,
-                        lifecycleOwner = this
-                    )
                     return@setOnNavigationItemSelectedListener true
                 }
             }

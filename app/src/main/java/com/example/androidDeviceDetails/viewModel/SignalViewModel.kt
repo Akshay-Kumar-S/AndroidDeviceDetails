@@ -4,20 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.*
 import com.example.androidDeviceDetails.adapters.SignalAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
+import com.example.androidDeviceDetails.models.CellularRaw
+import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.SignalRaw
+import com.example.androidDeviceDetails.models.WifiRaw
 
 class SignalViewModel(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var signal = Signal.CELLULAR.ordinal
     private var strength: Int = -100
     private var linkspeed: String = "0 MHz"
     private var cellInfoType: String = "LTE"
+    private var db = RoomDB.getDatabase()!!
 
     @SuppressLint("SetTextI18n")
     fun updateWifiGauge(wifiRaw: WifiRaw) {
@@ -43,33 +47,28 @@ class SignalViewModel(
         signalStrengthBinding.signalValue.text = cellInfoType
     }
 
-    fun updateGauge(max: Float, min: Float, ordinal: Int) {
+    fun updateGauge(max: Float, min: Float) {
         signalStrengthBinding.gauge.setMaxValue(max)
         signalStrengthBinding.gauge.setMinValue(min)
-        signal = ordinal
     }
 
-/*    fun updateListView(signalList: ArrayList<SignalRaw>) {
-        Log.d("neena", "updateListView: $signalList")
-        if (signalList.isNotEmpty()) {
-            signalStrengthBinding.root.post {
-                displayList()
-                val adapter = SignalAdapter(context, R.layout.signal_tile, signalList)
-                signalStrengthBinding.listView.adapter = adapter
-            }
-        } else
-            signalStrengthBinding.root.post {
-                signalStrengthBinding.display.isVisible = true
-                signalStrengthBinding.list.isVisible = false
-            }
-    }*/
+    fun observeSignal(lifecycleOwner: LifecycleOwner) {
+        db.cellularDao().getLastLive().observe(lifecycleOwner) {
+            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellularStrength)
+                updateCellularGauge(it)
+        }
+        db.wifiDao().getLastLive().observe(lifecycleOwner) {
+            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.wifiStrength)
+                updateWifiGauge(it)
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     fun displayList() {
         signalStrengthBinding.display.isVisible = false
         signalStrengthBinding.list.isVisible = true
         signalStrengthBinding.listView.isVisible = true
-        if (signal == Signal.CELLULAR.ordinal)
+        if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellularStrength)
             signalStrengthBinding.general.text = "Type"
         else
             signalStrengthBinding.general.text = "Linkspeed"
@@ -80,7 +79,11 @@ class SignalViewModel(
             signalStrengthBinding.root.post {
                 displayList()
                 val adapter =
-                    SignalAdapter(context, R.layout.signal_tile, outputList as ArrayList<SignalRaw>)
+                    SignalAdapter(
+                        context,
+                        R.layout.signal_tile,
+                        outputList as ArrayList<SignalRaw>
+                    )
                 signalStrengthBinding.listView.adapter = adapter
             }
         } else
