@@ -16,11 +16,14 @@ import com.example.androidDeviceDetails.models.batteryModels.BatteryRaw
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalDao
+import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
 
 
 @Database(
-    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
+    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, SignalEntity::class, AppNetworkUsageEntity::class, DeviceNetworkUsageEntity::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
@@ -29,8 +32,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun locationDao(): ILocationDao
     abstract fun appsDao(): AppsDao
     abstract fun appHistoryDao(): AppHistoryDao
-    abstract fun wifiDao(): WifiDao
-    abstract fun cellularDao(): CellularDao
+    abstract fun signalDao(): SignalDao
     abstract fun appNetworkUsageDao(): AppNetworkUsageDao
     abstract fun deviceNetworkUsageDao(): DeviceNetworkUsageDao
 

@@ -2,7 +2,6 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.example.androidDeviceDetails.R
@@ -10,87 +9,88 @@ import com.example.androidDeviceDetails.adapters.SignalAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.CellularEntity
-import com.example.androidDeviceDetails.models.signalModels.SignalEntry
-import com.example.androidDeviceDetails.models.signalModels.WifiEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.utils.Signal
 
 class SignalViewModel(
-    private val signalStrengthBinding: ActivitySignalStrengthBinding,
+    private val signalBinding: ActivitySignalStrengthBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var strength: Int = -100
-    private var linkspeed: String = "0 MHz"
+    private var cellularStrength: Int = -100
+    private var wifiStrength: Int = -80
+    private var linkspeed: String = "0 Mbps"
     private var cellInfoType: String = "LTE"
+    private var strength: Int = 0
+    private var text: String = ""
+    private var value: String = ""
+
     private var db = RoomDB.getDatabase()!!
 
+
     @SuppressLint("SetTextI18n")
-    fun updateWifiGauge(wifiEntity: WifiEntity) {
-        Log.d("test", "updateWifiGauge: ")
-        strength = wifiEntity.strength!!
-        linkspeed = wifiEntity.linkSpeed.toString()
-        signalStrengthBinding.gauge.moveToValue(strength.toFloat())
-        //signalStrengthBinding.gauge.setLowerText(strength.toString())
-        signalStrengthBinding.textStrength.text = "$strength dBm"
-        signalStrengthBinding.signalText.text = "LinkSpeed"
-        signalStrengthBinding.signalValue.text = "$linkspeed MHz"
+    fun updateView(signalEntity: SignalEntity) {
+        if (signalEntity.signal == Signal.WIFI.ordinal) {
+            wifiStrength = signalEntity.strength
+            linkspeed = "${signalEntity.attribute} Mbps"
+        } else {
+            cellularStrength = signalEntity.strength
+            cellInfoType = signalEntity.attribute
+        }
+        updateCard()
     }
 
     @SuppressLint("SetTextI18n")
-    fun updateCellularGauge(cellularEntity: CellularEntity) {
-        Log.d("tag", "updateCellularGauge: ")
-        strength = cellularEntity.strength!!
-        cellInfoType = cellularEntity.type.toString()
-        signalStrengthBinding.gauge.moveToValue(strength.toFloat())
+    fun updateCard() {
+        if (signalBinding.bottomNavigationView.selectedItemId == R.id.wifi) {
+            strength = wifiStrength
+            text = "Linkspeed"
+            value = linkspeed
+        } else {
+            strength = cellularStrength
+            text = "CellInfo Type"
+            value = cellInfoType
+        }
+        signalBinding.gauge.moveToValue(strength.toFloat())
         //signalStrengthBinding.gauge.setLowerText(strength.toString())
-        signalStrengthBinding.textStrength.text = "$strength dBm"
-        signalStrengthBinding.signalText.text = "Type"
-        signalStrengthBinding.signalValue.text = cellInfoType
-    }
-
-    fun updateGauge(max: Float, min: Float) {
-        signalStrengthBinding.gauge.setMaxValue(max)
-        signalStrengthBinding.gauge.setMinValue(min)
+        signalBinding.textStrength.text = "$strength dBm"
+        signalBinding.signalText.text = text
+        signalBinding.signalValue.text = value
     }
 
     fun observeSignal(lifecycleOwner: LifecycleOwner) {
-        db.cellularDao().getLastLive().observe(lifecycleOwner) {
-            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellular)
-                updateCellularGauge(it)
-        }
-        db.wifiDao().getLastLive().observe(lifecycleOwner) {
-            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.wifi)
-                updateWifiGauge(it)
+        db.signalDao().getLastLive().observe(lifecycleOwner) {
+            updateView(it)
         }
     }
 
     @SuppressLint("SetTextI18n")
     fun displayList() {
-        signalStrengthBinding.display.isVisible = false
-        signalStrengthBinding.list.isVisible = true
-        signalStrengthBinding.listView.isVisible = true
-        if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellular)
-            signalStrengthBinding.general.text = "Type"
+        signalBinding.display.isVisible = false
+        signalBinding.list.isVisible = true
+        signalBinding.listView.isVisible = true
+        if (signalBinding.bottomNavigationView.selectedItemId == R.id.cellular)
+            signalBinding.general.text = "Type"
         else
-            signalStrengthBinding.general.text = "Linkspeed"
+            signalBinding.general.text = "Linkspeed"
     }
 
     override fun <T> onData(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
-            signalStrengthBinding.root.post {
+            signalBinding.root.post {
                 displayList()
                 val adapter =
                     SignalAdapter(
                         context,
                         R.layout.signal_tile,
-                        outputList as ArrayList<SignalEntry>
+                        outputList as ArrayList<SignalEntity>
                     )
-                signalStrengthBinding.listView.adapter = adapter
+                signalBinding.listView.adapter = adapter
             }
         } else
-            signalStrengthBinding.root.post {
-                signalStrengthBinding.listView.isVisible = false
-                signalStrengthBinding.display.isVisible = true
-                signalStrengthBinding.list.isVisible = false
+            signalBinding.root.post {
+                signalBinding.listView.isVisible = false
+                signalBinding.display.isVisible = true
+                signalBinding.list.isVisible = false
             }
     }
 

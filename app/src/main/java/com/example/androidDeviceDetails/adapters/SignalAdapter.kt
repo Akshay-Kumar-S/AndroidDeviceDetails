@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import java.text.SimpleDateFormat
 
 class SignalAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: List<SignalEntry>
-) : ArrayAdapter<SignalEntry>(_context, resource, items) {
+    private var items: List<SignalEntity>
+) : ArrayAdapter<SignalEntity>(_context, resource, items) {
 
     @SuppressLint("SimpleDateFormat", "ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -31,7 +31,7 @@ class SignalAdapter(
 
         timeStamp.text = formatter.format(items[position].timeStamp)
         strength.text = items[position].strength.toString()
-        general.text = items[position].general.toString()
+        general.text = items[position].attribute
         level.text = items[position].level.toString()
         return view
     }

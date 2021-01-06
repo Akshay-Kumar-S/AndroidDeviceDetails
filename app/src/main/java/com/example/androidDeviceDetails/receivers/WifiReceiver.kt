@@ -7,31 +7,42 @@ import android.net.wifi.WifiManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.WifiEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.WifiLevel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-internal class WifiReceiver() : BroadcastReceiver() {
+internal class WifiReceiver : BroadcastReceiver() {
     private var db = RoomDB.getDatabase()!!
 
     override fun onReceive(context: Context, intent: Intent) {
-        val wifiEntity: WifiEntity
+        val signalEntity: SignalEntity
         val strength: Int
-        val frequency: Int
         val linkSpeed: Int
+        val level: Int
 
         val wifiManager =
             context.applicationContext.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
         strength = wifiManager.connectionInfo.rssi
-        frequency = wifiManager.connectionInfo.linkSpeed
-        linkSpeed = wifiManager.connectionInfo.frequency
-
-        wifiEntity = WifiEntity(
-            System.currentTimeMillis(), strength, frequency, linkSpeed
+        linkSpeed = wifiManager.connectionInfo.linkSpeed
+        level = getWifiLevel(strength)
+        Log.d("wifi", "data: $strength, $level,$linkSpeed")
+        signalEntity = SignalEntity(
+            System.currentTimeMillis(), Signal.WIFI.ordinal, strength, linkSpeed.toString(), level
         )
-        Log.d("wifi", "onReceive: $strength,$frequency,$linkSpeed")
         GlobalScope.launch {
-            db.wifiDao().insertAll(wifiEntity)
+            db.signalDao().insertAll(signalEntity)
+        }
+    }
+
+    private fun getWifiLevel(strength: Int): Int {
+        return when {
+            strength > -30 -> WifiLevel.Great.ordinal
+            strength > -50 -> WifiLevel.Good.ordinal
+            strength > -60 -> WifiLevel.Moderate.ordinal
+            strength > -70 -> WifiLevel.Poor.ordinal
+            else -> WifiLevel.None.ordinal
         }
     }
 }
