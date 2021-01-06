@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.models.TimeInterval
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SignalCooker : BaseCooker() {
+class WifiCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
     override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
@@ -42,28 +42,5 @@ class SignalCooker : BaseCooker() {
         }
         return 0
     }
-
-    fun <T> get(time: TimeInterval, callback: ICookingDone<T>) {
-        val cellularEntryList = arrayListOf<SignalRaw>()
-
-        GlobalScope.launch {
-            val cellularList = db.cellularDao().getAllBetween(time.startTime, time.endTime)
-            if (cellularList.isNotEmpty()) {
-
-                for (signal in cellularList) {
-                    cellularEntryList.add(
-                        SignalRaw(
-                            signal.timeStamp,
-                            signal.strength,
-                            signal.type,
-                            signal.level
-                        )
-                    )
-                }
-                callback.onDone(cellularEntryList as ArrayList<T>)
-            } else callback.onDone(arrayListOf())
-        }
-    }
-
 
 }

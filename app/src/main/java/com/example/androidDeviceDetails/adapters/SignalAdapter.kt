@@ -17,10 +17,10 @@ class SignalAdapter(
     private var items: List<SignalRaw>
 ) : ArrayAdapter<SignalRaw>(_context, resource, items) {
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        var formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
         val layoutInflater = LayoutInflater.from(_context)
         val view = layoutInflater.inflate(resource, null)
