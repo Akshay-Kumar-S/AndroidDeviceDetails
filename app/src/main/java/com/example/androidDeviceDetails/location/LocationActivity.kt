@@ -13,14 +13,16 @@ import com.example.androidDeviceDetails.utils.Utils
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
+    lateinit var appController: AppController<LocationModel>
+    lateinit var locationViewModel: LocationViewModel
 
-    private lateinit var locationController: AppController<LocationModel>
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: TableRow
-    private lateinit var locationViewModel: LocationViewModel
 
     companion object {
         const val NAME = "LOCATION_ACTIVITY"
@@ -30,7 +32,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        locationController = AppController("LOCATION_ACTIVITY", this, binding)
+        appController = AppController("LOCATION_ACTIVITY", this, binding)
         locationViewModel = LocationViewModel(this, binding)
         binding.selectDate.setOnClickListener(this)
         binding.timeView.setOnClickListener(this)
@@ -41,7 +43,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     private fun init() {
         selectedRow = binding.noData
-        locationController.start()
+        appController.start()
     }
 
 
