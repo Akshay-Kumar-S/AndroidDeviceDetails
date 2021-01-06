@@ -2,6 +2,8 @@ package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
@@ -12,7 +14,7 @@ import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
-class SignalActivity : AppCompatActivity() {
+class SignalActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var signalBinding: ActivitySignalStrengthBinding
     private lateinit var viewModel: SignalViewModel
     private lateinit var wifiController: AppController<ActivitySignalStrengthBinding, SignalEntry>
@@ -33,9 +35,19 @@ class SignalActivity : AppCompatActivity() {
         signalBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
         viewModel = SignalViewModel(signalBinding, this)
         signalUtil = SignalUtil(signalBinding, this)
-        wifiController = AppController(WIFI, signalBinding, this)
-        cellularController = AppController(CELLULAR, signalBinding, this)
+        wifiController = AppController(WIFI, signalBinding, this,signalBinding.datePicker,supportFragmentManager)
+        cellularController = AppController(CELLULAR, signalBinding, this,signalBinding.datePicker,supportFragmentManager)
 
+        signalBinding.apply {
+           datePicker.findViewById<TextView>(R.id.startTime)
+                .setOnClickListener(this@SignalActivity)
+            datePicker.findViewById<TextView>(R.id.startDate)
+                .setOnClickListener(this@SignalActivity)
+            datePicker.findViewById<TextView>(R.id.endTime)
+                .setOnClickListener(this@SignalActivity)
+            datePicker.findViewById<TextView>(R.id.endDate)
+                .setOnClickListener(this@SignalActivity)
+        }
         signalBinding.bottomNavigationView.menu.findItem(R.id.cellular).isChecked = true
         viewModel.observeSignal(lifecycleOwner = this)
         signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -57,14 +69,15 @@ class SignalActivity : AppCompatActivity() {
         }
 
         signalUtil.onCreate()
-        signalBinding.filter.setOnClickListener()
-        {
-            displayList = 1
-            signalUtil.onCreate()
-            startTime = signalUtil.getStartTimestamp()
-            endTime = signalUtil.getEndTimestamp()
-            Log.d("neena", "onCreate: $startTime $endTime")
-            cellularController.cook(TimeInterval(startTime, endTime))
+
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.startTime -> cellularController.setStartTime(this)
+            R.id.startDate -> cellularController.setStartDate(this)
+            R.id.endTime -> cellularController.setEndTime(this)
+            R.id.endDate -> cellularController.setEndDate(this)
         }
     }
 }

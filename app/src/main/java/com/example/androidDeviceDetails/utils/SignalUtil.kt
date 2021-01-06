@@ -32,16 +32,16 @@ class SignalUtil(
     private var toggle = 0
 
     fun onCreate() {
-        signalStrengthBinding.startTime.setOnClickListener {
-            toggle = 1
-            getDateTimeCalender()
-            DatePickerDialog(context, this, year, month, day).show()
-        }
-        signalStrengthBinding.endTime.setOnClickListener {
-            toggle = 2
-            getDateTimeCalender()
-            DatePickerDialog(context, this, year, month, day).show()
-        }
+//        signalStrengthBinding.startTime.setOnClickListener {
+//            toggle = 1
+//            getDateTimeCalender()
+//            DatePickerDialog(context, this, year, month, day).show()
+//        }
+//        signalStrengthBinding.endTime.setOnClickListener {
+//            toggle = 2
+//            getDateTimeCalender()
+//            DatePickerDialog(context, this, year, month, day).show()
+//        }
     }
 
     fun getDateTimeCalender() {
@@ -63,22 +63,22 @@ class SignalUtil(
 
     @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        savedHour = hourOfDay
-        savedMinute = minute
-        Log.d("calender", "$savedDay,$savedMonth,$savedYear")
-        Log.d("calender", "$savedHour,$savedMinute")
-        if (toggle == 1) {
-            fromTimestamp =
-                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
-            signalStrengthBinding.startTime.text =
-                "$savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
-        }
-        if (toggle == 2) {
-            toTimestamp = getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
-            signalStrengthBinding.endTime.text =
-                "$savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
-        }
-        Log.e("timegettera", "$fromTimestamp   $toTimestamp")
+//        savedHour = hourOfDay
+//        savedMinute = minute
+//        Log.d("calender", "$savedDay,$savedMonth,$savedYear")
+//        Log.d("calender", "$savedHour,$savedMinute")
+//        if (toggle == 1) {
+//            fromTimestamp =
+//                getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
+//            signalStrengthBinding.startTime.text =
+//                "$savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
+//        }
+//        if (toggle == 2) {
+//            toTimestamp = getTimeStamp(savedDay, savedMonth + 1, savedYear, savedHour, savedMinute)
+//            signalStrengthBinding.endTime.text =
+//                "$savedDay/${savedMonth + 1}/$savedYear  $savedHour:$savedMinute"
+//        }
+//        Log.e("timegettera", "$fromTimestamp   $toTimestamp")
     }
 
     @SuppressLint("SimpleDateFormat")
