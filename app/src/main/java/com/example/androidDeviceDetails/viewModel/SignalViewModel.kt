@@ -2,6 +2,7 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.example.androidDeviceDetails.R
@@ -41,7 +42,8 @@ class SignalViewModel(
 
     @SuppressLint("SetTextI18n")
     fun updateCard() {
-        if (signalBinding.bottomNavigationView.selectedItemId == R.id.wifi) {
+        Log.d("upd", "updateCard: ")
+        if ( signalBinding.bottomNavigationView.selectedItemId == R.id.wifi) {
             strength = wifiStrength
             text = "Linkspeed"
             value = linkspeed

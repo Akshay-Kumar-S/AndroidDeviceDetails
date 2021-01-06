@@ -1,18 +1,15 @@
 package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.utils.SignalUtil
 import com.example.androidDeviceDetails.controller.AppController
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.signalModels.SignalEntry
-import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.utils.SignalUtil
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 class SignalActivity : AppCompatActivity(), View.OnClickListener {
@@ -20,8 +17,6 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: SignalViewModel
     private lateinit var signalController: AppController<ActivitySignalStrengthBinding, SignalEntity>
     private lateinit var signalUtil: SignalUtil
-    private var startTime: Long = 0
-    private var endTime: Long = 0
 
     companion object {
         const val NAME = "signal"
@@ -33,13 +28,19 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         signalBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
         viewModel = SignalViewModel(signalBinding, this)
         signalUtil = SignalUtil(signalBinding, this)
-        signalController = AppController(NAME, signalBinding, this)
+        signalController = AppController(
+            NAME,
+            signalBinding,
+            this,
+            signalBinding.datePicker,
+            supportFragmentManager
+        )
 
 //        signalBinding.bottomNavigationView.menu.findItem(R.id.cellular).isChecked = true
         viewModel.updateCard()
 
         signalBinding.apply {
-           datePicker.findViewById<TextView>(R.id.startTime)
+            datePicker.findViewById<TextView>(R.id.startTime)
                 .setOnClickListener(this@SignalActivity)
             datePicker.findViewById<TextView>(R.id.startDate)
                 .setOnClickListener(this@SignalActivity)
@@ -72,10 +73,10 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.startTime -> cellularController.setStartTime(this)
-            R.id.startDate -> cellularController.setStartDate(this)
-            R.id.endTime -> cellularController.setEndTime(this)
-            R.id.endDate -> cellularController.setEndDate(this)
+            R.id.startTime -> signalController.setStartTime(this)
+            R.id.startDate -> signalController.setStartDate(this)
+            R.id.endTime -> signalController.setEndTime(this)
+            R.id.endDate -> signalController.setEndDate(this)
         }
     }
 
