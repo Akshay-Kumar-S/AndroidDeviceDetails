@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails
+package com.example.androidDeviceDetails.utils
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog

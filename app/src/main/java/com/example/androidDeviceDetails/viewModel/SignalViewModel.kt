@@ -54,11 +54,11 @@ class SignalViewModel(
 
     fun observeSignal(lifecycleOwner: LifecycleOwner) {
         db.cellularDao().getLastLive().observe(lifecycleOwner) {
-            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellularStrength)
+            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellular)
                 updateCellularGauge(it)
         }
         db.wifiDao().getLastLive().observe(lifecycleOwner) {
-            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.wifiStrength)
+            if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.wifi)
                 updateWifiGauge(it)
         }
     }
@@ -68,7 +68,7 @@ class SignalViewModel(
         signalStrengthBinding.display.isVisible = false
         signalStrengthBinding.list.isVisible = true
         signalStrengthBinding.listView.isVisible = true
-        if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellularStrength)
+        if (signalStrengthBinding.bottomNavigationView.selectedItemId == R.id.cellular)
             signalStrengthBinding.general.text = "Type"
         else
             signalStrengthBinding.general.text = "Linkspeed"

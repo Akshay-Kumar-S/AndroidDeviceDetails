@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item
-    android:id="@+id/cellularStrength"
+    android:id="@+id/cellular"
     android:icon="@drawable/ic_round_network_cell_18"
     android:title="cellular" />
 <item
-    android:id="@+id/wifiStrength"
+    android:id="@+id/wifi"
     android:icon="@drawable/ic_round_network_wifi_24"
     android:title="wifi" />
 </menu>
