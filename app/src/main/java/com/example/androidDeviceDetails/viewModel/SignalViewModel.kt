@@ -9,10 +9,10 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.SignalAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.SignalRaw
-import com.example.androidDeviceDetails.models.WifiRaw
+import com.example.androidDeviceDetails.models.signalModels.CellularEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.models.signalModels.WifiEntity
 
 class SignalViewModel(
     private val signalStrengthBinding: ActivitySignalStrengthBinding,
@@ -24,10 +24,10 @@ class SignalViewModel(
     private var db = RoomDB.getDatabase()!!
 
     @SuppressLint("SetTextI18n")
-    fun updateWifiGauge(wifiRaw: WifiRaw) {
+    fun updateWifiGauge(wifiEntity: WifiEntity) {
         Log.d("test", "updateWifiGauge: ")
-        strength = wifiRaw.strength!!
-        linkspeed = wifiRaw.linkSpeed.toString()
+        strength = wifiEntity.strength!!
+        linkspeed = wifiEntity.linkSpeed.toString()
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
         //signalStrengthBinding.gauge.setLowerText(strength.toString())
         signalStrengthBinding.textStrength.text = "$strength dBm"
@@ -36,10 +36,10 @@ class SignalViewModel(
     }
 
     @SuppressLint("SetTextI18n")
-    fun updateCellularGauge(cellularRaw: CellularRaw) {
+    fun updateCellularGauge(cellularEntity: CellularEntity) {
         Log.d("tag", "updateCellularGauge: ")
-        strength = cellularRaw.strength!!
-        cellInfoType = cellularRaw.type.toString()
+        strength = cellularEntity.strength!!
+        cellInfoType = cellularEntity.type.toString()
         signalStrengthBinding.gauge.moveToValue(strength.toFloat())
         //signalStrengthBinding.gauge.setLowerText(strength.toString())
         signalStrengthBinding.textStrength.text = "$strength dBm"
@@ -82,7 +82,7 @@ class SignalViewModel(
                     SignalAdapter(
                         context,
                         R.layout.signal_tile,
-                        outputList as ArrayList<SignalRaw>
+                        outputList as ArrayList<SignalEntry>
                     )
                 signalStrengthBinding.listView.adapter = adapter
             }

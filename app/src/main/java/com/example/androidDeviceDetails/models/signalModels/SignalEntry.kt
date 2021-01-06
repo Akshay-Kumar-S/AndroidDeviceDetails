@@ -1,6 +1,6 @@
-package com.example.androidDeviceDetails.models
+package com.example.androidDeviceDetails.models.signalModels
 
-data class SignalRaw(
+data class SignalEntry(
     var timeStamp: Long,
     var strength: Int?,
     var general: String?,

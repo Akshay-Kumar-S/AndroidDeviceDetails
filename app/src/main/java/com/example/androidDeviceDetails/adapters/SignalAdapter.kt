@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.SignalRaw
+import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import java.text.SimpleDateFormat
 
 class SignalAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: List<SignalRaw>
-) : ArrayAdapter<SignalRaw>(_context, resource, items) {
+    private var items: List<SignalEntry>
+) : ArrayAdapter<SignalEntry>(_context, resource, items) {
 
     @SuppressLint("SimpleDateFormat", "ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

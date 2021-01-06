@@ -7,7 +7,7 @@ import android.net.wifi.WifiManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.WifiRaw
+import com.example.androidDeviceDetails.models.signalModels.WifiEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -15,7 +15,7 @@ internal class WifiReceiver() : BroadcastReceiver() {
     private var db = RoomDB.getDatabase()!!
 
     override fun onReceive(context: Context, intent: Intent) {
-        val wifiRaw: WifiRaw
+        val wifiEntity: WifiEntity
         val strength: Int
         val frequency: Int
         val linkSpeed: Int
@@ -26,12 +26,12 @@ internal class WifiReceiver() : BroadcastReceiver() {
         frequency = wifiManager.connectionInfo.linkSpeed
         linkSpeed = wifiManager.connectionInfo.frequency
 
-        wifiRaw = WifiRaw(
+        wifiEntity = WifiEntity(
             System.currentTimeMillis(), strength, frequency, linkSpeed
         )
         Log.d("wifi", "onReceive: $strength,$frequency,$linkSpeed")
         GlobalScope.launch {
-            db.wifiDao().insertAll(wifiRaw)
+            db.wifiDao().insertAll(wifiEntity)
         }
     }
 }

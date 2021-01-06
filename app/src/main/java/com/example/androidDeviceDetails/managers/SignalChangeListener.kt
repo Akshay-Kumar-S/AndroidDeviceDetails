@@ -4,8 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.util.Log
-import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.signalModels.CellularEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -13,7 +13,7 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
     private var db = RoomDB.getDatabase()!!
 
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
-        val cellularRaw: CellularRaw
+        val cellularEntity: CellularEntity
         var level = 0
         var strength = 0
         var type = ""
@@ -101,11 +101,11 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
         }
         Log.d("data", "data: $strength, $level,$asuLevel,$type")
 
-        cellularRaw = CellularRaw(
+        cellularEntity = CellularEntity(
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
         GlobalScope.launch {
-            db.cellularDao().insertAll(cellularRaw)
+            db.cellularDao().insertAll(cellularEntity)
         }
     }
 }

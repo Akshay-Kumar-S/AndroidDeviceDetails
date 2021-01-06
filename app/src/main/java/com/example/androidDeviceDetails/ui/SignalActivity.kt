@@ -8,15 +8,15 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.utils.SignalUtil
 import com.example.androidDeviceDetails.controller.AppController
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.SignalRaw
+import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 class SignalActivity : AppCompatActivity() {
     private lateinit var signalBinding: ActivitySignalStrengthBinding
     private lateinit var viewModel: SignalViewModel
-    private lateinit var wifiController: AppController<ActivitySignalStrengthBinding, SignalRaw>
-    private lateinit var cellularController: AppController<ActivitySignalStrengthBinding, SignalRaw>
+    private lateinit var wifiController: AppController<ActivitySignalStrengthBinding, SignalEntry>
+    private lateinit var cellularController: AppController<ActivitySignalStrengthBinding, SignalEntry>
     private lateinit var signalUtil: SignalUtil
     private var displayList: Int = 0
     private var startTime: Long = 0
@@ -36,13 +36,14 @@ class SignalActivity : AppCompatActivity() {
         wifiController = AppController(WIFI, signalBinding, this)
         cellularController = AppController(CELLULAR, signalBinding, this)
 
+        signalBinding.bottomNavigationView.menu.findItem(R.id.cellular).isChecked = true
         viewModel.observeSignal(lifecycleOwner = this)
         signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellular -> {
                     viewModel.updateGauge(-50f, -150f)
                     if (displayList == 1)
-                       cellularController.cook(TimeInterval(startTime, endTime))
+                        cellularController.cook(TimeInterval(startTime, endTime))
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifi -> {
