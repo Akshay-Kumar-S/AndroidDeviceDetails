@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.example.androidDeviceDetails.managers.AppBatteryUsageManager
 import com.example.androidDeviceDetails.services.CollectorService
 import com.example.androidDeviceDetails.utils.Utils
 
@@ -16,10 +15,5 @@ class MainController {
             else context.startService(Intent(context, CollectorService::class.java))
         else
             context.stopService(Intent(context, CollectorService::class.java))
-    }
-
-    fun getAppBatteryUsage(beginTime: Long, endTime: Long) {
-        val appBatteryUsageManager = AppBatteryUsageManager()
-        appBatteryUsageManager.cookBatteryData(beginTime, endTime)
     }
 }

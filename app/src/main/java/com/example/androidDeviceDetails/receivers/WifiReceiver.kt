@@ -3,14 +3,31 @@ package com.example.androidDeviceDetails.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.WifiRaw
 
-internal class WifiReceiver(private val context: Context) : BroadcastReceiver() {
+class WifiReceiver : BaseEventCollector, BroadcastReceiver() {
     private var signalDB = RoomDB.getDatabase()!!
+
+    init {
+        registerReceiver()
+    }
+
+    override fun registerReceiver() {
+        val intentWifi = IntentFilter()
+        intentWifi.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        DeviceDetailsApplication.instance.registerReceiver(this, intentWifi)
+    }
+
+    override fun unregisterReceiver() {
+        DeviceDetailsApplication.instance.unregisterReceiver(this)
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
         val wifiRaw: WifiRaw

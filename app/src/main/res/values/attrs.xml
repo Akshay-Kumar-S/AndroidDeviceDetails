@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FullscreenAttrs">
+        <attr name="batteryTitle" format="color" />
+        <attr name="startBlue" format="color" />
+        <attr name="endOrange" format="color" />
+    </declare-styleable>
+    <declare-styleable name="TimeDateBubbleColor">
+        <attr name="TimeDateBackground" format="color" />
+    </declare-styleable>
+    <declare-styleable name="IconTint">
+        <attr name="iconTint" format="color"/>
+    </declare-styleable>
+</resources>

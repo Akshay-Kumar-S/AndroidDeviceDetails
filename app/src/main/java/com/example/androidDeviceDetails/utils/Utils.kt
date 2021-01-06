@@ -4,24 +4,62 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.util.Log
-import com.example.androidDeviceDetails.models.AppDetails
+import androidx.core.content.ContextCompat
+import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
+import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.services.CollectorService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.log10
+import kotlin.math.pow
 
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
-    private val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+    private val f = SimpleDateFormat(format, Locale.ENGLISH)
 
-    fun getDateTime(timestamp: Long): String {
-        return formatter.format(Date(timestamp))
+    fun getDateTime(millis: Long): String = f.format(Date(millis))
+
+    fun getWeek(day: Int): String {
+        when (day) {
+            Calendar.SUNDAY -> return "Sun"
+            Calendar.MONDAY -> return "Mon"
+            Calendar.TUESDAY -> return "Tue"
+            Calendar.WEDNESDAY -> return "Wed"
+            Calendar.THURSDAY -> return "Thu"
+            Calendar.FRIDAY -> return "Fri"
+            Calendar.SATURDAY -> return "Sat"
+        }
+        return "Day"
+    }
+
+    fun getMonth(month: Int): String {
+        when (month) {
+            Calendar.JANUARY -> return "Jan"
+            Calendar.FEBRUARY -> return "Feb"
+            Calendar.MARCH -> return "Mar"
+            Calendar.APRIL -> return "Apr"
+            Calendar.MAY -> return "May"
+            Calendar.JUNE -> return "Jun"
+            Calendar.JULY -> return "Jul"
+            Calendar.AUGUST -> return "Aug"
+            Calendar.SEPTEMBER -> return "Sep"
+            Calendar.OCTOBER -> return "Oct"
+            Calendar.NOVEMBER -> return "Nov"
+            Calendar.DECEMBER -> return "Dec"
+        }
+        return "Nil"
     }
 
     fun getEventType(eventType: Int): String {
@@ -57,6 +95,39 @@ object Utils {
         return "UNDEFINED"
     }
 
+    fun getApplicationLabel(packageName: String): String {
+        val packageManager = DeviceDetailsApplication.instance.packageManager
+        return try {
+            val info = packageManager.getApplicationInfo(
+                packageName,
+                PackageManager.GET_META_DATA
+            )
+            packageManager.getApplicationLabel(info) as String
+        } catch (e: Exception) {
+            packageName
+        }
+    }
+
+    fun getFileSize(size: Long): String {
+        if (size <= 0) return "0 KB"
+        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
+            .toString() + " " + units[digitGroups]
+    }
+
+    fun getApplicationIcon(packageName: String): Drawable {
+        return try {
+            DeviceDetailsApplication.instance.packageManager.getApplicationIcon(packageName)
+        } catch (e: Exception) {
+            ContextCompat.getDrawable(
+                DeviceDetailsApplication.instance,
+                R.drawable.ic_baseline_android_24
+            )!!
+        }
+    }
+
+
     fun isMyServiceRunning(serviceClass: Class<CollectorService>, context: Context): Boolean {
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         @Suppress("DEPRECATION")
@@ -66,46 +137,73 @@ object Utils {
         return false
     }
 
-    fun getVersion(context: Context, packageName: String): AppDetails {
-        val appDetails = AppDetails(-1, "Null", -1, "Not Found")
+    fun getAppDetails(context: Context, packageName: String): AppDetails {
+        val appDetails = AppDetails(-1, "Null", -1, "Not Found", false)
         try {
             val pInfo2 = context.packageManager.getApplicationInfo(packageName, 0)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
-            @Suppress("DEPRECATION")
-            appDetails.versionCode = pInfo?.versionCode!!
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                appDetails.versionCode = pInfo.longVersionCode
+            } else {
+                @Suppress("DEPRECATION")
+                appDetails.versionCode = pInfo.versionCode.toLong()
+            }
             appDetails.versionName = pInfo.versionName
             val file = File(pInfo2.sourceDir)
             appDetails.appSize = file.length() / 1024
             appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()
-            Log.d("AppName", "getVersion: " + appDetails.appTitle)
+            val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
+            appDetails.isSystemApp = (pInfo2.flags and mask == 0).not()
+            Log.d(
+                "isSystem App",
+                " ${appDetails.appTitle} is system App : ${appDetails.isSystemApp}"
+            )
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-
         return appDetails
     }
 
     @SuppressLint("QueryPermissionsNeeded")
     fun addInitialData(context: Context) {
-        val db = RoomDB.getDatabase()!!
+        val db = RoomDB.getDatabase(context)!!
         val packages = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
         GlobalScope.launch(Dispatchers.IO) {
             for (i in packages) {
-                val details = getVersion(context, i.packageName)
-                DbHelper.writeToAppsDb(0, i.packageName, db)
+                val details = getAppDetails(context, i.packageName)
+                AppInfoDbHelper.writeToAppsDb(0, i.packageName, details, db)
                 val id = db.appsDao().getIdByName(i.packageName)
-                DbHelper.writeToAppHistoryDb(
+                AppInfoDbHelper.writeToAppHistoryDb(
                     id,
-                    EventType.APP_INSTALLED.ordinal,
+                    EventType.APP_ENROLL.ordinal,
                     details,
-                    db,
-                    -1
+                    db
                 )
-
             }
-
         }
+    }
 
+    fun getDateString(calendar: Calendar): String =
+        "${getWeek(calendar.get(Calendar.DAY_OF_WEEK))}, ${calendar.get(Calendar.DAY_OF_MONTH)} ${
+            getMonth(calendar.get(Calendar.MONTH))
+        }"
+
+
+    fun loadPreviousDayTime(): Long {
+        val cal = Calendar.getInstance()
+        cal[Calendar.HOUR] = 0
+        cal[Calendar.MINUTE] = 0
+        cal.add(Calendar.DAY_OF_MONTH, -1)
+        return cal.timeInMillis
+    }
+
+    fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
     }
 
     fun showDatePicker(

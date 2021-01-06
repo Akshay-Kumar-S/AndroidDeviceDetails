@@ -1,101 +1,109 @@
 package com.example.androidDeviceDetails.managers
 
+import android.app.Service
 import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.util.Log
-import androidx.annotation.RequiresApi
+import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.base.BaseEventCollector
 import com.example.androidDeviceDetails.models.CellularRaw
 import com.example.androidDeviceDetails.models.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SignalChangeListener(private val context: Context) : PhoneStateListener() {
+class SignalChangeListener(private val context: Context) : PhoneStateListener(),
+    BaseEventCollector {
 
     private var signalDB = RoomDB.getDatabase()
+    private lateinit var mTelephonyManager: TelephonyManager
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
         val cellularRaw: CellularRaw
         var level = 0
         var strength = 0
         var type = ""
         var asuLevel = 0
+        val lteData: CellSignalStrengthLte
+        val gsmData: CellSignalStrengthGsm
+        val cdmaData: CellSignalStrengthCdma
+        val wcdmaData: CellSignalStrengthWcdma
 
-        try {
-            val telephonyManager =
-                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            val cellInfo = telephonyManager.allCellInfo[0]
-            Log.d("test", "onSignalStrengthsChanged: ")
-            when (cellInfo) {
-                is CellInfoLte -> {
-                    type = "LTE"
-                    strength = cellInfo.cellSignalStrength.dbm
-                    level = cellInfo.cellSignalStrength.level
-                    asuLevel = cellInfo.cellSignalStrength.asuLevel
-                    Log.d("tags", "lte")
-                }
-                is CellInfoGsm -> {
-                    type = "GSM"
-                    strength = cellInfo.cellSignalStrength.dbm
-                    level = cellInfo.cellSignalStrength.level
-                    asuLevel = cellInfo.cellSignalStrength.asuLevel
-                    Log.d("tags", "gsm")
-                }
-                is CellInfoCdma -> {
-                    type = "CDMA"
-                    strength = cellInfo.cellSignalStrength.dbm
-                    level = cellInfo.cellSignalStrength.level
-                    asuLevel = cellInfo.cellSignalStrength.asuLevel
-                    Log.d("tags", "cdma")
-                }
-                is CellInfoWcdma -> {
-                    type = "WCDMA"
-                    strength = cellInfo.cellSignalStrength.dbm
-                    level = cellInfo.cellSignalStrength.level
-                    asuLevel = cellInfo.cellSignalStrength.asuLevel
-                    Log.d("tags", "wcdma")
-                }
-                is CellInfoNr -> {
-                    type = "NR"
-                    strength = cellInfo.cellSignalStrength.dbm
-                    level = cellInfo.cellSignalStrength.level
-                    asuLevel = cellInfo.cellSignalStrength.asuLevel
-                    Log.d("tags", "wcdma")
-                }
-                is CellInfoTdscdma -> {
-                    type = "TDSCDMA"
-                    strength = cellInfo.cellSignalStrength.dbm
-                    level = cellInfo.cellSignalStrength.level
-                    asuLevel = cellInfo.cellSignalStrength.asuLevel
-                    Log.d("tags", "wcdma")
-                }
-                else -> {
-                    strength = 0
-                    level = 0
-                }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (signalStrength.cellSignalStrengths[0] is CellSignalStrengthLte) {
+                lteData = signalStrength.cellSignalStrengths[0] as CellSignalStrengthLte
+                strength = lteData.rsrp
+                level = lteData.level
+                type = "LTE"
+                asuLevel = lteData.asuLevel
             }
-        } catch (e: SecurityException) {
+            if (signalStrength.cellSignalStrengths[0] is CellSignalStrengthGsm) {
+                gsmData = signalStrength.cellSignalStrengths[0] as CellSignalStrengthGsm
+                strength = gsmData.dbm
+                level = gsmData.level
+                type = "GSM"
+                asuLevel = gsmData.asuLevel
+            }
+            if (signalStrength.cellSignalStrengths[0] is CellSignalStrengthCdma) {
+                cdmaData = signalStrength.cellSignalStrengths[0] as CellSignalStrengthCdma
+                strength = cdmaData.cdmaDbm
+                type = "CDMA"
+                level = cdmaData.level
+                asuLevel = cdmaData.asuLevel
+            }
+            if (signalStrength.cellSignalStrengths[0] is CellSignalStrengthWcdma) {
+                wcdmaData = signalStrength.cellSignalStrengths[0] as CellSignalStrengthWcdma
+                strength = wcdmaData.dbm
+                type = "WCDMA"
+                level = wcdmaData.level
+                asuLevel = wcdmaData.asuLevel
+            }
+        } else {
+            try {
+                val telephonyManager =
+                    context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val cellInfo = telephonyManager.allCellInfo[0]
+                Log.d("test", "onSignalStrengthsChanged: ")
+                when (cellInfo) {
+                    is CellInfoLte -> {
+                        type = "LTE"
+                        strength = cellInfo.cellSignalStrength.dbm
+                        level = cellInfo.cellSignalStrength.level
+                        asuLevel = cellInfo.cellSignalStrength.asuLevel
+                        Log.d("tags", "lte")
+                    }
+                    is CellInfoGsm -> {
+                        type = "GSM"
+                        strength = cellInfo.cellSignalStrength.dbm
+                        level = cellInfo.cellSignalStrength.level
+                        asuLevel = cellInfo.cellSignalStrength.asuLevel
+                        Log.d("tags", "gsm")
+                    }
+                    is CellInfoCdma -> {
+                        type = "CDMA"
+                        strength = cellInfo.cellSignalStrength.dbm
+                        level = cellInfo.cellSignalStrength.level
+                        asuLevel = cellInfo.cellSignalStrength.asuLevel
+                        Log.d("tags", "cdma")
+                    }
+                    is CellInfoWcdma -> {
+                        type = "WCDMA"
+                        strength = cellInfo.cellSignalStrength.dbm
+                        level = cellInfo.cellSignalStrength.level
+                        asuLevel = cellInfo.cellSignalStrength.asuLevel
+                        Log.d("tags", "wcdma")
+                    }
+                    else -> {
+
+                    }
+                }
+
+            } catch (e: SecurityException) {
+            } catch (e: Exception) {
+            }
         }
-        Log.d("tag", "data: $strength, $level")
-
-
-        /*//  to find signal strength from SignalStrength
-        val ssignal = signalStrength.toString()
-        val parts = ssignal.split(" ", "=", ",").toList()
-        var n = 0
-        for (i in parts) {
-            Log.d("test$n", "onSignalStrengthsChanged: $i")
-            n += 1
-        }
-        //  level = parts[61].toInt()
-        Log.e("parse", "$level")
-
-
-       // get values directly from signalStrength
-        level = signalStrength.level
-        strength = signalStrength.cdmaDbm*/
-
         cellularRaw = CellularRaw(
             System.currentTimeMillis(), type, strength, level, asuLevel
         )
@@ -103,4 +111,12 @@ class SignalChangeListener(private val context: Context) : PhoneStateListener() 
             signalDB?.cellularDao()?.insertAll(cellularRaw)
         }
     }
+
+    override fun registerReceiver() {
+        mTelephonyManager =
+            DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
+        mTelephonyManager.listen(this, LISTEN_SIGNAL_STRENGTHS)
+    }
+
+    override fun unregisterReceiver() {}
 }

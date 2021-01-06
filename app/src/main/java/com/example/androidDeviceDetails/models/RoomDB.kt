@@ -7,20 +7,34 @@ import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.location.models.ILocationDao
 import com.example.androidDeviceDetails.location.models.LocationModel
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
+import com.example.androidDeviceDetails.models.appInfoModels.AppsDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
+import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
+import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
+import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
+import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 
 
 @Database(
-    entities = [AppUsageModel::class, BatteryRawModel::class, LocationModel::class, Apps::class, AppHistory::class, WifiRaw::class, CellularRaw::class],
+    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class, AppNetworkUsageEntity::class, DeviceNetworkUsageEntity::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
-    abstract fun batteryInfoDao(): BatteryInfoDao
-    abstract fun appUsageInfoDao(): AppUsageInfoDao
+    abstract fun batteryDao(): BatteryDao
+    abstract fun appEventDao(): AppEventDao
     abstract fun locationDao(): ILocationDao
     abstract fun appsDao(): AppsDao
     abstract fun appHistoryDao(): AppHistoryDao
     abstract fun wifiDao(): WifiDao
     abstract fun cellularDao(): CellularDao
+    abstract fun appNetworkUsageDao(): AppNetworkUsageDao
+    abstract fun deviceNetworkUsageDao(): DeviceNetworkUsageDao
 
     companion object {
         private var INSTANCE: RoomDB? = null
