@@ -42,5 +42,4 @@ class WifiCooker : BaseCooker() {
         }
         return 0
     }
-
 }

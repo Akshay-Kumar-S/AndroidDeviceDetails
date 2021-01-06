@@ -30,5 +30,4 @@ class CellularCooker : BaseCooker() {
             } else callback.onDone(arrayListOf())
         }
     }
-
 }
