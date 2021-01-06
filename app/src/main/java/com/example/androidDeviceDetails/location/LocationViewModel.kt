@@ -19,7 +19,9 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
+import javax.inject.Singleton
 
+@Singleton
 class LocationViewModel(val context: Context, private val binding: ActivityLocationBinding) :
     BaseViewModel() {
 
@@ -28,6 +30,7 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
     }
 
     private lateinit var countedData: Map<String, Int>
+    private lateinit var cookedDataList : MutableList<LocationModel>
 
 
     private fun getTextView(text: String): TextView {
@@ -50,7 +53,7 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
         }
     }
 
-    fun toast(msg: String) =
+    private fun toast(msg: String) =
         binding.root.post {
             Toast.makeText(
                 context, msg, Toast.LENGTH_SHORT
@@ -137,10 +140,15 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
     }
 
     override fun <T> populateList(data: MutableList<T>) {
-        val data1 = data as MutableList<LocationModel>
-        countedData = data1.groupingBy { it.geoHash!! }.eachCount()
-        buildGraph(countedData)
-        buildTable(countedData)    }
+        cookedDataList = data as MutableList<LocationModel>
+        if (cookedDataList.isEmpty())
+            onNoData()
+        else {
+            countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
+            buildGraph(countedData)
+            buildTable(countedData)
+        }
+    }
 
     override fun onNoData() {
         toast("No data on selected date")

@@ -6,12 +6,8 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.location.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
 import com.fonfon.kgeohash.GeoHash
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class LocationCooker : BaseCooker(){
     private val geoHashLength: Int = 6
@@ -21,18 +17,18 @@ class LocationCooker : BaseCooker(){
     private var prevDate: Long = 0L
 
 
-    private suspend fun getData(date: Long?): List<LocationModel> =
-        withContext(Dispatchers.Default) {
-            if (date != null) {
-                return@withContext locationDatabase.locationDao()
-                    .readDataFromDate(date, date + TimeUnit.DAYS.toMillis(1))
-            }
-            return@withContext locationDatabase.locationDao().readAll()
-        }
-
-    fun countData(cookedData: MutableList<LocationModel>): Map<String, Int> {
-        return cookedData.groupingBy { it.geoHash!! }.eachCount()
-    }
+//    private suspend fun getData(date: Long?): List<LocationModel> =
+//        withContext(Dispatchers.Default) {
+//            if (date != null) {
+//                return@withContext locationDatabase.locationDao()
+//                    .readDataFromDate(date, date + TimeUnit.DAYS.toMillis(1))
+//            }
+//            return@withContext locationDatabase.locationDao().readAll()
+//        }
+//
+//    fun countData(cookedData: MutableList<LocationModel>): Map<String, Int> {
+//        return cookedData.groupingBy { it.geoHash!! }.eachCount()
+//    }
 
     private fun cookData(locationList: List<LocationModel>): MutableList<LocationModel> {
         val cookedLocationList = emptyList<LocationModel>().toMutableList()
@@ -51,7 +47,7 @@ class LocationCooker : BaseCooker(){
     override fun <T> cook(onCookingDone: ICookingDone<T>, time: Long) {
         GlobalScope.launch {
             res = locationDatabase.locationDao().readAll()
-            onCookingDone.onData(cookData(res) as MutableList<T>)
+            onCookingDone.onDone(cookData(res) as MutableList<T>)
             Log.d("LocationData", "loadData: $res")
         }
     }
