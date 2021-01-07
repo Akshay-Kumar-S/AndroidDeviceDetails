@@ -7,6 +7,7 @@ import android.widget.TableRow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.TimeInterval
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
@@ -19,7 +20,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
-    lateinit var appController: com.example.androidDeviceDetails.controller.AppController<LocationModel>
+    lateinit var activityController: ActivityController<LocationModel>
     lateinit var locationViewModel: LocationViewModel
     private var calendar = Calendar.getInstance()
 
@@ -34,12 +35,12 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        appController = com.example.androidDeviceDetails.controller.AppController(
+        activityController = ActivityController(
             "LOCATION_ACTIVITY",
             binding,
             this
         )
-        locationViewModel = appController.viewModel as LocationViewModel
+        locationViewModel = activityController.viewModel as LocationViewModel
         calendar[Calendar.HOUR] = 0
         calendar[Calendar.MINUTE] = 0
         calendar[Calendar.SECOND] = 0
@@ -53,7 +54,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     private fun init() {
         selectedRow = binding.noData
         Toast.makeText(this, calendar.time.toString(), Toast.LENGTH_SHORT).show()
-        appController.cook(
+        activityController.cook(
             TimeInterval(
                 calendar.timeInMillis,
                 calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
@@ -82,7 +83,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             calendar[Calendar.YEAR] = year
             calendar[Calendar.MONTH] = monthOfYear
             calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-            appController.cook(
+            activityController.cook(
                 TimeInterval(
                     calendar.timeInMillis,
                     calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
