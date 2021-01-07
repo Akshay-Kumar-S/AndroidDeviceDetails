@@ -34,7 +34,6 @@ class SignalViewModel(
     }
 
     private fun observeSignal() {
-        Log.d("neena", "observeSignal: ${signalBinding.lifecycleOwner}")
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
             updateValue(it)
         }
