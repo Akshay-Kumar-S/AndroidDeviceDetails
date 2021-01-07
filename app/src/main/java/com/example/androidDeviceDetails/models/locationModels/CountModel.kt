@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.location.models
+package com.example.androidDeviceDetails.models.locationModels
 
 data class CountModel(
     val geoHash: String?,
