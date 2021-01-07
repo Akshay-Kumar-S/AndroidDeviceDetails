@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails.controller
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.example.androidDeviceDetails.BottomSheet
@@ -27,6 +26,9 @@ class ActivityController<T, MT>(
     private var viewModel: BaseViewModel = BaseViewModel.getViewModel(dataType, binding, context)
     private var startCalendar: Calendar = Calendar.getInstance()
     private var endCalendar: Calendar = Calendar.getInstance()
+    private var previousStartTime: Long = 0
+    private var previousEndTime: Long = 0
+
 
     private val onCookingDone = object : ICookingDone<MT> {
         override fun onDone(outputList: ArrayList<MT>) =
@@ -36,6 +38,9 @@ class ActivityController<T, MT>(
     init {
         startCalendar.set(Calendar.HOUR, 0)
         startCalendar.set(Calendar.MINUTE, 0)
+        previousStartTime = startCalendar.timeInMillis
+        previousEndTime = endCalendar.timeInMillis
+
 //        startCalendar.add(Calendar.DAY_OF_MONTH, -1)
         //todo make a fun for timeHandling -- deal with timeStamp in long to calender
         showInitialData()
@@ -57,7 +62,7 @@ class ActivityController<T, MT>(
         val minute = startCalendar.get(Calendar.MINUTE)
         TimePickerDialog(
             context, startTimePickerListener, hour, minute,
-            DateFormat.is24HourFormat(context)
+            false
         ).show()
     }
 
@@ -65,7 +70,9 @@ class ActivityController<T, MT>(
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             startCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
             startCalendar[Calendar.MINUTE] = minute
-            validateTimeInterval()
+            if (previousStartTime != startCalendar.timeInMillis)
+                validateTimeInterval()
+            previousStartTime = startCalendar.timeInMillis
         }
 
     fun setStartDate(context: Context) {
@@ -86,22 +93,26 @@ class ActivityController<T, MT>(
     private var startDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             startCalendar.set(year, month, dayOfMonth)
-            validateTimeInterval()
+            if (previousStartTime != startCalendar.timeInMillis)
+                validateTimeInterval()
+            previousStartTime = startCalendar.timeInMillis
         }
 
     fun setEndTime(context: Context) {
-        val hour = startCalendar.get(Calendar.HOUR)
-        val minute = startCalendar.get(Calendar.MINUTE)
+        val hour = endCalendar.get(Calendar.HOUR)
+        val minute = endCalendar.get(Calendar.MINUTE)
         TimePickerDialog(
             context, endTimePickerListener, hour, minute,
-            DateFormat.is24HourFormat(context)
+            false
         ).show()
     }
 
     private val endTimePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
         endCalendar[Calendar.HOUR_OF_DAY] = hourOfDay
         endCalendar[Calendar.MINUTE] = minute
-        validateTimeInterval()
+        if (previousEndTime != endCalendar.timeInMillis)
+            validateTimeInterval()
+        previousEndTime = endCalendar.timeInMillis
     }
 
     fun setEndDate(context: Context) {
@@ -123,7 +134,9 @@ class ActivityController<T, MT>(
     private var endDatePickerListener =
         DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             endCalendar.set(year, month, dayOfMonth)
-            validateTimeInterval()
+            if (previousEndTime != endCalendar.timeInMillis)
+                validateTimeInterval()
+            previousEndTime = endCalendar.timeInMillis
         }
 
     private fun validateTimeInterval() {
