@@ -25,7 +25,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityAppInfoBinding
     private var startTime: Long = 0
     private var endTime: Long = 0
-    private lateinit var controller: ActivityController<ActivityAppInfoBinding, AppInfoCookedData>
+    private lateinit var controller: ActivityController<AppInfoCookedData>
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)

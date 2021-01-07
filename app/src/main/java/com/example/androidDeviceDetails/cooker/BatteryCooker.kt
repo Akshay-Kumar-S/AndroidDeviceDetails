@@ -1,7 +1,7 @@
 package com.example.androidDeviceDetails.cooker
 
-import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
@@ -37,6 +37,7 @@ class BatteryCooker : BaseCooker() {
                     previousApp = appEvent
                     previousBattery = batteryInfo
                 }
+                @Suppress("UNCHECKED_CAST")
                 callback.onDone(appEntryList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
         }

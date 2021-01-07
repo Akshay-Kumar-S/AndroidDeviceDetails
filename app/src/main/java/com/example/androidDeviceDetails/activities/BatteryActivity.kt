@@ -18,7 +18,7 @@ import java.util.*
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var batteryBinding: ActivityBatteryBinding
-    private lateinit var batteryController: ActivityController<ActivityBatteryBinding, BatteryAppEntry>
+    private lateinit var batteryController: ActivityController<BatteryAppEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

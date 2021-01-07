@@ -5,19 +5,20 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
+import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.BottomSheet
-import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
+import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
-class ActivityController<T, MT>(
+class ActivityController<T>(
     dataType: String,
-    binding: T,
+    binding: ViewBinding,
     var context: Context,
     private val dateTimePickerView: DateTimePickerBinding,
     val supportFragmentManager: FragmentManager
@@ -31,8 +32,8 @@ class ActivityController<T, MT>(
     private var previousEndTime: Long = 0
 
 
-    private val onCookingDone = object : ICookingDone<MT> {
-        override fun onDone(outputList: ArrayList<MT>) =
+    private val onCookingDone = object : ICookingDone<T> {
+        override fun onDone(outputList: ArrayList<T>) =
             viewModel.onData(outputList)
     }
 
@@ -41,9 +42,6 @@ class ActivityController<T, MT>(
         startCalendar.set(Calendar.MINUTE, 0)
         previousStartTime = startCalendar.timeInMillis
         previousEndTime = endCalendar.timeInMillis
-
-//        startCalendar.add(Calendar.DAY_OF_MONTH, -1)
-        //todo make a fun for timeHandling -- deal with timeStamp in long to calender
         showInitialData()
         cook(
             TimePeriod(
@@ -153,7 +151,6 @@ class ActivityController<T, MT>(
                 ).show()
         } else
             Toast.makeText(context, "Enter valid time interval", Toast.LENGTH_SHORT).show()
-
     }
 
     private fun onClickApply() {

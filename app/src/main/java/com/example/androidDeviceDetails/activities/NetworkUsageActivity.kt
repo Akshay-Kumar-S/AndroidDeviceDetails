@@ -12,7 +12,7 @@ import java.util.*
 
 class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var networkUsageBinding: ActivityAppDataBinding
-    private lateinit var networkUsageController: ActivityController<ActivityAppDataBinding, AppNetworkUsageEntity>
+    private lateinit var networkUsageController: ActivityController<AppNetworkUsageEntity>
 
     companion object {
         const val NAME = "network"
