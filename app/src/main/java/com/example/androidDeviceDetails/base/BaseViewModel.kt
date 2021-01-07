@@ -36,7 +36,7 @@ abstract class BaseViewModel {
         endCalendar: Calendar,
         dateTimePickerBinding: DateTimePickerBinding
     ) {
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        val timeFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
         val dateFormat = SimpleDateFormat("dd, MMM yyyy", Locale.ENGLISH)
         val amPmFormat = SimpleDateFormat("a", Locale.ENGLISH)
         dateTimePickerBinding.startTime.text = timeFormat.format(Date(startCalendar.timeInMillis))
