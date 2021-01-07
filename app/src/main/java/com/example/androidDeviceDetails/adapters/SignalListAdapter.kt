@@ -11,7 +11,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import java.text.SimpleDateFormat
 
-class SignalAdapter(
+class SignalListAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: List<SignalEntity>

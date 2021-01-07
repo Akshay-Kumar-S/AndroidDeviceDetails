@@ -1,8 +1,12 @@
 package com.example.androidDeviceDetails.base
 
+import com.example.androidDeviceDetails.activities.AppInfoActivity
+import com.example.androidDeviceDetails.activities.BatteryActivity
+import com.example.androidDeviceDetails.activities.SignalActivity
 import com.example.androidDeviceDetails.cooker.AppInfoCooker
 import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
+import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.ui.AppInfoActivity

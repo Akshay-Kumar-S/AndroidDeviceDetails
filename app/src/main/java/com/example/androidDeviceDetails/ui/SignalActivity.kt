@@ -2,7 +2,6 @@ package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
@@ -13,7 +12,7 @@ import com.example.androidDeviceDetails.utils.Signal
 
 class SignalActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var signalBinding: ActivitySignalStrengthBinding
-    private lateinit var signalController: ActivityController<ActivitySignalStrengthBinding, SignalEntity>
+    private lateinit var signalController: ActivityController<SignalEntity>
 
     companion object {
         const val NAME = "signal"
@@ -23,34 +22,33 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         signalBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
-        signalBinding.lifecycleOwner=this
+        signalBinding.lifecycleOwner = this
         signalController = ActivityController(
             NAME,
             signalBinding,
             this,
-            signalBinding.datePicker,
+            signalBinding.dateTimePickerLayout,
             supportFragmentManager
         )
 //        signalBinding.bottomNavigationView.menu.findItem(R.id.cellular).isChecked = true
         signalBinding.apply {
-            datePicker.findViewById<TextView>(R.id.startTime)
+            dateTimePickerLayout.startTime
                 .setOnClickListener(this@SignalActivity)
-            datePicker.findViewById<TextView>(R.id.startDate)
+            dateTimePickerLayout.startDate
                 .setOnClickListener(this@SignalActivity)
-            datePicker.findViewById<TextView>(R.id.endTime)
+            dateTimePickerLayout.endTime
                 .setOnClickListener(this@SignalActivity)
-            datePicker.findViewById<TextView>(R.id.endDate)
+            dateTimePickerLayout.endDate
                 .setOnClickListener(this@SignalActivity)
         }
-
         signalBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.cellular -> {
-                    signalController.filterData(Signal.CELLULAR.ordinal)
+                    signalController.filterView(Signal.CELLULAR.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.wifi -> {
-                    signalController.filterData(Signal.WIFI.ordinal)
+                    signalController.filterView(Signal.WIFI.ordinal)
                     return@setOnNavigationItemSelectedListener true
                 }
             }

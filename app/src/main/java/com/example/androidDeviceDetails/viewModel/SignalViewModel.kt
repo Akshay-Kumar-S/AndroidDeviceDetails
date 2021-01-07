@@ -2,10 +2,9 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.SignalAdapter
+import com.example.androidDeviceDetails.adapters.SignalListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.RoomDB
@@ -118,8 +117,8 @@ class SignalViewModel(
             initialView()
     }
 
-    override fun display(filter: Int) {
-        signal = filter
+    override fun filter(type: Int) {
+        signal = type
         updateGauge()
         updateCardView()
         updateListView()
@@ -134,7 +133,7 @@ class SignalViewModel(
         if (signalList.isNotEmpty()) {
             signalBinding.root.post {
                 val adapter =
-                    SignalAdapter(
+                    SignalListAdapter(
                         context,
                         R.layout.signal_tile,
                         signalList
