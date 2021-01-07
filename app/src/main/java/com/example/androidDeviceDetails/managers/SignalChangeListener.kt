@@ -96,6 +96,10 @@ class SignalChangeListener : BaseCollector() {
         }
     }
 
+    init {
+        start()
+    }
+
     override fun start() {
         mTelephonyManager =
             DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
