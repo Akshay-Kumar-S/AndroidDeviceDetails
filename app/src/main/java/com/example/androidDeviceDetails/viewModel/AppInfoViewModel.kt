@@ -18,14 +18,15 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
-        if(appList.isEmpty()){
+        AppInfoManager.appList = appList
+        if (appList.isEmpty()) {
             binding.root.post {
                 binding.appInfoListView.adapter = null
                 binding.statisticsContainer.isVisible = false
                 binding.appInfoListView.isVisible = false
+                binding.indeterminateBar.isVisible = false
             }
-        }
-        else {
+        } else {
             var filteredList = appList.toMutableList()
             val eventFilter = binding.statisticsContainer.tag.toString().toIntOrNull()
             if (eventFilter != EventType.ALL_EVENTS.ordinal) {
@@ -77,18 +78,19 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
             val uninstalled =
                 ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
-            binding.updatedProgressBar.progress = (updated.toInt())
-            binding.installedProgressBar.progress = (updated + installed).toInt()
-            binding.enrollProgressbar.progress = (updated + installed + enrolled).toInt()
-            binding.uninstalledProgressbar.progress =
-                (updated + installed + enrolled + uninstalled).toInt()
-            binding.pieChartConstraintLayout.post {
+            binding.root.post {
+                binding.updatedProgressBar.progress = (updated.toInt())
+                binding.installedProgressBar.progress = (updated + installed).toInt()
+                binding.enrollProgressbar.progress = (updated + installed + enrolled).toInt()
+                binding.uninstalledProgressbar.progress =
+                    (updated + installed + enrolled + uninstalled).toInt()
                 binding.statisticsContainer.isVisible = true
                 binding.statsMap.isVisible = true
                 binding.enrollCount.text = (enrolledAppCount[true] ?: 0).toString()
                 binding.installCount.text = (installedAppCount[true] ?: 0).toString()
                 binding.updateCount.text = (updateAppCount[true] ?: 0).toString()
                 binding.uninstallCount.text = (uninstalledAppCount[true] ?: 0).toString()
+                binding.indeterminateBar.isVisible = false
             }
         }
     }

@@ -14,7 +14,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.services.CollectorService
+import com.example.androidDeviceDetails.services.AppService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -128,7 +128,7 @@ object Utils {
     }
 
 
-    fun isMyServiceRunning(serviceClass: Class<CollectorService>, context: Context): Boolean {
+    fun isMyServiceRunning(serviceClass: Class<AppService>, context: Context): Boolean {
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         @Suppress("DEPRECATION")
         for (service in manager.getRunningServices(Int.MAX_VALUE))

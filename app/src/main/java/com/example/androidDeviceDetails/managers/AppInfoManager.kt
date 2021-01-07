@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.Toast
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.utils.Utils
 
 object AppInfoManager {
+
+    var appList = arrayListOf<AppInfoCookedData>()
 
     fun justifyListViewHeightBasedOnChildren(listView: ListView, size: Int) {
         val adapter: ListAdapter = listView.adapter ?: return

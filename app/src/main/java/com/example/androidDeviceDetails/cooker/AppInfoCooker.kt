@@ -13,6 +13,7 @@ import java.util.*
 
 class AppInfoCooker : BaseCooker() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
         GlobalScope.launch(Dispatchers.IO) {
             val db = RoomDB.getDatabase()!!

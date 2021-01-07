@@ -8,17 +8,14 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.base.BaseTimeCollector
+import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
-class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
-
-    override lateinit var timer: Timer
+class NetworkUsageCollector(var context: Context) : BaseCollector() {
 
     private val firstInstallTime =
         context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
@@ -110,7 +107,7 @@ class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
         return if (wifiEnable)
             AppNetworkUsageEntity(
                 0,
-                timeNow.minus(timeNow.rem(60 * 1000)),
+                timeNow.minus(timeNow.rem(60 * 1000)), //To make resolution to minutes
                 packageName,
                 bucket.txBytes, 0L,
                 bucket.rxBytes, 0L
@@ -126,6 +123,9 @@ class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
 
     }
 
+    override fun start() {
+    }
+
     override fun collect() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             networkStatsManager =
@@ -135,14 +135,7 @@ class NetworkUsageCollector(var context: Context) : BaseTimeCollector() {
         }
     }
 
-    override fun runTimer(intervalInMinuets: Long) {
-        timer = Timer()
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() = collect()
-            },
-            0, 1000 * 60 * intervalInMinuets
-        )
+    override fun stop() {
     }
 
 }

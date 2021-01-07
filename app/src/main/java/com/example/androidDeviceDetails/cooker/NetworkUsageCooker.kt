@@ -24,7 +24,7 @@ class NetworkUsageCooker : BaseCooker() {
                 val totalDataUsageList = arrayListOf<AppNetworkUsageEntity>()
                 finalAppDataList.forEach {
                     val nullCheckList =
-                        initialAppDataList.filter { appDataUsage -> it.packageName == appDataUsage.packageName }
+                        initialAppDataList.filter { appDataUsage -> it.packageName == appDataUsage.packageName } //To filter out common apps in initial and final list.
                     if (nullCheckList.isNotEmpty()) {
                         val initialAppData = nullCheckList[0]
                         totalDataUsageList.add(

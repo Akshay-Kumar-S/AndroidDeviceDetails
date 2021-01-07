@@ -27,17 +27,19 @@
     <string name="date">Mon, 14 Dec</string>
     <string name="pie_chart_size">200dp</string>
     <string name="day_wise">Day wise</string>
-    <string name="app_data">APP DATA</string>
+    <string name="network_usage">NETWORK USAGE</string>
     <string name="wifi_data_usage">550 MB</string>
     <string name="cellular_data_usage">10 MB</string>
     <string name="wifi">Wifi</string>
-    <string name="start">START</string>
+    <string name="start">FROM</string>
     <string name="pm">pm</string>
     <string name="_21_jan_2020">21, Jan 2020</string>
-    <string name="end">END</string>
+    <string name="end">TO</string>
     <string name="_11_00">11:00</string>
     <string name="device_usage">Device Usage</string>
     <string name="label">filter</string>
     <string name="uninstall">UNINSTALL</string>
     <string name="delete_icon">delete Icon</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
 </resources>

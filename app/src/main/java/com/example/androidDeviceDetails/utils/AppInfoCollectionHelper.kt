@@ -84,6 +84,7 @@ object AppInfoCollectionHelper {
                     db,
                     currentAppHistory.currentVersionCode
                 )
+                AppInfoDbHelper.writeToAppsDb(id, packageName, latestAppDetails, db)
             }
         }
     }

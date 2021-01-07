@@ -56,11 +56,11 @@
         <activity android:name=".activities.LocationActivity" />
 
         <service
-            android:name=".services.CollectorService"
+            android:name=".services.AppService"
             android:enabled="true" />
 
         <receiver
-            android:name=".receivers.BatteryReceiver"
+            android:name=".receivers.BatteryReceive"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_CHANGED" />

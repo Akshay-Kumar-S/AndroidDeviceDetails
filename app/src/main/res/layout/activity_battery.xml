@@ -8,6 +8,16 @@
         android:layout_height="match_parent"
         tools:context=".activities.BatteryActivity">
 
+        <include
+            android:id="@+id/dateTimePickerLayout"
+            layout="@layout/date_time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/total"
             android:layout_width="match_parent"
@@ -17,60 +27,7 @@
             android:textAlignment="center"
             android:textColor="?attr/batteryTitle"
             android:textSize="25sp"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/mode_selector_bg"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
-            android:text="@string/day_wise"
-            android:textAlignment="center"
-            android:textColor="?attr/batteryTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/total" />
-
-        <LinearLayout
-            android:id="@+id/battery_date_picker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/description">
-
-            <ImageButton
-                android:id="@+id/leftArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/left"
-                android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
-
-            <TextView
-                android:id="@+id/today"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/date"
-                android:textAlignment="center"
-                android:textColor="?attr/batteryTitle"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/rightArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/right"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
-
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/dateTimePickerLayout" />
 
         <ListView
             android:id="@+id/batteryListView"
@@ -79,7 +36,7 @@
             android:layout_marginTop="16dp"
             android:divider="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/battery_date_picker" />
+            app:layout_constraintTop_toBottomOf="@id/total" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

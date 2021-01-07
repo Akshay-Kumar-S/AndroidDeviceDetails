@@ -4,18 +4,19 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.base.BaseTimeCollector
+import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
-class AppEventCollector(context: Context) : BaseTimeCollector() {
-    override lateinit var timer: Timer
+class AppEventCollector(context: Context) : BaseCollector() {
     private var usageStatsManager: UsageStatsManager =
         context.getSystemService(AppCompatActivity.USAGE_STATS_SERVICE) as UsageStatsManager
+
+    override fun start() {
+    }
 
     override fun collect() {
         val db = RoomDB.getDatabase()!!
@@ -36,13 +37,6 @@ class AppEventCollector(context: Context) : BaseTimeCollector() {
         }
     }
 
-    override fun runTimer(intervalInMinuets: Long) {
-        timer = Timer()
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() = collect()
-            },
-            0, 1000 * 60 * intervalInMinuets
-        )
+    override fun stop() {
     }
 }
