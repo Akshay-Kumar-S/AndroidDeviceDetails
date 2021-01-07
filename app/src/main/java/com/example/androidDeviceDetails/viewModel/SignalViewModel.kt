@@ -2,7 +2,6 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.SignalListAdapter
@@ -55,14 +54,11 @@ class SignalViewModel(
     @SuppressLint("SetTextI18n")
     fun updateValue(signalEntity: SignalEntity) {
         when (signalEntity.signal) {
-
             Signal.WIFI.ordinal -> {
-                Log.d("signal","$signal wifi")
                 wifiStrength = signalEntity.strength
                 linkspeed = "${signalEntity.attribute} Mbps"
             }
             Signal.CELLULAR.ordinal -> {
-                Log.d("signal","$signal cellular")
                 cellularStrength = signalEntity.strength
                 cellInfoType = signalEntity.attribute
             }
