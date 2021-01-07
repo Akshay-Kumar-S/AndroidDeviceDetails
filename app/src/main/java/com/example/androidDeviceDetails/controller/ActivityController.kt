@@ -128,7 +128,7 @@ class ActivityController<T, MT>(
 
     private fun validateTimeInterval() {
         if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
-            BottomSheet(onApply = { apply() }).show(supportFragmentManager, "Apply")
+            BottomSheet(onApply = { onClickApply() }).show(supportFragmentManager, "Apply")
             viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
         } else {
             Toast.makeText(
@@ -139,7 +139,7 @@ class ActivityController<T, MT>(
         }
     }
 
-    private fun apply() {
+    private fun onClickApply() {
         startCalendar.set(Calendar.SECOND, 0)
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)
