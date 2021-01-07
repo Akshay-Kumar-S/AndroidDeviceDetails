@@ -31,20 +31,20 @@
         <activity
             android:name=".activities.AppInfoActivity"
             android:label="Application Info"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.NetworkUsageActivity"
             android:label="Network Usage"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.BatteryActivity"
             android:label="Battery Usage"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,13 +57,6 @@
             android:name=".services.AppService"
             android:enabled="true" />
 
-        <receiver
-            android:name=".receivers.BatteryReceive"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BATTERY_CHANGED" />
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".receivers.OnBootReceiver"
             android:enabled="true">

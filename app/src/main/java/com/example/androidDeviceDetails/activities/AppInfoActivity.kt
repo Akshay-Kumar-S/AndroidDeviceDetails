@@ -39,35 +39,36 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val title = findViewById<TextView>(R.id.filter_text)
+        var filter  = 0
         when (item.itemId) {
             R.id.spinner_all -> {
                 title.text = "All"
-                binding.statisticsContainer.tag = "${EventType.ALL_EVENTS.ordinal}"
+                filter = EventType.ALL_EVENTS.ordinal
             }
             R.id.spinner_enrolled -> {
                 title.text = "Enrolled"
-                binding.statisticsContainer.tag = "${EventType.APP_ENROLL.ordinal}"
+                filter = EventType.APP_ENROLL.ordinal
 
             }
             R.id.spinner_installed -> {
                 title.text = "Installed"
-                binding.statisticsContainer.tag = "${EventType.APP_INSTALLED.ordinal}"
+                filter = EventType.APP_INSTALLED.ordinal
             }
             R.id.spinner_updated -> {
                 title.text = "Updated"
-                binding.statisticsContainer.tag = "${EventType.APP_UPDATED.ordinal}"
+                filter = EventType.APP_UPDATED.ordinal
             }
             R.id.spinner_uninstalled -> {
                 title.text = "Uninstalled"
-                binding.statisticsContainer.tag = "${EventType.APP_UNINSTALLED.ordinal}"
+                filter = EventType.APP_UNINSTALLED.ordinal
             }
             R.id.filter_text -> {
             }
             else -> super.onSupportNavigateUp()
         }
-        if (startTime != 0L && endTime != 0L) {
-            controller.filterData()
-        }
+        if (startTime != 0L && endTime != 0L)
+            controller.filterView(filter)
+
         return true
     }
 
