@@ -53,4 +53,7 @@ abstract class BaseViewModel {
             )
 
     }
+
+    open fun filter(type:Int){}
+    open fun sort(type:Int){}
 }
