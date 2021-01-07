@@ -23,8 +23,6 @@ import java.util.*
 class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAppInfoBinding
-    private var startTime: Long = 0
-    private var endTime: Long = 0
     private lateinit var controller: ActivityController<AppInfoCookedData>
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -39,7 +37,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val title = findViewById<TextView>(R.id.filter_text)
-        var filter  = 0
+        var filter = 0
         when (item.itemId) {
             R.id.spinner_all -> {
                 title.text = "All"
@@ -66,8 +64,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             }
             else -> super.onSupportNavigateUp()
         }
-        if (startTime != 0L && endTime != 0L)
-            controller.filterView(filter)
+        controller.filterView(filter)
 
         return true
     }
@@ -83,9 +80,6 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             supportFragmentManager
         )
         binding.appInfoListView.isEnabled = false
-        startTime = Utils.loadPreviousDayTime()
-        endTime = System.currentTimeMillis()
-        cook(TimePeriod(startTime, endTime))
         binding.apply {
             dateTimePickerLayout.startTime
                 .setOnClickListener(this@AppInfoActivity)
@@ -102,11 +96,6 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
         AppInfoManager.deleteApp(view, packageManager, this)
     }
 
-    private fun cook(timePeriod: TimePeriod) {
-        controller.showInitialData()
-        controller.cook(timePeriod)
-        binding.indeterminateBar.isVisible = true
-    }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
