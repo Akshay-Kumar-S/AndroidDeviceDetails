@@ -2,7 +2,6 @@ package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
@@ -30,10 +29,10 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
             supportFragmentManager
         )
         networkUsageBinding.apply {
-            dateTimePickerLayout.findViewById<TextView>(R.id.startTime).setOnClickListener(this@NetworkUsageActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.startDate).setOnClickListener(this@NetworkUsageActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.endTime).setOnClickListener(this@NetworkUsageActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.endDate).setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.startTime.setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.startDate.setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.endTime.setOnClickListener(this@NetworkUsageActivity)
+            dateTimePickerLayout.endDate.setOnClickListener(this@NetworkUsageActivity)
         }
         networkUsageController.showInitialData()
     }

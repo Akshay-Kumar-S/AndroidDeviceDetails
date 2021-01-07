@@ -3,7 +3,7 @@ package com.example.androidDeviceDetails.cooker
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class BatteryCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
-    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         val appEntryList = arrayListOf<BatteryAppEntry>()
         GlobalScope.launch {
             val appEventList = db.appEventDao().getAllBetween(time.startTime, time.endTime)

@@ -4,22 +4,22 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.format.DateFormat
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.example.androidDeviceDetails.BottomSheet
 import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
-import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.TimePeriod
 import java.util.*
 
 class ActivityController<T, MT>(
     dataType: String,
     binding: T,
     var context: Context,
-    private val dateTimePickerView: View? = null,
+    private val dateTimePickerView: DateTimePickerBinding,
     val supportFragmentManager: FragmentManager
 ) {
 
@@ -36,20 +36,20 @@ class ActivityController<T, MT>(
     init {
         startCalendar.set(Calendar.HOUR, 0)
         startCalendar.set(Calendar.MINUTE, 0)
-        startCalendar.add(Calendar.DAY_OF_MONTH, -1)
+//        startCalendar.add(Calendar.DAY_OF_MONTH, -1)
+        //todo make a fun for timeHandling -- deal with timeStamp in long to calender
         showInitialData()
         cook(
-            TimeInterval(
+            TimePeriod(
                 startCalendar.timeInMillis,
                 endCalendar.timeInMillis
             )
         )
     }
 
-    fun cook(timeInterval: TimeInterval) {
-        cooker.cook(timeInterval, onCookingDone)
+    fun cook(timePeriod: TimePeriod) {
+        cooker.cook(timePeriod, onCookingDone)
     }
-
 
 
     fun setStartTime(context: Context) {
@@ -129,7 +129,7 @@ class ActivityController<T, MT>(
     private fun validateTimeInterval() {
         if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
             BottomSheet(onApply = { apply() }).show(supportFragmentManager, "Apply")
-            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
+            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
         } else {
             Toast.makeText(
                 context,
@@ -145,7 +145,7 @@ class ActivityController<T, MT>(
         startCalendar.set(Calendar.MILLISECOND, 0)
         endCalendar.set(Calendar.MILLISECOND, 0)
         cook(
-            TimeInterval(
+            TimePeriod(
                 startCalendar.timeInMillis,
                 endCalendar.timeInMillis
             )
@@ -153,7 +153,7 @@ class ActivityController<T, MT>(
     }
 
     fun showInitialData() {
-        viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView!!)
+        viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
     }
 
     fun filterData() {
