@@ -5,19 +5,15 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.location.LocationManager
-import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.IBinder
-import android.telephony.TelephonyManager
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.listners.LocationListener
 import com.example.androidDeviceDetails.managers.AppEventCollector
 import com.example.androidDeviceDetails.managers.NetworkUsageCollector
 import com.example.androidDeviceDetails.managers.SignalChangeListener
-import com.example.androidDeviceDetails.location.LocationListener
-import com.example.androidDeviceDetails.managers.AppUsage
 import com.example.androidDeviceDetails.receivers.AppStateReceiver
 import com.example.androidDeviceDetails.receivers.BatteryReceiver
 import com.example.androidDeviceDetails.receivers.WifiReceiver
@@ -34,6 +30,7 @@ class CollectorService : Service() {
     private lateinit var mAppEventCollector: AppEventCollector
     private lateinit var mAppDataUsageCollector: NetworkUsageCollector
     private lateinit var mPhoneStateListener: SignalChangeListener
+    private lateinit var locationListener: LocationListener
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -47,6 +44,8 @@ class CollectorService : Service() {
         mAppEventCollector = AppEventCollector(this)
         mPhoneStateListener = SignalChangeListener(this)
         mAppDataUsageCollector = NetworkUsageCollector(this)
+        locationListener =
+            LocationListener(getSystemService(LOCATION_SERVICE) as LocationManager, this)
         pushNotification()
 
     }
@@ -54,6 +53,7 @@ class CollectorService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         mAppEventCollector.runTimer(1)
         mAppDataUsageCollector.runTimer(1)
+        locationListener.start()
         return super.onStartCommand(intent, flags, startId)
     }
 

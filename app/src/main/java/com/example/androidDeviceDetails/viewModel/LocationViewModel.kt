@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.location
+package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,25 +12,19 @@ import android.widget.Toast
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.location.models.LocationModel
+import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
-import javax.inject.Singleton
 
-@Singleton
-class LocationViewModel(val context: Context, private val binding: ActivityLocationBinding) :
+class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
-    companion object {
-        const val NAME = "LOCATION_ACTIVITY"
-    }
-
     private lateinit var countedData: Map<String, Int>
-    private lateinit var cookedDataList : MutableList<LocationModel>
+    private lateinit var cookedDataList: MutableList<LocationModel>
 
 
     private fun getTextView(text: String): TextView {
@@ -60,7 +54,7 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
             ).show()
         }
 
-    fun sortData( isDescending: Boolean): Map<String, Int> {
+    fun sortData(isDescending: Boolean): Map<String, Int> {
         return if (isDescending)
             countedData.toList().sortedBy { (_, value) -> value }.reversed().toMap()
         else
@@ -139,8 +133,12 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
         }
     }
 
-    override fun <T> populateList(data: MutableList<T>) {
-        cookedDataList = data as MutableList<LocationModel>
+    private fun onNoData() {
+        toast("No data on selected date")
+    }
+
+    override fun <T> onData(outputList: ArrayList<T>) {
+        cookedDataList = outputList as MutableList<LocationModel>
         if (cookedDataList.isEmpty())
             onNoData()
         else {
@@ -148,10 +146,6 @@ class LocationViewModel(val context: Context, private val binding: ActivityLocat
             buildGraph(countedData)
             buildTable(countedData)
         }
-    }
-
-    override fun onNoData() {
-        toast("No data on selected date")
     }
 
 }

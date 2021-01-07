@@ -1,25 +1,27 @@
-package com.example.androidDeviceDetails.location
+package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TableRow
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.AppController
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.location.models.LocationModel
+import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.Utils
+import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import java.util.*
+import java.util.concurrent.TimeUnit
 
-@AndroidEntryPoint
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
-    lateinit var appController: AppController<LocationModel>
+    lateinit var appController: com.example.androidDeviceDetails.controller.AppController<LocationModel>
     lateinit var locationViewModel: LocationViewModel
+    private var calendar = Calendar.getInstance()
 
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: TableRow
@@ -32,8 +34,15 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        appController = AppController("LOCATION_ACTIVITY", this, binding)
-        locationViewModel = LocationViewModel(this, binding)
+        appController = com.example.androidDeviceDetails.controller.AppController(
+            "LOCATION_ACTIVITY",
+            binding,
+            this
+        )
+        locationViewModel = appController.viewModel as LocationViewModel
+        calendar[Calendar.HOUR] = 0
+        calendar[Calendar.MINUTE] = 0
+        calendar[Calendar.SECOND] = 0
         binding.selectDate.setOnClickListener(this)
         binding.timeView.setOnClickListener(this)
         binding.countView.setOnClickListener(this)
@@ -43,7 +52,13 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     private fun init() {
         selectedRow = binding.noData
-        appController.start()
+        Toast.makeText(this, calendar.time.toString(), Toast.LENGTH_SHORT).show()
+        appController.cook(
+            TimeInterval(
+                calendar.timeInMillis,
+                calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
+            )
+        )
     }
 
 
@@ -64,6 +79,16 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         return Utils.showDatePicker(this)
         { _, year, monthOfYear, dayOfMonth ->
 //            locationController.onDateSelect(year, monthOfYear, dayOfMonth)
+            calendar[Calendar.YEAR] = year
+            calendar[Calendar.MONTH] = monthOfYear
+            calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+            appController.cook(
+                TimeInterval(
+                    calendar.timeInMillis,
+                    calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
+                )
+            )
+            Toast.makeText(this, calendar.time.toString(), Toast.LENGTH_SHORT).show()
         }.show()
     }
 

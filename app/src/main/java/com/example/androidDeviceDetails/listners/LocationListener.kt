@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.location
+package com.example.androidDeviceDetails.listners
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,22 +8,23 @@ import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
 import android.util.Log
 import android.widget.Toast
-import com.example.androidDeviceDetails.location.models.LocationModel
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.fonfon.kgeohash.GeoHash
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class LocationListener(var locationManager: LocationManager, var context: Context) {
+class LocationListener(private var locationManager: LocationManager, val context: Context) {
     private var hasGps = false
     private var hasNetwork = false
     private var locationGps: Location? = null
     private var locationNetwork: Location? = null
     private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
 
+
     @SuppressLint("MissingPermission")
-    fun getLocation() {
+    fun start() {
         hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
         Log.d("Location", "getLocation: $hasGps $hasNetwork ")
