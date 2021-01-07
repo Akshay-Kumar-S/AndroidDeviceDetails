@@ -170,8 +170,12 @@ class ActivityController<T>(
         viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
     }
 
-    fun filterData() {
-        viewModel.onData(AppInfoManager.appList)
+    fun filterView(type: Int) {
+        viewModel.filter(type)
+    }
+
+    fun sortView(type:Int){
+        viewModel.sort(type)
     }
 }
 
