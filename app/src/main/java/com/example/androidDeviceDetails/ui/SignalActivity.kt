@@ -23,6 +23,7 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         signalBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_strength)
+        signalBinding.lifecycleOwner=this
         signalController = ActivityController(
             NAME,
             signalBinding,

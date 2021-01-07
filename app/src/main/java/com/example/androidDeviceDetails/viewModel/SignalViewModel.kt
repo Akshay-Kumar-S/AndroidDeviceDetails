@@ -2,6 +2,7 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.SignalAdapter
@@ -15,7 +16,7 @@ class SignalViewModel(
     private val signalBinding: ActivitySignalStrengthBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var isInitialised = false
+    private var isInitialised: Boolean = false
     private var cellularStrength: Int = -100
     private var wifiStrength: Int = -80
     private var linkspeed: String = "0 Mbps"
@@ -33,6 +34,7 @@ class SignalViewModel(
     }
 
     private fun observeSignal() {
+        Log.d("neena", "observeSignal: ${signalBinding.lifecycleOwner}")
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
             updateValue(it)
         }
