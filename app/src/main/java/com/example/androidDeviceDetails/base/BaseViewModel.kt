@@ -12,6 +12,7 @@ import com.example.androidDeviceDetails.viewModel.AppInfoViewModel
 import com.example.androidDeviceDetails.viewModel.BatteryViewModel
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class BaseViewModel {
@@ -31,11 +32,17 @@ abstract class BaseViewModel {
         }
     }
 
+
     fun updateTextViews(
         startCalendar: Calendar,
         endCalendar: Calendar,
         dateTimePickerBinding: DateTimePickerBinding
     ) {
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        val dateFormat = SimpleDateFormat("dd, MMM yyyy", Locale.ENGLISH)
+        val amPmFormat = SimpleDateFormat("a", Locale.ENGLISH)
+
+
         val dec = DecimalFormat("00")
 
         var startTime = dec.format(startCalendar.get(Calendar.HOUR)) + ":"
@@ -54,12 +61,18 @@ abstract class BaseViewModel {
         //todo use java package for date formatting
 
 
-        dateTimePickerBinding.startTime.text = startTime
-        dateTimePickerBinding.startDate.text = startDate
-        dateTimePickerBinding.endTime.text = endTime
-        dateTimePickerBinding.endDate.text = endDate
+        dateTimePickerBinding.startTime.text = timeFormat.format(Date(startCalendar.timeInMillis))
+        dateTimePickerBinding.startDate.text = dateFormat.format(Date(startCalendar.timeInMillis))
+        dateTimePickerBinding.endTime.text = timeFormat.format(Date(endCalendar.timeInMillis))
+        dateTimePickerBinding.endDate.text = dateFormat.format(Date(endCalendar.timeInMillis))
         dateTimePickerBinding.startAMPM.text =
-            if (startCalendar.get(Calendar.AM_PM) == 0) "am" else "pm"
+            amPmFormat.format(Date(startCalendar.timeInMillis)).toLowerCase(
+                Locale.ENGLISH
+            )
+        dateTimePickerBinding.endAMPM.text =
+            amPmFormat.format(Date(endCalendar.timeInMillis)).toLowerCase(
+                Locale.ENGLISH
+            )
 
     }
 }
