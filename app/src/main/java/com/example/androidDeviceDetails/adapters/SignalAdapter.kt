@@ -26,7 +26,7 @@ class SignalAdapter(
         val view = layoutInflater.inflate(resource, null)
         val timeStamp = view.findViewById<TextView>(R.id.timestamp)
         val strength = view.findViewById<TextView>(R.id.strength)
-        val general = view.findViewById<TextView>(R.id.general)
+        val general = view.findViewById<TextView>(R.id.attribute)
         val level = view.findViewById<TextView>(R.id.level)
 
         timeStamp.text = formatter.format(items[position].timeStamp)

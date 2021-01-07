@@ -50,4 +50,8 @@ class NetworkUsageViewModel(
         }
 
     }
+
+    override fun display(filter: Int) {
+        TODO("Not yet implemented")
+    }
 }

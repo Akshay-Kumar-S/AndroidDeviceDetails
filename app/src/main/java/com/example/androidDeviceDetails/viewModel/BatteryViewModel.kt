@@ -38,5 +38,9 @@ class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val c
             }
     }
 
+    override fun display(filter: Int) {
+        TODO("Not yet implemented")
+    }
+
 
 }
