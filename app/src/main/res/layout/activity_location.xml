@@ -10,39 +10,50 @@
         android:id="@+id/barChart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:layout_constraintBottom_toTopOf="@id/nav"
+        app:layout_constraintBottom_toTopOf="@id/dateTimePickerLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/nav"
+    <include
+        android:id="@+id/dateTimePickerLayout"
+        layout="@layout/date_time_picker"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/tableHeader"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barChart">
+        app:layout_constraintTop_toBottomOf="@id/barChart"
+        app:layout_constraintBottom_toTopOf="@id/tableHeader"/>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/nav"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/tableHeader"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/barChart">-->
         <!--        <ImageButton-->
         <!--            android:layout_width="wrap_content"-->
         <!--            android:layout_height="wrap_content"-->
         <!--            android:backgroundTint="@color/white"-->
         <!--            android:src="@drawable/ic_chevron_left"/>-->
 
-        <TextView
-            android:id="@+id/selectDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/location_date_select_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="10dp"
-            android:text="@string/tillToday"
-            android:textColor="#595959"
-            android:textSize="12sp" />
+<!--        <TextView-->
+<!--            android:id="@+id/selectDate"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/location_date_select_button"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:padding="10dp"-->
+<!--            android:text="@string/tillToday"-->
+<!--            android:textColor="#595959"-->
+<!--            android:textSize="12sp" />-->
 
         <!--        <ImageButton-->
         <!--            android:layout_width="wrap_content"-->
@@ -50,7 +61,7 @@
         <!--            android:backgroundTint="@color/white"-->
         <!--            android:src="@drawable/ic_chevron_right"/>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <TableLayout
         android:id="@+id/tableHeader"
@@ -60,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nav">
+        app:layout_constraintTop_toBottomOf="@id/dateTimePickerLayout">
 
         <TableRow
             android:layout_width="match_parent"
