@@ -12,6 +12,7 @@ import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 class ActivityController<T, MT>(
@@ -141,15 +142,18 @@ class ActivityController<T, MT>(
 
     private fun validateTimeInterval() {
         if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
-            BottomSheet(onApply = { onClickApply() }).show(supportFragmentManager, "Apply")
-            viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
-        } else {
-            Toast.makeText(
-                context,
-                "Enter valid time interval",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+            if ((endCalendar.timeInMillis - startCalendar.timeInMillis) > Utils.COLLECTION_INTERVAL * 60 * 1000) {
+                BottomSheet(onApply = { onClickApply() }).show(supportFragmentManager, "Apply")
+                viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
+            } else
+                Toast.makeText(
+                    context,
+                    "Time interval should be greater than ${Utils.COLLECTION_INTERVAL} minutes",
+                    Toast.LENGTH_SHORT
+                ).show()
+        } else
+            Toast.makeText(context, "Enter valid time interval", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun onClickApply() {

@@ -10,6 +10,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ApplicationController
+import com.example.androidDeviceDetails.utils.Utils
 
 const val CHANNEL_ID = "androidDeviceDetails"
 
@@ -28,7 +29,7 @@ class AppService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        appController.runTimer(1)
+        appController.runTimer(Utils.COLLECTION_INTERVAL )
         return super.onStartCommand(intent, flags, startId)
     }
 
