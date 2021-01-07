@@ -13,7 +13,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.managers.AppInfoManager
-import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.utils.Utils
@@ -25,7 +25,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityAppInfoBinding
     private var startTime: Long = 0
     private var endTime: Long = 0
-    private lateinit var controller: ActivityController<ActivityAppInfoBinding, AppInfoCookedData>
+    private lateinit var controller: ActivityController<AppInfoCookedData>
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.app_info_menu, menu)
@@ -84,15 +84,15 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
         binding.appInfoListView.isEnabled = false
         startTime = Utils.loadPreviousDayTime()
         endTime = System.currentTimeMillis()
-        cook(TimeInterval(startTime, endTime))
+        cook(TimePeriod(startTime, endTime))
         binding.apply {
-            dateTimePickerLayout.findViewById<TextView>(R.id.startTime)
+            dateTimePickerLayout.startTime
                 .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.startDate)
+            dateTimePickerLayout.startDate
                 .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.endTime)
+            dateTimePickerLayout.endTime
                 .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.endDate)
+            dateTimePickerLayout.endDate
                 .setOnClickListener(this@AppInfoActivity)
         }
     }
@@ -101,9 +101,9 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
         AppInfoManager.deleteApp(view, packageManager, this)
     }
 
-    private fun cook(timeInterval: TimeInterval) {
+    private fun cook(timePeriod: TimePeriod) {
         controller.showInitialData()
-        controller.cook(timeInterval)
+        controller.cook(timePeriod)
         binding.indeterminateBar.isVisible = true
     }
 

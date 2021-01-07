@@ -1,9 +1,9 @@
 package com.example.androidDeviceDetails.cooker
 
-import com.example.androidDeviceDetails.ICookingDone
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import java.util.*
 class NetworkUsageCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> cook(time: TimeInterval, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         val db = RoomDB.getDatabase()?.appNetworkUsageDao()!!
         GlobalScope.launch {
             val inBetweenList = db.getAllBetween(time.startTime, time.endTime)

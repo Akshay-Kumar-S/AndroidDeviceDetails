@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.AdapterView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
@@ -19,7 +18,7 @@ import java.util.*
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var batteryBinding: ActivityBatteryBinding
-    private lateinit var batteryController: ActivityController<ActivityBatteryBinding, BatteryAppEntry>
+    private lateinit var batteryController: ActivityController<BatteryAppEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +34,13 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             batteryListView.setOnItemClickListener { parent, _, position, _ ->
                 redirectToAppInfo(parent, position)
             }
-            dateTimePickerLayout.findViewById<TextView>(R.id.startTime)
+            dateTimePickerLayout.startTime
                 .setOnClickListener(this@BatteryActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.startDate)
+            dateTimePickerLayout.startDate
                 .setOnClickListener(this@BatteryActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.endTime)
+            dateTimePickerLayout.endTime
                 .setOnClickListener(this@BatteryActivity)
-            dateTimePickerLayout.findViewById<TextView>(R.id.endDate)
+            dateTimePickerLayout.endDate
                 .setOnClickListener(this@BatteryActivity)
         }
         batteryController.showInitialData()

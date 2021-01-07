@@ -28,39 +28,9 @@ import kotlin.math.pow
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
+    const val COLLECTION_INTERVAL:Long =5
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
-
-    fun getWeek(day: Int): String {
-        when (day) {
-            Calendar.SUNDAY -> return "Sun"
-            Calendar.MONDAY -> return "Mon"
-            Calendar.TUESDAY -> return "Tue"
-            Calendar.WEDNESDAY -> return "Wed"
-            Calendar.THURSDAY -> return "Thu"
-            Calendar.FRIDAY -> return "Fri"
-            Calendar.SATURDAY -> return "Sat"
-        }
-        return "Day"
-    }
-
-    fun getMonth(month: Int): String {
-        when (month) {
-            Calendar.JANUARY -> return "Jan"
-            Calendar.FEBRUARY -> return "Feb"
-            Calendar.MARCH -> return "Mar"
-            Calendar.APRIL -> return "Apr"
-            Calendar.MAY -> return "May"
-            Calendar.JUNE -> return "Jun"
-            Calendar.JULY -> return "Jul"
-            Calendar.AUGUST -> return "Aug"
-            Calendar.SEPTEMBER -> return "Sep"
-            Calendar.OCTOBER -> return "Oct"
-            Calendar.NOVEMBER -> return "Nov"
-            Calendar.DECEMBER -> return "Dec"
-        }
-        return "Nil"
-    }
 
     fun getEventType(eventType: Int): String {
         when (eventType) {
@@ -182,13 +152,6 @@ object Utils {
             }
         }
     }
-
-    fun getDateString(calendar: Calendar): String =
-        "${getWeek(calendar.get(Calendar.DAY_OF_WEEK))}, ${calendar.get(Calendar.DAY_OF_MONTH)} ${
-            getMonth(calendar.get(Calendar.MONTH))
-        }"
-
-
     fun loadPreviousDayTime(): Long {
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR] = 0

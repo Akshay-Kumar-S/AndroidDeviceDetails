@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="50dp"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <Button
         android:id="@+id/batteryInfo"
@@ -40,18 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="236dp"
         android:text="@string/network_usage"
-        app:layout_constraintBottom_toTopOf="@+id/toggleSwitch"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/batteryInfo"
         app:layout_constraintStart_toEndOf="@id/toLocationActivity"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/toggleSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/service"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

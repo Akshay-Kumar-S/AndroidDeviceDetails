@@ -1,19 +1,16 @@
 package com.example.androidDeviceDetails.base
 
 import android.content.Context
-import android.view.View
-import android.widget.TextView
-import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.activities.AppInfoActivity
 import com.example.androidDeviceDetails.activities.BatteryActivity
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
-import com.example.androidDeviceDetails.utils.Utils
+import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
 import com.example.androidDeviceDetails.viewModel.AppInfoViewModel
 import com.example.androidDeviceDetails.viewModel.BatteryViewModel
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
-import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class BaseViewModel {
@@ -33,29 +30,30 @@ abstract class BaseViewModel {
         }
     }
 
-    fun updateTextViews(startCalendar: Calendar, endCalendar: Calendar, view: View) {
-        val dec = DecimalFormat("00")
 
-        var startTime = dec.format(startCalendar.get(Calendar.HOUR)) + ":"
-        startTime += dec.format(startCalendar.get(Calendar.MINUTE))
-
-        var endTime = dec.format(endCalendar.get(Calendar.HOUR)) + ":"
-        endTime += dec.format(endCalendar.get(Calendar.MINUTE))
-
-        var startDate = startCalendar.get(Calendar.DAY_OF_MONTH).toString() + ", "
-        startDate += Utils.getMonth(startCalendar.get(Calendar.MONTH)) + " "
-        startDate += startCalendar.get(Calendar.YEAR)
-
-        var endDate = endCalendar.get(Calendar.DAY_OF_MONTH).toString() + ", "
-        endDate += Utils.getMonth(endCalendar.get(Calendar.MONTH)) + " "
-        endDate += endCalendar.get(Calendar.YEAR)
-
-
-        view.findViewById<TextView>(R.id.startTime).text = startTime
-        view.findViewById<TextView>(R.id.startDate).text = startDate
-        view.findViewById<TextView>(R.id.endTime).text = endTime
-        view.findViewById<TextView>(R.id.endDate).text = endDate
-        view.findViewById<TextView>(R.id.startAMPM).text = if (startCalendar.get(Calendar.AM_PM) == 0) "am" else "pm"
+    fun updateTextViews(
+        startCalendar: Calendar,
+        endCalendar: Calendar,
+        dateTimePickerBinding: DateTimePickerBinding
+    ) {
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        val dateFormat = SimpleDateFormat("dd, MMM yyyy", Locale.ENGLISH)
+        val amPmFormat = SimpleDateFormat("a", Locale.ENGLISH)
+        dateTimePickerBinding.startTime.text = timeFormat.format(Date(startCalendar.timeInMillis))
+        dateTimePickerBinding.startDate.text = dateFormat.format(Date(startCalendar.timeInMillis))
+        dateTimePickerBinding.endTime.text = timeFormat.format(Date(endCalendar.timeInMillis))
+        dateTimePickerBinding.endDate.text = dateFormat.format(Date(endCalendar.timeInMillis))
+        dateTimePickerBinding.startAMPM.text =
+            amPmFormat.format(Date(startCalendar.timeInMillis)).toLowerCase(
+                Locale.ENGLISH
+            )
+        dateTimePickerBinding.endAMPM.text =
+            amPmFormat.format(Date(endCalendar.timeInMillis)).toLowerCase(
+                Locale.ENGLISH
+            )
 
     }
+
+    open fun filter(type:Int){}
+    open fun sort(type:Int){}
 }
