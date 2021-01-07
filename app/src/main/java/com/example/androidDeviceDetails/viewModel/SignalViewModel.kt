@@ -34,7 +34,7 @@ class SignalViewModel(
 
     private fun observeSignal() {
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
-            updateValue(it)
+            if (it != null) updateValue(it)
         }
     }
 

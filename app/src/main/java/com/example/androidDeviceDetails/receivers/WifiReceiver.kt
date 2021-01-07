@@ -74,5 +74,4 @@ class WifiReceiver : BaseCollector() {
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }
-
 }

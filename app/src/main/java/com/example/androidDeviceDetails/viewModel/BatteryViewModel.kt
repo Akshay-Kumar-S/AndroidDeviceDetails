@@ -38,4 +38,5 @@ class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val c
             }
     }
 
+
 }

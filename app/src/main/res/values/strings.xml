@@ -45,4 +45,5 @@
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
     <string name="level">Level</string>
+    <string name="default_font" translatable="false">sans-serif</string>
 </resources>

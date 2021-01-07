@@ -1,4 +1,3 @@
-
 package com.example.androidDeviceDetails
 
 import android.Manifest

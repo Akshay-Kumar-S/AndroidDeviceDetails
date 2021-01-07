@@ -1,94 +1,110 @@
 package com.example.androidDeviceDetails.managers
 
+import android.app.Service
 import android.content.Context
 import android.os.Build
 import android.telephony.*
-import android.util.Log
+import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
+import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SignalChangeListener(private val context: Context) : PhoneStateListener() {
-    private var db = RoomDB.getDatabase()!!
+class SignalChangeListener : BaseCollector() {
 
-    override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
-        val signalEntity: SignalEntity
-        var level = 0
-        var strength = 0
-        var type = ""
+    private lateinit var mTelephonyManager: TelephonyManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            when (val data = signalStrength.cellSignalStrengths[0]) {
-                is CellSignalStrengthLte -> {
-                    strength = data.rsrp
-                    level = data.level
-                    type = "LTE"
-                }
-                is CellSignalStrengthGsm -> {
-                    strength = data.dbm
-                    level = data.level
-                    type = "GSM"
-                }
-                is CellSignalStrengthCdma -> {
-                    strength = data.cdmaDbm
-                    type = "CDMA"
-                    level = data.level
-                }
-                is CellSignalStrengthWcdma -> {
-                    strength = data.dbm
-                    type = "WCDMA"
-                    level = data.level
-                }
-                is CellSignalStrengthNr -> {
-                    strength = data.csiRsrp
-                    type = "CDMA"
-                    level = data.level
-                }
-                is CellSignalStrengthTdscdma -> {
-                    strength = data.dbm
-                    type = "WCDMA"
-                    level = data.level
-                }
-            }
-        } else {
-            try {
-                val telephonyManager =
-                    context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                when (val cellInfo = telephonyManager.allCellInfo[0]) {
-                    is CellInfoLte -> {
+    object phoneStateListener : PhoneStateListener() {
+        override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
+            val signalEntity: SignalEntity
+            var level = 0
+            var strength = 0
+            var type = ""
+            val signalDB = RoomDB.getDatabase()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                when (val cellInfo = signalStrength.cellSignalStrengths[0]) {
+                    is CellSignalStrengthLte -> {
+                        strength = cellInfo.rsrp
+                        level = cellInfo.level
                         type = "LTE"
-                        strength = cellInfo.cellSignalStrength.dbm
-                        level = cellInfo.cellSignalStrength.level
                     }
-                    is CellInfoGsm -> {
+                    is CellSignalStrengthGsm -> {
+                        strength = cellInfo.dbm
+                        level = cellInfo.level
                         type = "GSM"
-                        strength = cellInfo.cellSignalStrength.dbm
-                        level = cellInfo.cellSignalStrength.level
                     }
-                    is CellInfoCdma -> {
+                    is CellSignalStrengthCdma -> {
+                        strength = cellInfo.cdmaDbm
                         type = "CDMA"
-                        strength = cellInfo.cellSignalStrength.dbm
-                        level = cellInfo.cellSignalStrength.level
+                        level = cellInfo.level
                     }
-                    is CellInfoWcdma -> {
+                    is CellSignalStrengthWcdma -> {
+                        strength = cellInfo.dbm
                         type = "WCDMA"
-                        strength = cellInfo.cellSignalStrength.dbm
-                        level = cellInfo.cellSignalStrength.level
+                        level = cellInfo.level
+                    }
+                    is CellSignalStrengthNr -> {
+                        strength = cellInfo.csiRsrp
+                        type = "NR"
+                        level = cellInfo.level
+                    }
+                    is CellSignalStrengthTdscdma -> {
+                        strength = cellInfo.dbm
+                        type = "TDSCDMA"
+                        level = cellInfo.level
                     }
                 }
-            } catch (e: SecurityException) {
+            } else {
+                try {
+                    val telephonyManager =
+                        DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                    when (val cellInfo = telephonyManager.allCellInfo[0]) {
+                        is CellInfoLte -> {
+                            type = "LTE"
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
+                        }
+                        is CellInfoGsm -> {
+                            type = "GSM"
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
+                        }
+                        is CellInfoCdma -> {
+                            type = "CDMA"
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
+                        }
+                        is CellInfoWcdma -> {
+                            type = "WCDMA"
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
+                        }
+                    }
+                } catch (e: SecurityException) {
+                }
+            }
+            signalEntity = SignalEntity(
+                System.currentTimeMillis(), Signal.CELLULAR.ordinal, strength, type, level
+            )
+            GlobalScope.launch {
+                signalDB?.signalDao()?.insertAll(signalEntity)
             }
         }
+    }
 
-        Log.d("data", "data: $strength, $level,$type")
+    override fun start() {
+        mTelephonyManager =
+            DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
+        mTelephonyManager.listen(phoneStateListener, LISTEN_SIGNAL_STRENGTHS)
+    }
 
-        signalEntity = SignalEntity(
-            System.currentTimeMillis(), Signal.CELLULAR.ordinal, strength, type, level
-        )
-        GlobalScope.launch {
-            db.signalDao().insertAll(signalEntity)
-        }
+    override fun collect() {
+    }
+
+    override fun stop() {
     }
 }
