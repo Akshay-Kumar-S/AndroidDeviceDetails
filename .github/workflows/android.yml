@@ -1,5 +1,4 @@
-name: Android CI
-
+name: Android build verification
 on:
   push:
     branches: 
