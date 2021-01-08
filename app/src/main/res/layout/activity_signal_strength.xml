@@ -56,7 +56,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Strength:"
+                        android:text="@string/strength"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="?android:attr/textColorSecondary" />
 
@@ -65,14 +65,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="90 dbm"
+                        android:text="@string/default_text"
                         android:textAppearance="?attr/textAppearanceHeadline5" />
 
                     <TextView
                         android:id="@+id/signalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Type:"
+                        android:text="@string/type"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="?android:attr/textColorSecondary" />
 
@@ -81,7 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="secondary_text"
+                        android:text="@string/default_text"
                         android:textAppearance="?attr/textAppearanceHeadline5" />
 
                 </LinearLayout>
@@ -128,7 +128,7 @@
                 android:id="@+id/timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Timestamp"
+                android:text="@string/time"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40sp"
-                android:text="Strength"
+                android:text="@string/strength"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/attribute"
                 app:layout_constraintStart_toEndOf="@id/timestamp"
@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40sp"
-                android:text="Type"
+                android:text="@string/type"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/level"
                 app:layout_constraintStart_toEndOf="@id/strength"
@@ -174,7 +174,7 @@
             android:id="@+id/display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No records found"
+            android:text="@string/no_records_found"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

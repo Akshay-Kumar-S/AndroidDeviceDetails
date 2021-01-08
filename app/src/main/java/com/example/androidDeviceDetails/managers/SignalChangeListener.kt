@@ -107,10 +107,10 @@ class SignalChangeListener : BaseCollector() {
     }
 
     override fun collect() {
-        mTelephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
     }
 
     override fun stop() {
+        mTelephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
     }
 
     init {

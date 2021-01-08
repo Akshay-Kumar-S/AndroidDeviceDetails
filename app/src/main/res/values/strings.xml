@@ -46,4 +46,9 @@
     <string name="apply">Apply</string>
     <string name="level">Level</string>
     <string name="default_font" translatable="false">sans-serif</string>
+    <string name="strength">Strength</string>
+    <string name="type">Type:</string>
+    <string name="time">Time</string>
+    <string name="no_records_found">No records found</string>
+    <string name="default_text">DEFAULT TEXT</string>
 </resources>

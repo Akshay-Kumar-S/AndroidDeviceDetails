@@ -95,8 +95,8 @@ class SignalViewModel(
         signalBinding.list.isVisible = true
         signalBinding.listView.isVisible = true
         when (signal) {
-            Signal.WIFI.ordinal -> signalBinding.attribute.text = "Type"
-            Signal.CELLULAR.ordinal -> signalBinding.attribute.text = "Linkspeed"
+            Signal.WIFI.ordinal -> signalBinding.attribute.text = "Linkspeed"
+            Signal.CELLULAR.ordinal -> signalBinding.attribute.text = "Type"
         }
     }
 
