@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.managers
 
-import android.app.Service
 import android.content.Context
 import android.os.Build
 import android.telephony.*
@@ -16,11 +15,12 @@ import kotlinx.coroutines.launch
 
 class SignalChangeListener : BaseCollector() {
 
-    private lateinit var mTelephonyManager: TelephonyManager
+    private var mTelephonyManager: TelephonyManager =
+        DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     object phoneStateListener : PhoneStateListener() {
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
-            Log.d("servicestart","started")
+            Log.d("servicestart", "started")
             val signalEntity: SignalEntity
             var level = 0
             var strength = 0
@@ -103,16 +103,16 @@ class SignalChangeListener : BaseCollector() {
     }
 
     override fun start() {
-        mTelephonyManager =
-            DeviceDetailsApplication.instance.getSystemService(Service.TELEPHONY_SERVICE) as TelephonyManager
         mTelephonyManager.listen(phoneStateListener, LISTEN_SIGNAL_STRENGTHS)
     }
 
     override fun collect() {
+        mTelephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
     }
 
     override fun stop() {
     }
+
     init {
         start()
     }
