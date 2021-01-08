@@ -22,6 +22,9 @@ class LocationListener(private var locationManager: LocationManager, val context
     private var locationNetwork: Location? = null
     private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
 
+    init {
+        start()
+    }
 
     @SuppressLint("MissingPermission")
     fun start() {

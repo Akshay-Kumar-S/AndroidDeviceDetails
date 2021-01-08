@@ -5,8 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.location.models.ILocationDao
-import com.example.androidDeviceDetails.location.models.LocationModel
 import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryDao
 import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
 import com.example.androidDeviceDetails.models.appInfoModels.AppsDao
@@ -15,11 +13,12 @@ import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
 import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
 import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
 import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
+import com.example.androidDeviceDetails.models.locationModels.ILocationDao
+import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
-
 
 @Database(
     entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class, AppNetworkUsageEntity::class, DeviceNetworkUsageEntity::class],
