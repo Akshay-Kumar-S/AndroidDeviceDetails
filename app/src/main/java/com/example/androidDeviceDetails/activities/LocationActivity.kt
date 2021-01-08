@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.TimeInterval
+import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
-import com.example.androidDeviceDetails.utils.Utils
+import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
@@ -33,21 +33,33 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         activityController = ActivityController(
-            "LOCATION_ACTIVITY",
+            NAME,
             binding,
-            this
+            this,
+            binding.dateTimePickerLayout,
+            supportFragmentManager
         )
         locationViewModel = activityController.viewModel as LocationViewModel
         calendar[Calendar.HOUR] = 0
         calendar[Calendar.MINUTE] = 0
         calendar[Calendar.SECOND] = 0
-        binding.selectDate.setOnClickListener(this)
-        binding.timeView.setOnClickListener(this)
-        binding.countView.setOnClickListener(this)
-        binding.barChart.setOnChartValueSelectedListener(this)
+        binding.apply {
+            dateTimePickerLayout.startTime
+                .setOnClickListener(this@LocationActivity)
+            dateTimePickerLayout.startDate
+                .setOnClickListener(this@LocationActivity)
+            dateTimePickerLayout.endTime
+                .setOnClickListener(this@LocationActivity)
+            dateTimePickerLayout.endDate
+                .setOnClickListener(this@LocationActivity)
+            timeView.setOnClickListener(this@LocationActivity)
+            countView.setOnClickListener(this@LocationActivity)
+            barChart.setOnChartValueSelectedListener(this@LocationActivity)
+        }
         init()
     }
 
@@ -55,7 +67,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         selectedRow = binding.noData
         Toast.makeText(this, calendar.time.toString(), Toast.LENGTH_SHORT).show()
         activityController.cook(
-            TimeInterval(
+            TimePeriod(
                 calendar.timeInMillis,
                 calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
             )
@@ -65,34 +77,18 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.selectDate -> selectDate()
-//            R.id.timeView -> locationController.sortByTime()
             R.id.countView -> {
-                if (binding.countViewArrow.tag == "down") {
-                    locationViewModel.sortData(true)
+                if (binding.sortByCountViewArrow.tag == "down") {
+                    activityController.sortView(SortBy.Descending.ordinal)
                 } else
-                    locationViewModel.sortData(false)
+                    activityController.sortView(SortBy.Ascending.ordinal)
             }
+            R.id.startTime -> activityController.setStartTime(this)
+            R.id.startDate -> activityController.setStartDate(this)
+            R.id.endTime -> activityController.setEndTime(this)
+            R.id.endDate -> activityController.setEndDate(this)
         }
     }
-
-    private fun selectDate() {
-        return Utils.showDatePicker(this)
-        { _, year, monthOfYear, dayOfMonth ->
-//            locationController.onDateSelect(year, monthOfYear, dayOfMonth)
-            calendar[Calendar.YEAR] = year
-            calendar[Calendar.MONTH] = monthOfYear
-            calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-            activityController.cook(
-                TimeInterval(
-                    calendar.timeInMillis,
-                    calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
-                )
-            )
-            Toast.makeText(this, calendar.time.toString(), Toast.LENGTH_SHORT).show()
-        }.show()
-    }
-
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
         locationViewModel.onValueSelected(e, selectedRow)

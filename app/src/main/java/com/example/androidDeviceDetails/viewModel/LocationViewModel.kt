@@ -13,6 +13,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
+import com.example.androidDeviceDetails.utils.SortBy
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
@@ -24,7 +25,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     BaseViewModel() {
 
     private lateinit var countedData: Map<String, Int>
-    private lateinit var cookedDataList: MutableList<LocationModel>
+    private lateinit var cookedDataList: ArrayList<LocationModel>
 
 
     private fun getTextView(text: String): TextView {
@@ -41,25 +42,6 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         return textView
     }
 
-    fun setDate(date: String) {
-        binding.selectDate.post {
-            binding.selectDate.text = date
-        }
-    }
-
-    private fun toast(msg: String) =
-        binding.root.post {
-            Toast.makeText(
-                context, msg, Toast.LENGTH_SHORT
-            ).show()
-        }
-
-    fun sortData(isDescending: Boolean): Map<String, Int> {
-        return if (isDescending)
-            countedData.toList().sortedBy { (_, value) -> value }.reversed().toMap()
-        else
-            countedData.toList().sortedBy { (_, value) -> value }.toMap()
-    }
 
     @SuppressLint("ResourceAsColor")
     fun buildTable(countLocation: Map<String, Int>) {
@@ -122,23 +104,26 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
     }
 
-    fun toggleSortButton() {
-        if (binding.countViewArrow.tag == "down") {
-            binding.countViewArrow.tag = "up"
-            binding.countViewArrow.setImageResource(R.drawable.ic_arrow_upward)
+    private fun toggleSortButton() {
+        if (binding.sortByCountViewArrow.tag == "down") {
+            binding.sortByCountViewArrow.tag = "up"
+            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_upward)
 
         } else {
-            binding.countViewArrow.tag = "down"
-            binding.countViewArrow.setImageResource(R.drawable.ic_arrow_downward)
+            binding.sortByCountViewArrow.tag = "down"
+            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_downward)
         }
     }
 
-    private fun onNoData() {
-        toast("No data on selected date")
-    }
+    private fun onNoData()=
+        binding.root.post {
+            Toast.makeText(
+                context, "No data on selected date", Toast.LENGTH_SHORT
+            ).show()
+        }
 
     override fun <T> onData(outputList: ArrayList<T>) {
-        cookedDataList = outputList as MutableList<LocationModel>
+        cookedDataList = outputList as ArrayList<LocationModel>
         if (cookedDataList.isEmpty())
             onNoData()
         else {
@@ -146,6 +131,16 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             buildGraph(countedData)
             buildTable(countedData)
         }
+    }
+
+    override fun sort(type: Int) {
+        countedData = when (type){
+            SortBy.Ascending.ordinal ->  countedData.toList().sortedBy { (_, value) -> value }.toMap()
+            else -> countedData.toList().sortedByDescending { (_, value) -> value }.toMap()
+        }
+        toggleSortButton()
+        buildGraph(countedData)
+        buildTable(countedData)
     }
 
 }

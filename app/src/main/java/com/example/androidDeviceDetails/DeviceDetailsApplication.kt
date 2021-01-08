@@ -1,9 +1,7 @@
 package com.example.androidDeviceDetails
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp
 class DeviceDetailsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
