@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.BottomSheet
@@ -33,8 +34,10 @@ class ActivityController<T>(
 
 
     private val onCookingDone = object : ICookingDone<T> {
-        override fun onDone(outputList: ArrayList<T>) =
+        override fun onDone(outputList: ArrayList<T>) {
+            viewModel.isLoading(dateTimePickerView,false)
             viewModel.onData(outputList)
+        }
     }
 
     init {
@@ -52,6 +55,7 @@ class ActivityController<T>(
     }
 
     fun cook(timePeriod: TimePeriod) {
+        viewModel.isLoading(dateTimePickerView,true)
         cooker.cook(timePeriod, onCookingDone)
     }
 
@@ -170,8 +174,12 @@ class ActivityController<T>(
         viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
     }
 
-    fun filterData() {
-        viewModel.onData(AppInfoManager.appList)
+    fun filterView(type: Int) {
+        viewModel.filter(type)
+    }
+
+    fun sortView(type:Int){
+        viewModel.sort(type)
     }
 }
 

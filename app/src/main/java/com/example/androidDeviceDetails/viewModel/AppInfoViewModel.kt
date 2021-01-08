@@ -14,7 +14,9 @@ import kotlin.math.ceil
 
 class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
     BaseViewModel() {
-
+    companion object{
+        var eventFilter = 0
+    }
     @Suppress("UNCHECKED_CAST")
     override fun <T> onData(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
@@ -28,7 +30,6 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
             }
         } else {
             var filteredList = appList.toMutableList()
-            val eventFilter = binding.statisticsContainer.tag.toString().toIntOrNull()
             if (eventFilter != EventType.ALL_EVENTS.ordinal) {
                 filteredList.removeAll { it.eventType.ordinal != eventFilter }
             }
@@ -93,5 +94,10 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
                 binding.indeterminateBar.isVisible = false
             }
         }
+    }
+
+    override fun filter(type:Int) {
+        eventFilter = type
+        onData(AppInfoManager.appList)
     }
 }

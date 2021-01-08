@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.base
 
 import android.content.Context
+import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.activities.AppInfoActivity
 import com.example.androidDeviceDetails.activities.BatteryActivity
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
@@ -36,7 +37,7 @@ abstract class BaseViewModel {
         endCalendar: Calendar,
         dateTimePickerBinding: DateTimePickerBinding
     ) {
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        val timeFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
         val dateFormat = SimpleDateFormat("dd, MMM yyyy", Locale.ENGLISH)
         val amPmFormat = SimpleDateFormat("a", Locale.ENGLISH)
         dateTimePickerBinding.startTime.text = timeFormat.format(Date(startCalendar.timeInMillis))
@@ -52,6 +53,10 @@ abstract class BaseViewModel {
                 Locale.ENGLISH
             )
 
+    }
+
+    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, isVisible: Boolean){
+        dateTimePickerBinding.root.post{dateTimePickerBinding.progressBar.isVisible = isVisible}
     }
 
     open fun filter(type:Int){}
