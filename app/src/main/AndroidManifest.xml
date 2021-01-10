@@ -50,10 +50,13 @@
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.LocationActivity"
+            android:label="Location Details"
+            android:parentActivityName=".activities.MainActivity"/>
         <activity android:name=".ui.LocationActivity" />
         <activity
             android:name=".ui.SignalActivity"

@@ -26,13 +26,15 @@ class LocationCooker : BaseCooker() {
                 cookedLocationList.add(location)
             }
         }
+        Log.d("CountedData", "cookDataCount: ${cookedLocationList.size} ")
         return cookedLocationList as ArrayList<LocationModel>
     }
 
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
-            res = locationDatabase.locationDao().readAll() as ArrayList<LocationModel>
-            Log.d("LocationData", "loadData: $res")
+            res = locationDatabase.locationDao()
+                .readDataFromDate(time.startTime, time.endTime) as ArrayList<LocationModel>
+            Log.d("LocationData", "loadDataCount: ${res.size}")
             callback.onDone(cookData(res) as ArrayList<T>)
         }
     }

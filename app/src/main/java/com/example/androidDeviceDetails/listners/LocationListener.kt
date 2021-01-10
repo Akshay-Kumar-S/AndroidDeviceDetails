@@ -10,10 +10,11 @@ import android.util.Log
 import android.widget.Toast
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
+import com.example.androidDeviceDetails.utils.Utils
 import com.fonfon.kgeohash.GeoHash
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.concurrent.TimeUnit
 
 class LocationListener(private var locationManager: LocationManager, val context: Context) {
     private var hasGps = false
@@ -36,32 +37,32 @@ class LocationListener(private var locationManager: LocationManager, val context
                 Log.d("CodeAndroidLocation", "hasGpsp")
                 locationManager.requestLocationUpdates(
                     GPS_PROVIDER,
-                    5000,
+                    TimeUnit.SECONDS.toMillis(Utils.COLLECTION_INTERVAL),
                     0F
                 ) { location ->
                     Log.d("CodeAndroidLocation", "gpsLocation not null $location")
                     locationGps = location
-                    insert(locationGps, "GPS")
+                    insert(locationGps)
                 }
             }
             if (hasNetwork) {
                 Log.d("CodeAndroidLocation", "hasNetworkGpsp")
                 locationManager.requestLocationUpdates(
                     NETWORK_PROVIDER,
-                    5000,
+                   TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL),
                     0F
                 ) { location ->
                     Log.d("CodeAndroidLocation", "networkLocation not null $location")
                     locationNetwork = location
-                    insert(locationNetwork, "Network")
+                    insert(locationNetwork)
                 }
             }
             if (locationGps != null && locationNetwork != null) {
                 Log.d("CodeAndroidLocation", "has both")
                 if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
-                    insert(locationNetwork, "mNetwork")
+                    insert(locationNetwork)
                 } else {
-                    insert(locationGps, "mGPS")
+                    insert(locationGps)
                 }
             }
         } else {
@@ -69,16 +70,16 @@ class LocationListener(private var locationManager: LocationManager, val context
         }
     }
 
-    fun insert(location: Location?, tag: String) {
+    fun insert(location: Location?) {
         val geoHash = GeoHash(
             location!!.latitude,
             location.longitude,
             6
         ).toString()
-        Log.d("CodeAndroidLocation $tag", "Latitude : " + location.latitude)
-        Log.d("CodeAndroidLocation $tag", "Longitude : " + location.longitude)
-        Log.d("CodeAndroidLocation $tag", "GeoHash : $geoHash")
-        Log.d("Date", "${Date(System.currentTimeMillis())}")
+//        Log.d("CodeAndroidLocation $tag", "Latitude : " + location.latitude)
+//        Log.d("CodeAndroidLocation $tag", "Longitude : " + location.longitude)
+//        Log.d("CodeAndroidLocation $tag", "GeoHash : $geoHash")
+//        Log.d("Date", "${Date(System.currentTimeMillis())}")
         val locationObj = LocationModel(
             0, location.latitude, location.longitude, geoHash,
             System.currentTimeMillis()
