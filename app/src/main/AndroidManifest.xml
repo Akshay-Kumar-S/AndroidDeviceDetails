@@ -48,13 +48,13 @@
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.LocationActivity" />
-
+        <activity android:name=".activities.LocationActivity"
+            android:label="Location Details"
+            android:parentActivityName=".activities.MainActivity"/>
         <service
             android:name=".services.AppService"
             android:enabled="true" />

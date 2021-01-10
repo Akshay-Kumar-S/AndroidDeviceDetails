@@ -33,7 +33,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         activityController = ActivityController(
@@ -60,20 +59,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             countView.setOnClickListener(this@LocationActivity)
             barChart.setOnChartValueSelectedListener(this@LocationActivity)
         }
-        init()
-    }
-
-    private fun init() {
         selectedRow = binding.noData
-        Toast.makeText(this, calendar.time.toString(), Toast.LENGTH_SHORT).show()
-        activityController.cook(
-            TimePeriod(
-                calendar.timeInMillis,
-                calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)
-            )
-        )
     }
-
 
     override fun onClick(v: View?) {
         when (v!!.id) {
