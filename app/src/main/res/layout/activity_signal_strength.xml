@@ -42,7 +42,6 @@
                 app:layout_constraintStart_toEndOf="@+id/gauge"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Title, secondary and supporting text -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,10 +58,10 @@
                     android:textAppearance="?attr/textAppearanceHeadline5" />
 
                 <TextView
-                    android:layout_marginTop="6dp"
                     android:id="@+id/signalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="@string/type"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -91,7 +90,6 @@
                 layout="@layout/date_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
