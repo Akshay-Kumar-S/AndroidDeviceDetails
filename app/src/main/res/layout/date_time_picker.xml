@@ -20,14 +20,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="4dp"
                 android:text="@string/start"
                 android:textSize="10sp"
-                tools:ignore="SmallSp" />
+                tools:ignore="RtlSymmetry,SmallSp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="2dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/startTime"
@@ -36,7 +36,7 @@
                     android:text="@string/_11_00"
                     android:textAlignment="center"
                     android:textColor="?attr/startBlue"
-                    android:textSize="48sp" />
+                    android:textSize="32sp" />
 
                 <TextView
                     android:id="@+id/startAMPM"
@@ -53,9 +53,10 @@
                 android:id="@+id/startDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="2dp"
+                android:paddingStart="4dp"
                 android:text="@string/_21_jan_2020"
-                android:textColor="?attr/batteryTitle" />
+                android:textColor="?attr/batteryTitle"
+                tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
 
@@ -72,14 +73,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="4dp"
                 android:text="@string/end"
                 android:textSize="10sp"
-                tools:ignore="SmallSp" />
+                tools:ignore="RtlSymmetry,SmallSp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="2dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/endTime"
@@ -88,7 +89,7 @@
                     android:text="@string/_11_00"
                     android:textAlignment="center"
                     android:textColor="?attr/endOrange"
-                    android:textSize="48sp" />
+                    android:textSize="32sp" />
 
                 <TextView
                     android:id="@+id/endAMPM"
@@ -105,9 +106,10 @@
                 android:id="@+id/endDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="2dp"
+                android:paddingStart="4dp"
                 android:text="@string/_21_jan_2020"
-                android:textColor="?attr/batteryTitle" />
+                android:textColor="?attr/batteryTitle"
+                tools:ignore="RtlSymmetry" />
 
 
         </LinearLayout>
@@ -118,10 +120,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:max="100"
-            android:progress="0"
-            app:layout_constraintTop_toBottomOf="@+id/endContainer"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/endContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
