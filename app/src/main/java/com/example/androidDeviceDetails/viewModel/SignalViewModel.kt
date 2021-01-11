@@ -94,10 +94,10 @@ class SignalViewModel(
         val signalList = outputList as ArrayList<SignalEntity>
         if (signalList.isNotEmpty()) {
             for (signal in signalList) {
-                if (signal.signal == Signal.CELLULAR.ordinal)
-                    cellularList.add(signal)
-                else
-                    wifiList.add(signal)
+                when (signal.signal) {
+                    Signal.WIFI.ordinal -> wifiList.add(signal)
+                    Signal.CELLULAR.ordinal -> cellularList.add(signal)
+                }
             }
         }
         updateListView()
