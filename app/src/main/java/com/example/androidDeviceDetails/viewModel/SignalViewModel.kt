@@ -113,8 +113,8 @@ class SignalViewModel(
             }
         }
         updateListView()
-        if (!isInitialised)
-            initialView()
+        /*    if (!isInitialised)
+                signalBinding.root.post { initialView() }*/
     }
 
     override fun filter(type: Int) {
@@ -140,6 +140,8 @@ class SignalViewModel(
                     )
                 updateListHeading()
                 signalBinding.listView.adapter = adapter
+                if (!isInitialised)
+                    initialView()
             }
         } else
             signalBinding.root.post {
