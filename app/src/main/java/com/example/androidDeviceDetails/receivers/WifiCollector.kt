@@ -15,9 +15,28 @@ import com.example.androidDeviceDetails.utils.WifiLevel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class WifiReceiver : BaseCollector() {
+/**
+ *  Implements [BaseCollector].
+ *  An event based collector which collects the WIFI signal data.
+ *  Contains a [BroadcastReceiver] : [WifiReceiver] which is registered on
+ *  initialization of this class.
+ *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
+ **/
+class WifiCollector : BaseCollector() {
 
-    object broadcastReceiver : BroadcastReceiver() {
+    /**
+     * A [BroadcastReceiver] which gets notified from [WifiManager.RSSI_CHANGED_ACTION] and
+     * [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
+     **/
+    object WifiReceiver : BroadcastReceiver() {
+
+        /**
+         *  Receiver which gets notified when a change in wifi signal strength occurs and also
+         *  when a scan is complete.
+         *   Method collects current timestamp, signal, strength, linkSpeed and level.
+         *  These values are made into a [SignalEntity] and saved into the [RoomDB.signalDao].
+         *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
+         **/
         override fun onReceive(context: Context?, intent: Intent?) {
             val signalEntity: SignalEntity
             val strength: Int
@@ -43,6 +62,12 @@ class WifiReceiver : BaseCollector() {
             }
         }
 
+        /**
+         * Retrieve level for wifi signal.
+         * @param strength whose level is to be found
+         * @return a single integer from 0 to 4 representing general signal quality. 0 represents
+         * very poor while 4 represents excellent signal quality.
+         **/
         private fun getWifiLevel(strength: Int): Int {
             return when {
                 strength > -30 -> WifiLevel.Great.ordinal
@@ -58,12 +83,16 @@ class WifiReceiver : BaseCollector() {
         start()
     }
 
+    /**
+     * Registers the [WifiCollector] with [WifiManager.RSSI_CHANGED_ACTION]
+     * and [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
+     **/
     override fun start() {
         val filter = IntentFilter()
         filter.addAction(WifiManager.RSSI_CHANGED_ACTION)
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
         DeviceDetailsApplication.instance.registerReceiver(
-            broadcastReceiver,
+            WifiReceiver,
             filter
         )
     }
@@ -71,7 +100,10 @@ class WifiReceiver : BaseCollector() {
     override fun collect() {
     }
 
+    /**
+     * Unregisters the [WifiCollector].
+     **/
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
+        DeviceDetailsApplication.instance.unregisterReceiver(WifiReceiver)
     }
 }

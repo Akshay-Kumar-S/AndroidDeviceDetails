@@ -12,13 +12,31 @@ import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import android.telephony.PhoneStateListener.LISTEN_NONE
 
-class SignalChangeListener : BaseCollector() {
+/**
+ *  Implements [BaseCollector].
+ *  An event based collector which collects the CELLULAR signal data.
+ *  Contains a [PhoneStateListener] : [SignalChangeListener] which is registered on
+ *  initialization of this class.
+ *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
+ **/
+class SignalChangeCollector : BaseCollector() {
 
     private var mTelephonyManager: TelephonyManager =
         DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-    object phoneStateListener : PhoneStateListener() {
+    /**
+     * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
+     **/
+    object SignalChangeListener : PhoneStateListener() {
+        /**
+         * Listener which gets notified when a change in signal strength occurs.
+         *  Method is called when the strength of signal changes.
+         *  Listener collects current timestamp, signal, strength, cellInfo type and level.
+         *  These values are made into a [SignalEntity] and saved into the [RoomDB.signalDao].
+         *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
+         **/
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
             Log.d("servicestart", "started")
             val signalEntity: SignalEntity
@@ -102,18 +120,20 @@ class SignalChangeListener : BaseCollector() {
         start()
     }
 
+    /**
+     * Registers the [SignalChangeListener] with [LISTEN_SIGNAL_STRENGTHS].
+     **/
     override fun start() {
-        mTelephonyManager.listen(phoneStateListener, LISTEN_SIGNAL_STRENGTHS)
+        mTelephonyManager.listen(SignalChangeListener, LISTEN_SIGNAL_STRENGTHS)
     }
 
     override fun collect() {
     }
 
+    /**
+     * Unregisters the [SignalChangeListener] with [LISTEN_NONE].
+     **/
     override fun stop() {
-        mTelephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
-    }
-
-    init {
-        start()
+        mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
     }
 }
