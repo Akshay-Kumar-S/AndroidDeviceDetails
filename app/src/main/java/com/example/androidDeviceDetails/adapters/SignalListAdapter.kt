@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import java.text.SimpleDateFormat
 
-class SignalListAdapter(
+class SignalListAdapter
+    (
     private var _context: Context,
     private var resource: Int,
     private var items: List<SignalEntity>
@@ -20,19 +22,37 @@ class SignalListAdapter(
     @SuppressLint("SimpleDateFormat", "ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        val formatter = SimpleDateFormat("dd MMM yyyy\nHH : mm : ss")
 
         val layoutInflater = LayoutInflater.from(_context)
         val view = layoutInflater.inflate(resource, null)
-        val timeStamp = view.findViewById<TextView>(R.id.timestamp)
-        val strength = view.findViewById<TextView>(R.id.strength)
-        val general = view.findViewById<TextView>(R.id.attribute)
-        val level = view.findViewById<TextView>(R.id.level)
+        val timeStamp = view.findViewById<TextView>(R.id.textView2)
+        val strength = view.findViewById<ImageView>(R.id.imageView2)
+        val general = view.findViewById<TextView>(R.id.textView3)
+        val level = view.findViewById<TextView>(R.id.textView1)
 
         timeStamp.text = formatter.format(items[position].timeStamp)
-        strength.text = items[position].strength.toString()
+        when (items[position].level) {
+            0 -> {
+                strength.setImageResource(R.drawable.ic_strength_0)
+            }
+            1 -> {
+                strength.setImageResource(R.drawable.ic_strength_1)
+            }
+            2 -> {
+                strength.setImageResource(R.drawable.ic_strength_2)
+            }
+            3 -> {
+                strength.setImageResource(R.drawable.ic_strength_3)
+            }
+            else -> {
+                strength.setImageResource(R.drawable.ic_strength_4)
+            }
+        }
         general.text = items[position].attribute
-        level.text = items[position].level.toString()
+        level.text = items[position].strength.toString() + " dbm"
         return view
     }
+
+
 }

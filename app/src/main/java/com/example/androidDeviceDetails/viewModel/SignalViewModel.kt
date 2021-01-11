@@ -54,11 +54,14 @@ class SignalViewModel(
     @SuppressLint("SetTextI18n")
     fun updateValue(signalEntity: SignalEntity) {
         when (signalEntity.signal) {
+
             Signal.WIFI.ordinal -> {
+                Log.d("signal","$signal wifi")
                 wifiStrength = signalEntity.strength
                 linkspeed = "${signalEntity.attribute} Mbps"
             }
             Signal.CELLULAR.ordinal -> {
+                Log.d("signal","$signal cellular")
                 cellularStrength = signalEntity.strength
                 cellInfoType = signalEntity.attribute
             }
@@ -94,10 +97,10 @@ class SignalViewModel(
         signalBinding.display.isVisible = false
         signalBinding.list.isVisible = true
         signalBinding.listView.isVisible = true
-        when (signal) {
-            Signal.WIFI.ordinal -> signalBinding.attribute.text = "Linkspeed"
-            Signal.CELLULAR.ordinal -> signalBinding.attribute.text = "Type"
-        }
+//        when (signal) {
+//            Signal.WIFI.ordinal -> signalBinding.attribute.text = "Type"
+//            Signal.CELLULAR.ordinal -> signalBinding.attribute.text = "Linkspeed"
+//        }
     }
 
     override fun <T> onData(outputList: ArrayList<T>) {
