@@ -16,7 +16,7 @@ const val CHANNEL_ID = "androidDeviceDetails"
 
 class AppService : Service() {
 
-    private lateinit var appController: ApplicationController
+    private lateinit var appController : ApplicationController
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -35,9 +35,9 @@ class AppService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        appController.mBatteryReceiver.stop()
-        appController.mWifiReceiver.stop()
-        appController.mAppStateReceiver.stop()
+        for(receivers in appController.instanceMap.values) {
+            receivers.stop()
+        }
         appController.timer.cancel()
         stopSelf()
     }

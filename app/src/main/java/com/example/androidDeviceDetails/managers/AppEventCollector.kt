@@ -15,9 +15,6 @@ class AppEventCollector(context: Context) : BaseCollector() {
     private var usageStatsManager: UsageStatsManager =
         context.getSystemService(AppCompatActivity.USAGE_STATS_SERVICE) as UsageStatsManager
 
-    override fun start() {
-    }
-
     override fun collect() {
         val db = RoomDB.getDatabase()!!
         val events = usageStatsManager.queryEvents(
@@ -37,6 +34,4 @@ class AppEventCollector(context: Context) : BaseCollector() {
         }
     }
 
-    override fun stop() {
-    }
 }

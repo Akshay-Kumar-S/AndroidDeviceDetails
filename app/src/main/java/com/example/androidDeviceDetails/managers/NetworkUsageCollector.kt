@@ -123,9 +123,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
 
     }
 
-    override fun start() {
-    }
-
     override fun collect() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             networkStatsManager =
@@ -133,9 +130,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
             updateDeviceNetworkUsageDB()
             updateNetworkDataUsageDB()
         }
-    }
-
-    override fun stop() {
     }
 
 }

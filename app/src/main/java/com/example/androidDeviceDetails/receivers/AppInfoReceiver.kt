@@ -40,9 +40,6 @@ class AppInfoReceiver : BaseCollector() {
         DeviceDetailsApplication.instance.registerReceiver(broadcastReceiver, filter)
     }
 
-    override fun collect() {
-    }
-
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }

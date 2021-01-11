@@ -118,9 +118,6 @@ class SignalChangeListener(private val context: Context) : BaseCollector() {
         mTelephonyManager.listen(phoneStateListner, LISTEN_SIGNAL_STRENGTHS)
     }
 
-    override fun collect() {
-    }
-
     override fun stop() {
     }
 

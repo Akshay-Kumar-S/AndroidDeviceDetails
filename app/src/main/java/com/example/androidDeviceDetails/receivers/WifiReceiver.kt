@@ -57,9 +57,6 @@ class WifiReceiver : BaseCollector() {
         DeviceDetailsApplication.instance.registerReceiver(broadcastReceiver, intentWifi)
     }
 
-    override fun collect() {
-    }
-
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }

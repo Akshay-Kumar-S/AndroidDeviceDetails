@@ -44,9 +44,6 @@ class BatteryReceiver : BaseCollector() {
         )
     }
 
-    override fun collect() {
-    }
-
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(broadcastReceiver)
     }
