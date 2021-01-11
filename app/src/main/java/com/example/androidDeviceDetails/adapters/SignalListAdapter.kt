@@ -32,27 +32,33 @@ class SignalListAdapter
         val level = view.findViewById<TextView>(R.id.textView1)
 
         timeStamp.text = formatter.format(items[position].timeStamp)
-        when (items[position].level) {
-            0 -> {
-                strength.setImageResource(R.drawable.ic_strength_0)
-            }
-            1 -> {
-                strength.setImageResource(R.drawable.ic_strength_1)
-            }
-            2 -> {
-                strength.setImageResource(R.drawable.ic_strength_2)
-            }
-            3 -> {
-                strength.setImageResource(R.drawable.ic_strength_3)
-            }
-            else -> {
-                strength.setImageResource(R.drawable.ic_strength_4)
-            }
-        }
-        general.text = items[position].attribute
+
+        if (items[position].signal == 0) strength.setImageResource(getCellularImage(items[position].level))
+        if (items[position].signal == 1) strength.setImageResource(getWifiImage(items[position].level))
+
+        if (items[position].signal == 0) general.text = items[position].attribute
+        else general.text = items[position].attribute + " Mbps"
         level.text = items[position].strength.toString() + " dbm"
         return view
     }
 
+    private fun getWifiImage(level: Int): Int {
+        return when (level) {
+            0 -> R.drawable.ic_wifi_strength_0
+            1 -> R.drawable.ic_wifi_strength_1
+            2 -> R.drawable.ic_wifi_strength_2
+            3 -> R.drawable.ic_wifi_strength_3
+            else -> R.drawable.ic_wifi_strength_4
+        }
+    }
 
+    private fun getCellularImage(level: Int): Int {
+        return when (level) {
+            0 -> R.drawable.ic_strength_0
+            1 -> R.drawable.ic_strength_1
+            2 -> R.drawable.ic_strength_2
+            3 -> R.drawable.ic_strength_3
+            else -> R.drawable.ic_strength_4
+        }
+    }
 }
