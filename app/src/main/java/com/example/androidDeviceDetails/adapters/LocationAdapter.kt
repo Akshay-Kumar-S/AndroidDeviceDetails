@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.locationModels.CountModel
 
-class LocationAdapter(private val dataSet: Array<CountModel>):
+class LocationAdapter(private val dataSet: ArrayList<CountModel>):
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
 
     /**

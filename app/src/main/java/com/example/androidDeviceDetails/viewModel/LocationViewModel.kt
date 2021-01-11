@@ -52,25 +52,6 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
 
-    @SuppressLint("ResourceAsColor")
-    fun buildTable(countLocation: Map<String, Int>) {
-        binding.tableView.post { binding.tableView.removeAllViews() }
-        var index = 1
-        for ((k, v) in countLocation) {
-            val row = TableRow(context)
-            val slNoView = getTextView(index.toString())
-            val geoHashTextView = getTextView(k)
-            val countTextView = getTextView(v.toString())
-            row.addView(slNoView)
-            row.addView(geoHashTextView)
-            row.addView(countTextView)
-            row.tag = (index - 1).toString()
-//            Log.d("index", "buildTable:$index ")
-            binding.tableView.post { binding.tableView.addView(row) }
-            index += 1
-        }
-    }
-
     private fun buildGraph(countData: Map<String, Int>) {
         val entries: MutableList<BarEntry> = emptyList<BarEntry>().toMutableList()
         val labels = emptyList<String>().toMutableList()
@@ -116,10 +97,10 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
     fun onValueSelected(e: Entry?, selectedRow: View) {
-        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        val newSelectedRow: View = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
-        binding.scrollView.scrollTo(0, newSelectedRow.y.toInt())
-        newSelectedRow.setBackgroundColor(Color.parseColor("#6FCDF8"))
+//        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
+//        val newSelectedRow: View = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
+//        binding.scrollView.scrollTo(0, newSelectedRow.y.toInt())
+//        newSelectedRow.setBackgroundColor(Color.parseColor("#6FCDF8"))
     }
 
     fun onNothingSelected(selectedRow: View) {
@@ -153,7 +134,6 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         Log.d("Counted Data", "onDataCount:${countedData.size} ")
         toggleSortButton()
         buildGraph(countedData)
-        buildTable(countedData)
     }
 
     override fun <T> onData(outputList: ArrayList<T>) {
@@ -161,37 +141,31 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         if (cookedDataList.isEmpty())
             onNoData()
         else {
-//            logPlace()
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
-            buildAdapterView(countedData)
             Log.d("Counted Data", "onData:${countedData.size} ")
+            buildAdapterView(countedData)
             buildGraph(countedData)
-            buildTable(countedData)
         }
     }
 
     private fun buildAdapterView(dataList: Map<String, Int>) {
-        val countList: Array<CountModel> = emptyArray()
+        val countList: ArrayList<CountModel> = ArrayList()
         if (dataList.isNotEmpty()) {
             for (i in dataList){
                 val latLong = decodeHash(i.key)
-                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1).toString()
-                countList.plus(CountModel(i.key,i.value,address))
+                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].featureName.toString()
+                countList.add(CountModel(i.key,i.value, address))
             }
             binding.root.post {
+                binding.locationListView.layoutManager=LinearLayoutManager(context)
                 binding.locationListView.adapter = LocationAdapter(countList)
             }
-        } else
-        binding.root.post {
-            binding.locationListView.adapter = LocationAdapter(countList)
-        }
-    }
-
-
-    private fun logPlace(){
-        for (i in cookedDataList) {
-            val test = Geocoder(context).getFromLocation(i.latitude!!, i.longitude!!, 1).toString()
-            Log.d("PLACE", "address:$test ")
+        } else {
+            countList.add(CountModel("No Data",0,""))
+            binding.root.post {
+                binding.locationListView.layoutManager = LinearLayoutManager(context)
+                binding.locationListView.adapter = LocationAdapter(countList)
+            }
         }
     }
 
