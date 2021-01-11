@@ -54,14 +54,11 @@ class SignalViewModel(
     @SuppressLint("SetTextI18n")
     fun updateValue(signalEntity: SignalEntity) {
         when (signalEntity.signal) {
-
             Signal.WIFI.ordinal -> {
-                Log.d("signal","$signal wifi")
                 wifiStrength = signalEntity.strength
                 linkspeed = "${signalEntity.attribute} Mbps"
             }
             Signal.CELLULAR.ordinal -> {
-                Log.d("signal","$signal cellular")
                 cellularStrength = signalEntity.strength
                 cellInfoType = signalEntity.attribute
             }
@@ -118,6 +115,8 @@ class SignalViewModel(
         updateListView()
         /*    if (!isInitialised)
                 signalBinding.root.post { initialView() }*/
+        if (!isInitialised)
+            initialView()
     }
 
     override fun filter(type: Int) {
@@ -143,8 +142,8 @@ class SignalViewModel(
                     )
                 updateListHeading()
                 signalBinding.listView.adapter = adapter
-                if (!isInitialised)
-                    initialView()
+                /*    if (!isInitialised)
+                        initialView()*/
             }
         } else
             signalBinding.root.post {
