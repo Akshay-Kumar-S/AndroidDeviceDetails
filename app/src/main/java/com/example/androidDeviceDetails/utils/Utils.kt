@@ -28,7 +28,7 @@ import kotlin.math.pow
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
-    const val COLLECTION_INTERVAL:Long =5
+    const val COLLECTION_INTERVAL: Long = 5
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 
@@ -152,6 +152,7 @@ object Utils {
             }
         }
     }
+
     fun loadPreviousDayTime(): Long {
         val cal = Calendar.getInstance()
         cal[Calendar.HOUR] = 0
@@ -184,6 +185,24 @@ object Utils {
             month,
             day
         )
+    }
+
+    fun getGeoHashWidth(len: Int): Double {
+        return when (len) {
+            1 -> 5000000.0
+            2 -> 1250000.0
+            3 -> 156000.0
+            4 -> 39100.0
+            5 -> 4890.0
+            6 -> 1220.0
+            7 -> 153.0
+            8 -> 38.2
+            9 -> 4.77
+            10 -> 1.19
+            11 -> 0.149
+            12 -> 0.0372
+            else -> 0.0
+        }
     }
 
 }

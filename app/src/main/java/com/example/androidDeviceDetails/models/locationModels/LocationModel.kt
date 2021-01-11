@@ -11,6 +11,11 @@ data class LocationModel(
     val time: Long
 )
 
+data class test(
+    val latitude: Double,
+    val longitude: Double
+)
+
 @Dao
 interface ILocationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -25,6 +30,6 @@ interface ILocationDao {
     @Query("SELECT * FROM Location_Data where time between :startDate and :endDate")
     fun readDataFromDate(startDate: Long, endDate: Long): List<LocationModel>
 
-//    @Query("SELECT geoHash From location_data where time=time ")
-//    fun selectDataOn(time : String): List<LocationModel>
+    @Query("SELECT distinct latitude,longitude From location_data")
+    fun selectDistinct(): List<test>
 }

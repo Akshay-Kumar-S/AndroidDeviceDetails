@@ -3,7 +3,7 @@ package com.example.androidDeviceDetails.viewModel
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.DashPathEffect
+import android.location.Geocoder
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -11,8 +11,10 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.github.mikephil.charting.animation.Easing
@@ -157,10 +159,37 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         if (cookedDataList.isEmpty())
             onNoData()
         else {
+            logPlace()
+            buildAdapterView(cookedDataList)
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
             Log.d("Counted Data", "onData:${countedData.size} ")
             buildGraph(countedData)
             buildTable(countedData)
+        }
+    }
+
+    private fun buildAdapterView(outputList: ArrayList<LocationModel>) {
+        if (outputList.isNotEmpty()) {
+            val temp = outputList
+            binding.root.post {
+//                batteryBinding.batteryListView.adapter =
+//                    BatteryListAdapter(context, R.layout.battery_tile, temp)
+//                val totalText = "Total drop is $totalDrop %"
+//                batteryBinding.total.text = totalText
+            }
+        } else
+        binding.root.post {
+//            batteryBinding.batteryListView.adapter =
+//                BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
+//            batteryBinding.total.text = context.getString(R.string.no_usage_recorded)
+        }
+    }
+
+
+    private fun logPlace(){
+        for (i in cookedDataList) {
+            val test = Geocoder(context).getFromLocation(i.latitude!!, i.longitude!!, 1).toString()
+            Log.d("PLACE", "buildTable:$test ")
         }
     }
 
