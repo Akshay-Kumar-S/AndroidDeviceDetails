@@ -8,89 +8,74 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <com.google.android.material.card.MaterialCardView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardElevation="0.2dp"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/soti_pebble"
-            app:strokeWidth="1dp"
-            tools:ignore="NotSibling">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <de.nitri.gauge.Gauge
+                android:id="@+id/gauge"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="40dp"
+                app:faceColor="@color/soti_blue"
+                app:initialValue="-110"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxValue="-50"
+                app:minValue="-150"
+                app:needleColor="@color/white"
+                app:scaleColor="@color/white"
+                app:totalNicks="120"
+                app:valuePerNick="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_marginStart="20dp"
+                android:orientation="vertical"
+                android:padding="20dp"
+                app:layout_constraintStart_toEndOf="@+id/gauge"
+                app:layout_constraintTop_toTopOf="parent">
 
-
-                <de.nitri.gauge.Gauge
-                    android:id="@+id/gauge"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    app:faceColor="@color/soti_blue"
-                    app:initialValue="-110"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:maxValue="-50"
-                    app:minValue="-150"
-                    app:needleColor="@color/white"
-                    app:scaleColor="@color/white"
-                    app:totalNicks="120"
-                    app:valuePerNick="1" />
-
-                <LinearLayout
+                <!-- Title, secondary and supporting text -->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    app:layout_constraintStart_toEndOf="@+id/gauge"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:text="@string/strength"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-                    <!-- Title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/strength"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
+                <TextView
+                    android:id="@+id/textStrength"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/default_text"
+                    android:textAppearance="?attr/textAppearanceHeadline5" />
 
-                    <TextView
-                        android:id="@+id/textStrength"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/default_text"
-                        android:textAppearance="?attr/textAppearanceHeadline5" />
+                <TextView
+                    android:id="@+id/signalText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/type"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary" />
 
-                    <TextView
-                        android:id="@+id/signalText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
+                <TextView
+                    android:id="@+id/signalValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/default_text"
+                    android:textAppearance="?attr/textAppearanceHeadline5" />
 
-                    <TextView
-                        android:id="@+id/signalValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/default_text"
-                        android:textAppearance="?attr/textAppearanceHeadline5" />
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/datePicker"
@@ -100,8 +85,8 @@
             app:layout_constraintTop_toBottomOf="@id/card">
 
             <include
-                layout="@layout/date_time_picker"
                 android:id="@+id/dateTimePickerLayout"
+                layout="@layout/date_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -119,10 +104,10 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias=".6"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".6" />
 
         <ListView
             android:id="@+id/listView"

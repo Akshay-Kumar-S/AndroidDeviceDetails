@@ -19,7 +19,7 @@ class SignalListAdapter
     private var items: List<SignalEntity>
 ) : ArrayAdapter<SignalEntity>(_context, resource, items) {
 
-    @SuppressLint("SimpleDateFormat", "ViewHolder")
+    @SuppressLint("SimpleDateFormat", "ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
         val formatter = SimpleDateFormat("dd MMM yyyy\nHH : mm : ss")
