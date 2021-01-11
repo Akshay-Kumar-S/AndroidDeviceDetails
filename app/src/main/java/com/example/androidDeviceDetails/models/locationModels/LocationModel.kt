@@ -24,9 +24,6 @@ interface ILocationDao {
     @Query("SELECT * FROM Location_Data")
     fun readAll(): List<LocationModel>
 
-    @Query("SELECT geoHash, count(geoHash) AS count FROM Location_Data GROUP BY geoHash")
-    fun countHash(): List<CountModel>
-
     @Query("SELECT * FROM Location_Data where time between :startDate and :endDate")
     fun readDataFromDate(startDate: Long, endDate: Long): List<LocationModel>
 

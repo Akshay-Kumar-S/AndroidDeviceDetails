@@ -10,13 +10,15 @@ import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.BatteryListAdapter
+import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
+import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
+import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
@@ -159,29 +161,29 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         if (cookedDataList.isEmpty())
             onNoData()
         else {
-            logPlace()
-            buildAdapterView(cookedDataList)
+//            logPlace()
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
+            buildAdapterView(countedData)
             Log.d("Counted Data", "onData:${countedData.size} ")
             buildGraph(countedData)
             buildTable(countedData)
         }
     }
 
-    private fun buildAdapterView(outputList: ArrayList<LocationModel>) {
-        if (outputList.isNotEmpty()) {
-            val temp = outputList
+    private fun buildAdapterView(dataList: Map<String, Int>) {
+        val countList: Array<CountModel> = emptyArray()
+        if (dataList.isNotEmpty()) {
+            for (i in dataList){
+                val latLong = decodeHash(i.key)
+                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1).toString()
+                countList.plus(CountModel(i.key,i.value,address))
+            }
             binding.root.post {
-//                batteryBinding.batteryListView.adapter =
-//                    BatteryListAdapter(context, R.layout.battery_tile, temp)
-//                val totalText = "Total drop is $totalDrop %"
-//                batteryBinding.total.text = totalText
+                binding.locationListView.adapter = LocationAdapter(countList)
             }
         } else
         binding.root.post {
-//            batteryBinding.batteryListView.adapter =
-//                BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
-//            batteryBinding.total.text = context.getString(R.string.no_usage_recorded)
+            binding.locationListView.adapter = LocationAdapter(countList)
         }
     }
 
@@ -189,7 +191,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     private fun logPlace(){
         for (i in cookedDataList) {
             val test = Geocoder(context).getFromLocation(i.latitude!!, i.longitude!!, 1).toString()
-            Log.d("PLACE", "buildTable:$test ")
+            Log.d("PLACE", "address:$test ")
         }
     }
 

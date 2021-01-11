@@ -7,9 +7,11 @@ import android.widget.TableRow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
@@ -42,6 +44,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             binding.dateTimePickerLayout,
             supportFragmentManager
         )
+//        val array : Array<CountModel> = emptyArray()
+//        array.plus(CountModel("sdfsa",5,"dsfgdsfg"))
+//        binding.locationListView.adapter = LocationAdapter(array)
         locationViewModel = activityController.viewModel as LocationViewModel
         calendar[Calendar.HOUR] = 0
         calendar[Calendar.MINUTE] = 0
