@@ -21,155 +21,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
-        app:layout_constraintBottom_toTopOf="@id/tableHeader"
+        app:layout_constraintBottom_toTopOf="@id/countView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barChart" />
 
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/nav"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="40dp"-->
-    <!--        android:layout_margin="10dp"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/tableHeader"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/barChart">-->
-    <!--        <ImageButton-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:backgroundTint="@color/white"-->
-    <!--            android:src="@drawable/ic_chevron_left"/>-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/selectDate"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:background="@drawable/location_date_select_button"-->
-    <!--            android:clickable="true"-->
-    <!--            android:focusable="true"-->
-    <!--            android:padding="10dp"-->
-    <!--            android:text="@string/tillToday"-->
-    <!--            android:textColor="#595959"-->
-    <!--            android:textSize="12sp" />-->
-
-    <!--        <ImageButton-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:backgroundTint="@color/white"-->
-    <!--            android:src="@drawable/ic_chevron_right"/>-->
-
-    <!--    </LinearLayout>-->
-
-    <TableLayout
-        android:id="@+id/tableHeader"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="vertical"
+    <LinearLayout
+        android:id="@+id/countView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="right"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/locationListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateTimePickerLayout">
+        app:layout_constraintTop_toBottomOf="@id/dateTimePickerLayout"
+        tools:ignore="UseCompoundDrawables">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/labelBackGround"
-            android:orientation="horizontal"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/sort" />
 
-            <LinearLayout
-                android:id="@+id/timeView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/sortByCountViewArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:contentDescription="@string/sort_direction_arrow"
+            android:src="@drawable/ic_arrow_downward"
+            android:tag="down" />
+    </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/time" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/geoHash"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:gravity="center"
-                android:text="@string/geohash" />
-
-            <LinearLayout
-                android:id="@+id/countView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/count" />
-
-                <ImageView
-                    android:id="@+id/sortByCountViewArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:contentDescription="@string/sort_direction_arrow"
-                    android:src="@drawable/ic_arrow_downward"
-                    android:tag="down" />
-            </LinearLayout>
-        </TableRow>
-
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableLayout
-                android:id="@+id/tableView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TableRow
-                    android:id="@+id/noData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    tools:ignore="UselessParent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/no_data" />
-                </TableRow>
-            </TableLayout>
-        </ScrollView>
-    </TableLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locationListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/tableHeader"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/countView" />
 
-
+    <!---->
 </androidx.constraintlayout.widget.ConstraintLayout>

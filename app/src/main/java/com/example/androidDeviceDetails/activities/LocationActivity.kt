@@ -60,11 +60,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
                 .setOnClickListener(this@LocationActivity)
             dateTimePickerLayout.endDate
                 .setOnClickListener(this@LocationActivity)
-            timeView.setOnClickListener(this@LocationActivity)
             countView.setOnClickListener(this@LocationActivity)
             barChart.setOnChartValueSelectedListener(this@LocationActivity)
         }
-        selectedRow = binding.noData
     }
 
     override fun onClick(v: View?) {
@@ -84,8 +82,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
         locationViewModel.onValueSelected(e, selectedRow)
-        selectedRow = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
-        Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
+//        selectedRow = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
+//        Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
     }
 
     override fun onNothingSelected() {
