@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.telephony.*
 import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
-import android.util.Log
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
@@ -38,7 +37,6 @@ class SignalChangeCollector : BaseCollector() {
          *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
          **/
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
-            Log.d("servicestart", "started")
             val signalEntity: SignalEntity
             var level = 0
             var strength = 0

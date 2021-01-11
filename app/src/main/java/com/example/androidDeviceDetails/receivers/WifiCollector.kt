@@ -70,11 +70,11 @@ class WifiCollector : BaseCollector() {
          **/
         private fun getWifiLevel(strength: Int): Int {
             return when {
-                strength > -30 -> WifiLevel.Great.ordinal
-                strength > -50 -> WifiLevel.Good.ordinal
-                strength > -60 -> WifiLevel.Moderate.ordinal
-                strength > -70 -> WifiLevel.Poor.ordinal
-                else -> WifiLevel.None.ordinal
+                strength > -30 -> WifiLevel.GREAT.ordinal
+                strength > -50 -> WifiLevel.GOOD.ordinal
+                strength > -60 -> WifiLevel.MODERATE.ordinal
+                strength > -70 -> WifiLevel.POOR.ordinal
+                else -> WifiLevel.NONE.ordinal
             }
         }
     }
