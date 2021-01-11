@@ -88,18 +88,6 @@ class SignalViewModel(
         signalBinding.signalValue.text = value
     }
 
-
-    @SuppressLint("SetTextI18n")
-    private fun updateListHeading() {
-        signalBinding.display.isVisible = false
-        signalBinding.list.isVisible = true
-        signalBinding.listView.isVisible = true
-//        when (signal) {
-//            Signal.WIFI.ordinal -> signalBinding.attribute.text = "Type"
-//            Signal.CELLULAR.ordinal -> signalBinding.attribute.text = "Linkspeed"
-//        }
-    }
-
     override fun <T> onData(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
@@ -113,10 +101,6 @@ class SignalViewModel(
             }
         }
         updateListView()
-        /*    if (!isInitialised)
-                signalBinding.root.post { initialView() }*/
-        if (!isInitialised)
-            initialView()
     }
 
     override fun filter(type: Int) {
@@ -126,6 +110,8 @@ class SignalViewModel(
         updateListView()
     }
 
+    /**
+     */
     private fun updateListView() {
         val signalList =
             if (signal == Signal.CELLULAR.ordinal)
@@ -140,16 +126,16 @@ class SignalViewModel(
                         R.layout.signal_tile,
                         signalList
                     )
-                updateListHeading()
+                signalBinding.display.isVisible = false
+                signalBinding.listView.isVisible = true
                 signalBinding.listView.adapter = adapter
-                /*    if (!isInitialised)
-                        initialView()*/
+                if (!isInitialised)
+                    initialView()
             }
         } else
             signalBinding.root.post {
                 signalBinding.listView.isVisible = false
                 signalBinding.display.isVisible = true
-                signalBinding.list.isVisible = false
             }
     }
 
