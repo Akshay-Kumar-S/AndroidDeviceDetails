@@ -1,7 +1,7 @@
 package com.example.androidDeviceDetails.utils
 
 /**
- * An enum class used to represent the signal - CELLULAR or WIFI.
+ * An enum class used to represent if the signal is CELLULAR or WIFI.
  *
  * 0 represent CELLULAR.
  *
