@@ -47,18 +47,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.signal.button.setOnClickListener(this@MainActivity)
         }
         val icons = intArrayOf(
-            R.drawable.ic_twotone_system_update_24,
-            R.drawable.ic_round_battery_std_24,
-            R.drawable.ic_twotone_location_on_24,
-            R.drawable.ic_round_data_usage_24,
-            R.drawable.ic_twotone_cell_wifi_24,
+            R.drawable.app_info,
+            R.drawable.battery,
+            R.drawable.route,
+            R.drawable.database,
+            R.drawable.wifi,
         )
         val iconsName = arrayOf(
             "App Info",
-            "Google Drive",
-            "Facebook",
-            "Twitter",
-            "Google Maps",
+            "Battery Usage",
+            "Location",
+            "Network Usage",
+            "Signal Data",
         )
 
         val recyclerView = findViewById<View>(R.id.recycler_view) as RecyclerView
