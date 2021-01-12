@@ -57,6 +57,17 @@
             android:tag="down" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/noData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NO DATA"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/countView"
+        android:textAlignment="center"
+        />
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locationListView"

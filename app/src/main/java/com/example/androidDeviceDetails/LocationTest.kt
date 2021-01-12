@@ -23,7 +23,8 @@ class LocationTest {
     }
 
     private fun showInLog(res: ArrayList<test>) {
-        Log.d("WIDTH", "width:${GeoHash.widthDegrees(geoHashLength)} ")
+        val widthInMeters=GeoHash.widthDegrees(geoHashLength)*111139
+        Log.d("WIDTH", "width:${GeoHash.widthDegrees(geoHashLength)*111139} ")
         for (location in res) {
             val hashNew =
                 encodeHash(location.latitude, location.longitude, geoHashLength).toString()
