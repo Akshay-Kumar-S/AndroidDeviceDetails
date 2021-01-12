@@ -22,7 +22,6 @@ class LocationAdapter(private val dataSet: ArrayList<CountModel>):
         val address: TextView = view.findViewById(R.id.address)
 
         init {
-            Log.d("TAG", "onBindViewHolder: ")
             // Define click listener for the ViewHolder's View.
         }
     }
@@ -30,7 +29,6 @@ class LocationAdapter(private val dataSet: ArrayList<CountModel>):
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
-        Log.d("TAG", "onBindViewHolder: ")
 
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.location_tittle, viewGroup, false)
@@ -42,7 +40,6 @@ class LocationAdapter(private val dataSet: ArrayList<CountModel>):
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        Log.d("TAG", "onBindViewHolder: ")
         viewHolder.geoHash.text = dataSet[position].geoHash
         viewHolder.count.text = dataSet[position].count.toString()
         viewHolder.address.text = dataSet[position].address

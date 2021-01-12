@@ -1,12 +1,12 @@
 package com.example.androidDeviceDetails.viewModel
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.location.Geocoder
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.View.GONE
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
@@ -97,10 +97,14 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
     fun onValueSelected(e: Entry?, selectedRow: View) {
-//        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
-//        val newSelectedRow: View = binding.tableView.findViewWithTag(e?.x?.toInt().toString())
-//        binding.scrollView.scrollTo(0, newSelectedRow.y.toInt())
-//        newSelectedRow.setBackgroundColor(Color.parseColor("#6FCDF8"))
+        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        if (e != null) {
+            binding.locationListView.layoutManager?.scrollToPosition(e.x.toInt())
+        }
+        e?.x?.let {
+            binding.locationListView.layoutManager?.findViewByPosition(
+                it.toInt())
+        }?.setBackgroundColor(Color.parseColor("#6FCDF8"))
     }
 
     fun onNothingSelected(selectedRow: View) {
@@ -143,6 +147,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         else {
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
             Log.d("Counted Data", "onData:${countedData.size} ")
+            binding.noData.visibility=GONE
             buildAdapterView(countedData)
             buildGraph(countedData)
         }
@@ -153,8 +158,8 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         if (dataList.isNotEmpty()) {
             for (i in dataList){
                 val latLong = decodeHash(i.key)
-                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].featureName.toString()
-                countList.add(CountModel(i.key,i.value, address))
+                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].locality?.toString()
+                countList.add(CountModel(i.key,i.value, address?:"cannot locate"))
             }
             binding.root.post {
                 binding.locationListView.layoutManager=LinearLayoutManager(context)
