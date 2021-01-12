@@ -82,8 +82,10 @@
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             app:layout_constraintStart_toStartOf="parent"
-
+            android:background="#f1f5f6"
             app:layout_constraintTop_toBottomOf="@id/card">
 
             <include
@@ -127,6 +129,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="#f1f5f6"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/signal_menu" />
 
