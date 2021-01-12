@@ -11,11 +11,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.MainActivityAdapter
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
+import com.example.androidDeviceDetails.models.CardItem
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
+
 
 const val permissionCode = 200
 val permissions: Array<String> =
@@ -40,6 +46,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.appData.button.setOnClickListener(this@MainActivity)
             binding.signal.button.setOnClickListener(this@MainActivity)
         }
+        val icons = intArrayOf(
+            R.drawable.ic_twotone_system_update_24,
+            R.drawable.ic_round_battery_std_24,
+            R.drawable.ic_twotone_location_on_24,
+            R.drawable.ic_round_data_usage_24,
+            R.drawable.ic_twotone_cell_wifi_24,
+        )
+        val iconsName = arrayOf(
+            "App Info",
+            "Google Drive",
+            "Facebook",
+            "Twitter",
+            "Google Maps",
+        )
+
+        val recyclerView = findViewById<View>(R.id.recycler_view) as RecyclerView
+        val arrayList  = arrayListOf<CardItem>()
+
+        recyclerView.layoutManager = LinearLayoutManager(
+            applicationContext,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        recyclerView.itemAnimator = DefaultItemAnimator()
+
+        for (i in icons.indices) {
+            val itemModel = CardItem()
+            itemModel.image = icons[i]
+            itemModel.name = iconsName[i]
+
+            //add in array list
+            arrayList.add(itemModel)
+        }
+
+        val adapter = MainActivityAdapter(applicationContext, arrayList)
+        recyclerView.adapter = adapter
     }
 
 
