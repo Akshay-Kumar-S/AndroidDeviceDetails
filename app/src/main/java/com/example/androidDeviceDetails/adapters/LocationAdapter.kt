@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.locationModels.CountModel
 
-class LocationAdapter(private val dataSet: ArrayList<CountModel>):
+
+class LocationAdapter(var dataSet: ArrayList<CountModel>):
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
 
     /**
@@ -20,10 +20,6 @@ class LocationAdapter(private val dataSet: ArrayList<CountModel>):
         val geoHash: TextView = view.findViewById(R.id.geoHash)
         var  count: TextView = view.findViewById(R.id.count)
         val address: TextView = view.findViewById(R.id.address)
-
-        init {
-            // Define click listener for the ViewHolder's View.
-        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -47,4 +43,10 @@ class LocationAdapter(private val dataSet: ArrayList<CountModel>):
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
+    fun refreshList(countList: ArrayList<CountModel>) {
+        dataSet.clear()
+        dataSet.addAll(countList)
+        notifyDataSetChanged()
+    }
 }

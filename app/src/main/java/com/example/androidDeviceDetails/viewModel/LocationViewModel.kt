@@ -6,12 +6,10 @@ import android.location.Geocoder
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.view.View.GONE
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
@@ -19,15 +17,7 @@ import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.github.davidmoten.geo.GeoHash.decodeHash
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.ValueFormatter
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
 
@@ -154,9 +144,9 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             Log.d("Counted Data", "onData:${countedData.size} ")
 //            binding.noData.visibility=GONE
             initMap(countedData.keys.elementAt(0))
+            addPointOnMap(countedData)
             buildAdapterView(countedData)
 //            buildGraph(countedData)
-            addPointOnMap(countedData)
         }
     }
 
@@ -169,13 +159,11 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
                 countList.add(CountModel(i.key, i.value, address ?: "cannot locate"))
             }
             binding.root.post {
-                binding.bottomLocation.locationListView.layoutManager= LinearLayoutManager(context)
-                binding.bottomLocation.locationListView.adapter = LocationAdapter(countList)
+                (binding.bottomLocation.locationListView.adapter as LocationAdapter).refreshList(countList)
             }
         } else {
             countList.add(CountModel("No Data", 0, ""))
             binding.root.post {
-                binding.bottomLocation.locationListView.layoutManager = LinearLayoutManager(context)
                 binding.bottomLocation.locationListView.adapter = LocationAdapter(countList)
             }
         }

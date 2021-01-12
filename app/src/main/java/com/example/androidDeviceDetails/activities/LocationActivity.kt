@@ -4,12 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
@@ -21,12 +23,12 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
     private lateinit var activityController: ActivityController<LocationModel>
     lateinit var locationViewModel: LocationViewModel
-    private var calendar = Calendar.getInstance()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var binding: ActivityLocationBinding
     private lateinit var selectedRow: View
@@ -39,25 +41,10 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomLocation.bottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // handle onSlide
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> Toast.makeText(this@LocationActivity, "STATE_COLLAPSED", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_EXPANDED -> Toast.makeText(this@LocationActivity, "STATE_EXPANDED", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_DRAGGING -> Toast.makeText(this@LocationActivity, "STATE_DRAGGING", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_SETTLING -> Toast.makeText(this@LocationActivity, "STATE_SETTLING", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_HIDDEN -> Toast.makeText(this@LocationActivity, "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
-                    else -> Toast.makeText(this@LocationActivity, "OTHER_STATE", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+        val arrayList = ArrayList<CountModel>()
+        arrayList.add(CountModel("NoData",0,""))
+        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList)
+        initBottomSheet()
         activityController = ActivityController(
             NAME,
             binding,
@@ -71,12 +58,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             )
         )
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-
         locationViewModel = activityController.viewModel as LocationViewModel
 //        selectedRow = binding.bottomLocation.noData
-        calendar[Calendar.HOUR] = 0
-        calendar[Calendar.MINUTE] = 0
-        calendar[Calendar.SECOND] = 0
         binding.apply {
             bottomLocation.dateTimePickerLayout.startTime
                 .setOnClickListener(this@LocationActivity)
@@ -91,6 +74,12 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             mapview.setTileSource(TileSourceFactory.MAPNIK)
             mapview.setMultiTouchControls(true)
         }
+    }
+
+    private fun initBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomLocation.bottomSheet)
+        bottomSheetBehavior.peekHeight = 300
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun onClick(v: View?) {
