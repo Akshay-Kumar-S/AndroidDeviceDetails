@@ -20,7 +20,6 @@
         android:name="android.permission.BROADCAST_PACKAGE_REMOVED"
         tools:ignore="ProtectedPermissions" />
 
-
     <application
         android:name=".DeviceDetailsApplication"
         android:allowBackup="false"

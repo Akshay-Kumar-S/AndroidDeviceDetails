@@ -35,7 +35,7 @@
         android:focusable="true"
         android:gravity="right"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/locationListView"
+        app:layout_constraintBottom_toTopOf="@id/mapview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dateTimePickerLayout"
@@ -62,21 +62,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NO DATA"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/countView"
         android:textAlignment="center"
-        />
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/countView" />
 
 
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/locationListView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="6dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/countView" />-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/locationListView"
-        android:layout_width="match_parent"
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapview"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/countView" />
 
-    <!---->
 </androidx.constraintlayout.widget.ConstraintLayout>

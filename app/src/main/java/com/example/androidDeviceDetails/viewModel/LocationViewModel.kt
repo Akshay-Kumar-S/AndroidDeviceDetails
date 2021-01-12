@@ -10,9 +10,7 @@ import android.view.View.GONE
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.locationModels.CountModel
@@ -28,6 +26,11 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.Marker
+
+
+
 
 
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
@@ -97,18 +100,18 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
     fun onValueSelected(e: Entry?, selectedRow: View) {
-        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        if (e != null) {
-            binding.locationListView.layoutManager?.scrollToPosition(e.x.toInt())
-        }
-        e?.x?.let {
-            binding.locationListView.layoutManager?.findViewByPosition(
-                it.toInt())
-        }?.setBackgroundColor(Color.parseColor("#6FCDF8"))
+//        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
+//        if (e != null) {
+////            binding.locationListView.layoutManager?.scrollToPosition(e.x.toInt())
+//        }
+//        e?.x?.let {
+////            binding.locationListView.layoutManager?.findViewByPosition(
+//                it.toInt())
+//        }?.setBackgroundColor(Color.parseColor("#6FCDF8"))
     }
 
     fun onNothingSelected(selectedRow: View) {
-        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
+//        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
     }
 
     private fun toggleSortButton() {
@@ -148,8 +151,10 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
             Log.d("Counted Data", "onData:${countedData.size} ")
             binding.noData.visibility=GONE
-            buildAdapterView(countedData)
+            initMap(countedData.keys.elementAt(0))
+//            buildAdapterView(countedData)
             buildGraph(countedData)
+            addPointOnMap(countedData)
         }
     }
 
@@ -159,18 +164,42 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             for (i in dataList){
                 val latLong = decodeHash(i.key)
                 val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].locality?.toString()
-                countList.add(CountModel(i.key,i.value, address?:"cannot locate"))
+                countList.add(CountModel(i.key, i.value, address ?: "cannot locate"))
             }
-            binding.root.post {
-                binding.locationListView.layoutManager=LinearLayoutManager(context)
-                binding.locationListView.adapter = LocationAdapter(countList)
-            }
+//            binding.root.post {
+//                binding.locationListView.layoutManager=LinearLayoutManager(context)
+//                binding.locationListView.adapter = LocationAdapter(countList)
+//            }
         } else {
-            countList.add(CountModel("No Data",0,""))
-            binding.root.post {
-                binding.locationListView.layoutManager = LinearLayoutManager(context)
-                binding.locationListView.adapter = LocationAdapter(countList)
-            }
+            countList.add(CountModel("No Data", 0, ""))
+//            binding.root.post {
+//                binding.locationListView.layoutManager = LinearLayoutManager(context)
+//                binding.locationListView.adapter = LocationAdapter(countList)
+//            }
+        }
+    }
+
+    private fun addPointOnMap(data: Map<String, Int>){
+        for (geoHash in data) {
+            val latLong = decodeHash(geoHash.key)
+            val geoPoint = GeoPoint(latLong.lat, latLong.lon)
+            val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].locality?.toString()
+            Log.d("TAG", "addPointOnMap: $address")
+            val startMarker = Marker(binding.mapview)
+            binding.root.post{
+                startMarker.position = geoPoint
+                startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                binding.mapview.overlays.add(startMarker) }
+        }
+    }
+
+    private fun initMap(param: String) {
+        val latLong = decodeHash(param)
+        val geoPoint= GeoPoint(latLong.lat,latLong.lon)
+        binding.root.post{
+            val mapController = binding.mapview.controller
+            mapController.setZoom(10.0)
+            mapController.setCenter(geoPoint)
         }
     }
 

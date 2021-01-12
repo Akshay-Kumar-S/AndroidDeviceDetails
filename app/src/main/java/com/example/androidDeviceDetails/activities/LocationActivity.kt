@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,10 +14,14 @@ import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import org.osmdroid.config.Configuration
+import org.osmdroid.library.BuildConfig
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import java.util.*
 
+
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
-    lateinit var activityController: ActivityController<LocationModel>
+    private lateinit var activityController: ActivityController<LocationModel>
     lateinit var locationViewModel: LocationViewModel
     private var calendar = Calendar.getInstance()
 
@@ -38,8 +43,15 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             binding.dateTimePickerLayout,
             supportFragmentManager
         )
+        Configuration.getInstance().load(
+            applicationContext, getSharedPreferences(
+                "my.app.packagename_preferences", Context.MODE_PRIVATE
+            )
+        )
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+
         locationViewModel = activityController.viewModel as LocationViewModel
-        selectedRow=binding.noData
+        selectedRow = binding.noData
         calendar[Calendar.HOUR] = 0
         calendar[Calendar.MINUTE] = 0
         calendar[Calendar.SECOND] = 0
@@ -54,6 +66,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
                 .setOnClickListener(this@LocationActivity)
             countView.setOnClickListener(this@LocationActivity)
             barChart.setOnChartValueSelectedListener(this@LocationActivity)
+            mapview.setTileSource(TileSourceFactory.MAPNIK)
+            mapview.setMultiTouchControls(true)
         }
     }
 
@@ -73,15 +87,15 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-        locationViewModel.onValueSelected(e, selectedRow)
-        if (e != null) {
-            selectedRow = binding.locationListView.layoutManager?.findViewByPosition(e.x.toInt())!!
-        }
+//        locationViewModel.onValueSelected(e, selectedRow)
+//        if (e != null) {
+//            selectedRow = binding.locationListView.layoutManager?.findViewByPosition(e.x.toInt())!!
+//        }
         Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
     }
 
     override fun onNothingSelected() {
-        locationViewModel.onNothingSelected(selectedRow)
+//        locationViewModel.onNothingSelected(selectedRow)
     }
 
 }
