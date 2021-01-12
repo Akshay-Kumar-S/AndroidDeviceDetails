@@ -10,7 +10,9 @@ import android.view.View.GONE
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.locationModels.CountModel
@@ -55,49 +57,49 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
 
-    private fun buildGraph(countData: Map<String, Int>) {
-        val entries: MutableList<BarEntry> = emptyList<BarEntry>().toMutableList()
-        val labels = emptyList<String>().toMutableList()
-        var index = 0f
-        for ((k, v) in countData) {
-            entries.add(BarEntry(index, v.toFloat()))
-            labels.add(k)
-            index += 1
-        }
-        val valueFormatter: ValueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return value.toInt().toString()
-            }
-        }
-        val set = BarDataSet(entries, "Location Count")
-        set.valueFormatter=valueFormatter
-        val data = BarData(set)
-        val description: Description = binding.barChart.description
-        description.isEnabled = false
-        val yAxisL: YAxis = binding.barChart.axisLeft
-        val yAxisR: YAxis = binding.barChart.axisRight
-        val xAxis: XAxis = binding.barChart.xAxis
-//        val formatterX: ValueFormatter = object : ValueFormatter() {
-//            override fun getAxisLabel(value: Float, axis: AxisBase): String {
-//                Log.d("TAG", "getAxisLabel: ${labels[value.toInt()]} ")
-//                return labels[value.toInt()]
+//    private fun buildGraph(countData: Map<String, Int>) {
+//        val entries: MutableList<BarEntry> = emptyList<BarEntry>().toMutableList()
+//        val labels = emptyList<String>().toMutableList()
+//        var index = 0f
+//        for ((k, v) in countData) {
+//            entries.add(BarEntry(index, v.toFloat()))
+//            labels.add(k)
+//            index += 1
+//        }
+//        val valueFormatter: ValueFormatter = object : ValueFormatter() {
+//            override fun getFormattedValue(value: Float): String {
+//                return value.toInt().toString()
 //            }
 //        }
-
-        data.barWidth = 0.9f // set custom bar width
-        yAxisR.isEnabled = false
-        yAxisL.isEnabled=false
-        xAxis.setDrawLabels(false)
-        xAxis.setDrawGridLines(false)
-
-        binding.root.post {
-            binding.barChart.isAutoScaleMinMaxEnabled = true
-            binding.barChart.data = data
-            binding.barChart.setFitBars(true)
-            binding.barChart.animateY(1000, Easing.EaseOutBack)
-            binding.barChart.invalidate()
-        }
-    }
+//        val set = BarDataSet(entries, "Location Count")
+//        set.valueFormatter=valueFormatter
+//        val data = BarData(set)
+//        val description: Description = binding.barChart.description
+//        description.isEnabled = false
+//        val yAxisL: YAxis = binding.barChart.axisLeft
+//        val yAxisR: YAxis = binding.barChart.axisRight
+//        val xAxis: XAxis = binding.barChart.xAxis
+////        val formatterX: ValueFormatter = object : ValueFormatter() {
+////            override fun getAxisLabel(value: Float, axis: AxisBase): String {
+////                Log.d("TAG", "getAxisLabel: ${labels[value.toInt()]} ")
+////                return labels[value.toInt()]
+////            }
+////        }
+//
+//        data.barWidth = 0.9f // set custom bar width
+//        yAxisR.isEnabled = false
+//        yAxisL.isEnabled=false
+//        xAxis.setDrawLabels(false)
+//        xAxis.setDrawGridLines(false)
+//
+//        binding.root.post {
+//            binding.barChart.isAutoScaleMinMaxEnabled = true
+//            binding.barChart.data = data
+//            binding.barChart.setFitBars(true)
+//            binding.barChart.animateY(1000, Easing.EaseOutBack)
+//            binding.barChart.invalidate()
+//        }
+//    }
 
     fun onValueSelected(e: Entry?, selectedRow: View) {
 //        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
@@ -114,16 +116,16 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 //        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
     }
 
-    private fun toggleSortButton() {
-        if (binding.sortByCountViewArrow.tag == "down") {
-            binding.sortByCountViewArrow.tag = "up"
-            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_upward)
-
-        } else {
-            binding.sortByCountViewArrow.tag = "down"
-            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_downward)
-        }
-    }
+//    private fun toggleSortButton() {
+//        if (binding.sortByCountViewArrow.tag == "down") {
+//            binding.sortByCountViewArrow.tag = "up"
+//            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_upward)
+//
+//        } else {
+//            binding.sortByCountViewArrow.tag = "down"
+//            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_downward)
+//        }
+//    }
 
     private fun onNoData() =
         binding.root.post {
@@ -139,8 +141,8 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             else -> countedData.toList().sortedByDescending { (_, value) -> value }.toMap()
         }
         Log.d("Counted Data", "onDataCount:${countedData.size} ")
-        toggleSortButton()
-        buildGraph(countedData)
+//        toggleSortButton()
+//        buildGraph(countedData)
     }
 
     override fun <T> onData(outputList: ArrayList<T>) {
@@ -150,10 +152,10 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         else {
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
             Log.d("Counted Data", "onData:${countedData.size} ")
-            binding.noData.visibility=GONE
+//            binding.noData.visibility=GONE
             initMap(countedData.keys.elementAt(0))
-//            buildAdapterView(countedData)
-            buildGraph(countedData)
+            buildAdapterView(countedData)
+//            buildGraph(countedData)
             addPointOnMap(countedData)
         }
     }
@@ -166,16 +168,16 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
                 val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].locality?.toString()
                 countList.add(CountModel(i.key, i.value, address ?: "cannot locate"))
             }
-//            binding.root.post {
-//                binding.locationListView.layoutManager=LinearLayoutManager(context)
-//                binding.locationListView.adapter = LocationAdapter(countList)
-//            }
+            binding.root.post {
+                binding.bottomLocation.locationListView.layoutManager= LinearLayoutManager(context)
+                binding.bottomLocation.locationListView.adapter = LocationAdapter(countList)
+            }
         } else {
             countList.add(CountModel("No Data", 0, ""))
-//            binding.root.post {
-//                binding.locationListView.layoutManager = LinearLayoutManager(context)
-//                binding.locationListView.adapter = LocationAdapter(countList)
-//            }
+            binding.root.post {
+                binding.bottomLocation.locationListView.layoutManager = LinearLayoutManager(context)
+                binding.bottomLocation.locationListView.adapter = LocationAdapter(countList)
+            }
         }
     }
 
