@@ -10,7 +10,12 @@ import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBindin
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.signalModels.SignalEntity
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.cooker.SignalCooker
+import com.example.androidDeviceDetails.activities.SignalActivity
 
+/**
+ * Implements [BaseViewModel]
+ */
 class SignalViewModel(
     private val signalBinding: ActivitySignalStrengthBinding,
     val context: Context
@@ -32,12 +37,20 @@ class SignalViewModel(
         observeSignal()
     }
 
+    /**
+     * This method is called on the initialisation of the [SignalViewModel].
+     * It is used to observe the last live data of [SignalEntity].
+     * And on notification, updates values via [updateValue].
+     */
     private fun observeSignal() {
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
             if (it != null) updateValue(it)
         }
     }
 
+    /**
+     * This method is called only initially to prepopulate the card view.
+     */
     private fun initialView() {
         if (cellularList.isNotEmpty()) {
             cellularStrength = cellularList.last().strength
@@ -51,6 +64,10 @@ class SignalViewModel(
         isInitialised = true
     }
 
+    /**
+     * This method updates the values of wifi strength, link speed,
+     * cellular strength and cell info type upon call from [observeSignal].
+     */
     @SuppressLint("SetTextI18n")
     fun updateValue(signalEntity: SignalEntity) {
         when (signalEntity.signal) {
@@ -67,6 +84,9 @@ class SignalViewModel(
             updateCardView()
     }
 
+    /**
+     * This method updates the Card view in the UI based on the selected menu - CELLULAR or WIFI.
+     */
     @SuppressLint("SetTextI18n")
     fun updateCardView() {
         when (signal) {
@@ -88,6 +108,14 @@ class SignalViewModel(
         signalBinding.signalValue.text = value
     }
 
+    /**
+     * This method is called once the [SignalCooker] finishes cooking.
+     * This method separates the cooked data into CELLULAR list and WIFI list
+     * and calls [updateListView] to update list.
+     * >
+     * Overrides : [onData] in [BaseViewModel].
+     * @param outputList List of cooked data.
+     */
     override fun <T> onData(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
@@ -103,6 +131,12 @@ class SignalViewModel(
         updateListView()
     }
 
+    /**
+     * This method is called whenever the menu is chosen from the [SignalActivity].
+     * Depending on the menu chosen - WIFI or CELLULAR, respective gauge, card and list
+     * views are updated.
+     * @param type to indicate which signal menu is chosen - CELLULAR or WIFI.
+     */
     override fun filter(type: Int) {
         signal = type
         updateGauge()
@@ -111,6 +145,9 @@ class SignalViewModel(
     }
 
     /**
+     * This method updates List in the UI based on the selected menu.
+     * If the selected menu is CELLULAR, displays list of CELLULAR signal values.
+     * And if the selected menu is WIFI, displays list of WIFI signal values.
      */
     private fun updateListView() {
         val signalList =
@@ -139,11 +176,15 @@ class SignalViewModel(
             }
     }
 
+    /**
+     * This method sets the maximum and minimum values of the gauge depending on whether the
+     * selected signal to be displayed is CELLULAR or WIFI.
+     */
     private fun updateGauge() {
         when (signal) {
             Signal.WIFI.ordinal -> {
                 signalBinding.gauge.setMaxValue(0f)
-                signalBinding.gauge.setMinValue(-100f)
+                signalBinding.gauge.setMinValue(-127f)
             }
             Signal.CELLULAR.ordinal -> {
                 signalBinding.gauge.setMaxValue(-50f)
