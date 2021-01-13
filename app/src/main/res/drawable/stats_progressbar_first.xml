@@ -7,6 +7,6 @@
         android:shape="ring"
         android:thickness="8dp"
         android:useLevel="true">
-        <solid android:color="@color/mat_yellow" />
+        <solid android:color="?attr/progressbarFirst" />
     </shape>
 </rotate>

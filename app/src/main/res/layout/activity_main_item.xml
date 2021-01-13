@@ -10,7 +10,7 @@
         android:layout_height="210dp"
         android:layout_margin="10dp"
         android:outlineSpotShadowColor="@color/pink"
-        card_view:cardBackgroundColor="#EAEAEA">
+        card_view:cardBackgroundColor="?attr/mainButtonBg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,7 +37,8 @@
                     android:layout_height="30dp"
                     android:contentDescription="Overlay"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/database" />
+                    android:src="@drawable/database"
+                    card_view:tint="?attr/batteryTitle" />
 
                 <TextView
                     android:id="@+id/title"
@@ -45,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_weight=".01"
+                    android:textColor="?attr/batteryTitle"
                     android:text="Title "
                     android:textAlignment="viewEnd"
                     android:textSize="20sp" />
@@ -52,7 +54,7 @@
 
             <LinearLayout
                 android:id="@+id/usingProgressBar"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -79,7 +81,7 @@
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="100"
-                        android:progressDrawable="@drawable/stats_user_apps"
+                        android:progressDrawable="@drawable/stats_progressbar_first"
                         card_view:layout_constraintBottom_toBottomOf="parent"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent"
@@ -93,7 +95,7 @@
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="75"
-                        android:progressDrawable="@drawable/stats_system_apps"
+                        android:progressDrawable="@drawable/stats_progressbar_second"
                         card_view:layout_constraintBottom_toBottomOf="parent"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent"
@@ -122,6 +124,7 @@
                             android:id="@+id/label_1_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/progressbarFirst"
                             android:text="20 " />
                     </LinearLayout>
                     <LinearLayout
@@ -139,6 +142,7 @@
                             android:id="@+id/label_2_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/progressbarSecond"
                             android:text="20 " />
                     </LinearLayout>
                 </LinearLayout>
@@ -146,7 +150,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/usingSingleValue"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -157,7 +161,7 @@
                     android:id="@+id/mainValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+
                     android:text="88"
                     android:textSize="70dp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
@@ -172,9 +176,7 @@
                     android:text="%"
                     android:textSize="20dp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintHorizontal_bias="0.65"
-                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintStart_toEndOf="@id/mainValue"
                     card_view:layout_constraintTop_toTopOf="parent"
                     card_view:layout_constraintVertical_bias="0.242" />
 
@@ -185,9 +187,7 @@
                     android:text="used"
                     android:textSize="14dp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintHorizontal_bias="0.683"
-                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintStart_toEndOf="@id/mainValue"
                     card_view:layout_constraintTop_toTopOf="parent"
                     card_view:layout_constraintVertical_bias="0.783" />
 

@@ -10,6 +10,8 @@
         <item name="mainButtonBg">#232323</item>
         <item name="startBlue">#8AB4F8</item>
         <item name="endOrange">#F9DE91</item>
+        <item name="progressbarFirst">#673AB7</item>
+        <item name="progressbarSecond">#E1AA06</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>

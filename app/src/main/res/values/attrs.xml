@@ -6,6 +6,8 @@
         <attr name="mainButtonBg" format="color"/>
         <attr name="startBlue" format="color" />
         <attr name="endOrange" format="color" />
+        <attr name="progressbarFirst" format="color"/>
+        <attr name="progressbarSecond" format="color"/>
     </declare-styleable>
     <declare-styleable name="TimeDateBubbleColor">
         <attr name="TimeDateBackground" format="color" />
