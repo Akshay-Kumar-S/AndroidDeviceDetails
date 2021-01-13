@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.adapters.MainActivityAdapter
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.CardItem
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
@@ -25,8 +27,12 @@ val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+    companion object {
+        const val NAME = "Main Activity"
+    }
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var controller: ActivityController<AppInfoCookedData>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
