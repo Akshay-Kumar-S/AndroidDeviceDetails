@@ -11,15 +11,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.MainActivityAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
-import com.example.androidDeviceDetails.models.CardItem
-import com.example.androidDeviceDetails.models.MainActiviyCookedData
+import com.example.androidDeviceDetails.models.MainActivityCookedData
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
@@ -35,16 +30,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainActivityController: ActivityController<MainActiviyCookedData>
+    private lateinit var mainActivityController: ActivityController<MainActivityCookedData>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainActivityController = ActivityController(
-            MainActivity.NAME,
-            binding,
-            this,
-            null,
-            supportFragmentManager = supportFragmentManager
+            NAME, binding, this,
+            null, supportFragmentManager = supportFragmentManager
         )
         supportActionBar?.hide()
         requestPermissions()
@@ -59,42 +51,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.appData.button.setOnClickListener(this@MainActivity)
             binding.signal.button.setOnClickListener(this@MainActivity)
         }
-        val icons = intArrayOf(
-            R.drawable.app_info,
-            R.drawable.battery,
-            R.drawable.route,
-            R.drawable.database,
-            R.drawable.wifi,
-        )
-        val iconsName = arrayOf(
-            "App Info",
-            "Battery Usage",
-            "Location",
-            "Network Usage",
-            "Signal Data",
-        )
-
-        val recyclerView = findViewById<View>(R.id.recycler_view) as RecyclerView
-        val arrayList  = arrayListOf<CardItem>()
-
-        recyclerView.layoutManager = LinearLayoutManager(
-            applicationContext,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        recyclerView.itemAnimator = DefaultItemAnimator()
-
-        for (i in icons.indices) {
-            val itemModel = CardItem()
-            itemModel.image = icons[i]
-            itemModel.name = iconsName[i]
-
-            //add in array list
-            arrayList.add(itemModel)
-        }
-
-        val adapter = MainActivityAdapter(applicationContext, arrayList)
-        recyclerView.adapter = adapter
     }
 
 
