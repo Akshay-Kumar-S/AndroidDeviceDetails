@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.views.CustomZoomButtonsDisplay
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -60,7 +61,28 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         locationViewModel = activityController.viewModel as LocationViewModel
 //        selectedRow = binding.bottomLocation.noData
+        initDatePicker()
+        initMapview()
         binding.apply {
+            bottomLocation.countView.setOnClickListener(this@LocationActivity)
+//            bottomLocation.barChart.setOnChartValueSelectedListener(this@LocationActivity)
+        }
+    }
+
+    private fun initMapview() {
+        binding.apply{
+            mapview.setTileSource(TileSourceFactory.MAPNIK)
+            mapview.setMultiTouchControls(true)
+            mapview.zoomController.display.setPositions(
+                false,
+                CustomZoomButtonsDisplay.HorizontalPosition.RIGHT,
+                CustomZoomButtonsDisplay.VerticalPosition.CENTER
+            )
+        }
+    }
+
+    private fun initDatePicker() {
+        binding.apply{
             bottomLocation.dateTimePickerLayout.startTime
                 .setOnClickListener(this@LocationActivity)
             bottomLocation.dateTimePickerLayout.startDate
@@ -69,10 +91,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
                 .setOnClickListener(this@LocationActivity)
             bottomLocation.dateTimePickerLayout.endDate
                 .setOnClickListener(this@LocationActivity)
-            bottomLocation.countView.setOnClickListener(this@LocationActivity)
-//            bottomLocation.barChart.setOnChartValueSelectedListener(this@LocationActivity)
-            mapview.setTileSource(TileSourceFactory.MAPNIK)
-            mapview.setMultiTouchControls(true)
         }
     }
 

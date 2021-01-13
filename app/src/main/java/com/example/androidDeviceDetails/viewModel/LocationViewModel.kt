@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
@@ -175,11 +174,13 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             val geoPoint = GeoPoint(latLong.lat, latLong.lon)
             val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].locality?.toString()
             Log.d("TAG", "addPointOnMap: $address")
-            val startMarker = Marker(binding.mapview)
+            val marker = Marker(binding.mapview)
             binding.root.post{
-                startMarker.position = geoPoint
-                startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                binding.mapview.overlays.add(startMarker) }
+                marker.position = geoPoint
+                marker.title="Visited ${geoHash.value} times"
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                binding.mapview.overlays.add(marker)
+            }
         }
     }
 
