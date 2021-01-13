@@ -22,8 +22,8 @@ class DeviceNetworkUsageCooker : BaseCooker() {
                 totalDataUsageList.add(
                     DeviceNetworkUsageEntity(
                         System.currentTimeMillis(),
-                        finalData.transferredDataMobile - initialData.transferredDataMobile,
                         finalData.transferredDataWifi - initialData.transferredDataWifi,
+                        finalData.transferredDataMobile - initialData.transferredDataMobile,
                         finalData.receivedDataWifi - initialData.receivedDataWifi,
                         finalData.receivedDataMobile - initialData.receivedDataMobile,
                     )
