@@ -57,7 +57,7 @@ class MainActivityViewModel(
         for (i in icons.indices) {
             val itemModel = CardItem()
             itemModel.image = icons[i]
-            itemModel.name = iconsName[i]
+            itemModel.title = iconsName[i]
 
             //add in array list
             arrayList.add(itemModel)

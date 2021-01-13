@@ -52,7 +52,7 @@
 
             <LinearLayout
                 android:id="@+id/usingProgressBar"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content">
                     <!-- ProgressBar that represents a total of 100% -->
                     <ProgressBar
-                        android:id="@+id/first"
+                        android:id="@+id/progressbarFirst"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
@@ -86,7 +86,7 @@
                         card_view:layout_constraintTop_toTopOf="parent" />
                     <!-- ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice -->
                     <ProgressBar
-                        android:id="@+id/second"
+                        android:id="@+id/progressbarSecond"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
@@ -146,6 +146,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/usingSingleValue"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
