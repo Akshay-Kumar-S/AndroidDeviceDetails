@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.adapters.MainActivityAdapter
+import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.CardItem
+import com.example.androidDeviceDetails.models.MainActiviyCookedData
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
@@ -35,10 +35,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var controller: ActivityController<AppInfoCookedData>
+    private lateinit var mainActivityController: ActivityController<MainActiviyCookedData>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mainActivityController = ActivityController(
+            MainActivity.NAME,
+            binding,
+            this,
+            null,
+            supportFragmentManager = supportFragmentManager
+        )
         supportActionBar?.hide()
         requestPermissions()
         if (!PrefManager.createInstance(this).getBoolean(PrefManager.INITIAL_LAUNCH, false)) {
