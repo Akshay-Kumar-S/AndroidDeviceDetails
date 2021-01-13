@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class NetworkUsageCooker : BaseCooker() {
+class AppNetworkUsageCooker : BaseCooker() {
 
     /**
      * Cook data for Network Usage from the collected data available in the Database for the
