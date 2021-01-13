@@ -31,6 +31,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/stats_user_apps" />
+
         <activity
             android:name=".ui.AppInfoActivity"
             android:label="Application Info"

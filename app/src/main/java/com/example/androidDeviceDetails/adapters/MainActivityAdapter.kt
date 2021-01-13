@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.CardItem
@@ -36,8 +35,8 @@ class MainActivityAdapter(var context: Context, private var arrayList: ArrayList
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var icon: ImageView = itemView.findViewById(R.id.icon) as ImageView
-        var iconName: TextView = itemView.findViewById(R.id.icon_name)
-        var cardView: CardView = itemView.findViewById(R.id.cardView)
+        var iconName: TextView = itemView.findViewById(R.id.title)
+//        var cardView: CardView = itemView.findViewById(R.id.cardView)
 
     }
 
