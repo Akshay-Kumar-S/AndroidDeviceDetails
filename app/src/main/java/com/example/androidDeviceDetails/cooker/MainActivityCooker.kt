@@ -33,19 +33,21 @@ class MainActivityCooker : BaseCooker() {
         }
         val deviceNetworkUsageCallBack = object : ICookingDone<DeviceNetworkUsageEntity> {
             override fun onDone(outputList: ArrayList<DeviceNetworkUsageEntity>) {
-                val totalWifiData =
-                    outputList.first().transferredDataWifi + outputList.first().receivedDataWifi
-                val totalCellularData =
-                    outputList.first().transferredDataMobile + outputList.first().transferredDataMobile
-                @Suppress("UNCHECKED_CAST")
-                callback.onDone(
-                    arrayListOf(
-                        MainActivityCookedData(
-                            null, -1,
-                            Pair(totalWifiData, totalCellularData)
-                        )
-                    ) as ArrayList<T>
-                )
+                if(outputList.isNotEmpty()){
+                    val totalWifiData =
+                        outputList.first().transferredDataWifi + outputList.first().receivedDataWifi
+                    val totalCellularData =
+                        outputList.first().transferredDataMobile + outputList.first().transferredDataMobile
+                    @Suppress("UNCHECKED_CAST")
+                    callback.onDone(
+                        arrayListOf(
+                            MainActivityCookedData(
+                                null, -1,
+                                Pair(totalWifiData, totalCellularData)
+                            )
+                        ) as ArrayList<T>
+                    )
+                }
             }
         }
         val appInfoCallBack = object : ICookingDone<AppsEntity> {

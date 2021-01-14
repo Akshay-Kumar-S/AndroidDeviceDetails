@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
-                android:gravity="start"
+                android:gravity="center_vertical"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintHorizontal_bias="0.0"
@@ -37,11 +37,11 @@
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:contentDescription="Overlay"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/database"
+                    android:src="@drawable/ic_round_data_usage_24"
                     card_view:tint="#83b899" />
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="?attr/batteryTitle"
-                    android:text="Title "
+                    android:text="Network Usage "
                     android:textAlignment="viewEnd"
                     android:textSize="20sp" />
 
@@ -66,7 +66,8 @@
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintVertical_bias=".088"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_baseline_keyboard_arrow_right_24">
+                android:background="@drawable/ic_baseline_keyboard_arrow_right_24"
+                android:backgroundTint="#83b899">
 
             </ImageView>
             <LinearLayout

@@ -14,6 +14,7 @@ import com.example.androidDeviceDetails.models.ActivityTag
 import com.example.androidDeviceDetails.models.CardItem
 import com.example.androidDeviceDetails.models.LayoutType
 import com.example.androidDeviceDetails.models.MainActivityCookedData
+import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 import kotlin.math.ceil
 
@@ -93,6 +94,7 @@ class MainActivityViewModel(
             itemModel.title = cardsTitles[1]
             itemModel.layoutType = LayoutType.SINGLE_VALUE_LAYOUT.ordinal
             itemModel.mainValue = mainActivityModel.totalDrop.toInt()
+            Log.d("Total Drop", "updateUI:${mainActivityModel.totalDrop.toInt()} ")
             itemModel.superscript = "%"
             itemModel.subscript = "Used"
             arrayList.add(itemModel)
@@ -104,20 +106,20 @@ class MainActivityViewModel(
             itemModel.title = cardsTitles[2]
             itemModel.layoutType = LayoutType.PROGRESSBAR_LAYOUT.ordinal
             itemModel.label1 = "Wifi Data : "
-            val wifiData = mainActivityModel.deviceNetworkUsage!!.first / 1024
-            val cellularData = mainActivityModel.deviceNetworkUsage!!.second / 1024
+            val wifiData = mainActivityModel.deviceNetworkUsage!!.first/(1024*1024)
+            val cellularData = mainActivityModel.deviceNetworkUsage!!.second/(1024*1024)
             val total = wifiData + cellularData
-            itemModel.label1Value = "$wifiData MB"
-            val cellularDataProgress = ceil(
-                ((wifiData).toDouble().div(cellularData).times(100))
+            itemModel.label1Value = Utils.getFileSize(mainActivityModel.deviceNetworkUsage!!.first)
+            val wifiDataProgress = ceil(
+                ((wifiData).toDouble().div(total).times(100))
             ).toInt()
             itemModel.label2 = "Cellular Data : "
-            itemModel.label2Value = "$cellularData MB"
-            val wifiDataProgress = ceil(
+            itemModel.label2Value = Utils.getFileSize(mainActivityModel.deviceNetworkUsage!!.second)
+            val cellularDataProgress = ceil(
                 ((cellularData).toDouble().div(total).times(100))
             ).toInt()
-            itemModel.progressbarFirst = cellularDataProgress + wifiDataProgress
-            itemModel.progressbarSecond = wifiDataProgress
+            itemModel.progressbarFirst = wifiDataProgress + cellularDataProgress
+            itemModel.progressbarSecond = cellularDataProgress
             arrayList.add(itemModel)
             Log.d("MainViewModel", "AppInfo  ")
         }
