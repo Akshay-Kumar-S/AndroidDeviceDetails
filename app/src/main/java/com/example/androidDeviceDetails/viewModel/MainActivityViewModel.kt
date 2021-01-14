@@ -53,10 +53,11 @@ class MainActivityViewModel(
     private fun updateUI() {
 
         val recyclerView = binding.root.findViewById<View>(R.id.recycler_view) as RecyclerView
+        val cardsTitles=context.resources.getStringArray(R.array.card_names)
 
         recyclerView.layoutManager = LinearLayoutManager(
             context,
-            LinearLayoutManager.HORIZONTAL,
+            LinearLayoutManager.VERTICAL,
             false
         )
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -65,8 +66,8 @@ class MainActivityViewModel(
 
         if (mainActivityModel.appInfo != null && arrayList.none { it.tag == ActivityTag.APP_INFO.ordinal }) {
             itemModel.tag = ActivityTag.APP_INFO.ordinal
-            itemModel.image = R.drawable.app_info
-            itemModel.title = "App Info"
+            itemModel.image = R.drawable.ic_twotone_system_update_24
+            itemModel.title =cardsTitles[0]
             val appInfo = mainActivityModel.appInfo
             itemModel.layoutType = LayoutType.PROGRESSBAR_LAYOUT.ordinal
             itemModel.label1 = "System Apps : "
@@ -88,19 +89,19 @@ class MainActivityViewModel(
         }
         else if (mainActivityModel.totalDrop != -1L && arrayList.none { it.tag == ActivityTag.BATTERY_DATA.ordinal }) {
             itemModel.tag = ActivityTag.BATTERY_DATA.ordinal
-            itemModel.image = R.drawable.battery
-            itemModel.title = "Battery Usage"
+            itemModel.image = R.drawable.ic_round_battery_std_24
+            itemModel.title = cardsTitles[1]
             itemModel.layoutType = LayoutType.SINGLE_VALUE_LAYOUT.ordinal
             itemModel.mainValue = mainActivityModel.totalDrop.toInt()
             itemModel.superscript = "%"
-            itemModel.subscript = "Consumed"
+            itemModel.subscript = "Used"
             arrayList.add(itemModel)
             Log.d("MainViewModel", "Battery data  ")
         }
         else if (mainActivityModel.deviceNetworkUsage != null && arrayList.none { it.tag == ActivityTag.DEVICE_NETWORK_USAGE.ordinal }) {
             itemModel.tag = ActivityTag.DEVICE_NETWORK_USAGE.ordinal
-            itemModel.image = R.drawable.database
-            itemModel.title = "Network Usage"
+            itemModel.image = R.drawable.ic_round_data_usage_24
+            itemModel.title = cardsTitles[2]
             itemModel.layoutType = LayoutType.PROGRESSBAR_LAYOUT.ordinal
             itemModel.label1 = "Wifi Data : "
             val wifiData = mainActivityModel.deviceNetworkUsage!!.first / 1024

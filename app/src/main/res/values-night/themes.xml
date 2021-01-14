@@ -12,6 +12,9 @@
         <item name="endOrange">#F9DE91</item>
         <item name="progressbarFirst">#673AB7</item>
         <item name="progressbarSecond">#E1AA06</item>
+        <item name="mainBackground">@color/black</item>
+        <item name="cardBackground">#1A1A1B</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>

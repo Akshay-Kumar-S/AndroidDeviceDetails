@@ -6,7 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="50dp"
-        tools:context=".ui.MainActivity">
+        tools:context=".activities.MainActivity"
+        android:background="?attr/mainBackground">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -14,53 +15,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:overScrollMode="never"/>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="230dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent">
 
-            <include
-                android:id="@+id/appInfo"
-                layout="@layout/main_activity_button"
-                app:title='@{"App Info"}'
-                app:iconSource='@{@drawable/ic_twotone_system_update_24}'>
-
-            </include>
-            <include
-                android:id="@+id/batteryInfo"
-                layout="@layout/main_activity_button"
-                app:title='@{"Battery Usage"}'
-                app:iconSource='@{@drawable/ic_round_battery_std_24}'>
-
-            </include>
-            <include
-                android:id="@+id/toLocationActivity"
-                layout="@layout/main_activity_button"
-                app:title='@{"Location Usage"}'
-                app:iconSource='@{@drawable/ic_twotone_location_on_24}'>
-
-            </include>
-            <include
-                android:id="@+id/appData"
-                layout="@layout/main_activity_button"
-                app:title='@{"Network Usage"}'
-                app:iconSource='@{@drawable/ic_round_data_usage_24}'>
-
-            </include>
-            <include
-                android:id="@+id/signal"
-                layout="@layout/main_activity_button"
-                app:title='@{"Signal Data"}'
-                app:iconSource='@{@drawable/ic_twotone_cell_wifi_24}'>
-
-            </include>
-
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

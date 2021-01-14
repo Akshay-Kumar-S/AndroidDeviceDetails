@@ -7,10 +7,13 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:outlineSpotShadowColor="@color/pink"
-        card_view:cardBackgroundColor="?attr/mainButtonBg">
+        android:elevation="28dp"
+        android:outlineSpotShadowColor="#393838"
+        card_view:cardCornerRadius="20dp"
+        card_view:cardBackgroundColor="?attr/cardBackground">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
+                android:gravity="start"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintHorizontal_bias="0.0"
@@ -38,34 +42,47 @@
                     android:contentDescription="Overlay"
                     android:scaleType="fitCenter"
                     android:src="@drawable/database"
-                    card_view:tint="?attr/batteryTitle" />
+                    card_view:tint="#83b899" />
 
                 <TextView
-                    android:id="@+id/title"
-                    android:layout_width="0dp"
+                    android:id="@+id/cardTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_weight=".01"
+                    android:layout_marginStart="10dp"
                     android:textColor="?attr/batteryTitle"
                     android:text="Title "
                     android:textAlignment="viewEnd"
                     android:textSize="20sp" />
+
+
+
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintVertical_bias=".088"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_baseline_keyboard_arrow_right_24">
+
+            </ImageView>
             <LinearLayout
                 android:id="@+id/usingProgressBar"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:visibility="visible"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintHorizontal_bias="0.517"
+                card_view:layout_constraintHorizontal_bias="0.5"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent"
-                card_view:layout_constraintVertical_bias="0.705">
+                card_view:layout_constraintTop_toBottomOf="@id/linearLayout2"
+                card_view:layout_constraintVertical_bias="0.65">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,7 +129,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="15dp">
 
                         <TextView
                             android:id="@+id/label_1"
@@ -124,9 +142,11 @@
                             android:id="@+id/label_1_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/progressbarFirst"
-                            android:text="20 " />
+                            android:textStyle="bold"
+                            android:text="20 "
+                            android:textColor="?attr/progressbarFirst" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -142,57 +162,65 @@
                             android:id="@+id/label_2_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/progressbarSecond"
-                            android:text="20 " />
+                            android:text="20 "
+                            android:textStyle="bold"
+                            android:textColor="?attr/progressbarSecond" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/usingSingleValue"
-                android:visibility="visible"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent">
+                card_view:layout_constraintTop_toBottomOf="@id/linearLayout2"
+                card_view:layout_constraintVertical_bias=".5"
+                card_view:layout_constraintHorizontal_bias=".5">
 
-                <TextView
-                    android:id="@+id/mainValue"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/usingSingleValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    card_view:layout_constraintBottom_toBottomOf="parent">
 
-                    android:text="88"
-                    android:textSize="70dp"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/mainValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="88"
+                        android:textSize="70dp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/superscript"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="%"
-                    android:textSize="20dp"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toEndOf="@id/mainValue"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias="0.242" />
+                    <TextView
+                        android:id="@+id/superscript"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"
+                        android:textSize="20dp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintStart_toEndOf="@id/mainValue"
+                        card_view:layout_constraintTop_toTopOf="parent"
+                        card_view:layout_constraintVertical_bias="0.242" />
 
-                <TextView
-                    android:id="@+id/subscript"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="used"
-                    android:textSize="14dp"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toEndOf="@id/mainValue"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias="0.783" />
+                    <TextView
+                        android:id="@+id/subscript"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="used"
+                        android:textSize="14dp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintStart_toEndOf="@id/mainValue"
+                        card_view:layout_constraintTop_toTopOf="parent"
+                        card_view:layout_constraintVertical_bias="0.783" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

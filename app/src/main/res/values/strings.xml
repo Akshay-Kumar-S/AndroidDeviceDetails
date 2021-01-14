@@ -1,4 +1,9 @@
 <resources>
+    <string-array name="card_names">
+        <item>App Info</item>
+        <item>Battery Usage</item>
+        <item>Network Usage</item>
+    </string-array>
     <string name="app_name">AndroidDeviceDetails</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">longitude</string>

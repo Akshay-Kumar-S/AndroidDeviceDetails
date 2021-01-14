@@ -57,7 +57,7 @@ class MainActivityAdapter(var context: Context, private var arrayList: ArrayList
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var icon: ImageView = itemView.findViewById(R.id.icon) as ImageView
-        var title: TextView = itemView.findViewById(R.id.title)
+        var title: TextView = itemView.findViewById(R.id.cardTitle)
         var usingSingleValue : ConstraintLayout = itemView.findViewById(R.id.usingSingleValue)
         var mainValue : TextView = itemView.findViewById(R.id.mainValue)
         var superscript : TextView = itemView.findViewById(R.id.superscript)

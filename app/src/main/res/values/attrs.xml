@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FullscreenAttrs">
+        <attr name="mainBackground" format="color"/>
+        <attr name="cardBackground" format="color"/>
         <attr name="batteryTitle" format="color" />
         <attr name="bottomSheetDialogColor" format="color" />
         <attr name="mainButtonBg" format="color"/>
