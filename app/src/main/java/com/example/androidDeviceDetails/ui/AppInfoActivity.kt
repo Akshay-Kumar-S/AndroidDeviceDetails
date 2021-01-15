@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.collectors.AppInfoManager
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
+import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 
@@ -90,7 +90,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun deleteApp(view: View) {
-        AppInfoManager.deleteApp(view, packageManager, this)
+        Utils.uninstallApp(view.tag as String, packageManager, this)
     }
 
 

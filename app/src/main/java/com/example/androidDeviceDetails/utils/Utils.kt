@@ -3,10 +3,13 @@ package com.example.androidDeviceDetails.utils
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
@@ -166,6 +169,29 @@ object Utils {
             true
         } catch (e: PackageManager.NameNotFoundException) {
             false
+        }
+    }
+
+    /**
+     * Uninstalls the app
+     *
+     * @param [view] List view element
+     * @param [packageManager] Package manager
+     * @param context Context
+     */
+    fun uninstallApp(packageName: String, packageManager: PackageManager, context: Context) {
+        if (isPackageInstalled(packageName, packageManager)) {
+            val packageURI = Uri.parse("package:${packageName}")
+            val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
+            try {
+                context.startActivity(uninstallIntent)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    context,
+                    "App cannot be uninstalled",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

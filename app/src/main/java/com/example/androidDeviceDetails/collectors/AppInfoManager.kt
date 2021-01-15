@@ -1,16 +1,10 @@
 package com.example.androidDeviceDetails.collectors
 
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.ListView
-import android.widget.Toast
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
-import com.example.androidDeviceDetails.utils.Utils
 
 object AppInfoManager {
 
@@ -35,24 +29,4 @@ object AppInfoManager {
         listView.requestLayout()
     }
 
-    /**
-     * Uninstalls the app
-     *
-     * @param [view] List view element
-     * @param [packageManager] Package manager
-     * @param context Context
-     */
-    fun deleteApp(view: View, packageManager: PackageManager, context: Context) {
-        val packageName = view.tag as String
-        if (Utils.isPackageInstalled(packageName, packageManager)) {
-            val packageURI = Uri.parse("package:${packageName}")
-            val uninstallIntent = Intent(Intent.ACTION_DELETE, packageURI)
-            context.startActivity(uninstallIntent)
-        } else
-            Toast.makeText(
-                context,
-                "App is currently uninstalled",
-                Toast.LENGTH_SHORT
-            ).show()
-    }
 }
