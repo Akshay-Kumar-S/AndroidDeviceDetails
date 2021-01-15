@@ -37,7 +37,7 @@ class AppInfoCollector : BaseCollector() {
             }
 
             else if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
-                AppInfoCollectionHelper.appUninstalled(context, packageName)
+                AppInfoCollectionHelper.appUninstalled(packageName)
             }
         }
     }

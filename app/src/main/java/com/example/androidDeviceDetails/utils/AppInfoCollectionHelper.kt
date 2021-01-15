@@ -13,6 +13,9 @@ import kotlinx.coroutines.launch
  *
  */
 object AppInfoCollectionHelper {
+
+    val db = RoomDB.getDatabase()!!
+
     /**
      * Updates  [AppInfoDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
      * or [EventType.APP_UPDATED]
@@ -22,13 +25,12 @@ object AppInfoCollectionHelper {
      */
     fun appInstalled(context: Context, packageName: String) {
         val latestAppDetails = Utils.getAppDetails(context, packageName)
-        val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
             var id = db.appsDao().getIdByName(packageName)
             if (id == 0) {
-                AppInfoDbHelper.writeToAppsDb(0, packageName, latestAppDetails, db)
+                writeToAppsDb(0, packageName, latestAppDetails, db)
                 id = db.appsDao().getIdByName(packageName)
-                AppInfoDbHelper.writeToAppHistoryDb(
+                writeToAppHistoryDb(
                     id,
                     EventType.APP_INSTALLED.ordinal,
                     latestAppDetails,
@@ -44,25 +46,23 @@ object AppInfoCollectionHelper {
                     } else {
                         EventType.APP_INSTALLED.ordinal
                     }
-                AppInfoDbHelper.writeToAppHistoryDb(
+                writeToAppHistoryDb(
                     id,
                     event,
                     latestAppDetails,
                     db,
                     currentAppHistory.currentVersionCode
                 )
-                AppInfoDbHelper.writeToAppsDb(id, packageName, latestAppDetails, db)
+                writeToAppsDb(id, packageName, latestAppDetails, db)
             }
         }
     }
 
     /**
      * Updates  [AppInfoDao] and [AppHistoryDao] databases with event [EventType.APP_UNINSTALLED]
-     * @param context Event context
      * @param packageName Package name of the app
      */
-    fun appUninstalled(context: Context, packageName: String) {
-        val db = RoomDB.getDatabase(context)!!
+    fun appUninstalled(packageName: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appsDao().getById(id)
@@ -74,14 +74,14 @@ object AppInfoCollectionHelper {
                     currentAppHistory.appTitle,
                     currentAppHistory.isSystemApp
                 )
-            AppInfoDbHelper.writeToAppHistoryDb(
+            writeToAppHistoryDb(
                 id,
                 EventType.APP_UNINSTALLED.ordinal,
                 appDetails,
                 db,
                 currentAppHistory.currentVersionCode
             )
-            AppInfoDbHelper.writeToAppsDb(id, packageName, appDetails, db)
+            writeToAppsDb(id, packageName, appDetails, db)
         }
     }
 
@@ -93,22 +93,65 @@ object AppInfoCollectionHelper {
      * @param packageName Package name of the app
      */
     fun appUpgraded(context: Context, packageName: String) {
-        val db = RoomDB.getDatabase(context)!!
         GlobalScope.launch(Dispatchers.IO) {
             val latestAppDetails = Utils.getAppDetails(context, packageName)
             val id = db.appsDao().getIdByName(packageName)
             val currentAppHistory = db.appsDao().getById(id)
             if (currentAppHistory.currentVersionCode < latestAppDetails.versionCode || currentAppHistory.appTitle != latestAppDetails.appTitle) {
-                AppInfoDbHelper.writeToAppHistoryDb(
+                writeToAppHistoryDb(
                     id,
                     EventType.APP_UPDATED.ordinal,
                     latestAppDetails,
                     db,
                     currentAppHistory.currentVersionCode
                 )
-                AppInfoDbHelper.writeToAppsDb(id, packageName, latestAppDetails, db)
+                writeToAppsDb(id, packageName, latestAppDetails, db)
             }
         }
+    }
+
+    /**
+     * Writes the given data as [AppInfoRaw] into [AppInfoDao]
+     */
+    fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
+        db.appsDao().insertAll(
+            AppInfoRaw(
+                uid = id,
+                packageName = packageName,
+                currentVersionCode = appDetails.versionCode,
+                versionName = appDetails.versionName,
+                appSize = appDetails.appSize,
+                appTitle = appDetails.appTitle,
+                isSystemApp = appDetails.isSystemApp
+            )
+        )
+    }
+
+    /**
+     * Writes the given data as [AppHistoryRaw] into [AppHistoryDao]
+     */
+    fun writeToAppHistoryDb(
+        id: Int,
+        eventType: Int,
+        appDetails: AppDetails,
+        db: RoomDB,
+        previousVersionCode: Long = 0,
+        timestamp: Long = System.currentTimeMillis()
+    ) {
+        db.appHistoryDao().insertAll(
+            AppHistoryRaw(
+                rowId = 0,
+                appId = id,
+                timestamp = timestamp,
+                eventType = eventType,
+                previousVersionCode = previousVersionCode,
+                currentVersionCode = appDetails.versionCode,
+                versionName = appDetails.versionName,
+                appSize = appDetails.appSize,
+                appTitle = appDetails.appTitle,
+                isSystemApp = appDetails.isSystemApp
+            )
+        )
     }
 
 }
