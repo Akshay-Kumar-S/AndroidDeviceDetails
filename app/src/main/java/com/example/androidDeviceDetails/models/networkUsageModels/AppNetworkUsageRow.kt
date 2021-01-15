@@ -56,6 +56,9 @@ interface AppNetworkUsageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg appNetworkUsageEntity: AppNetworkUsageEntity)
 
+    @Insert()
+    fun insertList(finalList:List<AppNetworkUsageEntity>)
+
     @Delete
     fun delete(appNetworkUsageEntity: AppNetworkUsageEntity)
 }

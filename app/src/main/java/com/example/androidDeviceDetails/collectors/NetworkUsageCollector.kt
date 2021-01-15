@@ -51,7 +51,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
      *
      */
     private fun updateAppNetworkDataUsageDB() {
-        val networkUsageList = arrayListOf<AppNetworkUsageEntity>()
+        var networkUsageList = arrayListOf<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
             null, firstInstallTime, System.currentTimeMillis()
@@ -65,34 +65,36 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         while (networkStatsWifi.hasNextBucket() or networkStatsMobileData.hasNextBucket()) {
             if (networkStatsWifi.hasNextBucket()) {
                 networkStatsWifi.getNextBucket(bucket)
-                val packageName = context.packageManager.getNameForUid(bucket.uid)
-                if (packageName != null && packageName != "null")
-                    if (networkUsageList.none { it.packageName == packageName })
-                        networkUsageList.add(appNetworkUsageFactory(bucket, true))
-                    else
-                        networkUsageList.first {
-                            it.packageName == packageName
-                        }.apply {
-                            receivedDataWifi += bucket.rxBytes
-                            transferredDataWifi += bucket.txBytes
-                        }
+                networkUsageList=fillList(bucket, networkUsageList, true)
             }
             if (networkStatsMobileData.hasNextBucket()) {
                 networkStatsMobileData.getNextBucket(bucket)
-                val packageName = context.packageManager.getNameForUid(bucket.uid)
-                if (packageName != null && packageName != "null")
-                    if (networkUsageList.none { it.packageName == packageName })
-                        networkUsageList.add(appNetworkUsageFactory(bucket, false))
-                    else
-                        networkUsageList.first {
-                            it.packageName == packageName
-                        }.apply {
-                            receivedDataMobile += bucket.rxBytes
-                            transferredDataMobile += bucket.txBytes
-                        }
+                networkUsageList=fillList(bucket, networkUsageList, false)
             }
         }
         GlobalScope.launch { networkUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
+    }
+
+    private fun fillList(bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageEntity>, isWifi: Boolean): ArrayList<AppNetworkUsageEntity> {
+        val packageName = context.packageManager.getNameForUid(bucket.uid)
+        if (packageName != null && packageName != "null")
+            if (networkUsageList.none { it.packageName == packageName })
+                networkUsageList.add(appNetworkUsageFactory(bucket, isWifi))
+            else {
+                networkUsageList.first {
+                    it.packageName == packageName
+                }.apply {
+                    if (isWifi) {
+                        receivedDataWifi += bucket.rxBytes
+                        transferredDataWifi += bucket.txBytes
+                    } else {
+                        receivedDataMobile += bucket.rxBytes
+                        transferredDataMobile += bucket.txBytes
+                    }
+
+                }
+            }
+        return networkUsageList
     }
 
     /**
