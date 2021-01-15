@@ -19,7 +19,7 @@ import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
  * @param receivedDataMobile Amount of data received through Cellular Data- [NetworkCapabilities.TRANSPORT_CELLULAR].
  */
 @Entity
-data class AppNetworkUsageEntity(
+data class AppNetworkUsageRaw(
     @PrimaryKey(autoGenerate = true) val rowId: Int,
     @ColumnInfo(name = "timeStamp") val timeStamp: Long,
     @ColumnInfo(name = "packageName ") val packageName: String,
@@ -36,31 +36,31 @@ data class AppNetworkUsageEntity(
 interface AppNetworkUsageDao {
     /**
      * Retrieve all the records from [AppNetworkUsageDao]
-     * @return A list of [AppNetworkUsageEntity].
+     * @return A list of [AppNetworkUsageRaw].
      */
-    @Query("SELECT * FROM AppNetworkUsageEntity")
-    fun getAll(): List<AppNetworkUsageEntity>
+    @Query("SELECT * FROM AppNetworkUsageRaw")
+    fun getAll(): List<AppNetworkUsageRaw>
 
     /**
      * Retrieve all the records from [AppNetworkUsageDao] between the [startTime] and [endTime]
      * @param startTime Start Time
      * @param endTime End Time
-     * @return A list of [AppNetworkUsageEntity].
+     * @return A list of [AppNetworkUsageRaw].
      */
-    @Query("SELECT * FROM AppNetworkUsageEntity WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
-    fun getAllBetween(startTime: Long, endTime: Long): List<AppNetworkUsageEntity>
+    @Query("SELECT * FROM AppNetworkUsageRaw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<AppNetworkUsageRaw>
 
-    @Query("DELETE FROM AppNetworkUsageEntity")
+    @Query("DELETE FROM AppNetworkUsageRaw")
     fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg appNetworkUsageEntity: AppNetworkUsageEntity)
+    fun insertAll(vararg appNetworkUsageRaw: AppNetworkUsageRaw)
 
 
     @Insert
-    fun insertList(finalList:List<AppNetworkUsageEntity>)
+    fun insertList(finalList:List<AppNetworkUsageRaw>)
 
     @Delete
-    fun delete(appNetworkUsageEntity: AppNetworkUsageEntity)
+    fun delete(appNetworkUsageRaw: AppNetworkUsageRaw)
 }
 

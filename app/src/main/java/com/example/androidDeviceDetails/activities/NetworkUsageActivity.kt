@@ -7,12 +7,12 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import java.util.*
 
 class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var networkUsageBinding: ActivityAppDataBinding
-    private lateinit var networkUsageController: ActivityController<AppNetworkUsageEntity>
+    private lateinit var networkUsageController: ActivityController<AppNetworkUsageRaw>
 
     companion object {
         const val NAME = "network"

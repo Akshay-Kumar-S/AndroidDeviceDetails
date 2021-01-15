@@ -4,7 +4,7 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -30,14 +30,14 @@ class NetworkUsageCooker : BaseCooker() {
                 val initialAppDataList = inBetweenList.filter { it.timeStamp == firstElementTime }
                 val lastElementTime = inBetweenList.last().timeStamp
                 val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }
-                val totalDataUsageList = arrayListOf<AppNetworkUsageEntity>()
+                val totalDataUsageList = arrayListOf<AppNetworkUsageRaw>()
                 finalAppDataList.forEach {
                     val nullCheckList =
                         initialAppDataList.filter { appDataUsage -> it.packageName == appDataUsage.packageName } //To filter out common apps in initial and final list.
                     if (nullCheckList.isNotEmpty()) {
                         val initialAppData = nullCheckList[0]
                         totalDataUsageList.add(
-                            AppNetworkUsageEntity(
+                            AppNetworkUsageRaw(
                                 0,
                                 it.timeStamp,
                                 it.packageName,

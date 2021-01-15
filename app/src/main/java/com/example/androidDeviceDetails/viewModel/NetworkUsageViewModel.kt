@@ -6,7 +6,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.NetWorkUsageListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import java.util.*
 
 /**
@@ -31,7 +31,7 @@ class NetworkUsageViewModel(
                     appDataListView.adapter = NetWorkUsageListAdapter(
                         context,
                         R.layout.appdata_tile,
-                        outputList as ArrayList<AppNetworkUsageEntity>
+                        outputList as ArrayList<AppNetworkUsageRaw>
                     )
                     noData.isVisible = false
                 }

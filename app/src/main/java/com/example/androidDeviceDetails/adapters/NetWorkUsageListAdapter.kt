@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.utils.Utils
 
 class NetWorkUsageListAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: ArrayList<AppNetworkUsageEntity>
-) : ArrayAdapter<AppNetworkUsageEntity>(_context, resource, items) {
+    private var items: ArrayList<AppNetworkUsageRaw>
+) : ArrayAdapter<AppNetworkUsageRaw>(_context, resource, items) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView

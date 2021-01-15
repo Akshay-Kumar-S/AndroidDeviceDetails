@@ -10,8 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageEntity
-import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -46,12 +46,12 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
     /**
      * Collect Network Usage data for each app using [NetworkStatsManager.querySummary]
      * which requires [android.Manifest.permission.PACKAGE_USAGE_STATS],
-     * store it as a List<[AppNetworkUsageEntity]>
+     * store it as a List<[AppNetworkUsageRaw]>
      * and writes into [RoomDB.appNetworkUsageDao].
      *
      */
     private fun updateAppNetworkDataUsageDB() {
-        var networkUsageList = ArrayList<AppNetworkUsageEntity>()
+        var networkUsageList = ArrayList<AppNetworkUsageRaw>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
             null, firstInstallTime, System.currentTimeMillis()
@@ -75,7 +75,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         GlobalScope.launch { db.appNetworkUsageDao().insertList(networkUsageList) }
     }
 
-    private fun fillList(bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageEntity>, isWifi: Boolean): ArrayList<AppNetworkUsageEntity> {
+    private fun fillList(bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageRaw>, isWifi: Boolean): ArrayList<AppNetworkUsageRaw> {
         val packageName = context.packageManager.getNameForUid(bucket.uid)
         if (packageName != null && packageName != "null")
             if (networkUsageList.none { it.packageName == packageName })
@@ -121,7 +121,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         totalMobileDataTx += bucket.txBytes
         GlobalScope.launch {
             db.deviceNetworkUsageDao().insertAll(
-                DeviceNetworkUsageEntity(
+                DeviceNetworkUsageRaw(
                     System.currentTimeMillis(),
                     totalWifiDataTx, totalMobileDataTx,
                     totalWifiDataRx, totalMobileDataRx
@@ -133,11 +133,11 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
     private fun appNetworkUsageFactory(
         bucket: NetworkStats.Bucket,
         wifiEnable: Boolean = true
-    ): AppNetworkUsageEntity {
+    ): AppNetworkUsageRaw {
         val packageName = context.packageManager.getNameForUid(bucket.uid)!!
         val timeNow = System.currentTimeMillis()
         return if (wifiEnable)
-            AppNetworkUsageEntity(
+            AppNetworkUsageRaw(
                 0,
                 timeNow.minus(timeNow.rem(60 * 1000)), //To make resolution to minutes
                 packageName,
@@ -145,7 +145,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
                 bucket.rxBytes, 0L
             )
         else
-            AppNetworkUsageEntity(
+            AppNetworkUsageRaw(
                 0,
                 timeNow.minus(timeNow.rem(60 * 1000)),
                 packageName,

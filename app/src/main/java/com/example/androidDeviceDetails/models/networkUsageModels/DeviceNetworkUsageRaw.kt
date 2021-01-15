@@ -15,7 +15,7 @@ import com.example.androidDeviceDetails.models.RoomDB
  * @param receivedDataMobile Amount of data received through Cellular Data- [NetworkCapabilities.TRANSPORT_CELLULAR].
  */
 @Entity
-data class DeviceNetworkUsageEntity(
+data class DeviceNetworkUsageRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "transferredDataWifi") val transferredDataWifi: Long,
     @ColumnInfo(name = "transferredDataMobile") val transferredDataMobile: Long,
@@ -30,10 +30,10 @@ data class DeviceNetworkUsageEntity(
 interface DeviceNetworkUsageDao {
     /**
      * Retrieve all the records from [DeviceNetworkUsageDao]
-     * @return A list of [DeviceNetworkUsageEntity].
+     * @return A list of [DeviceNetworkUsageRaw].
      */
-    @Query("SELECT * FROM DeviceNetworkUsageEntity")
-    fun getAll(): List<DeviceNetworkUsageEntity>
+    @Query("SELECT * FROM DeviceNetworkUsageRaw")
+    fun getAll(): List<DeviceNetworkUsageRaw>
 
     /**
      * Retrieve all the records from [DeviceNetworkUsageDao] between the [startTime] and [endTime]
@@ -41,17 +41,17 @@ interface DeviceNetworkUsageDao {
      * @param endTime End Time
      * @return A list of [DeviceNetworkUsageDao].
      */
-    @Query("SELECT * FROM DeviceNetworkUsageEntity WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
-    fun getAllBetween(startTime: Long, endTime: Long): List<DeviceNetworkUsageEntity>
+    @Query("SELECT * FROM DeviceNetworkUsageRaw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<DeviceNetworkUsageRaw>
 
-    @Query("DELETE FROM DeviceNetworkUsageEntity")
+    @Query("DELETE FROM DeviceNetworkUsageRaw")
     fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg deviceNetworkUsageEntity: DeviceNetworkUsageEntity)
+    fun insertAll(vararg deviceNetworkUsageRaw: DeviceNetworkUsageRaw)
 
     @Delete
-    fun delete(deviceNetworkUsageEntity: DeviceNetworkUsageEntity)
+    fun delete(deviceNetworkUsageRaw: DeviceNetworkUsageRaw)
 }
 
 
