@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.utils.SortBy
 
 
-class LocationAdapter(var dataSet: ArrayList<CountModel>):
+class LocationAdapter(var dataSet: ArrayList<CountModel>, private val onItemClickListener: OnItemClickListener):
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
 
     /**
@@ -40,6 +41,7 @@ class LocationAdapter(var dataSet: ArrayList<CountModel>):
         viewHolder.geoHash.text = dataSet[position].geoHash
         viewHolder.count.text = dataSet[position].count.toString()
         viewHolder.address.text = dataSet[position].address
+        viewHolder.itemView.setOnClickListener { onItemClickListener.onItemClicked(dataSet[position]) }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -51,7 +53,7 @@ class LocationAdapter(var dataSet: ArrayList<CountModel>):
         notifyDataSetChanged()
     }
 
-    fun sortView(type:Int){
+    fun sortView(type: Int){
         when (type) {
             SortBy.Ascending.ordinal -> dataSet.sortBy { it.count }
             else -> dataSet.sortByDescending { it.count }

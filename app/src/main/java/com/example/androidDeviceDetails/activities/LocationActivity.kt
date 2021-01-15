@@ -4,12 +4,15 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
@@ -26,7 +29,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener {
+class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener,OnItemClickListener {
     private lateinit var activityController: ActivityController<LocationModel>
     lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
@@ -63,7 +66,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
     private fun initRecyclerView() {
         val arrayList = ArrayList<CountModel>()
         arrayList.add(CountModel("NoData", 0, ""))
-        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList)
+        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList,this)
         binding.bottomLocation.locationListView.isNestedScrollingEnabled=true
     }
 
@@ -129,6 +132,11 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 
     override fun onNothingSelected() {
 //        locationViewModel.onNothingSelected(selectedRow)
+    }
+
+    override fun onItemClicked(data: CountModel) {
+        locationViewModel.focusOnMap(data.geoHash)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
 }
