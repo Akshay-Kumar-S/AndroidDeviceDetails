@@ -9,7 +9,7 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.BatteryCollector.BatteryReceiver
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
+import com.example.androidDeviceDetails.models.batteryModels.BatteryRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -37,14 +37,14 @@ class BatteryCollector : BaseCollector() {
          *  [android.os.BatteryManager.EXTRA_HEALTH],
          *  [android.os.BatteryManager.EXTRA_LEVEL],
          *  [android.os.BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER],
-         *  These events are made into a [BatteryEntity] and saved into the [RoomDB.batteryDao]
+         *  These events are made into a [BatteryRaw] and saved into the [RoomDB.batteryDao]
          *  This broadcast requires [android.Manifest.permission.BATTERY_STATS] permission.
          **/
         override fun onReceive(context: Context?, intent: Intent?) {
             val batteryManager: BatteryManager =
                 context?.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
             val db = RoomDB.getDatabase(context)
-            val batteryRaw = BatteryEntity(
+            val batteryRaw = BatteryRaw(
                 System.currentTimeMillis(),
                 intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
                 intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0),

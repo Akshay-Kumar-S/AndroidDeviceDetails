@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.activities
+package com.example.androidDeviceDetails.ui
 
 import android.os.Bundle
 import android.view.View

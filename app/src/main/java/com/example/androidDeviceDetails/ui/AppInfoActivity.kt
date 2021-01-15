@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.activities
+package com.example.androidDeviceDetails.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle

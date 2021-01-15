@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.activities
+package com.example.androidDeviceDetails.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

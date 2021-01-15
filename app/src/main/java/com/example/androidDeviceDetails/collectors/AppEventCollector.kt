@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
+import com.example.androidDeviceDetails.models.batteryModels.AppEventRaw
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,11 +23,11 @@ class AppEventCollector : BaseCollector() {
     }
 
     /**
-     * A collector function which saves an entry of [AppEventEntity] if there is
+     * A collector function which saves an entry of [AppEventRaw] if there is
      * an event of [UsageEvents.Event.ACTIVITY_RESUMED] in a time interval
      * of [Utils.COLLECTION_INTERVAL] and the call time ie [System.currentTimeMillis].
      *
-     * The final [AppEventEntity] list is saved into [RoomDB.appEventDao].
+     * The final [AppEventRaw] list is saved into [RoomDB.appEventDao].
      *
      * Uses [UsageStatsManager.queryEvents] which requires [android.Manifest.permission.PACKAGE_USAGE_STATS].
      **/
@@ -42,7 +42,7 @@ class AppEventCollector : BaseCollector() {
             val evt = UsageEvents.Event()
             events.getNextEvent(evt)
             if (evt.eventType == 1) {
-                val appUsageData = AppEventEntity(
+                val appUsageData = AppEventRaw(
                     timeStamp = evt.timeStamp,
                     packageName = evt.packageName
                 )

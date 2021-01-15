@@ -1,9 +1,7 @@
 package com.example.androidDeviceDetails.models.batteryModels
 
 import android.os.BatteryManager
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.example.androidDeviceDetails.collectors.BatteryCollector
 import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.models.RoomDB
@@ -32,7 +30,7 @@ import com.example.androidDeviceDetails.models.RoomDB
  *  @see[BatteryDao]
  **/
 @Entity
-data class BatteryEntity(
+data class BatteryRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "level") val level: Int?,
     @ColumnInfo(name = "plugged") val plugged: Int?,
@@ -41,4 +39,36 @@ data class BatteryEntity(
     @ColumnInfo(name = "estimatedCapacity") val estimatedCapacity: Int,
     @ColumnInfo(name = "estimatedAccuracy") val estimatedAccuracy: Int?
 )
+
+/**
+ * An interface that contains functions to handle database operations
+ */
+@Dao
+interface BatteryDao {
+
+    /**
+     * Retrieve all the records from [BatteryDao]
+     * @return List of [BatteryRaw]
+     */
+    @Query("SELECT * FROM BatteryRaw")
+    fun getAll(): List<BatteryRaw>
+
+    /**
+     * Returns all the [BatteryRaw] in the given time frame
+     * @param startTime Start time
+     * @param endTime End time
+     * @return List of [BatteryRaw]
+     */
+    @Query("SELECT * FROM BatteryRaw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
+    fun getAllBetween(startTime: Long, endTime: Long): List<BatteryRaw>
+
+    @Query("DELETE FROM BatteryRaw")
+    fun deleteAll()
+
+    @Insert
+    fun insertAll(vararg batteryRaw: BatteryRaw)
+
+    @Delete
+    fun delete(batteryRaw: BatteryRaw)
+}
 

@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.activities
+package com.example.androidDeviceDetails.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -24,24 +24,16 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         batteryBinding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
         batteryController = ActivityController(
-            NAME,
-            batteryBinding,
-            this,
-            batteryBinding.pickerBinding,
-            supportFragmentManager = supportFragmentManager
+            NAME, batteryBinding, this, batteryBinding.pickerBinding, supportFragmentManager
         )
         batteryBinding.apply {
             batteryListView.setOnItemClickListener { parent, _, position, _ ->
                 redirectToAppInfo(parent, position)
             }
-            pickerBinding.startTime
-                .setOnClickListener(this@BatteryActivity)
-            pickerBinding.startDate
-                .setOnClickListener(this@BatteryActivity)
-            pickerBinding.endTime
-                .setOnClickListener(this@BatteryActivity)
-            pickerBinding.endDate
-                .setOnClickListener(this@BatteryActivity)
+            pickerBinding.startTime.setOnClickListener(this@BatteryActivity)
+            pickerBinding.startDate.setOnClickListener(this@BatteryActivity)
+            pickerBinding.endTime.setOnClickListener(this@BatteryActivity)
+            pickerBinding.endDate.setOnClickListener(this@BatteryActivity)
         }
         batteryController.showInitialData()
     }

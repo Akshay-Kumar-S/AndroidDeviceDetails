@@ -10,9 +10,9 @@ import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
 import com.example.androidDeviceDetails.models.appInfoModels.AppsDao
 import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
 import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
-import com.example.androidDeviceDetails.models.batteryModels.AppEventEntity
+import com.example.androidDeviceDetails.models.batteryModels.AppEventRaw
 import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
-import com.example.androidDeviceDetails.models.batteryModels.BatteryEntity
+import com.example.androidDeviceDetails.models.batteryModels.BatteryRaw
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
@@ -20,7 +20,7 @@ import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkU
 
 
 @Database(
-    entities = [AppEventEntity::class, BatteryEntity::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
+    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, WifiRaw::class, CellularRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {

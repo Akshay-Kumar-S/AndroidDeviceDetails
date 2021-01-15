@@ -6,10 +6,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
-import com.example.androidDeviceDetails.activities.BottomSheet
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
+import com.example.androidDeviceDetails.fragments.BottomSheet
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.utils.Utils
@@ -20,11 +20,11 @@ class ActivityController<T>(
     binding: ViewBinding,
     var context: Context,
     private val dateTimePickerView: DateTimePickerBinding,
-    val supportFragmentManager: FragmentManager
+    private val supportFragmentManager: FragmentManager
 ) {
 
-    private var cooker: BaseCooker = BaseCooker.getCooker(dataType)
-    private var viewModel: BaseViewModel = BaseViewModel.getViewModel(dataType, binding, context)
+    private var cooker: BaseCooker? = BaseCooker.getCooker(dataType)
+    private var viewModel: BaseViewModel? = BaseViewModel.getViewModel(dataType, binding, context)
     private var startCalendar: Calendar = Calendar.getInstance()
     private var endCalendar: Calendar = Calendar.getInstance()
     private var previousStartTime: Long = 0
@@ -33,8 +33,8 @@ class ActivityController<T>(
 
     private val onCookingDone = object : ICookingDone<T> {
         override fun onDone(outputList: ArrayList<T>) {
-            viewModel.isLoading(dateTimePickerView, false)
-            viewModel.onDone(outputList)
+            viewModel?.isLoading(dateTimePickerView, false)
+            viewModel?.onDone(outputList)
         }
     }
 
@@ -53,8 +53,8 @@ class ActivityController<T>(
     }
 
     fun cook(timePeriod: TimePeriod) {
-        viewModel.isLoading(dateTimePickerView, true)
-        cooker.cook(timePeriod, onCookingDone)
+        viewModel?.isLoading(dateTimePickerView, true)
+        cooker?.cook(timePeriod, onCookingDone)
     }
 
 
@@ -126,7 +126,7 @@ class ActivityController<T>(
         if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
             if ((endCalendar.timeInMillis - startCalendar.timeInMillis) > Utils.COLLECTION_INTERVAL * 60 * 1000) {
                 BottomSheet(onApply = { onClickApply() }).show(supportFragmentManager, "Apply")
-                viewModel.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
+                viewModel?.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
             } else
                 Toast.makeText(
                     context,
@@ -146,15 +146,15 @@ class ActivityController<T>(
     }
 
     fun showInitialData() {
-        viewModel.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
+        viewModel?.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
     }
 
     fun filterView(type: Int) {
-        viewModel.filter(type)
+        viewModel?.filter(type)
     }
 
-    fun sortView(type: Int) {
-        viewModel.sort(type)
+    fun sortView(type:Int){
+        viewModel?.sort(type)
     }
 }
 
