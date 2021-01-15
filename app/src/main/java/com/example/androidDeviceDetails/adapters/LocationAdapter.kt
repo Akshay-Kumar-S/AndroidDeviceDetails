@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.locationModels.CountModel
+import com.example.androidDeviceDetails.utils.SortBy
 
 
 class LocationAdapter(var dataSet: ArrayList<CountModel>):
@@ -47,6 +48,14 @@ class LocationAdapter(var dataSet: ArrayList<CountModel>):
     fun refreshList(countList: ArrayList<CountModel>) {
         dataSet.clear()
         dataSet.addAll(countList)
+        notifyDataSetChanged()
+    }
+
+    fun sortView(type:Int){
+        when (type) {
+            SortBy.Ascending.ordinal -> dataSet.sortBy { it.count }
+            else -> dataSet.sortByDescending { it.count }
+        }
         notifyDataSetChanged()
     }
 }
