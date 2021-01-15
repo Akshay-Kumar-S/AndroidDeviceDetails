@@ -4,20 +4,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.adapters.SignalListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
-import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
+import com.example.androidDeviceDetails.cooker.SignalCooker
+import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
-import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.activities.SignalActivity
 
 /**
  * Implements [BaseViewModel]
  */
 class SignalViewModel(
-    private val signalBinding: ActivitySignalStrengthBinding,
+    private val signalBinding: ActivitySignalBinding,
     val context: Context
 ) : BaseViewModel() {
     private var isInitialised: Boolean = false

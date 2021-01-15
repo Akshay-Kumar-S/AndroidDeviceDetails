@@ -4,12 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.collectors.AppInfoCollector
-import com.example.androidDeviceDetails.collectors.BatteryCollector
-import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
-import com.example.androidDeviceDetails.collectors.SignalChangeListener
-import com.example.androidDeviceDetails.managers.AppEventCollector
-import com.example.androidDeviceDetails.receivers.WifiReceiver
+import com.example.androidDeviceDetails.collectors.*
 import java.util.*
 
 class ApplicationController {

@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.services.AppService
+import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
 

@@ -2,16 +2,15 @@ package com.example.androidDeviceDetails.base
 
 import android.content.Context
 import androidx.core.view.isVisible
-import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
-import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
-import com.example.androidDeviceDetails.databinding.DateTimePickerBinding
+import com.example.androidDeviceDetails.ui.SignalActivity
+import com.example.androidDeviceDetails.databinding.*
 import com.example.androidDeviceDetails.ui.AppInfoActivity
 import com.example.androidDeviceDetails.ui.BatteryActivity
 import com.example.androidDeviceDetails.ui.NetworkUsageActivity
 import com.example.androidDeviceDetails.viewModel.AppInfoViewModel
 import com.example.androidDeviceDetails.viewModel.BatteryViewModel
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
+import com.example.androidDeviceDetails.viewModel.SignalViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,11 +22,7 @@ abstract class BaseViewModel {
             return when (type) {
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
-                SignalActivity.NAME -> SignalViewModel(
-                    binding as ActivitySignalStrengthBinding,
-                    context
-                )
-
+                SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)
                 NetworkUsageActivity.NAME -> NetworkUsageViewModel(
                     binding as ActivityAppDataBinding,
                     context
