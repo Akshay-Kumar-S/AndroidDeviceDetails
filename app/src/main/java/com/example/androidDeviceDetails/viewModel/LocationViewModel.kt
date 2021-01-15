@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
@@ -105,16 +107,16 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 //        selectedRow.setBackgroundColor(Color.parseColor("#FFFFFF"))
     }
 
-//    private fun toggleSortButton() {
-//        if (binding.sortByCountViewArrow.tag == "down") {
-//            binding.sortByCountViewArrow.tag = "up"
-//            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_upward)
-//
-//        } else {
-//            binding.sortByCountViewArrow.tag = "down"
-//            binding.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_downward)
-//        }
-//    }
+    private fun toggleSortButton() {
+        if (binding.bottomLocation.sortByCountViewArrow.tag == "down") {
+            binding.bottomLocation.sortByCountViewArrow.tag = "up"
+            binding.bottomLocation.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_upward)
+
+        } else {
+            binding.bottomLocation.sortByCountViewArrow.tag = "down"
+            binding.bottomLocation.sortByCountViewArrow.setImageResource(R.drawable.ic_arrow_downward)
+        }
+    }
 
     private fun onNoData() =
         binding.root.post {
@@ -124,13 +126,10 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
 
     override fun sort(type: Int) {
-        countedData = when (type) {
-            SortBy.Ascending.ordinal -> countedData.toList().sortedBy { (_, value) -> value }
-                .toMap()
-            else -> countedData.toList().sortedByDescending { (_, value) -> value }.toMap()
+        binding.root.post {
+            (binding.bottomLocation.locationListView.adapter as LocationAdapter).sortView(type)
         }
-        Log.d("Counted Data", "onDataCount:${countedData.size} ")
-//        toggleSortButton()
+        toggleSortButton()
 //        buildGraph(countedData)
     }
 
@@ -151,10 +150,11 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 
     private fun buildAdapterView(dataList: Map<String, Int>) {
         val countList: ArrayList<CountModel> = ArrayList()
+        Log.d("Data", "buildAdapterView: $dataList")
         if (dataList.isNotEmpty()) {
             for (i in dataList){
                 val latLong = decodeHash(i.key)
-                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0].locality?.toString()
+                val address = Geocoder(context).getFromLocation(latLong.lat, latLong.lon, 1)[0]?.locality?.toString()
                 countList.add(CountModel(i.key, i.value, address ?: "cannot locate"))
             }
             binding.root.post {
@@ -176,6 +176,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             Log.d("TAG", "addPointOnMap: $address")
             val marker = Marker(binding.mapview)
             binding.root.post{
+                marker.icon = getDrawable(context,R.drawable.ic_location)
                 marker.position = geoPoint
                 marker.title="Visited ${geoHash.value} times"
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)

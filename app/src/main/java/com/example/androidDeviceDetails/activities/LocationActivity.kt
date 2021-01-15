@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
@@ -42,9 +41,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val arrayList = ArrayList<CountModel>()
-        arrayList.add(CountModel("NoData",0,""))
-        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList)
+        initRecyclerView()
         initBottomSheet()
         activityController = ActivityController(
             NAME,
@@ -53,23 +50,30 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             binding.bottomLocation.dateTimePickerLayout,
             supportFragmentManager
         )
-        Configuration.getInstance().load(
-            applicationContext, getSharedPreferences(
-                "my.app.packagename_preferences", Context.MODE_PRIVATE
-            )
-        )
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         locationViewModel = activityController.viewModel as LocationViewModel
 //        selectedRow = binding.bottomLocation.noData
         initDatePicker()
-        initMapview()
+        initMap()
         binding.apply {
             bottomLocation.countView.setOnClickListener(this@LocationActivity)
 //            bottomLocation.barChart.setOnChartValueSelectedListener(this@LocationActivity)
         }
     }
 
-    private fun initMapview() {
+    private fun initRecyclerView() {
+        val arrayList = ArrayList<CountModel>()
+        arrayList.add(CountModel("NoData", 0, ""))
+        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList)
+        binding.bottomLocation.locationListView.isNestedScrollingEnabled=true
+    }
+
+    private fun initMap() {
+        Configuration.getInstance().load(
+            applicationContext, getSharedPreferences(
+                "my.app.packagename_preferences", Context.MODE_PRIVATE
+            )
+        )
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         binding.apply{
             mapview.setTileSource(TileSourceFactory.MAPNIK)
             mapview.setMultiTouchControls(true)

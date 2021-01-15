@@ -13,7 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LocationCooker : BaseCooker() {
-    private val geoHashLength: Int = 6
+    private val geoHashLength: Int = 10
     private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
     private lateinit var res: ArrayList<LocationModel>
 
