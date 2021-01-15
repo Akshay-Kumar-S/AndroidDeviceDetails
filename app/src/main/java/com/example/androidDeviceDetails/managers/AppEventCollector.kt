@@ -29,7 +29,7 @@ class AppEventCollector(context: Context) : BaseCollector() {
                     timeStamp = evt.timeStamp,
                     packageName = evt.packageName
                 )
-                GlobalScope.launch(Dispatchers.IO) { db.appEventDao().insertAll(appUsageData) }
+                GlobalScope.launch(Dispatchers.IO) { db.appEventDao().insert(appUsageData) }
             }
         }
     }
