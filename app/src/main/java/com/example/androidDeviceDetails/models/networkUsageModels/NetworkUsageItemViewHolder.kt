@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.adapters
+package com.example.androidDeviceDetails.models.networkUsageModels
 
 import android.widget.ImageView
 import android.widget.TextView

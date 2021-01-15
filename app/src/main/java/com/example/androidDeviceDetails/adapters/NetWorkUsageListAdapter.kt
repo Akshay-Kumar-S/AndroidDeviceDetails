@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.models.networkUsageModels.NetworkUsageItemViewHolder
 import com.example.androidDeviceDetails.utils.Utils
 
 class NetWorkUsageListAdapter(

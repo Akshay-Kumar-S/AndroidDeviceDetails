@@ -11,7 +11,7 @@ import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsag
 import java.util.*
 
 class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var networkUsageBinding: ActivityAppDataBinding
+    private lateinit var binding: ActivityAppDataBinding
     private lateinit var networkUsageController: ActivityController<AppNetworkUsageRaw>
 
     companion object {
@@ -20,19 +20,15 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        networkUsageBinding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)
         networkUsageController = ActivityController(
-            NAME,
-            networkUsageBinding,
-            this,
-            networkUsageBinding.dateTimePickerLayout,
-            supportFragmentManager
+            NAME, binding, this, binding.pickerBinding, supportFragmentManager
         )
-        networkUsageBinding.apply {
-            dateTimePickerLayout.startTime.setOnClickListener(this@NetworkUsageActivity)
-            dateTimePickerLayout.startDate.setOnClickListener(this@NetworkUsageActivity)
-            dateTimePickerLayout.endTime.setOnClickListener(this@NetworkUsageActivity)
-            dateTimePickerLayout.endDate.setOnClickListener(this@NetworkUsageActivity)
+        binding.apply {
+            pickerBinding.startTime.setOnClickListener(this@NetworkUsageActivity)
+            pickerBinding.startDate.setOnClickListener(this@NetworkUsageActivity)
+            pickerBinding.endTime.setOnClickListener(this@NetworkUsageActivity)
+            pickerBinding.endDate.setOnClickListener(this@NetworkUsageActivity)
         }
         networkUsageController.showInitialData()
     }
