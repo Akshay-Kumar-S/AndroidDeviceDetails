@@ -65,11 +65,11 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         while (networkStatsWifi.hasNextBucket() or networkStatsMobileData.hasNextBucket()) {
             if (networkStatsWifi.hasNextBucket()) {
                 networkStatsWifi.getNextBucket(bucket)
-                networkUsageList=fillList(bucket, networkUsageList, true)
+                networkUsageList = fillList(bucket, networkUsageList, true)
             }
             if (networkStatsMobileData.hasNextBucket()) {
                 networkStatsMobileData.getNextBucket(bucket)
-                networkUsageList=fillList(bucket, networkUsageList, false)
+                networkUsageList = fillList(bucket, networkUsageList, false)
             }
         }
         GlobalScope.launch { db.appNetworkUsageDao().insertList(networkUsageList) }
@@ -91,7 +91,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
                         receivedDataMobile += bucket.rxBytes
                         transferredDataMobile += bucket.txBytes
                     }
-
                 }
             }
         return networkUsageList
