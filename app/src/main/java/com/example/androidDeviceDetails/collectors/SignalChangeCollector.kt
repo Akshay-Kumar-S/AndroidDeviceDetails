@@ -125,9 +125,6 @@ class SignalChangeCollector : BaseCollector() {
         mTelephonyManager.listen(SignalChangeListener, LISTEN_SIGNAL_STRENGTHS)
     }
 
-    override fun collect() {
-    }
-
     /**
      * Unregisters the [SignalChangeListener] with [LISTEN_NONE].
      **/

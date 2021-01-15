@@ -97,9 +97,6 @@ class WifiCollector : BaseCollector() {
         )
     }
 
-    override fun collect() {
-    }
-
     /**
      * Unregisters the [WifiCollector].
      **/
