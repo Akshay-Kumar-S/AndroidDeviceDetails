@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.batteryInfo -> startActivity(Intent(this, BatteryActivity::class.java))
             R.id.appInfo -> startActivity(Intent(this, AppInfoActivity::class.java))
             R.id.appData -> startActivity(Intent(this, NetworkUsageActivity::class.java))
+            R.id.signal -> startActivity(Intent(this, SignalActivity::class.java))
+
         }
     }
 
