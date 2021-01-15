@@ -16,7 +16,6 @@ import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
-import com.example.androidDeviceDetails.utils.SortBy
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.github.mikephil.charting.data.Entry
 import org.osmdroid.util.GeoPoint
@@ -141,7 +140,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
             Log.d("Counted Data", "onData:${countedData.size} ")
 //            binding.noData.visibility=GONE
-            initMap(countedData.keys.elementAt(0))
+            focusOnMap(countedData.keys.elementAt(0))
             addPointOnMap(countedData)
             buildAdapterView(countedData)
 //            buildGraph(countedData)
@@ -163,7 +162,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         } else {
             countList.add(CountModel("No Data", 0, ""))
             binding.root.post {
-                binding.bottomLocation.locationListView.adapter = LocationAdapter(countList)
+                (binding.bottomLocation.locationListView.adapter as LocationAdapter).refreshList(countList)
             }
         }
     }
@@ -185,12 +184,12 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    private fun initMap(param: String) {
-        val latLong = decodeHash(param)
+    fun focusOnMap(geoHash: String) {
+        val latLong = decodeHash(geoHash)
         val geoPoint= GeoPoint(latLong.lat,latLong.lon)
         binding.root.post{
             val mapController = binding.mapview.controller
-            mapController.setZoom(10.0)
+            mapController.setZoom(15.0)
             mapController.setCenter(geoPoint)
         }
     }
