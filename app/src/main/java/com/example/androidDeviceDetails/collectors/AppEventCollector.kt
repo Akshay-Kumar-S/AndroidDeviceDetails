@@ -47,7 +47,7 @@ class AppEventCollector : BaseCollector() {
                     packageName = evt.packageName
                 )
                 GlobalScope.launch(Dispatchers.IO) {
-                    RoomDB.getDatabase()?.appEventDao()?.insertAll(appUsageData)
+                    RoomDB.getDatabase()?.appEventDao()?.insert(appUsageData)
                 }
             }
         }

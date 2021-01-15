@@ -53,7 +53,7 @@ class BatteryCollector : BaseCollector() {
                 batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER),
                 intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
             )
-            GlobalScope.launch { db?.batteryDao()?.insertAll(batteryRaw) }
+            GlobalScope.launch { db?.batteryDao()?.insert(batteryRaw) }
         }
     }
 

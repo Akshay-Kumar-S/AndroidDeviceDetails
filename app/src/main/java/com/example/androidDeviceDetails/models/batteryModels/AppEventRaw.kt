@@ -46,7 +46,7 @@ interface AppEventDao {
     fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg appEventRaw: AppEventRaw)
+    fun insert(vararg appEventRaw: AppEventRaw)
 
     @Delete
     fun delete(appEventRaw: AppEventRaw)

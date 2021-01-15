@@ -66,7 +66,10 @@ interface BatteryDao {
     fun deleteAll()
 
     @Insert
-    fun insertAll(vararg batteryRaw: BatteryRaw)
+    fun insert(vararg batteryRaw: BatteryRaw)
+
+    @Insert
+    fun insertAll(batteryRawList: List<BatteryRaw>)
 
     @Delete
     fun delete(batteryRaw: BatteryRaw)
