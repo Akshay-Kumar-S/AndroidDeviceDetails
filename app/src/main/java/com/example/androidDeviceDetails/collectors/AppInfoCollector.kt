@@ -36,7 +36,7 @@ class AppInfoCollector : BaseCollector() {
                     AppInfoCollectionHelper.appUpgraded(context, packageName)
             }
 
-            if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
+            else if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
                 AppInfoCollectionHelper.appUninstalled(context, packageName)
             }
         }
