@@ -52,8 +52,8 @@ abstract class BaseViewModel {
         }
     }
 
-    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, isVisible: Boolean) {
-        dateTimePickerBinding.root.post { dateTimePickerBinding.progressBar.isVisible = isVisible }
+    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, enable: Boolean){
+        dateTimePickerBinding.root.post{dateTimePickerBinding.progressBar.isVisible = enable}
     }
 
     open fun filter(type: Int) {}
