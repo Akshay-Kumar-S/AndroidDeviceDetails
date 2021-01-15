@@ -76,7 +76,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             binding.pickerBinding,
             supportFragmentManager
         )
-        binding.appInfoListView.isEnabled = false
+        binding.appInfoListView.isEnabled = true
         binding.apply {
             pickerBinding.startTime
                 .setOnClickListener(this@AppInfoActivity)
