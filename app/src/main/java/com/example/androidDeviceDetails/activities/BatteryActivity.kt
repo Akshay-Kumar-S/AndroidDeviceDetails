@@ -27,20 +27,20 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             NAME,
             batteryBinding,
             this,
-            batteryBinding.dateTimePickerLayout,
+            batteryBinding.pickerBinding,
             supportFragmentManager = supportFragmentManager
         )
         batteryBinding.apply {
             batteryListView.setOnItemClickListener { parent, _, position, _ ->
                 redirectToAppInfo(parent, position)
             }
-            dateTimePickerLayout.startTime
+            pickerBinding.startTime
                 .setOnClickListener(this@BatteryActivity)
-            dateTimePickerLayout.startDate
+            pickerBinding.startDate
                 .setOnClickListener(this@BatteryActivity)
-            dateTimePickerLayout.endTime
+            pickerBinding.endTime
                 .setOnClickListener(this@BatteryActivity)
-            dateTimePickerLayout.endDate
+            pickerBinding.endDate
                 .setOnClickListener(this@BatteryActivity)
         }
         batteryController.showInitialData()

@@ -73,18 +73,18 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             NAME,
             binding,
             this,
-            binding.dateTimePickerLayout,
+            binding.pickerBinding,
             supportFragmentManager
         )
         binding.appInfoListView.isEnabled = false
         binding.apply {
-            dateTimePickerLayout.startTime
+            pickerBinding.startTime
                 .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.startDate
+            pickerBinding.startDate
                 .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.endTime
+            pickerBinding.endTime
                 .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.endDate
+            pickerBinding.endDate
                 .setOnClickListener(this@AppInfoActivity)
         }
     }
