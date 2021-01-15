@@ -7,42 +7,43 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ApplicationController
 import com.example.androidDeviceDetails.utils.Utils
 
 const val CHANNEL_ID = "androidDeviceDetails"
+private const val TAG = "AppService"
 
 class AppService : Service() {
 
     private lateinit var appController : ApplicationController
 
     override fun onBind(intent: Intent): IBinder {
+        Log.d(TAG, "onBind")
         TODO("Return the communication channel to the service.")
     }
 
     override fun onCreate() {
         super.onCreate()
+        Log.d(TAG, "onCreate")
         appController = ApplicationController()
         pushNotification()
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         appController.runTimer(Utils.COLLECTION_INTERVAL )
-        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-        for(receivers in appController.instanceMap.values) {
+        Log.d(TAG, "onDestroy: AppService onDestroy called")
+        for (receivers in appController.instanceMap.values)
             receivers.stop()
-        }
         appController.timer.cancel()
         stopSelf()
+        super.onDestroy()
     }
 
     private fun pushNotification() {
+        Log.d(TAG, "pushNotification")
         if (Build.VERSION.SDK_INT >= 26) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
