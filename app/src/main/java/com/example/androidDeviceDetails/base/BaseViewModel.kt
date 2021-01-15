@@ -23,6 +23,11 @@ abstract class BaseViewModel {
             return when (type) {
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
+                SignalActivity.NAME -> SignalViewModel(
+                    binding as ActivitySignalStrengthBinding,
+                    context
+                )
+
                 NetworkUsageActivity.NAME -> NetworkUsageViewModel(
                     binding as ActivityAppDataBinding,
                     context

@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.managers
+package com.example.androidDeviceDetails.collectors
 
 import android.content.Context
 import android.os.Build

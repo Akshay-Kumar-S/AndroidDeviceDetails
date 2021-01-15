@@ -22,6 +22,7 @@ abstract class BaseCooker {
                 BatteryActivity.NAME -> BatteryCooker()
                 AppInfoActivity.NAME -> AppInfoCooker()
                 NetworkUsageActivity.NAME -> NetworkUsageCooker()
+                SignalActivity.NAME -> SignalCooker()
                 else -> null
             }
         }

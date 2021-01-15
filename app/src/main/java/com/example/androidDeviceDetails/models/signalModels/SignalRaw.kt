@@ -3,8 +3,8 @@ package com.example.androidDeviceDetails.models.signalModels
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.androidDeviceDetails.receivers.WifiCollector
-import com.example.androidDeviceDetails.managers.SignalChangeCollector
+import com.example.androidDeviceDetails.collectors.WifiCollector
+import com.example.androidDeviceDetails.collectors.SignalChangeCollector
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.models.RoomDB
 import androidx.lifecycle.LiveData

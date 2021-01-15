@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.receivers
+package com.example.androidDeviceDetails.collectors
 
 import android.content.BroadcastReceiver
 import android.content.Context

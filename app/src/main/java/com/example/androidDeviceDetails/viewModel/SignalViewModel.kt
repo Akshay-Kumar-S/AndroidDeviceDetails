@@ -113,10 +113,10 @@ class SignalViewModel(
      * This method separates the cooked data into CELLULAR list and WIFI list
      * and calls [updateListView] to update list.
      * >
-     * Overrides : [onData] in [BaseViewModel].
+     * Overrides : [onDone] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
-    override fun <T> onData(outputList: ArrayList<T>) {
+    override fun <T> onDone(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
         val signalList = outputList as ArrayList<SignalRaw>

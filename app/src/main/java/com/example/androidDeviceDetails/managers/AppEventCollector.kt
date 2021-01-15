@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 class AppEventCollector(context: Context) : BaseCollector() {
     private var usageStatsManager: UsageStatsManager =
         context.getSystemService(AppCompatActivity.USAGE_STATS_SERVICE) as UsageStatsManager
-
     override fun collect() {
         val db = RoomDB.getDatabase()!!
         val events = usageStatsManager.queryEvents(
@@ -33,5 +32,4 @@ class AppEventCollector(context: Context) : BaseCollector() {
             }
         }
     }
-
 }
