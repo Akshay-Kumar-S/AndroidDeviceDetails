@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoItemViewHolder
 import com.example.androidDeviceDetails.models.appInfoModels.EventType
 import com.example.androidDeviceDetails.utils.Utils
 

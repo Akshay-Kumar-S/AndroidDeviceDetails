@@ -5,11 +5,11 @@ import com.example.androidDeviceDetails.models.appInfoModels.*
 
 object AppInfoDbHelper {
     /**
-     * Writes the given data as [AppsEntity] into [AppsDao]
+     * Writes the given data as [AppInfoRaw] into [AppInfoDao]
      */
     fun writeToAppsDb(id: Int, packageName: String, appDetails: AppDetails, db: RoomDB) {
         db.appsDao().insertAll(
-            AppsEntity(
+            AppInfoRaw(
                 uid = id,
                 packageName = packageName,
                 currentVersionCode = appDetails.versionCode,
@@ -22,7 +22,7 @@ object AppInfoDbHelper {
     }
 
     /**
-     * Writes the given data as [AppHistoryEntity] into [AppHistoryDao]
+     * Writes the given data as [AppHistoryRaw] into [AppHistoryDao]
      */
     fun writeToAppHistoryDb(
         id: Int,
@@ -33,7 +33,7 @@ object AppInfoDbHelper {
         timestamp: Long = System.currentTimeMillis()
     ) {
         db.appHistoryDao().insertAll(
-            AppHistoryEntity(
+            AppHistoryRaw(
                 rowId = 0,
                 appId = id,
                 timestamp = timestamp,

@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryDao
-import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryEntity
-import com.example.androidDeviceDetails.models.appInfoModels.AppsDao
-import com.example.androidDeviceDetails.models.appInfoModels.AppsEntity
+import com.example.androidDeviceDetails.models.appInfoModels.*
 import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryRaw
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoDao
+import com.example.androidDeviceDetails.models.appInfoModels.AppInfoRaw
 import com.example.androidDeviceDetails.models.batteryModels.AppEventRaw
 import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
 import com.example.androidDeviceDetails.models.batteryModels.BatteryRaw
@@ -22,14 +22,14 @@ import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 
 
 @Database(
-    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppsEntity::class, AppHistoryEntity::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
+    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppInfoRaw::class, AppHistoryRaw::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
     abstract fun batteryDao(): BatteryDao
     abstract fun appEventDao(): AppEventDao
     abstract fun locationDao(): ILocationDao
-    abstract fun appsDao(): AppsDao
+    abstract fun appsDao(): AppInfoDao
     abstract fun appHistoryDao(): AppHistoryDao
     abstract fun signalDao(): SignalDao
     abstract fun appNetworkUsageDao(): AppNetworkUsageDao

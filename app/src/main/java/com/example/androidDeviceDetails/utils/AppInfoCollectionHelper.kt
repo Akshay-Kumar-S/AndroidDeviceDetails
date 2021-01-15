@@ -8,13 +8,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
- * Events are made into [AppsEntity] and [AppHistoryEntity] and inserted into
- * [AppsDao] and [AppHistoryDao]
+ * Events are made into [AppInfoRaw] and [AppHistoryRaw] and inserted into
+ * [AppInfoDao] and [AppHistoryDao]
  *
  */
 object AppInfoCollectionHelper {
     /**
-     * Updates  [AppsDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
+     * Updates  [AppInfoDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
      * or [EventType.APP_UPDATED]
      *
      * @param context Event context
@@ -57,7 +57,7 @@ object AppInfoCollectionHelper {
     }
 
     /**
-     * Updates  [AppsDao] and [AppHistoryDao] databases with event [EventType.APP_UNINSTALLED]
+     * Updates  [AppInfoDao] and [AppHistoryDao] databases with event [EventType.APP_UNINSTALLED]
      * @param context Event context
      * @param packageName Package name of the app
      */
@@ -86,7 +86,7 @@ object AppInfoCollectionHelper {
     }
 
     /**
-     * Updates  [AppsDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
+     * Updates  [AppInfoDao] and [AppHistoryDao] databases with events [EventType.APP_INSTALLED]
      * or [EventType.APP_UPDATED]
      *
      * @param context Event context

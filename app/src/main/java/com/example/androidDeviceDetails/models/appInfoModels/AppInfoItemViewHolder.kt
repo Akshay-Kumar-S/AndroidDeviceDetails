@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.adapters
+package com.example.androidDeviceDetails.models.appInfoModels
 
 import android.widget.ImageButton
 import android.widget.ImageView

@@ -6,7 +6,7 @@ package com.example.androidDeviceDetails.models.appInfoModels
  * @param appName Name of the app
  * @param eventType Type of the event in [EventType]
  * @param versionCode Version code of the app
- * @param appId of the app from [AppsDao]
+ * @param appId of the app from [AppInfoDao]
  * @param isSystemApp Whether the app is a system app or not
  * @param packageName Package name of the app
  */
