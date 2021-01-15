@@ -175,7 +175,7 @@ object Utils {
     /**
      * Uninstalls the app
      *
-     * @param [view] List view element
+     * @param [packageName] Package name of the App
      * @param [packageManager] Package manager
      * @param context Context
      */
