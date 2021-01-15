@@ -18,11 +18,7 @@ abstract class BaseViewModel {
     abstract fun <T> onDone(outputList: ArrayList<T>)
 
     companion object {
-        fun getViewModel(
-            type: String,
-            binding: Any?,
-            context: Context
-        ): BaseViewModel {
+        fun getViewModel(type: String, binding: Any?, context: Context): BaseViewModel {
             return when (type) {
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
@@ -31,34 +27,31 @@ abstract class BaseViewModel {
         }
     }
 
-
-    fun updateTextViews(
-        startCalendar: Calendar,
-        endCalendar: Calendar,
-        dateTimePickerBinding: DateTimePickerBinding
+    fun updateDateTimeUI(
+        startCalendar: Calendar, endCalendar: Calendar, binding: DateTimePickerBinding
     ) {
-        val timeFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
-        val dateFormat = SimpleDateFormat("dd, MMM yyyy", Locale.ENGLISH)
-        val amPmFormat = SimpleDateFormat("a", Locale.ENGLISH)
-        dateTimePickerBinding.startTime.text = timeFormat.format(Date(startCalendar.timeInMillis))
-        dateTimePickerBinding.startDate.text = dateFormat.format(Date(startCalendar.timeInMillis))
-        dateTimePickerBinding.endTime.text = timeFormat.format(Date(endCalendar.timeInMillis))
-        dateTimePickerBinding.endDate.text = dateFormat.format(Date(endCalendar.timeInMillis))
-        dateTimePickerBinding.startAMPM.text =
-            amPmFormat.format(Date(startCalendar.timeInMillis)).toLowerCase(
-                Locale.ENGLISH
-            )
-        dateTimePickerBinding.endAMPM.text =
-            amPmFormat.format(Date(endCalendar.timeInMillis)).toLowerCase(
-                Locale.ENGLISH
-            )
+        val simpleDateFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
+        binding.apply {
+            startTime.text = simpleDateFormat.format(Date(startCalendar.timeInMillis))
+            endTime.text = simpleDateFormat.format(Date(endCalendar.timeInMillis))
 
+            simpleDateFormat.applyPattern("dd, MMM yyyy")
+            startDate.text = simpleDateFormat.format(Date(startCalendar.timeInMillis))
+            endDate.text = simpleDateFormat.format(Date(endCalendar.timeInMillis))
+
+            simpleDateFormat.applyPattern("a")
+            startAMPM.text = simpleDateFormat.format(Date(startCalendar.timeInMillis))
+                .toLowerCase(Locale.ENGLISH)
+            endAMPM.text =
+                simpleDateFormat.format(Date(endCalendar.timeInMillis)).toLowerCase(Locale.ENGLISH)
+        }
     }
 
-    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, isVisible: Boolean){
-        dateTimePickerBinding.root.post{dateTimePickerBinding.progressBar.isVisible = isVisible}
+    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, isVisible: Boolean) {
+        dateTimePickerBinding.root.post { dateTimePickerBinding.progressBar.isVisible = isVisible }
     }
 
-    open fun filter(type:Int){}
-    open fun sort(type:Int){}
+    open fun filter(type: Int) {}
+
+    open fun sort(type: Int) {}
 }

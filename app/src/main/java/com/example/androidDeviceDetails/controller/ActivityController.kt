@@ -144,7 +144,7 @@ class ActivityController<T>(
         if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
             if ((endCalendar.timeInMillis - startCalendar.timeInMillis) > Utils.COLLECTION_INTERVAL * 60 * 1000) {
                 BottomSheet(onApply = { onClickApply() }).show(supportFragmentManager, "Apply")
-                viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
+                viewModel.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
             } else
                 Toast.makeText(
                     context,
@@ -169,7 +169,7 @@ class ActivityController<T>(
     }
 
     fun showInitialData() {
-        viewModel.updateTextViews(startCalendar, endCalendar, dateTimePickerView)
+        viewModel.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
     }
 
     fun filterView(type: Int) {
