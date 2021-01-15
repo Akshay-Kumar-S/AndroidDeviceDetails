@@ -23,12 +23,25 @@ import kotlinx.coroutines.launch
  * and the whole device.
  *
  */
+@RequiresApi(Build.VERSION_CODES.M)
 class NetworkUsageCollector(var context: Context) : BaseCollector() {
-
     private val firstInstallTime =
         context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     val db = RoomDB.getDatabase()!!
     private lateinit var networkStatsManager: NetworkStatsManager
+
+    /**
+     *
+     * Calls [updateDeviceNetworkUsageDB] function and [updateAppNetworkDataUsageDB] function.
+     */
+    override fun collect() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            networkStatsManager =
+                context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
+            updateDeviceNetworkUsageDB()
+            updateAppNetworkDataUsageDB()
+        }
+    }
 
     /**
      * Collect Network Usage data for each app using [NetworkStatsManager.querySummary]
@@ -37,8 +50,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
      * and writes into [RoomDB.appNetworkUsageDao].
      *
      */
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun updateNetworkDataUsageDB() {
+    private fun updateAppNetworkDataUsageDB() {
         val networkUsageList = arrayListOf<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
@@ -88,8 +100,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
      *  which requires [android.Manifest.permission.PACKAGE_USAGE_STATS] permission and
      *  writes into [RoomDB.deviceNetworkUsageDao].
      */
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun updateDeviceNetworkUsageDB() {
+    private fun updateDeviceNetworkUsageDB() {
         var totalWifiDataRx = 0L
         var totalWifiDataTx = 0L
         var totalMobileDataRx = 0L
@@ -117,7 +128,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun appNetworkUsageFactory(
         bucket: NetworkStats.Bucket,
         wifiEnable: Boolean = true
@@ -142,19 +152,4 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
             )
 
     }
-
-    /**
-     *
-     * Calls [updateDeviceNetworkUsageDB] function and [updateNetworkDataUsageDB] function.
-     */
-    override fun collect() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            networkStatsManager =
-                context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
-            updateDeviceNetworkUsageDB()
-            updateNetworkDataUsageDB()
-        }
-    }
-
-
 }

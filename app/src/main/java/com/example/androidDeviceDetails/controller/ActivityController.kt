@@ -53,7 +53,7 @@ class ActivityController<T>(
     }
 
     fun cook(timePeriod: TimePeriod) {
-        viewModel.isLoading(dateTimePickerView,true)
+        viewModel.isLoading(dateTimePickerView, true)
         cooker.cook(timePeriod, onCookingDone)
     }
 
@@ -61,10 +61,7 @@ class ActivityController<T>(
     fun setStartTime(context: Context) {
         val hour = startCalendar.get(Calendar.HOUR)
         val minute = startCalendar.get(Calendar.MINUTE)
-        TimePickerDialog(
-            context, startTimePickerListener, hour, minute,
-            false
-        ).show()
+        TimePickerDialog(context, startTimePickerListener, hour, minute, false).show()
     }
 
     private val startTimePickerListener =
@@ -80,13 +77,7 @@ class ActivityController<T>(
         val day = startCalendar.get(Calendar.DAY_OF_MONTH)
         val month = startCalendar.get(Calendar.MONTH)
         val year = startCalendar.get(Calendar.YEAR)
-        val startDatePicker = DatePickerDialog(
-            context,
-            startDatePickerListener,
-            year,
-            month,
-            day
-        )
+        val startDatePicker = DatePickerDialog(context, startDatePickerListener, year, month, day)
         startDatePicker.datePicker.maxDate = endCalendar.timeInMillis
         startDatePicker.show()
     }
@@ -102,10 +93,7 @@ class ActivityController<T>(
     fun setEndTime(context: Context) {
         val hour = endCalendar.get(Calendar.HOUR)
         val minute = endCalendar.get(Calendar.MINUTE)
-        TimePickerDialog(
-            context, endTimePickerListener, hour, minute,
-            false
-        ).show()
+        TimePickerDialog(context, endTimePickerListener, hour, minute, false).show()
     }
 
     private val endTimePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
@@ -120,13 +108,7 @@ class ActivityController<T>(
         val day = endCalendar.get(Calendar.DAY_OF_MONTH)
         val month = endCalendar.get(Calendar.MONTH)
         val year = endCalendar.get(Calendar.YEAR)
-        val endDatePicker = DatePickerDialog(
-            context,
-            endDatePickerListener,
-            year,
-            month,
-            day
-        )
+        val endDatePicker = DatePickerDialog(context, endDatePickerListener, year, month, day)
         endDatePicker.datePicker.minDate = startCalendar.timeInMillis
         endDatePicker.datePicker.maxDate = System.currentTimeMillis()
         endDatePicker.show()
@@ -160,12 +142,7 @@ class ActivityController<T>(
         endCalendar.set(Calendar.SECOND, 0)
         startCalendar.set(Calendar.MILLISECOND, 0)
         endCalendar.set(Calendar.MILLISECOND, 0)
-        cook(
-            TimePeriod(
-                startCalendar.timeInMillis,
-                endCalendar.timeInMillis
-            )
-        )
+        cook(TimePeriod(startCalendar.timeInMillis, endCalendar.timeInMillis))
     }
 
     fun showInitialData() {
@@ -176,7 +153,7 @@ class ActivityController<T>(
         viewModel.filter(type)
     }
 
-    fun sortView(type:Int){
+    fun sortView(type: Int) {
         viewModel.sort(type)
     }
 }
