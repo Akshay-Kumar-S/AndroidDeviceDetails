@@ -22,11 +22,12 @@ class BatteryCooker : BaseCooker() {
      * @param callback A callback that accepts the cooked list once cooking is done
      */
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
-        val appEntryList = arrayListOf<BatteryAppEntry>()
         GlobalScope.launch {
+            val appEntryList = arrayListOf<BatteryAppEntry>()
             val db: RoomDB = RoomDB.getDatabase()!!
             val appEventList = db.appEventDao().getAllBetween(time.startTime, time.endTime)
             val batteryList = db.batteryDao().getAllBetween(time.startTime, time.endTime)
+
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {
                 val batteryIterator = batteryList.iterator()
                 var batteryInfo = batteryList.first()

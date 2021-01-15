@@ -17,17 +17,17 @@ import java.util.*
 
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var batteryBinding: ActivityBatteryBinding
-    private lateinit var batteryController: ActivityController<BatteryAppEntry>
+    private lateinit var binding: ActivityBatteryBinding
+    private lateinit var controller: ActivityController<BatteryAppEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        batteryBinding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
-        batteryController = ActivityController(
-            NAME, batteryBinding, this, batteryBinding.pickerBinding, supportFragmentManager
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
+        controller = ActivityController(
+            NAME, binding, this, binding.pickerBinding, supportFragmentManager
         )
-        batteryBinding.apply {
-            batteryListView.setOnItemClickListener { parent, _, position, _ ->
+        binding.apply {
+            listView.setOnItemClickListener { parent, _, position, _ ->
                 redirectToAppInfo(parent, position)
             }
             pickerBinding.startTime.setOnClickListener(this@BatteryActivity)
@@ -35,15 +35,14 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             pickerBinding.endTime.setOnClickListener(this@BatteryActivity)
             pickerBinding.endDate.setOnClickListener(this@BatteryActivity)
         }
-        batteryController.showInitialData()
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.startTime -> batteryController.setStartTime(this)
-            R.id.startDate -> batteryController.setStartDate(this)
-            R.id.endTime -> batteryController.setEndTime(this)
-            R.id.endDate -> batteryController.setEndDate(this)
+            R.id.startTime -> controller.setStartTime(this)
+            R.id.startDate -> controller.setStartDate(this)
+            R.id.endTime -> controller.setEndTime(this)
+            R.id.endDate -> controller.setEndDate(this)
         }
     }
 

@@ -11,7 +11,6 @@ import java.util.*
 
 class NetworkUsageCooker : BaseCooker() {
 
-    @Suppress("UNCHECKED_CAST")
     /**
      * Cook data for Network Usage from the collected data available in the Database for the
      * requested time interval.
@@ -38,9 +37,7 @@ class NetworkUsageCooker : BaseCooker() {
                         val initialAppData = nullCheckList[0]
                         totalDataUsageList.add(
                             AppNetworkUsageRaw(
-                                0,
-                                it.timeStamp,
-                                it.packageName,
+                                0, it.timeStamp, it.packageName,
                                 it.transferredDataWifi - initialAppData.transferredDataWifi,
                                 it.transferredDataMobile - initialAppData.transferredDataMobile,
                                 it.receivedDataWifi - initialAppData.receivedDataWifi,
@@ -49,6 +46,7 @@ class NetworkUsageCooker : BaseCooker() {
                         )
                     } else totalDataUsageList.add(it)
                 }
+                @Suppress("UNCHECKED_CAST")
                 callback.onDone(totalDataUsageList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
 

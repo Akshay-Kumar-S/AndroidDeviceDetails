@@ -8,12 +8,11 @@ import com.example.androidDeviceDetails.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheet(private var onApply: () -> Unit) : BottomSheetDialogFragment() {
+
     private var v: View? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.bottom_sheet, container, false)
         v?.setOnClickListener {
@@ -22,5 +21,4 @@ class BottomSheet(private var onApply: () -> Unit) : BottomSheetDialogFragment()
         }
         return v
     }
-
 }

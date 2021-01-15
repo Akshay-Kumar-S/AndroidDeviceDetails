@@ -41,7 +41,7 @@ class BatteryCollector : BaseCollector() {
          *  This broadcast requires [android.Manifest.permission.BATTERY_STATS] permission.
          **/
         override fun onReceive(context: Context?, intent: Intent?) {
-            val batteryManager: BatteryManager =
+            val batteryManager =
                 context?.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
             val db = RoomDB.getDatabase(context)
             val batteryRaw = BatteryRaw(
@@ -66,16 +66,13 @@ class BatteryCollector : BaseCollector() {
      **/
     override fun start() {
         DeviceDetailsApplication.instance.registerReceiver(
-            BatteryReceiver,
-            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+            BatteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         )
     }
 
     /**
      * Unregisters the [BatteryReceiver].
      **/
-    override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(BatteryReceiver)
-    }
+    override fun stop() = DeviceDetailsApplication.instance.unregisterReceiver(BatteryReceiver)
 
 }

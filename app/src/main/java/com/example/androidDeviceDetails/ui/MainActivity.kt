@@ -27,11 +27,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         supportActionBar?.hide()
         requestPermissions()
-        if (!PrefManager.createInstance(this).getBoolean(PrefManager.INITIAL_LAUNCH, false)
-        ) {
+        if (!PrefManager.createInstance(this).getBoolean(PrefManager.INITIAL_LAUNCH, false)) {
             Utils.addInitialData(this)
-            PrefManager.createInstance(this)
-                .putBoolean(PrefManager.INITIAL_LAUNCH, true)
+            PrefManager.createInstance(this).putBoolean(PrefManager.INITIAL_LAUNCH, true)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(Intent(this, AppService::class.java))

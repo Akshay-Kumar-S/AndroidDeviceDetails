@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 
-class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val context: Context) :
+class BatteryViewModel(private val binding: ActivityBatteryBinding, val context: Context) :
     BaseViewModel() {
 
     /**
@@ -16,27 +16,20 @@ class BatteryViewModel(private val batteryBinding: ActivityBatteryBinding, val c
      * This updates the UI with the [BatteryListAdapter]
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
-        var totalDrop = 0
         if (outputList.isNotEmpty()) {
-            val temp = outputList.filterIsInstance<BatteryAppEntry>()
-            for (i in temp) totalDrop += i.drop
-            batteryBinding.root.post {
-                batteryBinding.batteryListView.adapter =
-                    BatteryListAdapter(
-                        context,
-                        R.layout.battery_tile,
-                        temp as ArrayList<BatteryAppEntry>
-                    )
+            val temp = outputList.filterIsInstance<BatteryAppEntry>() as ArrayList<BatteryAppEntry>
+            val totalDrop = temp.sumOf { it.drop }
+            val adapter = BatteryListAdapter(context, R.layout.battery_tile, temp)
+            binding.root.post {
+                binding.listView.adapter = adapter
                 val totalText = "Total drop is $totalDrop %"
-                batteryBinding.total.text = totalText
+                binding.total.text = totalText
             }
         } else
-            batteryBinding.root.post {
-                batteryBinding.batteryListView.adapter =
+            binding.root.post {
+                binding.listView.adapter =
                     BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
-                batteryBinding.total.text = context.getString(R.string.no_usage_recorded)
+                binding.total.text = context.getString(R.string.no_usage_recorded)
             }
     }
-
-
 }

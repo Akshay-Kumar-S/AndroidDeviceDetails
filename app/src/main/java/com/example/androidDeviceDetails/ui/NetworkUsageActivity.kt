@@ -30,7 +30,6 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
             pickerBinding.endTime.setOnClickListener(this@NetworkUsageActivity)
             pickerBinding.endDate.setOnClickListener(this@NetworkUsageActivity)
         }
-        networkUsageController.showInitialData()
     }
 
     override fun onClick(v: View?) {

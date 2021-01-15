@@ -5,7 +5,6 @@ import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
@@ -61,7 +60,6 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
             null, firstInstallTime, System.currentTimeMillis()
         )
         val bucket = NetworkStats.Bucket()
-        Log.d("TAG", "updateAppWifiDataUsageDB: ")
         while (networkStatsWifi.hasNextBucket() or networkStatsMobileData.hasNextBucket()) {
             if (networkStatsWifi.hasNextBucket()) {
                 networkStatsWifi.getNextBucket(bucket)

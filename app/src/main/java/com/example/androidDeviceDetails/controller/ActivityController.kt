@@ -14,12 +14,11 @@ import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ActivityController<T>(
-    dataType: String,
-    binding: ViewBinding,
-    var context: Context,
-    private val dateTimePickerView: DateTimePickerBinding,
+    dataType: String, binding: ViewBinding, var context: Context,
+    private val pickerBinding: DateTimePickerBinding,
     private val supportFragmentManager: FragmentManager
 ) {
 
@@ -33,7 +32,7 @@ class ActivityController<T>(
 
     private val onCookingDone = object : ICookingDone<T> {
         override fun onDone(outputList: ArrayList<T>) {
-            viewModel?.isLoading(dateTimePickerView, false)
+            viewModel?.isLoading(pickerBinding, false)
             viewModel?.onDone(outputList)
         }
     }
@@ -44,16 +43,11 @@ class ActivityController<T>(
         previousStartTime = startCalendar.timeInMillis
         previousEndTime = endCalendar.timeInMillis
         showInitialData()
-        cook(
-            TimePeriod(
-                startCalendar.timeInMillis,
-                endCalendar.timeInMillis
-            )
-        )
+        cook(TimePeriod(startCalendar.timeInMillis, endCalendar.timeInMillis))
     }
 
     fun cook(timePeriod: TimePeriod) {
-        viewModel?.isLoading(dateTimePickerView, true)
+        viewModel?.isLoading(pickerBinding, true)
         cooker?.cook(timePeriod, onCookingDone)
     }
 
@@ -123,18 +117,20 @@ class ActivityController<T>(
         }
 
     private fun validateTimeInterval() {
-        if (startCalendar.timeInMillis < endCalendar.timeInMillis) {
-            if ((endCalendar.timeInMillis - startCalendar.timeInMillis) > Utils.COLLECTION_INTERVAL * 60 * 1000) {
+        if (startCalendar.timeInMillis < endCalendar.timeInMillis)
+            if ((endCalendar.timeInMillis - startCalendar.timeInMillis) > TimeUnit.MINUTES.toMillis(
+                    Utils.COLLECTION_INTERVAL
+                )
+            ) {
                 BottomSheet(onApply = { onClickApply() }).show(supportFragmentManager, "Apply")
-                viewModel?.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
+                viewModel?.updateDateTimeUI(startCalendar, endCalendar, pickerBinding)
             } else
                 Toast.makeText(
                     context,
                     "Time interval should be greater than ${Utils.COLLECTION_INTERVAL} minutes",
                     Toast.LENGTH_SHORT
                 ).show()
-        } else
-            Toast.makeText(context, "Enter valid time interval", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(context, "Enter valid time interval", Toast.LENGTH_SHORT).show()
     }
 
     private fun onClickApply() {
@@ -145,15 +141,15 @@ class ActivityController<T>(
         cook(TimePeriod(startCalendar.timeInMillis, endCalendar.timeInMillis))
     }
 
-    fun showInitialData() {
-        viewModel?.updateDateTimeUI(startCalendar, endCalendar, dateTimePickerView)
+    private fun showInitialData() {
+        viewModel?.updateDateTimeUI(startCalendar, endCalendar, pickerBinding)
     }
 
     fun filterView(type: Int) {
         viewModel?.filter(type)
     }
 
-    fun sortView(type:Int){
+    fun sortView(type: Int) {
         viewModel?.sort(type)
     }
 }

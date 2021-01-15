@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.controller
 
-import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
@@ -15,7 +14,7 @@ class ApplicationController {
         "BatteryReceiver" to BatteryCollector(),
         "WifiReceiver" to WifiCollector(),
         "AppStateReceiver" to AppInfoCollector(),
-        "AppEventCollector" to AppEventCollector(),
+        "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
         "SignalChangeListener" to SignalChangeCollector(),
         "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance)
     )

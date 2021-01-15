@@ -10,6 +10,5 @@ class DeviceDetailsApplication : Application() {
 
     companion object {
         lateinit var instance: Application
-            private set
     }
 }

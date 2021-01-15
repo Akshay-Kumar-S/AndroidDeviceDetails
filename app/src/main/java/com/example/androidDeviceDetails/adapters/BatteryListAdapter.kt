@@ -12,14 +12,15 @@ import com.example.androidDeviceDetails.utils.Utils
 
 
 class BatteryListAdapter(
-    private var _context: Context,
-    private var resource: Int,
+    private var _context: Context, private var resource: Int,
     private var items: ArrayList<BatteryAppEntry>
 ) : ArrayAdapter<BatteryAppEntry>(_context, resource, items) {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
         val holder: BatteryItemViewHolder
+
         if (convertView == null) {
             vi = layoutInflater.inflate(resource, null)
             holder = BatteryItemViewHolder(
