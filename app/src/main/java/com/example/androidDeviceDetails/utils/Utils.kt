@@ -27,7 +27,7 @@ import kotlin.math.pow
 object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
-    const val COLLECTION_INTERVAL: Long = 1
+    const val COLLECTION_INTERVAL: Long = 5
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 
