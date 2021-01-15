@@ -51,7 +51,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
      *
      */
     private fun updateAppNetworkDataUsageDB() {
-        var networkUsageList = arrayListOf<AppNetworkUsageEntity>()
+        var networkUsageList = ArrayList<AppNetworkUsageEntity>()
         val networkStatsWifi = networkStatsManager.querySummary(
             NetworkCapabilities.TRANSPORT_WIFI,
             null, firstInstallTime, System.currentTimeMillis()
@@ -72,7 +72,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
                 networkUsageList=fillList(bucket, networkUsageList, false)
             }
         }
-        GlobalScope.launch { networkUsageList.forEach { db.appNetworkUsageDao().insertAll(it) } }
+        GlobalScope.launch { db.appNetworkUsageDao().insertList(networkUsageList) }
     }
 
     private fun fillList(bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageEntity>, isWifi: Boolean): ArrayList<AppNetworkUsageEntity> {
