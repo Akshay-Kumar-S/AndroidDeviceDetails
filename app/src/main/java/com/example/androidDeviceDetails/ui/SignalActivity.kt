@@ -1,19 +1,18 @@
 package com.example.androidDeviceDetails.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
-import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 
 class SignalActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var signalBinding: ActivitySignalStrengthBinding
-    private lateinit var signalController: ActivityController<SignalEntity>
+    private lateinit var signalController: ActivityController<SignalRaw>
 
     companion object {
         const val NAME = "signal"

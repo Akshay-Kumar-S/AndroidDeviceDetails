@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.adapters.SignalListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivitySignalStrengthBinding
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.activities.SignalActivity
@@ -29,8 +29,8 @@ class SignalViewModel(
     private var text: String = ""
     private var value: String = ""
     private var signal: Int = Signal.CELLULAR.ordinal
-    private lateinit var cellularList: ArrayList<SignalEntity>
-    private lateinit var wifiList: ArrayList<SignalEntity>
+    private lateinit var cellularList: ArrayList<SignalRaw>
+    private lateinit var wifiList: ArrayList<SignalRaw>
     private val db = RoomDB.getDatabase()!!
 
     init {
@@ -39,7 +39,7 @@ class SignalViewModel(
 
     /**
      * This method is called on the initialisation of the [SignalViewModel].
-     * It is used to observe the last live data of [SignalEntity].
+     * It is used to observe the last live data of [SignalRaw].
      * And on notification, updates values via [updateValue].
      */
     private fun observeSignal() {
@@ -69,18 +69,18 @@ class SignalViewModel(
      * cellular strength and cell info type upon call from [observeSignal].
      */
     @SuppressLint("SetTextI18n")
-    fun updateValue(signalEntity: SignalEntity) {
-        when (signalEntity.signal) {
+    fun updateValue(signalRaw: SignalRaw) {
+        when (signalRaw.signal) {
             Signal.WIFI.ordinal -> {
-                wifiStrength = signalEntity.strength
-                linkspeed = "${signalEntity.attribute} Mbps"
+                wifiStrength = signalRaw.strength
+                linkspeed = "${signalRaw.attribute} Mbps"
             }
             Signal.CELLULAR.ordinal -> {
-                cellularStrength = signalEntity.strength
-                cellInfoType = signalEntity.attribute
+                cellularStrength = signalRaw.strength
+                cellInfoType = signalRaw.attribute
             }
         }
-        if (signalEntity.signal == signal)
+        if (signalRaw.signal == signal)
             updateCardView()
     }
 
@@ -119,7 +119,7 @@ class SignalViewModel(
     override fun <T> onData(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
-        val signalList = outputList as ArrayList<SignalEntity>
+        val signalList = outputList as ArrayList<SignalRaw>
         if (signalList.isNotEmpty()) {
             for (signal in signalList) {
                 when (signal.signal) {

@@ -7,7 +7,7 @@ import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,11 +33,11 @@ class SignalChangeCollector : BaseCollector() {
          * Listener which gets notified when a change in signal strength occurs.
          *  Method is called when the strength of signal changes.
          *  Listener collects current timestamp, signal, strength, cellInfo type and level.
-         *  These values are made into a [SignalEntity] and saved into the [RoomDB.signalDao].
+         *  These values are made into a [SignalRaw] and saved into the [RoomDB.signalDao].
          *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
          **/
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
-            val signalEntity: SignalEntity
+            val signalRaw: SignalRaw
             var level = 0
             var strength = 0
             var type = ""
@@ -105,11 +105,11 @@ class SignalChangeCollector : BaseCollector() {
                 } catch (e: SecurityException) {
                 }
             }
-            signalEntity = SignalEntity(
+            signalRaw = SignalRaw(
                 System.currentTimeMillis(), Signal.CELLULAR.ordinal, strength, type, level
             )
             GlobalScope.launch {
-                signalDB?.signalDao()?.insertAll(signalEntity)
+                signalDB?.signalDao()?.insertAll(signalRaw)
             }
         }
     }

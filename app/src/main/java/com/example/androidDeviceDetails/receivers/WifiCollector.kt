@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.WifiLevel
 import kotlinx.coroutines.GlobalScope
@@ -34,11 +34,11 @@ class WifiCollector : BaseCollector() {
          *  Receiver which gets notified when a change in wifi signal strength occurs and also
          *  when a scan is complete.
          *   Method collects current timestamp, signal, strength, linkSpeed and level.
-         *  These values are made into a [SignalEntity] and saved into the [RoomDB.signalDao].
+         *  These values are made into a [SignalRaw] and saved into the [RoomDB.signalDao].
          *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
          **/
         override fun onReceive(context: Context?, intent: Intent?) {
-            val signalEntity: SignalEntity
+            val signalRaw: SignalRaw
             val strength: Int
             val linkSpeed: Int
             val level: Int
@@ -50,7 +50,7 @@ class WifiCollector : BaseCollector() {
             level = getWifiLevel(strength)
 
             val db = RoomDB.getDatabase(context)
-            signalEntity = SignalEntity(
+            signalRaw = SignalRaw(
                 System.currentTimeMillis(),
                 Signal.WIFI.ordinal,
                 strength,
@@ -58,7 +58,7 @@ class WifiCollector : BaseCollector() {
                 level
             )
             GlobalScope.launch {
-                db?.signalDao()?.insertAll(signalEntity)
+                db?.signalDao()?.insertAll(signalRaw)
             }
         }
 

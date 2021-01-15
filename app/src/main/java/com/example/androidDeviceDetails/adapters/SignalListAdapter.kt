@@ -9,15 +9,16 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.signalModels.SignalEntity
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.utils.Signal
 import java.text.SimpleDateFormat
 
 class SignalListAdapter
     (
     private var _context: Context,
     private var resource: Int,
-    private var items: List<SignalEntity>
-) : ArrayAdapter<SignalEntity>(_context, resource, items) {
+    private var items: List<SignalRaw>
+) : ArrayAdapter<SignalRaw>(_context, resource, items) {
 
     @SuppressLint("SimpleDateFormat", "ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -33,11 +34,16 @@ class SignalListAdapter
 
         timeStamp.text = formatter.format(items[position].timeStamp)
 
-        if (items[position].signal == 0) strength.setImageResource(getCellularImage(items[position].level))
-        if (items[position].signal == 1) strength.setImageResource(getWifiImage(items[position].level))
-
-        if (items[position].signal == 0) general.text = items[position].attribute
-        else general.text = items[position].attribute + " Mbps"
+        when (items[position].signal) {
+            Signal.CELLULAR.ordinal -> {
+                strength.setImageResource(getCellularImage(items[position].level))
+                general.text = items[position].attribute
+            }
+            Signal.WIFI.ordinal -> {
+                strength.setImageResource(getWifiImage(items[position].level))
+                general.text = items[position].attribute + " Mbps"
+            }
+        }
         level.text = items[position].strength.toString() + " dbm"
         return view
     }
