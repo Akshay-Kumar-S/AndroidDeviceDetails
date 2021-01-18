@@ -91,6 +91,8 @@ class SignalViewModel(
 
         Log.e("updating","working $cellularStrength $wifiStrength")
         signalBinding.cellularGuage.progressBar.setProgress(80,true)
+        signalBinding.cellularGuage.textViewProgress.text="60%"
+        signalBinding.wifiGuage.textViewProgress.text="60%"
         signalBinding.wifiGuage.progressBar.setProgress(80,true)
     }
 
