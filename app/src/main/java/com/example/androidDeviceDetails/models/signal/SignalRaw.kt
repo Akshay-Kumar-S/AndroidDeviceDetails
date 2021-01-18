@@ -1,11 +1,11 @@
-package com.example.androidDeviceDetails.models.signal
+package com.example.androidDeviceDetails.models.signalModels
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector
 import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.database.RoomDB
+import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 /**
@@ -30,7 +30,11 @@ data class SignalRaw(
     @ColumnInfo(name = "signal") val signal: Int,
     @ColumnInfo(name = "strength") val strength: Int,
     @ColumnInfo(name = "attribute") val attribute: String,//linkspeed for wifi and type for cellular
-    @ColumnInfo(name = "level") val level: Int
+    @ColumnInfo(name = "level") val level: Int,
+    @ColumnInfo(name = "operatorName") val operatorName: String,
+    @ColumnInfo(name = "isRoaming") val isRoaming: Boolean?,
+    @ColumnInfo(name = "band") val band: String?,
+    @ColumnInfo(name = "countryCode") val countryCode: String?
 )
 
 
