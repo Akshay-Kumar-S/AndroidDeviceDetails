@@ -57,7 +57,7 @@ class SignalCooker : BaseCooker() {
             wifiList.forEach { signalEntity ->
                 if (wifiLevelUsage.none { it.name == signalEntity.level.toString() })
                     wifiLevelUsage.add(Usage(signalEntity.level.toString(), 0))
-                cellularBandUsage.first { it.name == previousSignalEntity.level.toString() }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+                wifiLevelUsage.first { it.name == previousSignalEntity.level.toString() }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
 
                 if (wifiOperatorUsage.none { it.name == signalEntity.operatorName })
                     wifiOperatorUsage.add(Usage(signalEntity.operatorName, 0))
