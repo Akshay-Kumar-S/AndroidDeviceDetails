@@ -28,17 +28,16 @@ class SignalCooker : BaseCooker() {
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
             Log.e("time11", "${System.currentTimeMillis()}")
-            val signalList = db.signalDao().getAllBetween(time.startTime, time.endTime)
             val cellularList = db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
             val wifiList = db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
-            val bandUsageList = ArrayList<bandUsage>()
+            val bandUsageList = ArrayList<Usage>()
 
             val cellularBandUsage = ArrayList<Usage>()
-            var previousSignalEntity = signalList.first()
+            var previousSignalEntity = cellularList.first()
 
-            signalList.forEach { signalEntity ->
+            cellularList.forEach { signalEntity ->
                 if (bandUsageList.none { it.bandName == signalEntity.band })
-                    bandUsageList.add(bandUsage(signalEntity.band, 0))
+                    bandUsageList.add(Usage(signalEntity.band, 0))
 
                 bandUsageList.first { it.bandName == previousSignalEntity.band }.time+=(signalEntity.timeStamp- previousSignalEntity.timeStamp)
                 previousSignalEntity=signalEntity
@@ -48,8 +47,8 @@ class SignalCooker : BaseCooker() {
             bandUsageList.sortBy { it.time }
             var hignestUsedBand = bandUsageList.last()
             Log.e("usage", "$bandUsageList")
-            if (signalList.isNotEmpty()) {
-                callback.onDone(signalList as ArrayList<T>)
+            if (cellularList.isNotEmpty()) {
+                callback.onDone(cellularList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
         }
     }
