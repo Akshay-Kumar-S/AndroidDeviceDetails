@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +14,9 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
+import com.example.androidDeviceDetails.fragments.SortBySheet
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
+import com.example.androidDeviceDetails.utils.SortBy
 import java.util.*
 
 class BatteryActivity : AppCompatActivity(), View.OnClickListener {
@@ -21,7 +25,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var controller: ActivityController<BatteryAppEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(null)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
         controller = ActivityController(
             NAME, binding, this, binding.pickerBinding, supportFragmentManager
@@ -44,6 +48,24 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
             R.id.endTime -> controller.setTime(this, R.id.endTime)
             R.id.endDate -> controller.setDate(this, R.id.endDate)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.battery_sort_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.title == "Sort By") {
+            val options = arrayListOf(
+                "Battery Drop (largest first)" to { controller.sortView(SortBy.Descending.ordinal) },
+                "Battery Drop (smallest first)" to { controller.sortView(SortBy.Ascending.ordinal) },
+                "Package Name (A to Z)" to { controller.sortView(SortBy.Alphabetical.ordinal) },
+                "Package Name (Z to A)" to { controller.sortView(SortBy.ReverseAlphabetical.ordinal) }
+            )
+            SortBySheet(options).show(supportFragmentManager, "Sort By")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun redirectToAppInfo(parent: AdapterView<*>, position: Int) {

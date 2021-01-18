@@ -57,4 +57,10 @@
     <string name="geohash">GeoHash</string>
     <string name="address">Address</string>
     <string name="location_icon">location icon</string>
+    <string name="sort_by">Sort By</string>
+    <string name="battery_drop_largest_first">Battery Drop (largest first)</string>
+    <string name="selected">Selected</string>
+    <string name="battery_drop_smallest_first">Battery Drop (smallest first)</string>
+    <string name="package_name_a_to_z">Package Name (A to Z)</string>
+    <string name="package_name_z_to_a">Package Name (Z to A)</string>
 </resources>

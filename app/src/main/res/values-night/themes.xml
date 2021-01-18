@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/black</item>
+        <item name="bottomSheetDialogColor">#2F3034</item>
         <item name="batteryTitle">@color/white</item>
         <item name="mainButtonBg">#232323</item>
         <item name="startBlue">#8AB4F8</item>

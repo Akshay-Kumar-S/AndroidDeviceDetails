@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="FullscreenAttrs">
         <attr name="batteryTitle" format="color" />
+        <attr name="bottomSheetDialogColor" format="color" />
         <attr name="mainButtonBg" format="color"/>
         <attr name="startBlue" format="color" />
         <attr name="endOrange" format="color" />
