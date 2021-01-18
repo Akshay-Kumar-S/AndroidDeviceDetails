@@ -49,7 +49,7 @@ class LocationListener(private var locationManager: LocationManager, val context
                 Log.d("CodeAndroidLocation", "hasNetworkGpsp")
                 locationManager.requestLocationUpdates(
                     NETWORK_PROVIDER,
-                   TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL),
+                    TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL),
                     0F
                 ) { location ->
                     Log.d("CodeAndroidLocation", "networkLocation not null $location")
@@ -76,10 +76,6 @@ class LocationListener(private var locationManager: LocationManager, val context
             location.longitude,
             6
         ).toString()
-//        Log.d("CodeAndroidLocation $tag", "Latitude : " + location.latitude)
-//        Log.d("CodeAndroidLocation $tag", "Longitude : " + location.longitude)
-//        Log.d("CodeAndroidLocation $tag", "GeoHash : $geoHash")
-//        Log.d("Date", "${Date(System.currentTimeMillis())}")
         val locationObj = LocationModel(
             0, location.latitude, location.longitude, geoHash,
             System.currentTimeMillis()

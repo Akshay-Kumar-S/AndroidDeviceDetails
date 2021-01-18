@@ -9,6 +9,13 @@
     <string name="location">Location</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
+    <string name="select_date">select Date</string>
+    <string name="time">Sl No</string>
+    <string name="count">count: </string>
+    <string name="geohash">GeoHash</string>
+    <string name="tillToday">Till Today</string>
+    <string name="no_data">No Data</string>
+    <string name="sort_direction_arrow">sort direction arrow</string>
     <string name="battery_info">Battery Info</string>
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
@@ -55,4 +62,8 @@
     <string name="no_data">No Data</string>
     <string name="sort_direction_arrow">sort direction arrow</string>
     <string name="sort">Sort</string>
+    <string name="zero">0</string>
+    <string name="geohash">GeoHash</string>
+    <string name="address">Address</string>
+    <string name="location_icon">location icon</string>
 </resources>
