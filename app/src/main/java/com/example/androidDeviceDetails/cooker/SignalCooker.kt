@@ -2,9 +2,10 @@ package com.example.androidDeviceDetails.cooker
 
 import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
-import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
+import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.signalModels.Usage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -21,36 +22,32 @@ class SignalCooker : BaseCooker() {
      * >
      * Overrides : [cook] in [BaseCooker]
      * @param time data class object that contains start time and end time.
-     * @param iCookingDone A callback that accepts the cooked list once cooking is done
+     * @param callback A callback that accepts the cooked list once cooking is done
      */
-    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
             Log.e("time11", "${System.currentTimeMillis()}")
             val signalList = db.signalDao().getAllBetween(time.startTime, time.endTime)
-            val bandUsageList = ArrayList<bandUsage>()
+
+            val cellularBandUsage = ArrayList<Usage>()
             var previousSignalEntity = signalList.first()
 
             signalList.forEach { signalEntity ->
-                if (bandUsageList.none { it.bandName == signalEntity.band })
-                    bandUsageList.add(bandUsage(signalEntity.band, 0))
+                if (cellularBandUsage.none { it.bandName == signalEntity.band })
+                    cellularBandUsage.add(Usage(signalEntity.band, 0))
 
-                bandUsageList.first { it.bandName == previousSignalEntity.band }.time+=(signalEntity.timeStamp- previousSignalEntity.timeStamp)
+                cellularBandUsage.first { it.bandName == previousSignalEntity.band }.time+=(signalEntity.timeStamp- previousSignalEntity.timeStamp)
                 previousSignalEntity=signalEntity
             }
 
 
-            bandUsageList.sortBy { it.time }
-            var hignestUsedBand = bandUsageList.last()
-            Log.e("usage", "$bandUsageList")
+            cellularBandUsage.sortBy { it.time }
+            var hignestUsedBand = cellularBandUsage.last()
+            Log.e("usage", "$cellularBandUsage")
             if (signalList.isNotEmpty()) {
-                iCookingDone.onComplete(signalList as ArrayList<T>)
-            } else iCookingDone.onComplete(arrayListOf())
+                callback.onDone(signalList as ArrayList<T>)
+            } else callback.onDone(arrayListOf())
         }
     }
 }
 
-data class bandUsage(
-    var bandName: String? = null,
-    var time: Long,
-
-    )
