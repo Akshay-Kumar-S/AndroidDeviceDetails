@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
+import android.os.Build
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
@@ -12,7 +14,6 @@ import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
-import com.example.androidDeviceDetails.utils.WifiLevel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -43,12 +44,23 @@ class WifiCollector : BaseCollector() {
             val strength: Int
             val linkSpeed: Int
             val level: Int
+            val operatorName: String
 
             val wifiManager: WifiManager =
                 context?.applicationContext?.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
             strength = wifiManager.connectionInfo.rssi
             linkSpeed = wifiManager.connectionInfo.linkSpeed
-            level = getWifiLevel(strength)
+            operatorName = wifiManager.connectionInfo.ssid
+            level = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+                wifiManager.calculateSignalLevel(strength)
+            } else {
+                WifiManager.calculateSignalLevel(strength, 4)
+            }
+            Log.d("wifi", "onReceive: $level $strength ")
+            Log.d(
+                "wifi",
+                "onReceive: ${wifiManager.connectionInfo.bssid}  ${wifiManager.connectionInfo.networkId} ${wifiManager.connectionInfo.ssid} "
+            )
 
             val db = RoomDB.getDatabase(context)
             signalRaw = SignalRaw(
@@ -56,7 +68,12 @@ class WifiCollector : BaseCollector() {
                 Signal.WIFI.ordinal,
                 strength,
                 linkSpeed.toString(),
-                level
+                level,
+                operatorName,
+                null,
+                null,
+                null
+
             )
             GlobalScope.launch {
                 db?.signalDao()?.insertAll(signalRaw)
@@ -69,15 +86,15 @@ class WifiCollector : BaseCollector() {
          * @return a single integer from 0 to 4 representing general signal quality. 0 represents
          * very poor while 4 represents excellent signal quality.
          **/
-        private fun getWifiLevel(strength: Int): Int {
-            return when {
-                strength > -30 -> WifiLevel.GREAT.ordinal
-                strength > -50 -> WifiLevel.GOOD.ordinal
-                strength > -60 -> WifiLevel.MODERATE.ordinal
-                strength > -70 -> WifiLevel.POOR.ordinal
-                else -> WifiLevel.NONE.ordinal
-            }
-        }
+        /*    private fun getWifiLevel(strength: Int): Int {
+                return when {
+                    strength > -30 -> WifiLevel.GREAT.ordinal
+                    strength > -50 -> WifiLevel.GOOD.ordinal
+                    strength > -60 -> WifiLevel.MODERATE.ordinal
+                    strength > -70 -> WifiLevel.POOR.ordinal
+                    else -> WifiLevel.NONE.ordinal
+                }
+            }*/
     }
 
     /**
@@ -92,6 +109,9 @@ class WifiCollector : BaseCollector() {
             WifiReceiver,
             filter
         )
+    }
+
+    override fun collect() {
     }
 
     /**
