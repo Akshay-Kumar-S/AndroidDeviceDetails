@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/count"
+        app:layout_constraintEnd_toStartOf="@id/countText"
         app:layout_constraintStart_toEndOf="@id/locationIcon"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,15 +40,24 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/countText"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="count: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/count"
+        app:layout_constraintStart_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintDimensionRatio="1:1"
         android:text="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/line1"
+        app:layout_constraintStart_toEndOf="@id/countText"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

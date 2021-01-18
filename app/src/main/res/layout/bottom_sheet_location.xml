@@ -27,7 +27,7 @@
         android:layout_weight="0.3"
         android:clickable="true"
         android:focusable="true"
-        android:gravity="right"
+        android:gravity="end"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/locationListView"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.androidDeviceDetails.R
@@ -134,8 +132,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
 //        locationViewModel.onNothingSelected(selectedRow)
     }
 
-    override fun onItemClicked(data: CountModel) {
-        locationViewModel.focusOnMap(data.geoHash)
+    override fun onItemClicked(clickedItem: CountModel) {
+        locationViewModel.focusOnMap(clickedItem.geoHash)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
