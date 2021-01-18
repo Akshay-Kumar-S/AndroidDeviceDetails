@@ -80,6 +80,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
         )
+        binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
+        binding.pullToRefresh.setOnRefreshListener {
+            mainActivityController.refreshCooker()
+
+            binding.pullToRefresh.isRefreshing = false
+        }
     }
 
     private fun requestPermissions() =

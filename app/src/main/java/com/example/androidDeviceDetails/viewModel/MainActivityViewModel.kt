@@ -17,15 +17,22 @@ import com.example.androidDeviceDetails.models.MainActivityCookedData
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 import kotlin.math.ceil
+import kotlin.math.pow
+
+private const val TAG = "MainActivityViewModel"
 
 class MainActivityViewModel(
     private val binding: ActivityMainBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var mainActivityModel = MainActivityCookedData(null, -1, null)
+    var mainActivityModel = MainActivityCookedData(null, -1, null)
     private val arrayList = arrayListOf<CardItem>()
     override fun <T> onDone(outputList: ArrayList<T>) {
+        Log.d(TAG, "onDone")
         val finalList = outputList.filterIsInstance<MainActivityCookedData>()
+        if (arrayList.size == 3) {
+            refresh()
+        }
         if (outputList.isNotEmpty()) {
             val firstElement = finalList.first()
             when {
@@ -51,10 +58,17 @@ class MainActivityViewModel(
         "Signal Data",
     )
 
+    fun refresh() {
+        val recyclerView = binding.root.findViewById<View>(R.id.recycler_view) as RecyclerView
+        mainActivityModel = MainActivityCookedData(null, -1, null)
+        arrayList.clear()
+        recyclerView.post { recyclerView.adapter?.notifyDataSetChanged() }
+    }
+
     private fun updateUI() {
 
         val recyclerView = binding.root.findViewById<View>(R.id.recycler_view) as RecyclerView
-        val cardsTitles=context.resources.getStringArray(R.array.card_names)
+        val cardsTitles = context.resources.getStringArray(R.array.card_names)
 
         recyclerView.layoutManager = LinearLayoutManager(
             context,
@@ -62,13 +76,12 @@ class MainActivityViewModel(
             false
         )
         recyclerView.itemAnimator = DefaultItemAnimator()
-
         val itemModel = CardItem()
 
         if (mainActivityModel.appInfo != null && arrayList.none { it.tag == ActivityTag.APP_INFO.ordinal }) {
             itemModel.tag = ActivityTag.APP_INFO.ordinal
             itemModel.image = R.drawable.ic_twotone_system_update_24
-            itemModel.title =cardsTitles[0]
+            itemModel.title = cardsTitles[0]
             val appInfo = mainActivityModel.appInfo
             itemModel.layoutType = LayoutType.PROGRESSBAR_LAYOUT.ordinal
             itemModel.label1 = "System Apps : "
@@ -87,8 +100,7 @@ class MainActivityViewModel(
             itemModel.progressbarSecond = userAppsProgress
             arrayList.add(itemModel)
             Log.d("MainViewModel", "AppInfo  ")
-        }
-        else if (mainActivityModel.totalDrop != -1L && arrayList.none { it.tag == ActivityTag.BATTERY_DATA.ordinal }) {
+        } else if (mainActivityModel.totalDrop != -1L && arrayList.none { it.tag == ActivityTag.BATTERY_DATA.ordinal }) {
             itemModel.tag = ActivityTag.BATTERY_DATA.ordinal
             itemModel.image = R.drawable.ic_round_battery_std_24
             itemModel.title = cardsTitles[1]
@@ -99,29 +111,30 @@ class MainActivityViewModel(
             itemModel.subscript = "Used"
             arrayList.add(itemModel)
             Log.d("MainViewModel", "Battery data  ")
-        }
-        else if (mainActivityModel.deviceNetworkUsage != null && arrayList.none { it.tag == ActivityTag.DEVICE_NETWORK_USAGE.ordinal }) {
+        } else if (mainActivityModel.deviceNetworkUsage != null && arrayList.none { it.tag == ActivityTag.DEVICE_NETWORK_USAGE.ordinal }) {
             itemModel.tag = ActivityTag.DEVICE_NETWORK_USAGE.ordinal
             itemModel.image = R.drawable.ic_round_data_usage_24
             itemModel.title = cardsTitles[2]
             itemModel.layoutType = LayoutType.PROGRESSBAR_LAYOUT.ordinal
             itemModel.label1 = "Wifi Data : "
-            val wifiData = mainActivityModel.deviceNetworkUsage!!.first/(1024*1024)
-            val cellularData = mainActivityModel.deviceNetworkUsage!!.second/(1024*1024)
+            val wifiData = mainActivityModel.deviceNetworkUsage!!.first / 1024.0.pow(2.toDouble())
+            val cellularData = mainActivityModel.deviceNetworkUsage!!.second / 1024.0.pow(2.toDouble())
             val total = wifiData + cellularData
             itemModel.label1Value = Utils.getFileSize(mainActivityModel.deviceNetworkUsage!!.first)
             val wifiDataProgress = ceil(
-                ((wifiData).toDouble().div(total).times(100))
+                ((wifiData).div(total).times(100))
             ).toInt()
             itemModel.label2 = "Cellular Data : "
             itemModel.label2Value = Utils.getFileSize(mainActivityModel.deviceNetworkUsage!!.second)
             val cellularDataProgress = ceil(
-                ((cellularData).toDouble().div(total).times(100))
+                ((cellularData).div(total).times(100))
             ).toInt()
             itemModel.progressbarFirst = wifiDataProgress + cellularDataProgress
             itemModel.progressbarSecond = cellularDataProgress
             arrayList.add(itemModel)
-            Log.d("MainViewModel", "AppInfo  ")
+            Log.d("WifiData", "AppInfo $wifiDataProgress ")
+            Log.d("WifiData", "AppInfo $cellularDataProgress ")
+
         }
         Log.d("MainViewModel", "onDone: ${arrayList.size}")
 

@@ -65,7 +65,7 @@ class MainActivityCooker : BaseCooker() {
         }
         GlobalScope.launch(Dispatchers.IO) {
             appInfoCallBack.onDone(
-                RoomDB.getDatabase()?.appsDao()?.getAll() as ArrayList<AppsEntity>
+                RoomDB.getDatabase()?.appsDao()?.getAll()?.filter { it.currentVersionCode!=0L } as ArrayList<AppsEntity>
             )
         }
         BatteryCooker().cook(time, batteryCallBack)
