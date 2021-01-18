@@ -29,4 +29,8 @@
         <item name="android:statusBarColor" >?attr/mainBackground</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="CircularDeterminateProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/guage_progress</item>
+    </style>
 </resources>
