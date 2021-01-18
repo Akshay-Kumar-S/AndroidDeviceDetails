@@ -19,13 +19,12 @@ import java.util.*
 import kotlin.math.ceil
 import kotlin.math.pow
 
-private const val TAG = "MainActivityViewModel"
 
 class MainActivityViewModel(
     private val binding: ActivityMainBinding,
     val context: Context
 ) : BaseViewModel() {
-    var mainActivityModel = MainActivityCookedData(null, -1, null)
+    private var mainActivityModel = MainActivityCookedData(null, -1, null)
     private val arrayList = arrayListOf<CardItem>()
     override fun <T> onDone(outputList: ArrayList<T>) {
         val finalList = outputList.filterIsInstance<MainActivityCookedData>()
@@ -57,7 +56,7 @@ class MainActivityViewModel(
         "Signal Data",
     )
 
-    fun refresh() {
+    private fun refresh() {
         val recyclerView = binding.root.findViewById<View>(R.id.recycler_view) as RecyclerView
         mainActivityModel = MainActivityCookedData(null, -1, null)
         arrayList.clear()
@@ -117,7 +116,8 @@ class MainActivityViewModel(
             itemModel.layoutType = LayoutType.PROGRESSBAR_LAYOUT.ordinal
             itemModel.label1 = "Wifi Data : "
             val wifiData = mainActivityModel.deviceNetworkUsage!!.first / 1024.0.pow(2.toDouble())
-            val cellularData = mainActivityModel.deviceNetworkUsage!!.second / 1024.0.pow(2.toDouble())
+            val cellularData =
+                mainActivityModel.deviceNetworkUsage!!.second / 1024.0.pow(2.toDouble())
             val total = wifiData + cellularData
             itemModel.label1Value = Utils.getFileSize(mainActivityModel.deviceNetworkUsage!!.first)
             val wifiDataProgress = ceil(
