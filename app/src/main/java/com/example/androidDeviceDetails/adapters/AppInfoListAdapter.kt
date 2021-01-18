@@ -36,12 +36,12 @@ class AppInfoListAdapter(
         }
     }
 
-    @SuppressLint("SetTextI18n", "InflateParams")
+    @SuppressLint("InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
         if (position == 0) {
-            val holder: ProgressbarViewHolder?
+            var holder: ProgressbarViewHolder?
             if (convertView == null) {
                 vi = layoutInflater.inflate(R.layout.appinfo_pie_chart, null)
                 holder = ProgressbarViewHolder(
@@ -56,42 +56,10 @@ class AppInfoListAdapter(
                 )
                 vi.tag = holder
             } else holder = vi?.tag as ProgressbarViewHolder
-            val total = appList.size.toDouble()
-            val enrolledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                    .eachCount()
-            val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
-
-            val installedAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                    .eachCount()
-            val installed =
-                ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val updateAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                    .eachCount()
-            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            val uninstalledAppCount =
-                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                    .eachCount()
-            val uninstalled =
-                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-            holder.updated_progressBar.progress = (updated.toInt())
-            holder.installed_progressBar.progress = (updated + installed).toInt()
-            holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
-            holder.uninstalled_progressbar.progress =
-                (updated + installed + enrolled + uninstalled).toInt()
-            holder.enroll_count.text = (enrolledAppCount[true] ?: 0).toString()
-            holder.install_count.text = (installedAppCount[true] ?: 0).toString()
-            holder.update_count.text = (updateAppCount[true] ?: 0).toString()
-            holder.uninstall_count.text = (uninstalledAppCount[true] ?: 0).toString()
-
+            holder = setProgressbarHolder(holder)
 
         } else {
-            val holder: AppInfoItemViewHolder?
+            var holder: AppInfoItemViewHolder?
             if (convertView == null) {
                 vi = layoutInflater.inflate(resource, null)
                 holder = AppInfoItemViewHolder(
@@ -104,37 +72,76 @@ class AppInfoListAdapter(
                 )
                 vi.tag = holder
             } else holder = vi?.tag as AppInfoItemViewHolder
-
-            holder.appNameView.text = items[position].appName
-            holder.versionCodeTextView.text =
-                "Version Code : " + items[position].versionCode.toString()
-            holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
-            holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
-            val color = when (items[position].eventType.ordinal) {
-                0 -> R.color.teal_700
-                1 -> R.color.purple_500
-                2 -> R.color.pink
-                3 -> R.color.mat_yellow
-                else -> R.color.teal_700
-            }
-            holder.uninstallButton.isVisible = true
-            holder.eventBadge.setColorFilter(
-                ContextCompat.getColor(context, color),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-            )
-            holder.uninstallButton.tag = items[position].packageName
-            if (items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal) {
-                holder.eventBadge.isVisible = false
-            }
-            if (items[position].isSystemApp) {
-                holder.uninstallButton.isVisible = false
-            } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
-                holder.uninstallButton.isVisible = false
-            }
-
-
+            holder = setAppInfoHolder(holder,position)
         }
         return vi!!
+    }
+
+    private fun setProgressbarHolder(holder: ProgressbarViewHolder): ProgressbarViewHolder {
+        val total = appList.size.toDouble()
+        val enrolledAppCount =
+            appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+                .eachCount()
+        val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
+
+        val installedAppCount =
+            appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+                .eachCount()
+        val installed =
+            ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
+
+        val updateAppCount =
+            appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+                .eachCount()
+        val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
+
+        val uninstalledAppCount =
+            appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+                .eachCount()
+        val uninstalled =
+            ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
+
+        holder.updated_progressBar.progress = (updated.toInt())
+        holder.installed_progressBar.progress = (updated + installed).toInt()
+        holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
+        holder.uninstalled_progressbar.progress =
+            (updated + installed + enrolled + uninstalled).toInt()
+        holder.enroll_count.text = (enrolledAppCount[true] ?: 0).toString()
+        holder.install_count.text = (installedAppCount[true] ?: 0).toString()
+        holder.update_count.text = (updateAppCount[true] ?: 0).toString()
+        holder.uninstall_count.text = (uninstalledAppCount[true] ?: 0).toString()
+        return holder
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setAppInfoHolder(holder: AppInfoItemViewHolder, position: Int): AppInfoItemViewHolder{
+        holder.appNameView.text = items[position].appName
+        holder.versionCodeTextView.text =
+            "Version Code : " + items[position].versionCode.toString()
+        holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
+        holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
+        val color = when (items[position].eventType.ordinal) {
+            0 -> R.color.teal_700
+            1 -> R.color.purple_500
+            2 -> R.color.pink
+            3 -> R.color.mat_yellow
+            else -> R.color.teal_700
+        }
+        holder.uninstallButton.isVisible = true
+        holder.eventBadge.setColorFilter(
+            ContextCompat.getColor(context, color),
+            android.graphics.PorterDuff.Mode.MULTIPLY
+        )
+        holder.uninstallButton.tag = items[position].packageName
+        if (items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal) {
+            holder.eventBadge.isVisible = false
+        }
+        if (items[position].isSystemApp) {
+            holder.uninstallButton.isVisible = false
+        } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
+            holder.uninstallButton.isVisible = false
+        }
+        return holder
     }
 
 }

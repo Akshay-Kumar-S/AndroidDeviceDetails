@@ -30,12 +30,7 @@ object AppInfoCollectionHelper {
             if (id == 0) {
                 writeToAppsDb(0, packageName, latestAppDetails, db)
                 id = db.appsDao().getIdByName(packageName)
-                writeToAppHistoryDb(
-                    id,
-                    EventType.APP_INSTALLED.ordinal,
-                    latestAppDetails,
-                    db
-                )
+                writeToAppHistoryDb(id, EventType.APP_INSTALLED.ordinal, latestAppDetails, db)
             } else {
                 val currentAppHistory = db.appsDao().getById(id)
                 val event =
