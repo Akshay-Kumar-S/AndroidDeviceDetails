@@ -7,9 +7,13 @@ import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
+import com.example.androidDeviceDetails.utils.SortBy
 
 class BatteryViewModel(private val binding: ActivityBatteryBinding, val context: Context) :
     BaseViewModel() {
+
+    private lateinit var itemList: ArrayList<BatteryAppEntry>
+    private var sortBy = 0
 
     /**
      * This method is called once the [BatteryCooker] finishes cooking.
@@ -17,19 +21,30 @@ class BatteryViewModel(private val binding: ActivityBatteryBinding, val context:
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
-            val temp = outputList.filterIsInstance<BatteryAppEntry>() as ArrayList<BatteryAppEntry>
-            val totalDrop = temp.sumOf { it.drop }
-            val adapter = BatteryListAdapter(context, R.layout.battery_tile, temp)
+            itemList = outputList.filterIsInstance<BatteryAppEntry>() as ArrayList<BatteryAppEntry>
+            val totalDrop = itemList.sumOf { it.drop }
             binding.root.post {
-                binding.listView.adapter = adapter
+                sort(sortBy)
                 val totalText = "Total drop is $totalDrop %"
                 binding.total.text = totalText
             }
         } else
             binding.root.post {
-                binding.listView.adapter =
-                    BatteryListAdapter(context, R.layout.battery_tile, arrayListOf())
+                sort(sortBy)
                 binding.total.text = context.getString(R.string.no_usage_recorded)
             }
+    }
+
+    override fun sort(type: Int) {
+        sortBy = type
+        if (this::itemList.isInitialized) {
+            when (type) {
+                SortBy.Descending.ordinal -> itemList.sortByDescending { it.drop }
+                SortBy.Ascending.ordinal -> itemList.sortBy { it.drop }
+            }
+            val adapter = BatteryListAdapter(context, R.layout.battery_tile, itemList)
+            binding.listView.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
     }
 }
