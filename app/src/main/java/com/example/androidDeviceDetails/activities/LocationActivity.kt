@@ -27,12 +27,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValueSelectedListener,OnItemClickListener {
+class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickListener {
     private lateinit var activityController: ActivityController<LocationModel>
     lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var binding: ActivityLocationBinding
-    private lateinit var selectedRow: View
 
     companion object {
         const val NAME = "LOCATION_ACTIVITY"
@@ -44,20 +43,13 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
         setContentView(binding.root)
         initRecyclerView()
         initBottomSheet()
-        activityController = ActivityController(
-            NAME,
-            binding,
-            this,
-            binding.bottomLocation.dateTimePickerLayout,
-            supportFragmentManager
-        )
+        activityController = ActivityController(NAME, binding, this,
+            binding.bottomLocation.dateTimePickerLayout, supportFragmentManager)
         locationViewModel = activityController.viewModel as LocationViewModel
-//        selectedRow = binding.bottomLocation.noData
         initDatePicker()
         initMap()
         binding.apply {
             bottomLocation.countView.setOnClickListener(this@LocationActivity)
-//            bottomLocation.barChart.setOnChartValueSelectedListener(this@LocationActivity)
         }
     }
 
@@ -118,18 +110,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnChartValue
             R.id.endTime -> activityController.setEndTime(this)
             R.id.endDate -> activityController.setEndDate(this)
         }
-    }
-
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-//        locationViewModel.onValueSelected(e, selectedRow)
-//        if (e != null) {
-//            selectedRow = binding.locationListView.layoutManager?.findViewByPosition(e.x.toInt())!!
-//        }
-        Log.d("index", "onValueSelected: ${e?.x?.toInt()}")
-    }
-
-    override fun onNothingSelected() {
-//        locationViewModel.onNothingSelected(selectedRow)
     }
 
     override fun onItemClicked(clickedItem: CountModel) {

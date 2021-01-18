@@ -11,7 +11,7 @@
     <string name="app_info">App info</string>
     <string name="select_date">select Date</string>
     <string name="time">Sl No</string>
-    <string name="count">Count</string>
+    <string name="count">count: </string>
     <string name="geohash">GeoHash</string>
     <string name="tillToday">Till Today</string>
     <string name="no_data">No Data</string>
@@ -43,4 +43,8 @@
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
     <string name="sort">Sort</string>
+    <string name="zero">0</string>
+    <string name="geohash">GeoHash</string>
+    <string name="address">Address</string>
+    <string name="location_icon">location icon</string>
 </resources>
