@@ -2,15 +2,9 @@ package com.example.androidDeviceDetails.base
 
 import android.content.Context
 import androidx.core.view.isVisible
-import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.databinding.*
-import com.example.androidDeviceDetails.ui.AppInfoActivity
-import com.example.androidDeviceDetails.ui.BatteryActivity
-import com.example.androidDeviceDetails.ui.NetworkUsageActivity
-import com.example.androidDeviceDetails.viewModel.AppInfoViewModel
-import com.example.androidDeviceDetails.viewModel.BatteryViewModel
-import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
-import com.example.androidDeviceDetails.viewModel.SignalViewModel
+import com.example.androidDeviceDetails.ui.*
+import com.example.androidDeviceDetails.viewModel.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,9 +17,11 @@ abstract class BaseViewModel {
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
                 SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)
+                LocationActivity.NAME -> LocationViewModel(
+                    binding as ActivityLocationBinding, context
+                )
                 NetworkUsageActivity.NAME -> NetworkUsageViewModel(
-                    binding as ActivityAppDataBinding,
-                    context
+                    binding as ActivityAppDataBinding, context
                 )
                 else -> null
             }
@@ -52,8 +48,8 @@ abstract class BaseViewModel {
         }
     }
 
-    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, enable: Boolean){
-        dateTimePickerBinding.root.post{dateTimePickerBinding.progressBar.isVisible = enable}
+    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, enable: Boolean) {
+        dateTimePickerBinding.root.post { dateTimePickerBinding.progressBar.isVisible = enable }
     }
 
     open fun filter(type: Int) {}

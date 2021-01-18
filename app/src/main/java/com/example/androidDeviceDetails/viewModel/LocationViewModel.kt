@@ -42,6 +42,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             ).show()
         }
 
+
     override fun sort(type: Int) {
         binding.root.post {
             (binding.bottomLocation.locationListView.adapter as LocationAdapter).sortView(type)
@@ -49,7 +50,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         toggleSortButton()
     }
 
-    override fun <T> onData(outputList: ArrayList<T>) {
+    override fun <T> onDone(outputList: ArrayList<T>) {
         cookedDataList = outputList as ArrayList<LocationModel>
         if (cookedDataList.isEmpty())
             onNoData()

@@ -23,7 +23,7 @@ class ActivityController<T>(
 ) {
 
     private var cooker: BaseCooker? = BaseCooker.getCooker(dataType)
-    private var viewModel: BaseViewModel? = BaseViewModel.getViewModel(dataType, binding, context)
+    var viewModel: BaseViewModel? = BaseViewModel.getViewModel(dataType, binding, context)
     private var startCalendar: Calendar = Calendar.getInstance()
     private var endCalendar: Calendar = Calendar.getInstance()
     private var previousStartTime: Long = 0

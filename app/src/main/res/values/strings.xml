@@ -9,13 +9,6 @@
     <string name="location">Location</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
-    <string name="select_date">select Date</string>
-    <string name="time">Sl No</string>
-    <string name="count">count: </string>
-    <string name="geohash">GeoHash</string>
-    <string name="tillToday">Till Today</string>
-    <string name="no_data">No Data</string>
-    <string name="sort_direction_arrow">sort direction arrow</string>
     <string name="battery_info">Battery Info</string>
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
@@ -51,13 +44,11 @@
     <string name="default_font" translatable="false">sans-serif</string>
     <string name="strength">Strength</string>
     <string name="type">Type:</string>
-    <string name="time">Time</string>
     <string name="no_records_found">No records found</string>
     <string name="default_text">DEFAULT TEXT</string>
     <string name="select_date">select Date</string>
     <string name="time">Sl No</string>
     <string name="count">Count</string>
-    <string name="geohash">GeoHash</string>
     <string name="tillToday">Till Today</string>
     <string name="no_data">No Data</string>
     <string name="sort_direction_arrow">sort direction arrow</string>

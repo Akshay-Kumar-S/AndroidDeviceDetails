@@ -54,10 +54,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.LocationActivity"
+        <activity android:name=".ui.LocationActivity"
             android:label="Location Details"
-            android:parentActivityName=".activities.MainActivity"/>
-        <activity android:name=".ui.LocationActivity" />
+            android:parentActivityName=".ui.MainActivity"/>
         <activity
             android:name=".ui.SignalActivity"
             android:label="Signal Strength"

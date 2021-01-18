@@ -13,6 +13,8 @@ import com.example.androidDeviceDetails.models.appInfoModels.AppInfoRaw
 import com.example.androidDeviceDetails.models.batteryModels.AppEventRaw
 import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
 import com.example.androidDeviceDetails.models.batteryModels.BatteryRaw
+import com.example.androidDeviceDetails.models.locationModels.ILocationDao
+import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
 import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao

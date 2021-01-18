@@ -1,8 +1,7 @@
-package com.example.androidDeviceDetails.activities
+package com.example.androidDeviceDetails.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +14,6 @@ import com.example.androidDeviceDetails.models.locationModels.CountModel
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
@@ -43,7 +39,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
         setContentView(binding.root)
         initRecyclerView()
         initBottomSheet()
-        activityController = ActivityController(NAME, binding, this,
+        activityController = ActivityController(
+            NAME, binding, this,
             binding.bottomLocation.dateTimePickerLayout, supportFragmentManager)
         locationViewModel = activityController.viewModel as LocationViewModel
         initDatePicker()

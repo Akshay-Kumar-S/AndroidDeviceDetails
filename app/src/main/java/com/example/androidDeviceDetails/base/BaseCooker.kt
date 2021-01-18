@@ -1,15 +1,9 @@
 package com.example.androidDeviceDetails.base
 
-import com.example.androidDeviceDetails.ui.SignalActivity
-import com.example.androidDeviceDetails.cooker.AppInfoCooker
-import com.example.androidDeviceDetails.cooker.BatteryCooker
-import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
-import com.example.androidDeviceDetails.cooker.SignalCooker
+import com.example.androidDeviceDetails.cooker.*
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.ui.AppInfoActivity
-import com.example.androidDeviceDetails.ui.BatteryActivity
-import com.example.androidDeviceDetails.ui.NetworkUsageActivity
+import com.example.androidDeviceDetails.ui.*
 
 abstract class BaseCooker {
     abstract fun <T> cook(time: TimePeriod, callback: ICookingDone<T>)
@@ -21,6 +15,7 @@ abstract class BaseCooker {
                 AppInfoActivity.NAME -> AppInfoCooker()
                 NetworkUsageActivity.NAME -> NetworkUsageCooker()
                 SignalActivity.NAME -> SignalCooker()
+                LocationActivity.NAME -> LocationCooker()
                 else -> null
             }
         }
