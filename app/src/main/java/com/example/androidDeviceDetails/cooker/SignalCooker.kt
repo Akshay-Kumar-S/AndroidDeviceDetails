@@ -5,6 +5,7 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,22 +29,25 @@ class SignalCooker : BaseCooker() {
         GlobalScope.launch {
             Log.e("time11", "${System.currentTimeMillis()}")
             val signalList = db.signalDao().getAllBetween(time.startTime, time.endTime)
+            val cellularList = db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
+            val wifiList = db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
+            val bandUsageList = ArrayList<bandUsage>()
 
             val cellularBandUsage = ArrayList<Usage>()
             var previousSignalEntity = signalList.first()
 
             signalList.forEach { signalEntity ->
-                if (cellularBandUsage.none { it.bandName == signalEntity.band })
-                    cellularBandUsage.add(Usage(signalEntity.band, 0))
+                if (bandUsageList.none { it.bandName == signalEntity.band })
+                    bandUsageList.add(bandUsage(signalEntity.band, 0))
 
-                cellularBandUsage.first { it.bandName == previousSignalEntity.band }.time+=(signalEntity.timeStamp- previousSignalEntity.timeStamp)
+                bandUsageList.first { it.bandName == previousSignalEntity.band }.time+=(signalEntity.timeStamp- previousSignalEntity.timeStamp)
                 previousSignalEntity=signalEntity
             }
 
 
-            cellularBandUsage.sortBy { it.time }
-            var hignestUsedBand = cellularBandUsage.last()
-            Log.e("usage", "$cellularBandUsage")
+            bandUsageList.sortBy { it.time }
+            var hignestUsedBand = bandUsageList.last()
+            Log.e("usage", "$bandUsageList")
             if (signalList.isNotEmpty()) {
                 callback.onDone(signalList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
