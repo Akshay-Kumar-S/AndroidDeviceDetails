@@ -5,8 +5,8 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.models.signalModels.Usage
+import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -28,25 +28,48 @@ class SignalCooker : BaseCooker() {
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
             Log.e("time11", "${System.currentTimeMillis()}")
-            val cellularList = db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
-            val wifiList = db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
-            val bandUsageList = ArrayList<Usage>()
+            val cellularList =
+                db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
+            val wifiList =
+                db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
 
             val cellularBandUsage = ArrayList<Usage>()
+            val cellularOperatorUsage = ArrayList<Usage>()
+            val wifiOperatorUsage = ArrayList<Usage>()
+            val wifiLevelUsage = ArrayList<Usage>()
+
+
             var previousSignalEntity = cellularList.first()
 
             cellularList.forEach { signalEntity ->
-                if (bandUsageList.none { it.bandName == signalEntity.band })
-                    bandUsageList.add(Usage(signalEntity.band, 0))
+                if (cellularBandUsage.none { it.name == signalEntity.band })
+                    cellularBandUsage.add(Usage(signalEntity.band, 0))
+                cellularBandUsage.first { it.name == previousSignalEntity.band }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
 
-                bandUsageList.first { it.bandName == previousSignalEntity.band }.time+=(signalEntity.timeStamp- previousSignalEntity.timeStamp)
-                previousSignalEntity=signalEntity
+                if (cellularOperatorUsage.none { it.name == signalEntity.operatorName })
+                    cellularOperatorUsage.add(Usage(signalEntity.operatorName, 0))
+                cellularOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+
+                previousSignalEntity = signalEntity
+            }
+
+            previousSignalEntity = wifiList.first()
+            wifiList.forEach { signalEntity ->
+                if (wifiLevelUsage.none { it.name == signalEntity.level.toString() })
+                    wifiLevelUsage.add(Usage(signalEntity.level.toString(), 0))
+                cellularBandUsage.first { it.name == previousSignalEntity.level.toString() }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+
+                if (wifiOperatorUsage.none { it.name == signalEntity.operatorName })
+                    wifiOperatorUsage.add(Usage(signalEntity.operatorName, 0))
+                wifiOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+
+                previousSignalEntity = signalEntity
             }
 
 
-            bandUsageList.sortBy { it.time }
-            var hignestUsedBand = bandUsageList.last()
-            Log.e("usage", "$bandUsageList")
+            cellularBandUsage.sortBy { it.time }
+            var hignestUsedBand = cellularBandUsage.last()
+            Log.e("usage", "$cellularBandUsage $cellularOperatorUsage $wifiLevelUsage $wifiOperatorUsage")
             if (cellularList.isNotEmpty()) {
                 callback.onDone(cellularList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
