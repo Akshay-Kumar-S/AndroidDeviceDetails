@@ -96,10 +96,10 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.startTime -> controller.setStartTime(this)
-            R.id.startDate -> controller.setStartDate(this)
-            R.id.endTime -> controller.setEndTime(this)
-            R.id.endDate -> controller.setEndDate(this)
+            R.id.startTime -> controller.setTime(this, R.id.startTime)
+            R.id.startDate -> controller.setDate(this, R.id.startDate)
+            R.id.endTime -> controller.setTime(this, R.id.endTime)
+            R.id.endDate -> controller.setDate(this, R.id.endDate)
         }
     }
 

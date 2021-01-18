@@ -34,10 +34,10 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.startTime -> networkUsageController.setStartTime(this)
-            R.id.startDate -> networkUsageController.setStartDate(this)
-            R.id.endTime -> networkUsageController.setEndTime(this)
-            R.id.endDate -> networkUsageController.setEndDate(this)
+            R.id.startTime -> networkUsageController.setTime(this, R.id.startTime)
+            R.id.startDate -> networkUsageController.setDate(this, R.id.startDate)
+            R.id.endTime -> networkUsageController.setTime(this, R.id.endTime)
+            R.id.endDate -> networkUsageController.setDate(this, R.id.endDate)
         }
     }
 

@@ -17,7 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.views.CustomZoomButtonsDisplay
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
 import java.util.*
@@ -99,10 +98,10 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
                 } else
                     activityController.sortView(SortBy.Ascending.ordinal)
             }
-            R.id.startTime -> activityController.setStartTime(this)
-            R.id.startDate -> activityController.setStartDate(this)
-            R.id.endTime -> activityController.setEndTime(this)
-            R.id.endDate -> activityController.setEndDate(this)
+            R.id.startTime -> activityController.setTime(this, R.id.startTime)
+            R.id.startDate -> activityController.setDate(this, R.id.startDate)
+            R.id.endTime -> activityController.setTime(this, R.id.endTime)
+            R.id.endDate -> activityController.setDate(this, R.id.endDate)
         }
     }
 
