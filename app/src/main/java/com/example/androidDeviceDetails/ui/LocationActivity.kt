@@ -10,8 +10,7 @@ import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
-import com.example.androidDeviceDetails.models.locationModels.CountModel
-import com.example.androidDeviceDetails.models.locationModels.LocationModel
+import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,12 +18,14 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsDisplay
+import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
+import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickListener {
-    private lateinit var activityController: ActivityController<LocationModel>
+    private lateinit var activityController: ActivityController<LocationDisplayModel>
     lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var binding: ActivityLocationBinding
@@ -51,8 +52,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
     }
 
     private fun initRecyclerView() {
-        val arrayList = ArrayList<CountModel>()
-        arrayList.add(CountModel("NoData", 0, ""))
+        val arrayList = ArrayList<LocationDisplayModel>()
+        arrayList.add(LocationDisplayModel("NoData", 0, ""))
         binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList,this)
         binding.bottomLocation.locationListView.isNestedScrollingEnabled=true
     }
@@ -65,13 +66,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
         )
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         binding.apply{
-            mapview.setTileSource(TileSourceFactory.MAPNIK)
-            mapview.setMultiTouchControls(true)
-            mapview.zoomController.display.setPositions(
-                false,
-                CustomZoomButtonsDisplay.HorizontalPosition.RIGHT,
-                CustomZoomButtonsDisplay.VerticalPosition.CENTER
-            )
+            mapView.setTileSource(TileSourceFactory.MAPNIK)
+            mapView.setMultiTouchControls(true)
+            mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
         }
     }
 
@@ -109,8 +106,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
         }
     }
 
-    override fun onItemClicked(clickedItem: CountModel) {
-        locationViewModel.focusOnMap(clickedItem.geoHash)
+    override fun onItemClicked(clickedItem: LocationDisplayModel) {
+        locationViewModel.focusMapTo(clickedItem.geoHash)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 

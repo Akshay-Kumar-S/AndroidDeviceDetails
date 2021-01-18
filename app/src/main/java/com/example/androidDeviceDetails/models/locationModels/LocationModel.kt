@@ -7,7 +7,6 @@ data class LocationModel(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val latitude: Double?,
     val longitude: Double?,
-    val geoHash: String?,
     val time: Long
 )
 

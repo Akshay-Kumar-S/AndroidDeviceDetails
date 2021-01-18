@@ -38,6 +38,7 @@
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha=".4"
             android:text="@string/address" />
     </LinearLayout>
 
@@ -46,6 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="@string/count"
+        android:alpha=".4"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/count"
         app:layout_constraintStart_toEndOf="@id/line1"
@@ -57,6 +60,7 @@
         android:paddingEnd="10dp"
         app:layout_constraintDimensionRatio="1:1"
         android:text="@string/zero"
+        android:paddingStart="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/countText"

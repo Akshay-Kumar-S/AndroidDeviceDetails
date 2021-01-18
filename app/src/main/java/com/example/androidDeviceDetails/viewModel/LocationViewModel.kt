@@ -1,16 +1,13 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
-import android.location.Geocoder
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.locationModels.CountModel
-import com.example.androidDeviceDetails.models.locationModels.LocationModel
+import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
@@ -19,10 +16,7 @@ import org.osmdroid.views.overlay.Marker
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
-    private lateinit var countedData: Map<String, Int>
-    private lateinit var cookedDataList: ArrayList<LocationModel>
-    private val geoCoder: Geocoder = Geocoder(context)
-
+    private lateinit var cookedDataList: ArrayList<LocationDisplayModel>
 
     private fun toggleSortButton() {
         if (binding.bottomLocation.sortByCountViewArrow.tag == "down") {
@@ -37,9 +31,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 
     private fun onNoData() =
         binding.root.post {
-            Toast.makeText(
-                context, "No data on selected date", Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(context, "No data on selected date", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -50,52 +42,45 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         toggleSortButton()
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
-        cookedDataList = outputList as ArrayList<LocationModel>
+        cookedDataList = outputList as ArrayList<LocationDisplayModel>
         if (cookedDataList.isEmpty())
             onNoData()
         else {
-            countedData = cookedDataList.groupingBy { it.geoHash!! }.eachCount()
-            focusOnMap(countedData.keys.elementAt(0))
-            addPointOnMap(countedData)
-            buildAdapterView(countedData)
+            focusMapTo(cookedDataList[0].geoHash)
+            addPointOnMap()
+            buildAdapterView()
         }
     }
 
-    private fun buildAdapterView(data: Map<String, Int>) {
-        val countList: ArrayList<CountModel> = ArrayList()
-        for (geoHash in data) {
-            val latLong = decodeHash(geoHash.key)
-            val address =
-                geoCoder.getFromLocation(latLong.lat, latLong.lon, 1)[0]?.locality?.toString()
-            countList.add(CountModel(geoHash.key, geoHash.value, address ?: "cannot locate"))
-        }
+    private fun buildAdapterView() {
         binding.root.post {
             (binding.bottomLocation.locationListView.adapter as LocationAdapter).refreshList(
-                countList)
+                cookedDataList)
         }
     }
 
-    private fun addPointOnMap(data: Map<String, Int>) {
-        for (geoHash in data) {
-            val latLong = decodeHash(geoHash.key)
+    private fun addPointOnMap() {
+        for (location in cookedDataList) {
+            val latLong = decodeHash(location.geoHash)
             val geoPoint = GeoPoint(latLong.lat, latLong.lon)
-            val marker = Marker(binding.mapview)
+            val marker = Marker(binding.mapView)
             binding.root.post {
                 marker.icon = getDrawable(context, R.drawable.ic_location)
                 marker.position = geoPoint
-                marker.title = "Visited ${geoHash.value} times"
+                marker.title = "Visited ${location.count} times"
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                binding.mapview.overlays.add(marker)
+                binding.mapView.overlays.add(marker)
             }
         }
     }
 
-    fun focusOnMap(geoHash: String) {
+    fun focusMapTo(geoHash: String) {
         val latLong = decodeHash(geoHash)
         val geoPoint = GeoPoint(latLong.lat, latLong.lon)
         binding.root.post {
-            val mapController = binding.mapview.controller
+            val mapController = binding.mapView.controller
             mapController.setZoom(15.0)
             mapController.setCenter(geoPoint)
         }

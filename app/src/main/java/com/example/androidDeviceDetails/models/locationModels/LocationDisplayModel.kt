@@ -1,8 +1,6 @@
 package com.example.androidDeviceDetails.models.locationModels
 
-import java.net.Inet4Address
-
-data class CountModel(
+data class LocationDisplayModel(
     val geoHash: String,
     val count: Int,
     val address: String

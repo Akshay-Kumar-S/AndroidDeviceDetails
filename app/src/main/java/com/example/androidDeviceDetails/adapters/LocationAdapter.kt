@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
-import com.example.androidDeviceDetails.models.locationModels.CountModel
+import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
 import com.example.androidDeviceDetails.utils.SortBy
 
 
-class LocationAdapter(var dataSet: ArrayList<CountModel>, private val onItemClickListener: OnItemClickListener):
+class LocationAdapter(var dataSet: ArrayList<LocationDisplayModel>, private val onItemClickListener: OnItemClickListener):
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,9 +35,9 @@ class LocationAdapter(var dataSet: ArrayList<CountModel>, private val onItemClic
 
     override fun getItemCount() = dataSet.size
 
-    fun refreshList(countList: ArrayList<CountModel>) {
+    fun refreshList(locationDisplayList: ArrayList<LocationDisplayModel>) {
         dataSet.clear()
-        dataSet.addAll(countList)
+        dataSet.addAll(locationDisplayList)
         notifyDataSetChanged()
     }
 
