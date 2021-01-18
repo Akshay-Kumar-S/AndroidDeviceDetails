@@ -21,7 +21,7 @@ class AppInfoListAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: List<AppInfoCookedData>,
-    private var appList : List<AppInfoCookedData>
+    private var appList: List<AppInfoCookedData>
 ) : ArrayAdapter<AppInfoCookedData>(_context, resource, items) {
 
     override fun getViewTypeCount(): Int {
@@ -36,7 +36,7 @@ class AppInfoListAdapter(
         }
     }
 
-    @SuppressLint("SetTextI18n", "InflateParams",)
+    @SuppressLint("SetTextI18n", "InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
@@ -54,41 +54,41 @@ class AppInfoListAdapter(
                     vi.findViewById(R.id.update_count),
                     vi.findViewById(R.id.uninstall_count)
                 )
-            } else holder = vi?.tag as? ProgressbarViewHolder
-            if(holder != null) {
-                val total = appList.size.toDouble()
-                val enrolledAppCount =
-                    appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                        .eachCount()
-                val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
+                vi.tag = holder
+            } else holder = vi?.tag as ProgressbarViewHolder
+            val total = appList.size.toDouble()
+            val enrolledAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+                    .eachCount()
+            val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
 
-                val installedAppCount =
-                    appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                        .eachCount()
-                val installed =
-                    ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
+            val installedAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+                    .eachCount()
+            val installed =
+                ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
-                val updateAppCount =
-                    appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                        .eachCount()
-                val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
+            val updateAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+                    .eachCount()
+            val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
-                val uninstalledAppCount =
-                    appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                        .eachCount()
-                val uninstalled =
-                    ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
+            val uninstalledAppCount =
+                appList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+                    .eachCount()
+            val uninstalled =
+                ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
 
-                holder.updated_progressBar.progress = (updated.toInt())
-                holder.installed_progressBar.progress = (updated + installed).toInt()
-                holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
-                holder.uninstalled_progressbar.progress =
-                    (updated + installed + enrolled + uninstalled).toInt()
-                holder.enroll_count.text = (enrolledAppCount[true] ?: 0).toString()
-                holder.install_count.text = (installedAppCount[true] ?: 0).toString()
-                holder.update_count.text = (updateAppCount[true] ?: 0).toString()
-                holder.uninstall_count.text = (uninstalledAppCount[true] ?: 0).toString()
-            }
+            holder.updated_progressBar.progress = (updated.toInt())
+            holder.installed_progressBar.progress = (updated + installed).toInt()
+            holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
+            holder.uninstalled_progressbar.progress =
+                (updated + installed + enrolled + uninstalled).toInt()
+            holder.enroll_count.text = (enrolledAppCount[true] ?: 0).toString()
+            holder.install_count.text = (installedAppCount[true] ?: 0).toString()
+            holder.update_count.text = (updateAppCount[true] ?: 0).toString()
+            holder.uninstall_count.text = (uninstalledAppCount[true] ?: 0).toString()
+
 
         } else {
             val holder: AppInfoItemViewHolder?
@@ -102,34 +102,36 @@ class AppInfoListAdapter(
                     vi.findViewById(R.id.event_badge),
                     vi.findViewById(R.id.uninstall_button)
                 )
-            } else holder = vi?.tag as? AppInfoItemViewHolder
-            if(holder != null) {
-                holder.appNameView.text = items[position].appName
-                holder.versionCodeTextView.text =
-                    "Version Code : " + items[position].versionCode.toString()
-                holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
-                holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
-                val color = when (items[position].eventType.ordinal) {
-                    0 -> R.color.teal_700
-                    1 -> R.color.purple_500
-                    2 -> R.color.pink
-                    3 -> R.color.mat_yellow
-                    else -> R.color.teal_700
-                }
-                holder.eventBadge.setColorFilter(
-                    ContextCompat.getColor(context, color),
-                    android.graphics.PorterDuff.Mode.MULTIPLY
-                )
-                holder.uninstallButton.tag = items[position].packageName
-                if (items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal) {
-                    holder.eventBadge.isVisible = false
-                }
-                if (items[position].isSystemApp) {
-                    holder.uninstallButton.isVisible = false
-                } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
-                    holder.uninstallButton.isVisible = false
-                }
+                vi.tag = holder
+            } else holder = vi?.tag as AppInfoItemViewHolder
+
+            holder.appNameView.text = items[position].appName
+            holder.versionCodeTextView.text =
+                "Version Code : " + items[position].versionCode.toString()
+            holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
+            holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
+            val color = when (items[position].eventType.ordinal) {
+                0 -> R.color.teal_700
+                1 -> R.color.purple_500
+                2 -> R.color.pink
+                3 -> R.color.mat_yellow
+                else -> R.color.teal_700
             }
+            holder.uninstallButton.isVisible = true
+            holder.eventBadge.setColorFilter(
+                ContextCompat.getColor(context, color),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            )
+            holder.uninstallButton.tag = items[position].packageName
+            if (items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal) {
+                holder.eventBadge.isVisible = false
+            }
+            if (items[position].isSystemApp) {
+                holder.uninstallButton.isVisible = false
+            } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
+                holder.uninstallButton.isVisible = false
+            }
+
 
         }
         return vi!!
