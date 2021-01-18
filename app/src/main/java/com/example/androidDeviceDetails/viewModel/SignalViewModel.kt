@@ -2,32 +2,29 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.core.view.isVisible
-import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.SignalListAdapter
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
+import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
-import com.example.androidDeviceDetails.models.signal.SignalRaw
-import com.example.androidDeviceDetails.ui.SignalActivity
+import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 
 /**
  * Implements [BaseViewModel]
  */
+@RequiresApi(Build.VERSION_CODES.N)
 class SignalViewModel(
     private val signalBinding: ActivitySignalBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var isInitialised: Boolean = false
-    private var cellularStrength: Int = -100
-    private var wifiStrength: Int = -80
-    private var linkspeed: String = "0 Mbps"
-    private var cellInfoType: String = "LTE"
-    private var strength: Int = 0
-    private var text: String = ""
-    private var value: String = ""
+    private var cellularStrength: Int = 0
+    private var wifiStrength: Int = 0
+    private var linkspeed: String = ""
+    private var cellInfoType: String = ""
     private var signal: Int = Signal.CELLULAR.ordinal
     private lateinit var cellularList: ArrayList<SignalRaw>
     private lateinit var wifiList: ArrayList<SignalRaw>
@@ -42,6 +39,7 @@ class SignalViewModel(
      * It is used to observe the last live data of [SignalRaw].
      * And on notification, updates values via [updateValue].
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun observeSignal() {
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
             if (it != null) updateValue(it)
@@ -51,6 +49,7 @@ class SignalViewModel(
     /**
      * This method is called only initially to prepopulate the card view.
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initialView() {
         if (cellularList.isNotEmpty()) {
             cellularStrength = cellularList.last().strength
@@ -61,13 +60,13 @@ class SignalViewModel(
             linkspeed = "${wifiList.last().attribute} Mbps"
         }
         updateCardView()
-        isInitialised = true
     }
 
     /**
      * This method updates the values of wifi strength, link speed,
      * cellular strength and cell info type upon call from [observeSignal].
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     fun updateValue(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
@@ -80,32 +79,19 @@ class SignalViewModel(
                 cellInfoType = signalRaw.attribute
             }
         }
-        if (signalRaw.signal == signal)
             updateCardView()
     }
 
     /**
      * This method updates the Card view in the UI based on the selected menu - CELLULAR or WIFI.
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     fun updateCardView() {
-        when (signal) {
-            Signal.WIFI.ordinal -> {
-                strength = wifiStrength
-                text = "Linkspeed"
-                value = linkspeed
-            }
-            Signal.CELLULAR.ordinal -> {
-                strength = cellularStrength
-                text = "CellInfo Type"
-                value = cellInfoType
-            }
-        }
-        signalBinding.gauge.moveToValue(strength.toFloat())
-        //signalStrengthBinding.gauge.setLowerText(strength.toString())
-        signalBinding.textStrength.text = "$strength dBm"
-        signalBinding.signalText.text = text
-        signalBinding.signalValue.text = value
+
+        Log.e("updating","working $cellularStrength $wifiStrength")
+        signalBinding.cellularGuage.progressBar.setProgress(80,true)
+        signalBinding.wifiGuage.progressBar.setProgress(80,true)
     }
 
     /**
@@ -113,10 +99,10 @@ class SignalViewModel(
      * This method separates the cooked data into CELLULAR list and WIFI list
      * and calls [updateListView] to update list.
      * >
-     * Overrides : [onComplete] in [BaseViewModel].
+     * Overrides : [onDone] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
-    override fun <T> onComplete(outputList: ArrayList<T>) {
+    override fun <T> onDone(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
         val signalList = outputList as ArrayList<SignalRaw>
@@ -128,7 +114,7 @@ class SignalViewModel(
                 }
             }
         }
-        updateListView()
+      initialView()
     }
 
     /**
@@ -137,11 +123,11 @@ class SignalViewModel(
      * views are updated.
      * @param type to indicate which signal menu is chosen - CELLULAR or WIFI.
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun filter(type: Int) {
-        signal = type
-        updateGauge()
-        updateCardView()
-        updateListView()
+       // signal = type
+       // updateCardView()
+        //updateListView()
     }
 
     /**
@@ -150,46 +136,7 @@ class SignalViewModel(
      * And if the selected menu is WIFI, displays list of WIFI signal values.
      */
     private fun updateListView() {
-        val signalList =
-            if (signal == Signal.CELLULAR.ordinal)
-                cellularList
-            else
-                wifiList
-        if (signalList.isNotEmpty()) {
-            signalBinding.root.post {
-                val adapter =
-                    SignalListAdapter(
-                        context,
-                        R.layout.signal_tile,
-                        signalList
-                    )
-                signalBinding.display.isVisible = false
-                signalBinding.listView.isVisible = true
-                signalBinding.listView.adapter = adapter
-                if (!isInitialised)
-                    initialView()
-            }
-        } else
-            signalBinding.root.post {
-                signalBinding.listView.isVisible = false
-                signalBinding.display.isVisible = true
-            }
+
     }
 
-    /**
-     * This method sets the maximum and minimum values of the gauge depending on whether the
-     * selected signal to be displayed is CELLULAR or WIFI.
-     */
-    private fun updateGauge() {
-        when (signal) {
-            Signal.WIFI.ordinal -> {
-                signalBinding.gauge.setMaxValue(0f)
-                signalBinding.gauge.setMinValue(-127f)
-            }
-            Signal.CELLULAR.ordinal -> {
-                signalBinding.gauge.setMaxValue(-50f)
-                signalBinding.gauge.setMinValue(-150f)
-            }
-        }
-    }
 }

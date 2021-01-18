@@ -30,19 +30,7 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
             pickerBinding.endTime.setOnClickListener(this@SignalActivity)
             pickerBinding.endDate.setOnClickListener(this@SignalActivity)
         }
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.cellular -> {
-                    signalController.filterView(Signal.CELLULAR.ordinal)
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.wifi -> {
-                    signalController.filterView(Signal.WIFI.ordinal)
-                    return@setOnNavigationItemSelectedListener true
-                }
-            }
-            return@setOnNavigationItemSelectedListener false
-        }
+
     }
 
     override fun onClick(v: View?) {

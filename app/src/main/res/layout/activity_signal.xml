@@ -17,65 +17,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <de.nitri.gauge.Gauge
-                android:id="@+id/gauge"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="6dp"
-                app:faceColor="@color/soti_blue"
-                app:initialValue="-110"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:maxValue="-50"
-                app:minValue="-150"
-                app:needleColor="@color/white"
-                app:scaleColor="@color/white"
-                app:totalNicks="120"
-                app:valuePerNick="1" />
-
-            <LinearLayout
+            <include
+                android:id="@+id/cellular_guage"
+                layout="@layout/signal_guage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:orientation="vertical"
-                android:padding="20dp"
-                app:layout_constraintStart_toEndOf="@+id/gauge"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginStart="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/strength"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary" />
+            <include
+                android:id="@+id/wifi_guage"
+                layout="@layout/signal_guage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                app:layout_constraintStart_toEndOf="@+id/cellular_guage"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textStrength"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/default_text"
-                    android:textAppearance="?attr/textAppearanceHeadline5" />
-
-                <TextView
-                    android:id="@+id/signalText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="@string/type"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary" />
-
-                <TextView
-                    android:id="@+id/signalValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/default_text"
-                    android:textAppearance="?attr/textAppearanceHeadline5" />
-
-            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -99,38 +58,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_records_found"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".6" />
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:divider="@null"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/datePicker" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/signal_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -37,6 +37,7 @@ class SignalCooker : BaseCooker() {
             val cellularOperatorUsage = ArrayList<Usage>()
             val wifiOperatorUsage = ArrayList<Usage>()
             val wifiLevelUsage = ArrayList<Usage>()
+            var roamingTime: Long = 0
 
 
             var previousSignalEntity = cellularList.first()
@@ -49,6 +50,8 @@ class SignalCooker : BaseCooker() {
                 if (cellularOperatorUsage.none { it.name == signalEntity.operatorName })
                     cellularOperatorUsage.add(Usage(signalEntity.operatorName, 0))
                 cellularOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+
+                if (previousSignalEntity.isRoaming == true) roamingTime += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
 
                 previousSignalEntity = signalEntity
             }
@@ -68,8 +71,14 @@ class SignalCooker : BaseCooker() {
 
 
             cellularBandUsage.sortBy { it.time }
+            cellularOperatorUsage.sortBy { it.time }
+            wifiLevelUsage.sortBy { it.time }
+            wifiOperatorUsage.sortBy { it.time }
             var hignestUsedBand = cellularBandUsage.last()
-            Log.e("usage", "$cellularBandUsage $cellularOperatorUsage $wifiLevelUsage $wifiOperatorUsage")
+            Log.e(
+                "usage",
+                "$cellularBandUsage $cellularOperatorUsage $wifiLevelUsage $wifiOperatorUsage $roamingTime"
+            )
             if (cellularList.isNotEmpty()) {
                 callback.onDone(cellularList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
