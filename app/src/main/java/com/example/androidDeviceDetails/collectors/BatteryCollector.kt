@@ -57,10 +57,6 @@ class BatteryCollector : BaseCollector() {
         }
     }
 
-    init {
-        start()
-    }
-
     /**
      * Registers the [BatteryReceiver] with [Intent.ACTION_BATTERY_CHANGED].
      **/

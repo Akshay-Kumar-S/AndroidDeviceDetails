@@ -114,10 +114,6 @@ class SignalChangeCollector : BaseCollector() {
         }
     }
 
-    init {
-        start()
-    }
-
     /**
      * Registers the [SignalChangeListener] with [LISTEN_SIGNAL_STRENGTHS].
      **/

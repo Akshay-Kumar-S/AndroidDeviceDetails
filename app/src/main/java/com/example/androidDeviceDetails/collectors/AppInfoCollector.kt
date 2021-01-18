@@ -42,10 +42,6 @@ class AppInfoCollector : BaseCollector() {
         }
     }
 
-    init {
-        start()
-    }
-
     /**
      * Registers the [AppInfoReceiver]
      */

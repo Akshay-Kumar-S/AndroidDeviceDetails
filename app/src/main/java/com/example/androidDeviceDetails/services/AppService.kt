@@ -25,6 +25,9 @@ class AppService : Service() {
     override fun onCreate() {
         super.onCreate()
         appController = ApplicationController()
+        for (receivers in appController.instanceMap.values) {
+            receivers.start()
+        }
         pushNotification()
     }
 

@@ -79,10 +79,6 @@ class WifiCollector : BaseCollector() {
         }
     }
 
-    init {
-        start()
-    }
-
     /**
      * Registers the [WifiCollector] with [WifiManager.RSSI_CHANGED_ACTION]
      * and [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
