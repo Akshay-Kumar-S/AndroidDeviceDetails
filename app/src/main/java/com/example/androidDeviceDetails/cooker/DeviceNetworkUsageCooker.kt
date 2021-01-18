@@ -4,7 +4,7 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageEntity
+import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -18,9 +18,9 @@ class DeviceNetworkUsageCooker : BaseCooker() {
                 val initialData = inBetweenList.first()
                 val finalData = inBetweenList.last()
                 val totalDataUsageList =
-                    arrayListOf<DeviceNetworkUsageEntity>() //To return a list to keep signature of cook common.
+                    arrayListOf<DeviceNetworkUsageRaw>() //To return a list to keep signature of cook common.
                 totalDataUsageList.add(
-                    DeviceNetworkUsageEntity(
+                    DeviceNetworkUsageRaw(
                         System.currentTimeMillis(),
                         finalData.transferredDataWifi - initialData.transferredDataWifi,
                         finalData.transferredDataMobile - initialData.transferredDataMobile,

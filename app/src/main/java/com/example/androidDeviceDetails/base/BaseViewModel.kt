@@ -14,6 +14,7 @@ abstract class BaseViewModel {
     companion object {
         fun getViewModel(type: String, binding: Any?, context: Context): BaseViewModel? {
             return when (type) {
+                MainActivity.NAME -> MainActivityViewModel(binding as ActivityMainBinding, context)
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
                 SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)

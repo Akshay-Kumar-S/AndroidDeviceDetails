@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -83,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
         binding.pullToRefresh.setOnRefreshListener {
             mainActivityController.refreshCooker()
-
             binding.pullToRefresh.isRefreshing = false
         }
     }

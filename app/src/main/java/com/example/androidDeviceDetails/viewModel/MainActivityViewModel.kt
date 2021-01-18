@@ -28,7 +28,6 @@ class MainActivityViewModel(
     var mainActivityModel = MainActivityCookedData(null, -1, null)
     private val arrayList = arrayListOf<CardItem>()
     override fun <T> onDone(outputList: ArrayList<T>) {
-        Log.d(TAG, "onDone")
         val finalList = outputList.filterIsInstance<MainActivityCookedData>()
         if (arrayList.size == 3) {
             refresh()

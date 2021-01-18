@@ -11,9 +11,10 @@ abstract class BaseCooker {
     companion object {
         fun getCooker(type: String): BaseCooker? {
             return when (type) {
+                MainActivity.NAME->MainActivityCooker()
                 BatteryActivity.NAME -> BatteryCooker()
                 AppInfoActivity.NAME -> AppInfoCooker()
-                NetworkUsageActivity.NAME -> NetworkUsageCooker()
+                NetworkUsageActivity.NAME -> AppNetworkUsageCooker()
                 SignalActivity.NAME -> SignalCooker()
                 LocationActivity.NAME -> LocationCooker()
                 else -> null
