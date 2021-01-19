@@ -37,7 +37,7 @@ class LocationCooker : BaseCooker() {
             val address = geoCoder.getFromLocation(latLong.lat, latLong.lon, 1)[0]?.locality?.toString()
             locationDisplayModel.add(LocationDisplayModel(k,v,address ?: "cannot locate"))
         }
-        Log.d("CountedData", "cookDataCount: ${cookedLocationList.size} ")
+        Log.d("CountedData", "cookedData: $locationDisplayModel ")
         return locationDisplayModel
     }
 
