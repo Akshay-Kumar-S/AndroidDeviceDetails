@@ -31,8 +31,7 @@
             android:id="@+id/geoHash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/geohash"
-            android:textColor="@color/black" />
+            android:text="@string/geohash" />
 
         <TextView
             android:id="@+id/address"
