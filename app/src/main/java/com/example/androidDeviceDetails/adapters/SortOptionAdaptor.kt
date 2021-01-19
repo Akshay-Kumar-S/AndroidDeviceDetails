@@ -13,7 +13,8 @@ import com.example.androidDeviceDetails.R
 
 class SortOptionAdaptor(
     private var _context: Context, private var resource: Int,
-    private var items: ArrayList<Pair<String, () -> Unit>>
+    private var items: ArrayList<Pair<String, () -> Unit>>,
+    private var selectedOption: Int
 ) : ArrayAdapter<Pair<String, () -> Unit>>(_context, resource, items) {
 
     @SuppressLint("ViewHolder")
@@ -22,7 +23,8 @@ class SortOptionAdaptor(
         val view = layoutInflater.inflate(resource, null)
         val optionName = view.findViewById<TextView>(R.id.option)
         val check = view.findViewById<ImageView>(R.id.check)
-        check.isVisible = false
+        if (position != selectedOption)
+            check.isVisible = false
         optionName.text = items[position].first
         return view
     }

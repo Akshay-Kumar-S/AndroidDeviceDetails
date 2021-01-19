@@ -23,10 +23,18 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityBatteryBinding
     private lateinit var controller: ActivityController<BatteryAppEntry>
+    private lateinit var sortBySheet: SortBySheet
+    private val options = arrayListOf(
+        "Battery Drop (largest first)" to { controller.sortView(SortBy.Descending.ordinal) },
+        "Battery Drop (smallest first)" to { controller.sortView(SortBy.Ascending.ordinal) },
+        "Package Name (A to Z)" to { controller.sortView(SortBy.Alphabetical.ordinal) },
+        "Package Name (Z to A)" to { controller.sortView(SortBy.ReverseAlphabetical.ordinal) }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
+        sortBySheet = SortBySheet(options)
         controller = ActivityController(
             NAME, binding, this, binding.pickerBinding, supportFragmentManager
         )
@@ -56,15 +64,8 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.title == "Sort By") {
-            val options = arrayListOf(
-                "Battery Drop (largest first)" to { controller.sortView(SortBy.Descending.ordinal) },
-                "Battery Drop (smallest first)" to { controller.sortView(SortBy.Ascending.ordinal) },
-                "Package Name (A to Z)" to { controller.sortView(SortBy.Alphabetical.ordinal) },
-                "Package Name (Z to A)" to { controller.sortView(SortBy.ReverseAlphabetical.ordinal) }
-            )
-            SortBySheet(options).show(supportFragmentManager, "Sort By")
-        }
+        if (item.title == "Sort By")
+            sortBySheet.show(supportFragmentManager, "Sort By")
         return super.onOptionsItemSelected(item)
     }
 
