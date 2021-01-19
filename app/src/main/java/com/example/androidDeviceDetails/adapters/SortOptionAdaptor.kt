@@ -19,13 +19,12 @@ class SortOptionAdaptor(
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val layoutInflater = LayoutInflater.from(_context)
-        val view = layoutInflater.inflate(resource, null)
-        val optionName = view.findViewById<TextView>(R.id.option)
-        val check = view.findViewById<ImageView>(R.id.check)
-        if (position != selectedOption)
-            check.isVisible = false
-        optionName.text = items[position].first
+        val view = LayoutInflater.from(_context).inflate(resource, null)
+        view.apply {
+            if (position != selectedOption)
+                findViewById<ImageView>(R.id.check).isVisible = false
+            findViewById<TextView>(R.id.option).text = items[position].first
+        }
         return view
     }
 }
