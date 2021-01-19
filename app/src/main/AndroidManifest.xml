@@ -33,7 +33,7 @@
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".ui.PermissionActivity"
+            android:name=".ui.PermissionsActivity"
             android:label="App Permissions"
             android:parentActivityName=".ui.MainActivity">
         </activity>
