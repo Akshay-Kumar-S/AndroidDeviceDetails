@@ -3,6 +3,7 @@ package com.example.androidDeviceDetails.collectors
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -13,7 +14,6 @@ import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsag
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 /**
  * Implements [BaseCollector].
@@ -34,7 +34,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
      * Calls [updateDeviceNetworkUsageDB] function and [updateAppNetworkDataUsageDB] function.
      */
     override fun collect() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context.checkSelfPermission("android.Manifest.permission.PACKAGE_USAGE_STATS") == PackageManager.PERMISSION_GRANTED) {
             networkStatsManager =
                 context.getSystemService(AppCompatActivity.NETWORK_STATS_SERVICE) as NetworkStatsManager
             updateDeviceNetworkUsageDB()

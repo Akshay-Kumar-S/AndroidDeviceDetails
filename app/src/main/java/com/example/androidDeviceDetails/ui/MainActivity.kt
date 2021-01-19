@@ -1,10 +1,15 @@
 package com.example.androidDeviceDetails.ui
 
 import android.Manifest
+import android.app.AppOpsManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -13,6 +18,9 @@ import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
+
+
+private const val TAG = "MainActivity"
 
 const val permissionCode = 200
 val permissions: Array<String> =
@@ -30,9 +38,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             Utils.addInitialData(this)
             PrefManager.createInstance(this).putBoolean(PrefManager.INITIAL_LAUNCH, true)
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(Intent(this, AppService::class.java))
-        else startService(Intent(this, AppService::class.java))
         binding.apply {
             binding.appInfo.button.setOnClickListener(this@MainActivity)
             binding.batteryInfo.button.setOnClickListener(this@MainActivity)
@@ -55,5 +60,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun requestPermissions() =
         ActivityCompat.requestPermissions(this, permissions, permissionCode)
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED)
+            Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show()
+        else {
+            if (!isUsageAccessGranted())
+                startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                startForegroundService(Intent(this, AppService::class.java))
+            else startService(Intent(this, AppService::class.java))
+        }
+    }
+
+    private fun isUsageAccessGranted(): Boolean {
+        return try {
+            val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            appOpsManager.checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                packageManager.getApplicationInfo(packageName, 0).uid, packageName
+            ) == AppOpsManager.MODE_ALLOWED
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
 
 }
