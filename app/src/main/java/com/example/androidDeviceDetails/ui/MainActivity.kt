@@ -73,12 +73,21 @@ class MainActivity : AppCompatActivity() {
                                     NetworkUsageActivity::class.java
                                 )
                             )
+                            cardsTitles[3] -> startActivity(Intent(
+                                this@MainActivity,
+                                LocationActivity::class.java
+                            ))
                         }
                     }
 
                     override fun onItemLongClick(view: View?, position: Int) {
-                        TODO("do nothing")
+                        Toast.makeText(
+                            this@MainActivity,
+                            "No functionality",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                 })
         )
         binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
