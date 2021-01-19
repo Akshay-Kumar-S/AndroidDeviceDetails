@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.base
 
+import android.location.Location
 import com.example.androidDeviceDetails.cooker.*
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
@@ -18,6 +19,7 @@ abstract class BaseCooker {
                 SignalActivity.NAME -> SignalCooker()
                 LocationActivity.NAME -> LocationCooker()
                 AppTypeActivity.NAME -> AppTypeCooker()
+                PermissionsActivity.NAME -> PermissionsCooker()
                 else -> null
             }
         }
