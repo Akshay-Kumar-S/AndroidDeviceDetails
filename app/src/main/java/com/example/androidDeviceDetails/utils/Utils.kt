@@ -2,6 +2,7 @@ package com.example.androidDeviceDetails.utils
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
+import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -210,6 +211,20 @@ object Utils {
             11 -> 0.149
             12 -> 0.0372
             else -> 0.0
+        }
+    }
+
+    fun isUsageAccessGranted(context: Context): Boolean {
+        return try {
+            val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            @Suppress("DEPRECATION")
+            appOpsManager.checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                context.packageManager.getApplicationInfo(context.packageName, 0).uid,
+                context.packageName
+            ) == AppOpsManager.MODE_ALLOWED
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 

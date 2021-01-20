@@ -1,8 +1,6 @@
 package com.example.androidDeviceDetails.ui
 
 import android.Manifest
-import android.app.AppOpsManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -67,24 +65,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED)
             Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show()
         else {
-            if (!isUsageAccessGranted())
+            if (!Utils.isUsageAccessGranted(this))
                 startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 startForegroundService(Intent(this, AppService::class.java))
             else startService(Intent(this, AppService::class.java))
-        }
-    }
-
-    private fun isUsageAccessGranted(): Boolean {
-        return try {
-            val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-            @Suppress("DEPRECATION")
-            appOpsManager.checkOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                packageManager.getApplicationInfo(packageName, 0).uid, packageName
-            ) == AppOpsManager.MODE_ALLOWED
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
         }
     }
 
