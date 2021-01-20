@@ -24,7 +24,7 @@ class MainActivityViewModel(
     private val binding: ActivityMainBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var mainActivityModel = MainActivityCookedData(null, -1, null, -1,-1)
+    private var mainActivityModel = MainActivityCookedData(null, -1, null, -1, -1)
     private val arrayList = arrayListOf<CardItem>()
     override fun <T> onDone(outputList: ArrayList<T>) {
         val finalList = outputList.filterIsInstance<MainActivityCookedData>()
@@ -50,7 +50,7 @@ class MainActivityViewModel(
 
     private fun refresh() {
         val recyclerView = binding.root.findViewById<View>(R.id.recycler_view) as RecyclerView
-        mainActivityModel = MainActivityCookedData(null, -1, null, -1,-1)
+        mainActivityModel = MainActivityCookedData(null, -1, null, -1, -1)
         arrayList.clear()
         recyclerView.post { recyclerView.adapter?.notifyDataSetChanged() }
     }
@@ -137,8 +137,7 @@ class MainActivityViewModel(
             itemModel.subscript = "Visited"
             arrayList.add(itemModel)
             Log.d("MainViewModel", "Location data  ")
-        }
-        else if (mainActivityModel.signalStrength != -1 && arrayList.none { it.tag == ActivityTag.SIGNAL_DATA.ordinal }) {
+        } else if (mainActivityModel.signalStrength != -1 && arrayList.none { it.tag == ActivityTag.SIGNAL_DATA.ordinal }) {
             itemModel.tag = ActivityTag.SIGNAL_DATA.ordinal
             itemModel.image = R.drawable.ic_twotone_cell_wifi_24
             itemModel.title = cardsTitles[4]

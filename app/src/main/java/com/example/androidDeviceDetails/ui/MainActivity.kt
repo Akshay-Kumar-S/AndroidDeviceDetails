@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -25,7 +26,7 @@ const val permissionCode = 200
 val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     companion object {
         const val NAME = "Main Activity"
     }
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity(){
                             )
                         }
                     }
+
                     override fun onItemLongClick(view: View?, position: Int) {
                         Log.d("onItemLongClick", "onItemLongClick: ")
                     }
