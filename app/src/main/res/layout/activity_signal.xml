@@ -136,6 +136,19 @@
                 app:value='@{"no data available"}' />
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="More Details>"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".9"
+            app:layout_constraintVertical_bias=".95"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="12sp" />
+
 
         <TextView
             android:id="@+id/more_details"
