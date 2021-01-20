@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.ListView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.SortOptionAdaptor
+import com.example.androidDeviceDetails.utils.SortBy
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SortBySheet(
     private val options: ArrayList<Pair<String, Int>>,
-    var sortFunction: (Int) -> Unit, default: Int = 0
+    var sortFunction: (Int) -> Unit, default: Int = SortBy.ALPHABETICAL.ordinal
 ) :
     BottomSheetDialogFragment() {
     private var selectedOption = default
