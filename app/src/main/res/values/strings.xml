@@ -48,6 +48,7 @@
     <string name="type">Type:</string>
     <string name="no_records_found">No records found</string>
     <string name="default_text">DEFAULT TEXT</string>
+    <string name="cellular">Cellular</string>
     <string name="select_date">select Date</string>
     <string name="time">Sl No</string>
     <string name="count">Count:</string>

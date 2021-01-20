@@ -5,6 +5,7 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
@@ -74,13 +75,21 @@ class SignalCooker : BaseCooker() {
             cellularOperatorUsage.sortBy { it.time }
             wifiLevelUsage.sortBy { it.time }
             wifiOperatorUsage.sortBy { it.time }
-            var hignestUsedBand = cellularBandUsage.last()
+            val cookedDataList = ArrayList<SignalCookedData>()
+            var cookedData = SignalCookedData(
+                roamingTime,
+                cellularOperatorUsage.last().name,
+                wifiOperatorUsage.last().name,
+                cellularBandUsage.last().name!!,
+                wifiLevelUsage.last().name!!
+            )
+            cookedDataList.add(cookedData)
             Log.e(
                 "usage",
                 "$cellularBandUsage $cellularOperatorUsage $wifiLevelUsage $wifiOperatorUsage $roamingTime"
             )
             if (cellularList.isNotEmpty()) {
-                callback.onDone(cellularList as ArrayList<T>)
+                callback.onDone(cookedDataList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
         }
     }

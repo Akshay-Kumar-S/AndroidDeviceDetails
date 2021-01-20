@@ -13,27 +13,81 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <include
-                android:id="@+id/cellular_guage"
-                layout="@layout/signal_guage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/pointerCellularSpeedometer"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="28dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:sv_backgroundCircleColor="@color/white"
+                app:sv_centerCircleColor="@color/soti_pebble"
+                app:sv_centerCircleRadius="2dp"
+                app:sv_indicator="LineIndicator"
+                app:sv_indicatorWidth="3dp"
+                app:sv_indicatorColor="@color/soti_coral"
+                app:sv_pointerColor="@color/teal_700"
+                app:sv_speedTextColor="@color/black"
+                app:sv_speedTextPosition="BOTTOM_CENTER"
+                app:sv_speedometerColor="@color/soti_blue"
+                app:sv_textColor="@color/white"
+                app:sv_unit="%"
+                app:sv_unitTextColor="@color/black"
+                app:sv_withTremble="false"
 
-            <include
-                android:id="@+id/wifi_guage"
-                layout="@layout/signal_guage"
+
+                />
+
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/pointerWifiSpeedometer"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintStart_toEndOf="@+id/pointerCellularSpeedometer"
+                app:layout_constraintTop_toTopOf="parent"
+                app:sv_backgroundCircleColor="@color/white"
+                app:sv_centerCircleColor="@color/soti_pebble"
+                app:sv_centerCircleRadius="2dp"
+                app:sv_indicatorWidth="3dp"
+                app:sv_indicator="LineIndicator"
+                app:sv_indicatorColor="@color/soti_coral"
+                app:sv_pointerColor="@color/teal_700"
+                app:sv_speedTextColor="@color/black"
+                app:sv_speedTextPosition="BOTTOM_CENTER"
+                app:sv_speedometerColor="@color/soti_blue"
+                app:sv_textColor="@color/white"
+                app:sv_unit="%"
+                app:sv_unitTextColor="@color/black"
+                app:sv_withTremble="false" />
+
+            <TextView
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                app:layout_constraintStart_toEndOf="@+id/cellular_guage"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@string/cellular"
+                app:layout_constraintBottom_toBottomOf="@+id/pointerCellularSpeedometer"
+                app:layout_constraintEnd_toEndOf="@+id/pointerCellularSpeedometer"
+                app:layout_constraintHorizontal_bias="0.514"
+                app:layout_constraintStart_toStartOf="@+id/pointerCellularSpeedometer"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.244" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wifi"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/pointerWifiSpeedometer"
+                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintStart_toStartOf="@+id/pointerWifiSpeedometer"
+                app:layout_constraintTop_toTopOf="@+id/pointerWifiSpeedometer"
+                app:layout_constraintVertical_bias="0.244" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -52,11 +106,53 @@
                 layout="@layout/date_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/cooked_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/datePicker">
+
+            <include
+                layout="@layout/signal_activity_data"
+                android:id="@+id/most_used_operator"
+                app:data='@{"Most used operator"}'
+                app:value='@{"Airtel"}' />
+
+            <include
+                layout="@layout/signal_activity_data"
+                android:id="@+id/most_used_band"
+                app:data='@{"Most used band"}'
+                app:value='@{"4g"}' />
+
+            <include
+                layout="@layout/signal_activity_data"
+                android:id="@+id/roaming_time"
+                app:data='@{"Roaming Time"}'
+                app:value='@{"3 hours 6 min"}' />
+
+            <include
+                layout="@layout/signal_activity_data"
+                android:id="@+id/most_used_wifi"
+                app:data='@{"Most used wifi"}'
+                app:value='@{"No internet"}' />
+
+            <include
+                layout="@layout/signal_activity_data"
+                android:id="@+id/most_used_wifi_level"
+                app:data='@{"Most used wifi level"}'
+                app:value='@{"Poor"}' />
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

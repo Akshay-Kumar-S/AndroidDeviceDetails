@@ -5,12 +5,13 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.utils.Signal
 
 /**
@@ -21,8 +22,8 @@ class SignalViewModel(
     private val signalBinding: ActivitySignalBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var cellularStrength: Int = 0
-    private var wifiStrength: Int = 0
+    private var cellularStrength: Int = -120
+    private var wifiStrength: Int = -127
     private var linkspeed: String = ""
     private var cellInfoType: String = ""
     private var signal: Int = Signal.CELLULAR.ordinal
@@ -79,7 +80,7 @@ class SignalViewModel(
                 cellInfoType = signalRaw.attribute
             }
         }
-            updateCardView()
+        updateCardView()
     }
 
     /**
@@ -89,11 +90,18 @@ class SignalViewModel(
     @SuppressLint("SetTextI18n")
     fun updateCardView() {
 
-        Log.e("updating","working $cellularStrength $wifiStrength")
-        signalBinding.cellularGuage.progressBar.setProgress(80,true)
-        signalBinding.cellularGuage.textViewProgress.text="60%"
-        signalBinding.wifiGuage.textViewProgress.text="60%"
-        signalBinding.wifiGuage.progressBar.setProgress(80,true)
+        Log.e("updating", "working $cellularStrength $wifiStrength")
+        signalBinding.pointerCellularSpeedometer.post() {
+            signalBinding.pointerCellularSpeedometer.speedTo(
+                (-124 - cellularStrength) / 96.toFloat() * (-100),
+                1000
+            )
+            signalBinding.pointerWifiSpeedometer.speedTo(
+                (-127 - wifiStrength) / 103.toFloat() * (-100),
+                1000
+            )
+        }
+
     }
 
     /**
@@ -107,16 +115,22 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
-        val signalList = outputList as ArrayList<SignalRaw>
-        if (signalList.isNotEmpty()) {
-            for (signal in signalList) {
-                when (signal.signal) {
-                    Signal.WIFI.ordinal -> wifiList.add(signal)
-                    Signal.CELLULAR.ordinal -> cellularList.add(signal)
-                }
-            }
-        }
-      initialView()
+       // val signalList = outputList as ArrayList<SignalRaw>
+//        if (signalList.isNotEmpty()) {
+//            for (signal in signalList) {
+//                when (signal.signal) {
+//                    Signal.WIFI.ordinal -> wifiList.add(signal)
+//                    Signal.CELLULAR.ordinal -> cellularList.add(signal)
+//                }
+//            }
+//        }
+        initialView()
+        signalBinding.mostUsedOperator.textView3.text=(outputList.first() as SignalCookedData).mostUsedOperator
+        signalBinding.mostUsedBand.textView3.text=(outputList.first() as SignalCookedData).mostUsedLevel
+        signalBinding.roamingTime.textView3.text=(outputList.first() as SignalCookedData).roamingTime.toString()
+        signalBinding.mostUsedWifi.textView3.text=(outputList.first() as SignalCookedData).mostUsedWifi
+        signalBinding.mostUsedWifiLevel.textView3.text=(outputList.first() as SignalCookedData).mostUsedWifiLevel
+
     }
 
     /**
@@ -127,8 +141,8 @@ class SignalViewModel(
      */
     @RequiresApi(Build.VERSION_CODES.N)
     override fun filter(type: Int) {
-       // signal = type
-       // updateCardView()
+        // signal = type
+        // updateCardView()
         //updateListView()
     }
 
