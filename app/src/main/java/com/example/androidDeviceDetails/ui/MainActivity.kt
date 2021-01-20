@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity() {
                                 this@MainActivity,
                                 LocationActivity::class.java
                             ))
+                            cardsTitles[4] -> startActivity(Intent(
+                                this@MainActivity,
+                                SignalActivity::class.java
+                            ))
                         }
                     }
 

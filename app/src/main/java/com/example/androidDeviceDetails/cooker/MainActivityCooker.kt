@@ -10,6 +10,7 @@ import com.example.androidDeviceDetails.models.appInfoModels.AppInfoRaw
 import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
 import com.example.androidDeviceDetails.models.locationModels.LocationModel
 import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class MainActivityCooker : BaseCooker() {
                         MainActivityCookedData(
                             null,
                             totalDrop,
-                            null,-1
+                            null, -1, -1
                         )
                     ) as ArrayList<T>
                 )
@@ -45,17 +46,16 @@ class MainActivityCooker : BaseCooker() {
                         arrayListOf(
                             MainActivityCookedData(
                                 null, -1,
-                                Pair(totalWifiData, totalCellularData),-1
+                                Pair(totalWifiData, totalCellularData), -1, -1
                             )
                         ) as ArrayList<T>
                     )
-                }
-                else{
+                } else {
                     callback.onDone(
                         arrayListOf(
                             MainActivityCookedData(
                                 null, -1,
-                                Pair(1, 1),-1
+                                Pair(1, 1), -1, -1
                             )
                         ) as ArrayList<T>
                     )
@@ -68,17 +68,27 @@ class MainActivityCooker : BaseCooker() {
                     arrayListOf(
                         MainActivityCookedData(
                             outputList, -1,
-                            null,-1
+                            null, -1, -1
                         )
                     ) as ArrayList<T>
                 )
             }
         }
-        val locationDataCallBack=object :ICookingDone<LocationModel>{
+        val locationDataCallBack = object : ICookingDone<LocationModel> {
             override fun onDone(outputList: ArrayList<LocationModel>) {
+                Log.d("locationcheck", "onDone: ")
                 callback.onDone(
                     arrayListOf(
-                        MainActivityCookedData(null,-1,null,outputList.size)
+                        MainActivityCookedData(null, -1, null, outputList.size, -1)
+                    ) as ArrayList<T>
+                )
+            }
+        }
+        val signalDataCallBack = object : ICookingDone<SignalRaw> {
+            override fun onDone(outputList: ArrayList<SignalRaw>) {
+                callback.onDone(
+                    arrayListOf(
+                        MainActivityCookedData(null, -1, null, -1, outputList.first().strength)
                     ) as ArrayList<T>
                 )
             }
@@ -89,7 +99,8 @@ class MainActivityCooker : BaseCooker() {
                     ?.filter { it.currentVersionCode != 0L } as ArrayList<AppInfoRaw>
             )
         }
-        LocationCooker().cook(time,locationDataCallBack)
+        SignalCooker().cook(time, signalDataCallBack)
+        LocationCooker().cook(time, locationDataCallBack)
         BatteryCooker().cook(time, batteryCallBack)
         DeviceNetworkUsageCooker().cook(time, deviceNetworkUsageCallBack)
     }

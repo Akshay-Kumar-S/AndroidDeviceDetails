@@ -24,11 +24,11 @@ class MainActivityViewModel(
     private val binding: ActivityMainBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var mainActivityModel = MainActivityCookedData(null, -1, null,-1)
+    private var mainActivityModel = MainActivityCookedData(null, -1, null, -1,-1)
     private val arrayList = arrayListOf<CardItem>()
     override fun <T> onDone(outputList: ArrayList<T>) {
         val finalList = outputList.filterIsInstance<MainActivityCookedData>()
-        if (arrayList.size == 4) {
+        if (arrayList.size == 5) {
             refresh()
         }
         if (outputList.isNotEmpty()) {
@@ -39,7 +39,10 @@ class MainActivityViewModel(
                     firstElement.totalDrop
                 firstElement.deviceNetworkUsage != null -> mainActivityModel.deviceNetworkUsage =
                     firstElement.deviceNetworkUsage
-                firstElement.totalPlacesVisited!=-1 -> mainActivityModel.totalPlacesVisited=firstElement.totalPlacesVisited
+                firstElement.totalPlacesVisited != -1 -> mainActivityModel.totalPlacesVisited =
+                    firstElement.totalPlacesVisited
+                firstElement.signalStrength != -1 -> mainActivityModel.signalStrength =
+                    firstElement.signalStrength
             }
             binding.root.post { updateUI() }
         }
@@ -47,7 +50,7 @@ class MainActivityViewModel(
 
     private fun refresh() {
         val recyclerView = binding.root.findViewById<View>(R.id.recycler_view) as RecyclerView
-        mainActivityModel = MainActivityCookedData(null, -1, null,-1)
+        mainActivityModel = MainActivityCookedData(null, -1, null, -1,-1)
         arrayList.clear()
         recyclerView.post { recyclerView.adapter?.notifyDataSetChanged() }
     }
@@ -123,7 +126,7 @@ class MainActivityViewModel(
             Log.d("WifiData", "AppInfo $wifiDataProgress ")
             Log.d("WifiData", "AppInfo $cellularDataProgress ")
 
-        }else if (mainActivityModel.totalPlacesVisited != -1 && arrayList.none { it.tag == ActivityTag.LOCATION_DATA.ordinal }) {
+        } else if (mainActivityModel.totalPlacesVisited != -1 && arrayList.none { it.tag == ActivityTag.LOCATION_DATA.ordinal }) {
             itemModel.tag = ActivityTag.LOCATION_DATA.ordinal
             itemModel.image = R.drawable.ic_twotone_location_on_24
             itemModel.title = cardsTitles[3]
@@ -135,11 +138,21 @@ class MainActivityViewModel(
             arrayList.add(itemModel)
             Log.d("MainViewModel", "Location data  ")
         }
+        else if (mainActivityModel.signalStrength != -1 && arrayList.none { it.tag == ActivityTag.SIGNAL_DATA.ordinal }) {
+            itemModel.tag = ActivityTag.SIGNAL_DATA.ordinal
+            itemModel.image = R.drawable.ic_twotone_cell_wifi_24
+            itemModel.title = cardsTitles[4]
+            itemModel.layoutType = LayoutType.SINGLE_VALUE_LAYOUT.ordinal
+            itemModel.mainValue = mainActivityModel.totalPlacesVisited
+            Log.d("Total Drop", "updateUI:${mainActivityModel.signalStrength} ")
+            itemModel.superscript = "Signal"
+            itemModel.subscript = "Strength"
+            arrayList.add(itemModel)
+            Log.d("MainViewModel", "Location data  ")
+        }
         Log.d("MainViewModel", "onDone: ${arrayList.size}")
 
         //add in array list
-
-
         val adapter = MainActivityAdapter(context, arrayList)
         recyclerView.adapter = adapter
     }

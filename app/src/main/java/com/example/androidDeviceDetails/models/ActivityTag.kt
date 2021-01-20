@@ -4,5 +4,6 @@ enum class ActivityTag {
     APP_INFO,
     BATTERY_DATA,
     DEVICE_NETWORK_USAGE,
-    LOCATION_DATA
+    LOCATION_DATA,
+    SIGNAL_DATA
 }
