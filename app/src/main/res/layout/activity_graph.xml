@@ -5,16 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.GraphActivity">
- <!--   <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/reportingChart"
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:elevation="10dp"
-        tools:ignore="MissingConstraints" />-->
+
     <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
         android:id="@+id/aa_chart_view"
         android:layout_width="match_parent"

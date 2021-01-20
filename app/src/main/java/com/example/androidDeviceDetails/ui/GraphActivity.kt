@@ -2,25 +2,11 @@ package com.example.androidDeviceDetails.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.R
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.ValueFormatter
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class GraphActivity : AppCompatActivity() {
@@ -56,21 +42,5 @@ class GraphActivity : AppCompatActivity() {
 
         aaChartView.aa_drawChartWithChartModel(aaChartModel)
 
-        /*   val lineChart = findViewById<LineChart>(R.id.reportingChart)
-           lineChart.setTouchEnabled(true)
-           lineChart.setPinchZoom(true)
-           val listData = ArrayList<Entry>()
-           listData.add(Entry(0f, 81f))
-           listData.add(Entry(1f, 82f))
-           listData.add(Entry(2f, 83f))
-           listData.add(Entry(3f, 81f))
-           listData.add(Entry(4f, 84f))
-           listData.add(Entry(5f, 82f))
-           val lineDataSet = LineDataSet(listData, "bleh")
-           lineDataSet.color = ContextCompat.getColor(this, R.color.gray_400)
-           lineDataSet.valueTextColor = ContextCompat.getColor(this, android.R.color.white)
-           val lineData = LineData(lineDataSet)
-           lineChart.data = lineData
-           lineChart.invalidate()*/
     }
 }
