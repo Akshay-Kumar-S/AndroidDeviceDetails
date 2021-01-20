@@ -19,7 +19,7 @@ class NetworkUsageViewModel(
     val context: Context
 ) : BaseViewModel() {
     private var itemList = ArrayList<AppNetworkUsageRaw>()
-    private var sortBy = SortBy.ALPHABETICAL.ordinal
+    private var sortBy = SortBy.WIFI_DESCENDING.ordinal
 
     /**
      * Overrides [onDone] in [BaseViewModel]
@@ -28,7 +28,6 @@ class NetworkUsageViewModel(
      *
      * @param outputList List of cooked data.
      */
-    @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
             itemList =

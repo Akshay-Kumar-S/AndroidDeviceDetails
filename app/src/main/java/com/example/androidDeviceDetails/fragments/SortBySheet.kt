@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.ListView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.SortOptionAdaptor
-import com.example.androidDeviceDetails.utils.SortBy
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class SortBySheet(private val options: ArrayList<Pair<String, () -> Unit>>) :
+class SortBySheet(
+    private val options: ArrayList<Pair<String, Int>>,
+    var sortFunction: (Int) -> Unit, default: Int = 0
+) :
     BottomSheetDialogFragment() {
-    private var selectedOption = SortBy.DESCENDING.ordinal
+    private var selectedOption = default
     private var v: View? = null
 
     override fun onCreateView(
@@ -24,8 +26,8 @@ class SortBySheet(private val options: ArrayList<Pair<String, () -> Unit>>) :
             SortOptionAdaptor(requireContext(), R.layout.sort_by_tile, options, selectedOption)
         listView?.setOnItemClickListener { parent, _, position, _ ->
             val adaptor = parent.adapter as SortOptionAdaptor
-            selectedOption = position
-            adaptor.getItem(position)?.second?.invoke()
+            selectedOption = adaptor.getItem(position)?.second!!
+            sortFunction(adaptor.getItem(position)?.second!!)
             this.dismiss()
         }
         return v

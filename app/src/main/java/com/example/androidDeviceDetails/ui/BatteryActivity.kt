@@ -28,10 +28,10 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
-        sortBySheet = SortBySheet(options)
         controller = ActivityController(
             NAME, binding, this, binding.pickerBinding, supportFragmentManager
         )
+        sortBySheet = SortBySheet(options, controller::sortView, SortBy.DESCENDING.ordinal)
         binding.apply {
             listView.setOnItemClickListener { parent, _, position, _ ->
                 redirectToAppInfo(parent, position)
@@ -72,10 +72,10 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val options = arrayListOf(
-        "Battery Drop (largest first)" to { controller.sortView(SortBy.DESCENDING.ordinal) },
-        "Battery Drop (smallest first)" to { controller.sortView(SortBy.ASCENDING.ordinal) },
-        "Package Name (A to Z)" to { controller.sortView(SortBy.ALPHABETICAL.ordinal) },
-        "Package Name (Z to A)" to { controller.sortView(SortBy.REVERSE_ALPHABETICAL.ordinal) }
+        "Battery Drop (largest first)" to SortBy.DESCENDING.ordinal,
+        "Battery Drop (smallest first)" to SortBy.ASCENDING.ordinal,
+        "Package Name (A to Z)" to SortBy.ALPHABETICAL.ordinal,
+        "Package Name (Z to A)" to SortBy.REVERSE_ALPHABETICAL.ordinal
     )
 
     companion object {

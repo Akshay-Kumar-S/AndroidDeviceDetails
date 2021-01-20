@@ -29,7 +29,7 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
         controller = ActivityController(
             NAME, binding, this, binding.pickerBinding, supportFragmentManager
         )
-        sortBySheet = SortBySheet(options)
+        sortBySheet = SortBySheet(options, controller::sortView, SortBy.WIFI_DESCENDING.ordinal)
         binding.apply {
             pickerBinding.startTime.setOnClickListener(this@NetworkUsageActivity)
             pickerBinding.startDate.setOnClickListener(this@NetworkUsageActivity)
@@ -46,6 +46,7 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
             R.id.endDate -> controller.setDate(this, R.id.endDate)
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.sort_menu, menu)
         return true
@@ -57,12 +58,12 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val options = arrayListOf(
-        "Wifi Data (largest first)" to { controller.sortView(SortBy.WIFI_DESCENDING.ordinal) },
-        "Wifi Data (smallest first)" to { controller.sortView(SortBy.WIFI_ASCENDING.ordinal) },
-        "Cellular Data (largest first)" to { controller.sortView(SortBy.CELLULAR_DESCENDING.ordinal) },
-        "Cellular Data (smallest first)" to { controller.sortView(SortBy.CELLULAR_ASCENDING.ordinal) },
-        "Package Name (A to Z)" to { controller.sortView(SortBy.ALPHABETICAL.ordinal) },
-        "Package Name (Z to A)" to { controller.sortView(SortBy.REVERSE_ALPHABETICAL.ordinal) }
+        "Wifi Data (largest first)" to SortBy.WIFI_DESCENDING.ordinal,
+        "Wifi Data (smallest first)" to SortBy.WIFI_ASCENDING.ordinal,
+        "Cellular Data (largest first)" to SortBy.CELLULAR_DESCENDING.ordinal,
+        "Cellular Data (smallest first)" to SortBy.CELLULAR_ASCENDING.ordinal,
+        "Package Name (A to Z)" to SortBy.ALPHABETICAL.ordinal,
+        "Package Name (Z to A)" to SortBy.REVERSE_ALPHABETICAL.ordinal
     )
 
 }

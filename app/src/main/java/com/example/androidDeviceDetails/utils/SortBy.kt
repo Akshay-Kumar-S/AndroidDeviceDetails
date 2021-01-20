@@ -9,5 +9,4 @@ enum class SortBy {
     WIFI_DESCENDING,
     CELLULAR_ASCENDING,
     CELLULAR_DESCENDING,
-
 }
