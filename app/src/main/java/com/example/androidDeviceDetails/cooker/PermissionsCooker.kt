@@ -11,9 +11,9 @@ class PermissionsCooker : BaseCooker() {
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
             val permissionList = arrayListOf<String>()
-        permissionList.addAll(listOf("ACCEPT_HANDOVER",
-                "ACCESS_BACKGROUND_LOCATION",
-                "ACCESS_CHECKIN_PROPERTIES","ACCESS_COARSE_LOCATION","ACCESS_FINE_LOCATION","ACCESS_LOCATION_EXTRA_COMMANDS"))
+        permissionList.addAll(listOf("PHONE","CALL LOGS","CONTACTS","SMS",
+                "LOCATION",
+                "CAMERA","MICROPHONE","STORAGE","CALENDER","BODY SENSORS","PHYSICAL ACTIVITY"))
             callback.onDone(permissionList as ArrayList<T>)
     }
 }
