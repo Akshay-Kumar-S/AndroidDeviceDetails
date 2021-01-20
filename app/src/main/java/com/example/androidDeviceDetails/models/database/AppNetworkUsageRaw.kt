@@ -1,10 +1,9 @@
-package com.example.androidDeviceDetails.models.networkUsageModels
+package com.example.androidDeviceDetails.models.database
 
 import android.net.NetworkCapabilities
 import androidx.room.*
 import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
 import com.example.androidDeviceDetails.cooker.NetworkUsageCooker
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.viewModel.NetworkUsageViewModel
 
 /**

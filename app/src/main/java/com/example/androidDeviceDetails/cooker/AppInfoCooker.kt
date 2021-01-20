@@ -2,11 +2,11 @@ package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryDao
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfoModels.EventType
+import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.database.AppHistoryDao
+import com.example.androidDeviceDetails.models.database.RoomDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

@@ -19,9 +19,6 @@ import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
 
-
-private const val TAG = "MainActivity"
-
 const val permissionCode = 200
 val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
@@ -81,6 +78,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun isUsageAccessGranted(): Boolean {
         return try {
             val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            @Suppress("DEPRECATION")
             appOpsManager.checkOpNoThrow(
                 AppOpsManager.OPSTR_GET_USAGE_STATS,
                 packageManager.getApplicationInfo(packageName, 0).uid, packageName

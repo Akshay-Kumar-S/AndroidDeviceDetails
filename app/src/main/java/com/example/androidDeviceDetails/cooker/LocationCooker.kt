@@ -5,10 +5,10 @@ import android.util.Log
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
-import com.example.androidDeviceDetails.models.locationModels.LocationModel
+import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationModel
 import com.github.davidmoten.geo.GeoHash
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

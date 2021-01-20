@@ -11,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfoModels.EventType
+import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 

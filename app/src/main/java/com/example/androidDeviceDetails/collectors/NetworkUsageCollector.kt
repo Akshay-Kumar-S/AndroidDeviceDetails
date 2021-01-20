@@ -9,9 +9,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
-import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
+import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
+import com.example.androidDeviceDetails.models.database.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

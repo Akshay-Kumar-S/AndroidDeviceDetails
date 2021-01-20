@@ -1,9 +1,8 @@
-package com.example.androidDeviceDetails.models.batteryModels
+package com.example.androidDeviceDetails.models.database
 
 import androidx.room.*
 import com.example.androidDeviceDetails.collectors.AppEventCollector
 import com.example.androidDeviceDetails.cooker.BatteryCooker
-import com.example.androidDeviceDetails.models.RoomDB
 
 /**
  * A data class used by the [AppEventCollector] to record a battery event and

@@ -7,7 +7,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker

@@ -12,7 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SortBySheet(private val options: ArrayList<Pair<String, () -> Unit>>) :
     BottomSheetDialogFragment() {
-    private var selectedOption = SortBy.Descending.ordinal
+    private var selectedOption = SortBy.DESCENDING.ordinal
     private var v: View? = null
 
     override fun onCreateView(

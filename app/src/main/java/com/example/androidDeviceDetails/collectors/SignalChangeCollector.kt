@@ -3,15 +3,16 @@ package com.example.androidDeviceDetails.collectors
 import android.content.Context
 import android.os.Build
 import android.telephony.*
+import android.telephony.PhoneStateListener.LISTEN_NONE
 import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.collectors.SignalChangeCollector.SignalChangeListener
+import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import android.telephony.PhoneStateListener.LISTEN_NONE
 
 /**
  *  Implements [BaseCollector].

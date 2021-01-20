@@ -6,7 +6,7 @@ import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.BatteryCooker
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
-import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
+import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.utils.Utils
 
@@ -14,7 +14,7 @@ class BatteryViewModel(private val binding: ActivityBatteryBinding, val context:
     BaseViewModel() {
 
     private var itemList = ArrayList<BatteryAppEntry>()
-    private var sortBy = SortBy.Descending.ordinal
+    private var sortBy = SortBy.DESCENDING.ordinal
 
     /**
      * This method is called once the [BatteryCooker] finishes cooking.
@@ -40,10 +40,10 @@ class BatteryViewModel(private val binding: ActivityBatteryBinding, val context:
     override fun sort(type: Int) {
         sortBy = type
         when (type) {
-            SortBy.Descending.ordinal -> itemList.sortByDescending { it.drop }
-            SortBy.Ascending.ordinal -> itemList.sortBy { it.drop }
-            SortBy.Alphabetical.ordinal -> itemList.sortBy { Utils.getApplicationLabel(it.packageId) }
-            SortBy.ReverseAlphabetical.ordinal -> itemList.sortByDescending {
+            SortBy.DESCENDING.ordinal -> itemList.sortByDescending { it.drop }
+            SortBy.ASCENDING.ordinal -> itemList.sortBy { it.drop }
+            SortBy.ALPHABETICAL.ordinal -> itemList.sortBy { Utils.getApplicationLabel(it.packageId) }
+            SortBy.REVERSE_ALPHABETICAL.ordinal -> itemList.sortByDescending {
                 Utils.getApplicationLabel(it.packageId)
             }
         }

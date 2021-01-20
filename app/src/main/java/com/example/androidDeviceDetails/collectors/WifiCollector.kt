@@ -8,8 +8,9 @@ import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
+import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.WifiLevel
 import kotlinx.coroutines.GlobalScope

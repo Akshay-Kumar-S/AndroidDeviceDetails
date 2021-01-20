@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
 import java.util.*
 
 class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {

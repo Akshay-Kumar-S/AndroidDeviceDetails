@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoItemViewHolder
-import com.example.androidDeviceDetails.models.appInfoModels.EventType
-import com.example.androidDeviceDetails.models.appInfoModels.ProgressbarViewHolder
+import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfo.AppInfoItemViewHolder
+import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.appInfo.ProgressbarViewHolder
 import com.example.androidDeviceDetails.utils.Utils
 import kotlin.math.ceil
 

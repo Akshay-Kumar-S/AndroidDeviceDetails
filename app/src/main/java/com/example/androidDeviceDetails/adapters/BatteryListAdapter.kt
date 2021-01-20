@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
-import com.example.androidDeviceDetails.models.batteryModels.BatteryItemViewHolder
+import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
+import com.example.androidDeviceDetails.models.battery.BatteryItemViewHolder
 import com.example.androidDeviceDetails.utils.Utils
 
 

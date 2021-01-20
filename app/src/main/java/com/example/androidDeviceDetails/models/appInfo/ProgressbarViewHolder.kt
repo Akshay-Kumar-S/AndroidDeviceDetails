@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.appInfoModels
+package com.example.androidDeviceDetails.models.appInfo
 
 import android.widget.ProgressBar
 import android.widget.TextView

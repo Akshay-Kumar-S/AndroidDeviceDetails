@@ -10,7 +10,7 @@ import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
-import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -94,9 +94,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
         when (v!!.id) {
             R.id.countView -> {
                 if (binding.bottomLocation.sortByCountViewArrow.tag == "down") {
-                    activityController.sortView(SortBy.Descending.ordinal)
+                    activityController.sortView(SortBy.DESCENDING.ordinal)
                 } else
-                    activityController.sortView(SortBy.Ascending.ordinal)
+                    activityController.sortView(SortBy.ASCENDING.ordinal)
             }
             R.id.startTime -> activityController.setTime(this, R.id.startTime)
             R.id.startDate -> activityController.setDate(this, R.id.startDate)

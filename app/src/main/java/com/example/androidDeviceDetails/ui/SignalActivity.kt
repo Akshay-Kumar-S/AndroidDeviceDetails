@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 
 class SignalActivity : AppCompatActivity(), View.OnClickListener {

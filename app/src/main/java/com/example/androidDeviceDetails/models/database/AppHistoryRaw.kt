@@ -1,6 +1,7 @@
-package com.example.androidDeviceDetails.models.appInfoModels
+package com.example.androidDeviceDetails.models.database
 
 import androidx.room.*
+import com.example.androidDeviceDetails.models.appInfo.EventType
 
 /**
  * A data class used to enter details into [AppHistoryDao]

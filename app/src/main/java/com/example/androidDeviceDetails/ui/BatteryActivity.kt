@@ -15,7 +15,7 @@ import com.example.androidDeviceDetails.adapters.BatteryListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityBatteryBinding
 import com.example.androidDeviceDetails.fragments.SortBySheet
-import com.example.androidDeviceDetails.models.batteryModels.BatteryAppEntry
+import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.utils.SortBy
 import java.util.*
 
@@ -24,12 +24,6 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityBatteryBinding
     private lateinit var controller: ActivityController<BatteryAppEntry>
     private lateinit var sortBySheet: SortBySheet
-    private val options = arrayListOf(
-        "Battery Drop (largest first)" to { controller.sortView(SortBy.Descending.ordinal) },
-        "Battery Drop (smallest first)" to { controller.sortView(SortBy.Ascending.ordinal) },
-        "Package Name (A to Z)" to { controller.sortView(SortBy.Alphabetical.ordinal) },
-        "Package Name (Z to A)" to { controller.sortView(SortBy.ReverseAlphabetical.ordinal) }
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
@@ -64,8 +58,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.title == "Sort By")
-            sortBySheet.show(supportFragmentManager, "Sort By")
+        if (item.title == "Sort By") sortBySheet.show(supportFragmentManager, "Sort By")
         return super.onOptionsItemSelected(item)
     }
 
@@ -77,6 +70,13 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         infoIntent.data = Uri.parse("package:${item?.packageId}")
         startActivity(infoIntent)
     }
+
+    private val options = arrayListOf(
+        "Battery Drop (largest first)" to { controller.sortView(SortBy.DESCENDING.ordinal) },
+        "Battery Drop (smallest first)" to { controller.sortView(SortBy.ASCENDING.ordinal) },
+        "Package Name (A to Z)" to { controller.sortView(SortBy.ALPHABETICAL.ordinal) },
+        "Package Name (Z to A)" to { controller.sortView(SortBy.REVERSE_ALPHABETICAL.ordinal) }
+    )
 
     companion object {
         const val NAME = "battery"

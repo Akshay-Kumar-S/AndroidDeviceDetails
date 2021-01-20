@@ -1,9 +1,8 @@
-package com.example.androidDeviceDetails.models.networkUsageModels
+package com.example.androidDeviceDetails.models.database
 
 import android.net.NetworkCapabilities
 import androidx.room.*
 import com.example.androidDeviceDetails.collectors.NetworkUsageCollector
-import com.example.androidDeviceDetails.models.RoomDB
 
 /**
  * A data class used by [NetworkUsageCollector] to collect the network usage details of the device and

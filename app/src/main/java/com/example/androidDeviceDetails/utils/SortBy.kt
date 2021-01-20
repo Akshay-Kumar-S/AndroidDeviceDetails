@@ -1,5 +1,9 @@
 package com.example.androidDeviceDetails.utils
 
 enum class SortBy {
-    Descending, Ascending, Alphabetical, ReverseAlphabetical
+    DESCENDING,
+    ASCENDING,
+    ALPHABETICAL,
+    REVERSE_ALPHABETICAL,
+
 }

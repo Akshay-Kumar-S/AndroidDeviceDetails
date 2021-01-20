@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.appInfoModels
+package com.example.androidDeviceDetails.models.appInfo
 
 /**
  * A data class used to enter app details

@@ -6,7 +6,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.NetWorkUsageListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
 import java.util.*
 
 /**
@@ -17,7 +17,7 @@ class NetworkUsageViewModel(
     val context: Context
 ) : BaseViewModel() {
     /**
-     * Overrides [onData] in [BaseViewModel]
+     * Overrides [onDone] in [BaseViewModel]
      *
      * Display provided data on UI.
      *

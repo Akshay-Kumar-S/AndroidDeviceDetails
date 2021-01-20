@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.appInfoModels
+package com.example.androidDeviceDetails.models.appInfo
 
 /**
  * To record to events of an app

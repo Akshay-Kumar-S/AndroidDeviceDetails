@@ -1,26 +1,14 @@
-package com.example.androidDeviceDetails.models
+package com.example.androidDeviceDetails.models.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.models.appInfoModels.*
-import com.example.androidDeviceDetails.models.batteryModels.AppEventDao
-import com.example.androidDeviceDetails.models.appInfoModels.AppHistoryRaw
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoDao
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoRaw
-import com.example.androidDeviceDetails.models.batteryModels.AppEventRaw
-import com.example.androidDeviceDetails.models.batteryModels.BatteryDao
-import com.example.androidDeviceDetails.models.batteryModels.BatteryRaw
-import com.example.androidDeviceDetails.models.locationModels.ILocationDao
-import com.example.androidDeviceDetails.models.locationModels.LocationModel
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageDao
-import com.example.androidDeviceDetails.models.networkUsageModels.AppNetworkUsageRaw
-import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageDao
-import com.example.androidDeviceDetails.models.networkUsageModels.DeviceNetworkUsageRaw
-import com.example.androidDeviceDetails.models.signalModels.SignalDao
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.models.location.ILocationDao
+import com.example.androidDeviceDetails.models.location.LocationModel
+import com.example.androidDeviceDetails.models.signal.SignalDao
+import com.example.androidDeviceDetails.models.signal.SignalRaw
 
 
 @Database(

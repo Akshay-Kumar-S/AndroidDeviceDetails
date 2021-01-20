@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
-import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.utils.SortBy
 
 
@@ -43,7 +43,7 @@ class LocationAdapter(var dataSet: ArrayList<LocationDisplayModel>, private val 
 
     fun sortView(type: Int){
         when (type) {
-            SortBy.Ascending.ordinal -> dataSet.sortBy { it.count }
+            SortBy.ASCENDING.ordinal -> dataSet.sortBy { it.count }
             else -> dataSet.sortByDescending { it.count }
         }
         notifyDataSetChanged()

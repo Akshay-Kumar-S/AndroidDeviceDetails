@@ -13,9 +13,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.appInfoModels.AppDetails
-import com.example.androidDeviceDetails.models.appInfoModels.EventType
+import com.example.androidDeviceDetails.models.appInfo.AppDetails
+import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.services.AppService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

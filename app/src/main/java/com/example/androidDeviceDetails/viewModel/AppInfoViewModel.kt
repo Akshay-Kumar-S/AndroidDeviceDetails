@@ -6,8 +6,8 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
-import com.example.androidDeviceDetails.models.appInfoModels.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfoModels.EventType
+import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfo.EventType
 
 /**
  * Implements [BaseViewModel]

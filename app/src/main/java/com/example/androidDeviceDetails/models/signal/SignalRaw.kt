@@ -1,14 +1,11 @@
-package com.example.androidDeviceDetails.models.signalModels
+package com.example.androidDeviceDetails.models.signal
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.example.androidDeviceDetails.collectors.WifiCollector
-import com.example.androidDeviceDetails.collectors.SignalChangeCollector
-import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.models.RoomDB
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.androidDeviceDetails.collectors.SignalChangeCollector
+import com.example.androidDeviceDetails.collectors.WifiCollector
+import com.example.androidDeviceDetails.cooker.SignalCooker
+import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 /**

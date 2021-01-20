@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.batteryModels
+package com.example.androidDeviceDetails.models.battery
 
 import android.widget.ImageView
 import android.widget.TextView

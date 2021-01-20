@@ -8,10 +8,9 @@ import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
 import android.util.Log
-import android.widget.Toast
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.models.RoomDB
-import com.example.androidDeviceDetails.models.locationModels.LocationModel
+import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.location.LocationModel
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -55,6 +54,7 @@ class LocationCollector(val context: Context) : BaseCollector() {
             }
         }
     }
+
     override fun collect() {
         Log.d("Collect Location", "has")
         if (locationGps != null && locationNetwork != null) {
@@ -64,11 +64,9 @@ class LocationCollector(val context: Context) : BaseCollector() {
             } else {
                 insert(locationGps)
             }
-        }
-        else if(locationGps != null) {
+        } else if (locationGps != null) {
             insert(locationGps)
-        }
-        else if(locationNetwork != null){
+        } else if (locationNetwork != null) {
             insert(locationNetwork)
         }
     }
