@@ -151,7 +151,6 @@ class MainActivityViewModel(
             Log.d("MainViewModel", "Location data  ")
         }
         Log.d("MainViewModel", "onDone: ${arrayList.size}")
-
         //add in array list
         val adapter = MainActivityAdapter(context, arrayList)
         recyclerView.adapter = adapter
