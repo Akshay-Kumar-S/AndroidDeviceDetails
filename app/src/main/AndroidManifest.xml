@@ -29,8 +29,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidDeviceDetails"
-        tools:ignore="AllowBackup">
+        android:theme="@style/Theme.AndroidDeviceDetails">
+        <activity android:name=".ui.GraphActivity"></activity>
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"

@@ -56,18 +56,20 @@ class SignalCooker : BaseCooker() {
 
                 previousSignalEntity = signalEntity
             }
+            if(wifiList.isNotEmpty())
+            {
+                previousSignalEntity = wifiList.first()
+                wifiList.forEach { signalEntity ->
+                    if (wifiLevelUsage.none { it.name == signalEntity.level.toString() })
+                        wifiLevelUsage.add(Usage(signalEntity.level.toString(), 0))
+                    wifiLevelUsage.first { it.name == previousSignalEntity.level.toString() }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
 
-            previousSignalEntity = wifiList.first()
-            wifiList.forEach { signalEntity ->
-                if (wifiLevelUsage.none { it.name == signalEntity.level.toString() })
-                    wifiLevelUsage.add(Usage(signalEntity.level.toString(), 0))
-                wifiLevelUsage.first { it.name == previousSignalEntity.level.toString() }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+                    if (wifiOperatorUsage.none { it.name == signalEntity.operatorName })
+                        wifiOperatorUsage.add(Usage(signalEntity.operatorName, 0))
+                    wifiOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
 
-                if (wifiOperatorUsage.none { it.name == signalEntity.operatorName })
-                    wifiOperatorUsage.add(Usage(signalEntity.operatorName, 0))
-                wifiOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-
-                previousSignalEntity = signalEntity
+                    previousSignalEntity = signalEntity
+                }
             }
 
 
