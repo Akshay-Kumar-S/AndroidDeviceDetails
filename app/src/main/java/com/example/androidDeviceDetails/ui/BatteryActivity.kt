@@ -53,7 +53,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.battery_sort_menu, menu)
+        menuInflater.inflate(R.menu.sort_menu, menu)
         return true
     }
 

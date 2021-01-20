@@ -7,15 +7,20 @@ import com.example.androidDeviceDetails.adapters.NetWorkUsageListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.utils.SortBy
+import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
 /**
  * Implements [BaseViewModel]
  */
 class NetworkUsageViewModel(
-    private val networkUsageBinding: ActivityAppDataBinding,
+    private val binding: ActivityAppDataBinding,
     val context: Context
 ) : BaseViewModel() {
+    private var itemList = ArrayList<AppNetworkUsageRaw>()
+    private var sortBy = SortBy.ALPHABETICAL.ordinal
+
     /**
      * Overrides [onDone] in [BaseViewModel]
      *
@@ -26,28 +31,33 @@ class NetworkUsageViewModel(
     @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
-            networkUsageBinding.root.post {
-                networkUsageBinding.apply {
-                    appDataListView.adapter = NetWorkUsageListAdapter(
-                        context,
-                        R.layout.appdata_tile,
-                        outputList as ArrayList<AppNetworkUsageRaw>
-                    )
-                    noData.isVisible = false
-                }
+            itemList =
+                outputList.filterIsInstance<AppNetworkUsageRaw>() as ArrayList<AppNetworkUsageRaw>
+            binding.root.post {
+                binding.noData.isVisible = false
+                sort(sortBy)
             }
         } else {
-            networkUsageBinding.root.post {
-                networkUsageBinding.apply {
-                    appDataListView.adapter = NetWorkUsageListAdapter(
-                        context,
-                        R.layout.appdata_tile,
-                        arrayListOf()
-                    )
-                    noData.isVisible = true
-                }
+            binding.root.post {
+                binding.noData.isVisible = true
+                sort(sortBy)
             }
         }
+    }
 
+
+    override fun sort(type: Int) {
+        sortBy = type
+        when (type) {
+            SortBy.WIFI_DESCENDING.ordinal -> itemList.sortByDescending { it.transferredDataWifi + it.receivedDataWifi }
+            SortBy.WIFI_ASCENDING.ordinal -> itemList.sortBy { it.transferredDataWifi + it.receivedDataWifi }
+            SortBy.CELLULAR_DESCENDING.ordinal -> itemList.sortByDescending { it.transferredDataMobile + it.receivedDataMobile }
+            SortBy.CELLULAR_ASCENDING.ordinal -> itemList.sortBy { it.transferredDataMobile + it.receivedDataMobile }
+            SortBy.ALPHABETICAL.ordinal -> itemList.sortBy {  Utils.getApplicationLabel(it.packageName)}
+            SortBy.REVERSE_ALPHABETICAL.ordinal -> itemList.sortByDescending { Utils.getApplicationLabel(it.packageName) }
+        }
+        val adapter = NetWorkUsageListAdapter(context, R.layout.appdata_tile, itemList)
+        binding.appDataListView.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 }
