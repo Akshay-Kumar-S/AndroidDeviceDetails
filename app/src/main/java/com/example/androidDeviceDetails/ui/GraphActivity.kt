@@ -14,11 +14,12 @@ class GraphActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_graph)
+        val nums2 = (3..40).toList().toTypedArray<Any>()
         val aaChartView = findViewById<AAChartView>(R.id.aa_chart_view)
         val aaChartModel: AAChartModel = AAChartModel()
             .chartType(AAChartType.Line)
             .title("Strength")
-            .categories(arrayOf("1","2","3","4","5","6","7","8","10"))
+            .categories(arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "10"))
             //  .yAxisLabelsEnabled(false)
             .backgroundColor("#efefef")
             .dataLabelsEnabled(false)
@@ -27,9 +28,10 @@ class GraphActivity : AppCompatActivity() {
                     AASeriesElement()
                         .name("Wifi")
                         .data(
-                            arrayOf(
-                                -83, -85, -81, -82, -80,-83,-84,-80,-81,-81
-                            )
+//                            arrayOf(
+//                                -83, -85, -81, -82, -80, -83, -84, -80, -81, -81
+//                            )
+                        nums2
                         ),
                     AASeriesElement()
                         .name("Cellular")

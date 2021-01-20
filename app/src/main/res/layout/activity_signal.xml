@@ -153,19 +153,19 @@
                 app:value='@{"Poor"}' />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="More Details>"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".9"
-            app:layout_constraintVertical_bias=".95"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:textSize="12sp" />
+            android:layout_marginStart="264dp"
 
+            android:text="More Details>"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cooked_data"
+            app:layout_constraintVertical_bias="0.714" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
