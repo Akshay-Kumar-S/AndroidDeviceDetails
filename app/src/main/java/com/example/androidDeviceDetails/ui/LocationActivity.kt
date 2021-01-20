@@ -46,7 +46,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
         initDatePicker()
         initMap()
         binding.apply {
-            bottomLocation.countView.setOnClickListener(this@LocationActivity)
+            bottomLocation.sortButton.setOnClickListener(this@LocationActivity)
         }
     }
 
@@ -92,9 +92,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.countView -> {
-                if (binding.bottomLocation.sortByCountViewArrow.tag == "down") {
-                    activityController.sortView(SortBy.DESCENDING.ordinal)
+            R.id.sortButton -> {
+                if (binding.bottomLocation.sortButton.tag == "down") {
+                    activityController.sortView(SortBy.Descending.ordinal)
                 } else
                     activityController.sortView(SortBy.ASCENDING.ordinal)
             }
