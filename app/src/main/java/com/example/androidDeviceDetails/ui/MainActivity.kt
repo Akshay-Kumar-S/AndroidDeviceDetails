@@ -9,7 +9,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -26,7 +25,7 @@ const val permissionCode = 200
 val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
     companion object {
         const val NAME = "Main Activity"
     }
@@ -48,50 +47,41 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.recyclerView.addOnItemTouchListener(
-            RecyclerItemClickListener(
-                this,
-                binding.recyclerView,
+            RecyclerItemClickListener(this, binding.recyclerView,
                 object : RecyclerItemClickListener.OnItemClickListener {
                     val cardsTitles = resources.getStringArray(R.array.card_names)
                     override fun onItemClick(view: View, position: Int) {
                         when (view.findViewById<TextView>(R.id.cardTitle).text) {
                             cardsTitles[0] -> startActivity(
                                 Intent(
-                                    this@MainActivity,
-                                    AppInfoActivity::class.java
+                                    this@MainActivity, AppInfoActivity::class.java
                                 )
                             )
                             cardsTitles[1] -> startActivity(
                                 Intent(
-                                    this@MainActivity,
-                                    BatteryActivity::class.java
+                                    this@MainActivity, BatteryActivity::class.java
                                 )
                             )
                             cardsTitles[2] -> startActivity(
                                 Intent(
-                                    this@MainActivity,
-                                    NetworkUsageActivity::class.java
+                                    this@MainActivity, NetworkUsageActivity::class.java
                                 )
                             )
-                            cardsTitles[3] -> startActivity(Intent(
-                                this@MainActivity,
-                                LocationActivity::class.java
-                            ))
-                            cardsTitles[4] -> startActivity(Intent(
-                                this@MainActivity,
-                                SignalActivity::class.java
-                            ))
+                            cardsTitles[3] -> startActivity(
+                                Intent(
+                                    this@MainActivity, LocationActivity::class.java
+                                )
+                            )
+                            cardsTitles[4] -> startActivity(
+                                Intent(
+                                    this@MainActivity, SignalActivity::class.java
+                                )
+                            )
                         }
                     }
-
                     override fun onItemLongClick(view: View?, position: Int) {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "No functionality",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Log.d("onItemLongClick", "onItemLongClick: ")
                     }
-
                 })
         )
         binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
