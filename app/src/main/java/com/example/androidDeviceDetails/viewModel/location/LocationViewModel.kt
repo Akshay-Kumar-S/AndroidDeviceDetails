@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.view.View.GONE
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getDrawable
+import com.example.androidDeviceDetails.CustomMarkerCluster
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
