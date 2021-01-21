@@ -49,8 +49,8 @@
                 <include
                     android:id="@+id/signalData"
                     layout="@layout/activity_main_number_card"
-                    app:label1='@{"Signal Data :"}'
-                    app:label2='@{"Signal Data2 :" }'
+                    app:label1='@{"Signal Data"}'
+                    app:label2='@{"Signal Data2" }'
                     app:title='@{@string/signal_data}'
                     app:iconSource='@{@drawable/ic_twotone_cell_wifi_24}'>
                 </include>

@@ -25,11 +25,7 @@ class MainActivityCooker : BaseCooker() {
                 for (i in outputList) totalDrop += i.drop
                 callback.onDone(
                     arrayListOf(
-                        MainActivityCookedData(
-                            null,
-                            totalDrop,
-                            null, -1, -1
-                        )
+                        MainActivityCookedData(totalDrop = totalDrop)
                     ) as ArrayList<T>
                 )
             }
@@ -45,18 +41,17 @@ class MainActivityCooker : BaseCooker() {
                     callback.onDone(
                         arrayListOf(
                             MainActivityCookedData(
-                                null, -1,
-                                Pair(totalWifiData, totalCellularData), -1, -1
+                                deviceNetworkUsage = Pair(
+                                    totalWifiData,
+                                    totalCellularData
+                                )
                             )
                         ) as ArrayList<T>
                     )
                 } else {
                     callback.onDone(
                         arrayListOf(
-                            MainActivityCookedData(
-                                null, -1,
-                                Pair(1, 1), -1, -1
-                            )
+                            MainActivityCookedData(deviceNetworkUsage = Pair(1, 1) )
                         ) as ArrayList<T>
                     )
                 }
@@ -66,10 +61,7 @@ class MainActivityCooker : BaseCooker() {
             override fun onDone(outputList: ArrayList<AppInfoRaw>) {
                 callback.onDone(
                     arrayListOf(
-                        MainActivityCookedData(
-                            outputList, -1,
-                            null, -1, -1
-                        )
+                        MainActivityCookedData(appInfo = outputList)
                     ) as ArrayList<T>
                 )
             }
@@ -79,7 +71,7 @@ class MainActivityCooker : BaseCooker() {
                 Log.d("locationcheck", "onDone: ")
                 callback.onDone(
                     arrayListOf(
-                        MainActivityCookedData(null, -1, null, outputList.size, -1)
+                        MainActivityCookedData(totalPlacesVisited =  outputList.size)
                     ) as ArrayList<T>
                 )
             }
@@ -88,7 +80,7 @@ class MainActivityCooker : BaseCooker() {
             override fun onDone(outputList: ArrayList<SignalRaw>) {
                 callback.onDone(
                     arrayListOf(
-                        MainActivityCookedData(null, -1, null, -1, outputList.first().strength)
+                        MainActivityCookedData(signalStrength =  outputList.first().strength)
                     ) as ArrayList<T>
                 )
             }
