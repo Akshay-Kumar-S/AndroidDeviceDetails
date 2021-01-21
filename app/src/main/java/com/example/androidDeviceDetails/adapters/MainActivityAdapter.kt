@@ -21,7 +21,7 @@ class MainActivityAdapter(var context: Context, private var arrayList: ArrayList
     RecyclerView.Adapter<MainActivityAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(
-            R.layout.activity_main_item,
+            R.layout.activity_main_number_card,
             viewGroup,
             false
         )

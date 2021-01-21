@@ -6,15 +6,12 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.RecyclerItemClickListener
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.MainActivityCookedData
@@ -26,7 +23,7 @@ const val permissionCode = 200
 val permissions: Array<String> =
     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         const val NAME = "Main Activity"
     }
@@ -46,46 +43,14 @@ class MainActivity : AppCompatActivity() {
             Utils.addInitialData(this)
             PrefManager.createInstance(this).putBoolean(PrefManager.INITIAL_LAUNCH, true)
         }
+        binding.apply {
+            binding.appInfo.cardView.setOnClickListener(this@MainActivity)
+            binding.batteryInfo.cardView.setOnClickListener(this@MainActivity)
+            binding.networkUsage.cardView.setOnClickListener(this@MainActivity)
+            binding.locationInfo.cardView.setOnClickListener(this@MainActivity)
+            binding.signalData.cardView.setOnClickListener(this@MainActivity)
+        }
 
-        binding.recyclerView.addOnItemTouchListener(
-            RecyclerItemClickListener(this, binding.recyclerView,
-                object : RecyclerItemClickListener.OnItemClickListener {
-                    val cardsTitles = resources.getStringArray(R.array.card_names)
-                    override fun onItemClick(view: View, position: Int) {
-                        when (view.findViewById<TextView>(R.id.cardTitle).text) {
-                            cardsTitles[0] -> startActivity(
-                                Intent(
-                                    this@MainActivity, AppInfoActivity::class.java
-                                )
-                            )
-                            cardsTitles[1] -> startActivity(
-                                Intent(
-                                    this@MainActivity, BatteryActivity::class.java
-                                )
-                            )
-                            cardsTitles[2] -> startActivity(
-                                Intent(
-                                    this@MainActivity, NetworkUsageActivity::class.java
-                                )
-                            )
-                            cardsTitles[3] -> startActivity(
-                                Intent(
-                                    this@MainActivity, LocationActivity::class.java
-                                )
-                            )
-                            cardsTitles[4] -> startActivity(
-                                Intent(
-                                    this@MainActivity, SignalActivity::class.java
-                                )
-                            )
-                        }
-                    }
-
-                    override fun onItemLongClick(view: View?, position: Int) {
-                        Log.d("onItemLongClick", "onItemLongClick: ")
-                    }
-                })
-        )
         binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
         binding.pullToRefresh.setOnRefreshListener {
             mainActivityController.refreshCooker()
@@ -113,4 +78,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onClick(v: View?) {
+        when (v!!) {
+            binding.locationInfo.cardView ->
+                startActivity(Intent(this, LocationActivity::class.java))
+            binding.batteryInfo.cardView ->
+                startActivity(Intent(this, BatteryActivity::class.java))
+            binding.appInfo.cardView ->
+                startActivity(Intent(this, AppInfoActivity::class.java))
+            binding.networkUsage.cardView ->
+                startActivity(Intent(this, NetworkUsageActivity::class.java))
+            binding.signalData.cardView ->
+                startActivity(Intent(this, SignalActivity::class.java))
+        }
+    }
 }
