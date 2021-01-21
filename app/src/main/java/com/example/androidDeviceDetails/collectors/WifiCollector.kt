@@ -61,6 +61,7 @@ class WifiCollector : BaseCollector() {
                 WifiManager.calculateSignalLevel(strength, 5)
             }
             wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
+
             val wifiInfo: WifiInfo
             val ssid:String
             wifiInfo = wifiManager.connectionInfo
@@ -68,6 +69,7 @@ class WifiCollector : BaseCollector() {
                 ssid = wifiInfo.ssid
                 Log.d("llb", "onReceive: $ssid")
             }
+
             val db = RoomDB.getDatabase(context)
             signalRaw = SignalRaw(
                 System.currentTimeMillis(),
