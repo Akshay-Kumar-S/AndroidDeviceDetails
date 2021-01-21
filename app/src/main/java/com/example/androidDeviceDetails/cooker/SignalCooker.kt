@@ -1,15 +1,20 @@
 package com.example.androidDeviceDetails.cooker
 
+import android.annotation.SuppressLint
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.Time
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 /**
  * Implements [BaseCooker].
@@ -17,6 +22,7 @@ import kotlinx.coroutines.launch
  **/
 class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
+    private val signalList = arrayListOf<SignalEntry>()
 
     /**
      * Cook data for Signal Strength from the collected data available in the [RoomDB.signalDao]
@@ -46,10 +52,18 @@ class SignalCooker : BaseCooker() {
                 lastCellStrength
             )
             cookedDataList.add(cookedData)
+            val timeInterval = findTimeInterval(time)
+            val pattern=findPattern(time)
+            addList(cellularList,timeInterval,pattern)
+            addList(wifiList,timeInterval,pattern)
+            if (signalList.isNotEmpty()) {
+                callback.onDone(signalList as ArrayList<T>)
+            } else callback.onDone(arrayListOf())
+        }/*
             if (cellularList.isNotEmpty()) {
                 callback.onDone(cookedDataList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
-        }
+        }*/
     }
 
     private fun getMostUsed(
@@ -85,6 +99,45 @@ class SignalCooker : BaseCooker() {
             previousSignalEntity = i
         }
         return roamingTime
+    }
+    private fun findTimeInterval(time: TimePeriod): Long {
+        val timeDifference = time.endTime - time.startTime
+        var timeInterval: Long = 0
+        timeInterval = when {
+            timeDifference <= Time.HOUR -> Time.TWO_MIN
+            timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
+            timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
+            timeDifference <= Time.DAY -> Time.THIRTY_MIN
+            timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
+            timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
+            timeDifference <= Time.TEN_DAY -> Time.MIDDAY
+            else -> Time.DAY
+        }
+        return timeInterval
+    }
+
+    private fun findPattern(time: TimePeriod): String{
+        val timeDifference = time.endTime - time.startTime
+        return when {
+            timeDifference <= Time.TEN_DAY -> "dd MMM yyyy HH:mm"
+            else -> "dd MMM yyyy"
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun addList(list:List<SignalRaw>, timeInterval:Long,pattern:String){
+        var currentTime: Long = 0
+        var timeStamp:String
+        val formatter = SimpleDateFormat(pattern)
+        currentTime = list.first().timeStamp
+        for (signal in list) {
+            if (signal.timeStamp >= currentTime) {
+                timeStamp=formatter.format(signal.timeStamp)
+                signalList.add(SignalEntry(timeStamp, signal.signal, signal.strength))
+                currentTime = (timeInterval+signal.timeStamp)
+            }
+        }
+
     }
 }
 

@@ -82,6 +82,9 @@ interface SignalDao {
     @Query("SELECT * FROM SignalRaw WHERE (timeStamp BETWEEN (:startTime) AND (:endTime)) AND (signal==(:signal))")
     fun getAllBetween(startTime: Long, endTime: Long, signal: Int): List<SignalRaw>
 
+    @Query("SELECT * FROM SignalRaw WHERE (timeStamp BETWEEN (:startTime) AND (:endTime))")
+    fun getAllSignalBetween(startTime: Long, endTime: Long): List<SignalRaw>
+
     /**
      * Delete all the records in the [SignalRaw] table.
      */

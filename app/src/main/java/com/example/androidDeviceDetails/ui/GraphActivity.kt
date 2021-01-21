@@ -3,46 +3,91 @@ package com.example.androidDeviceDetails.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
-
+import com.example.androidDeviceDetails.models.signalModels.Chart
+import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.utils.Signal
+import com.github.aachartmodel.aainfographics.aachartcreator.*
+import com.google.gson.Gson
 
 class GraphActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val gson = Gson()
+        val sig = intent.getStringExtra("key")
+        val signalList = gson.fromJson(sig, Array<SignalEntry>::class.java)
+        var size = signalList.size
+        var wifiSize = 0
+        var cellularSize = 0
+
+        size -= 1
+        for (i in 0..size) {
+            if (signalList[i].signal == Signal.CELLULAR.ordinal)
+                cellularSize += 1
+            else if (signalList[i].signal == Signal.WIFI.ordinal)
+                wifiSize += 1
+        }
+
+        val cellularTimeList = Array(cellularSize) {""}
+        val cellularValueList = Array<Any>(cellularSize) {}
+        val wifiValueList = Array<Any>(wifiSize) {}
+        val wifiTimeList = Array(wifiSize) {""}
+
+        var c = 0
+        var w = 0
+        for (i in 0..size) {
+            if (signalList[i].signal == Signal.CELLULAR.ordinal) {
+                cellularTimeList[c] = signalList[i].timeStamp
+                cellularValueList[c] = signalList[i].strength
+                c += 1
+            } else if (signalList[i].signal == Signal.WIFI.ordinal) {
+                wifiTimeList[w] = signalList[i].timeStamp
+                wifiValueList[w] = signalList[i].strength
+                w += 1
+            }
+        }
+
         setContentView(R.layout.activity_graph)
-        val nums2 = (3..40).toList().toTypedArray<Any>()
-        val aaChartView = findViewById<AAChartView>(R.id.aa_chart_view)
+
+        val wifiChart = Chart(
+            R.id.wifi_chart, "WIFI", -127f, 0f,
+            "#ffc069",wifiTimeList,wifiValueList
+        )
+        drawChart(wifiChart)
+        val cellularChart = Chart(
+            R.id.cellular_chart, "CELLULAR", -150f, -50f,
+            "#06caf4",cellularTimeList,cellularValueList
+        )
+        drawChart(cellularChart)
+    }
+
+    private fun drawChart(chart: Chart) {
+        val aaChartView = findViewById<AAChartView>(chart.id)
         val aaChartModel: AAChartModel = AAChartModel()
-            .chartType(AAChartType.Line)
-            .title("Strength")
-            .categories(arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "10"))
-            //  .yAxisLabelsEnabled(false)
-            .backgroundColor("#efefef")
-            .dataLabelsEnabled(false)
+            .chartType(AAChartType.Spline)
+            .title(chart.title)
+            .categories(chart.xSet)
+            .yAxisLabelsEnabled(true)
+            .yAxisGridLineWidth(0f)
+            .xAxisLabelsEnabled(false)
+            // .touchEventEnabled(true)
+            .yAxisMin(chart.yAxisMin)
+            .yAxisMax(chart.yAxisMax)
+            .yAxisTitle("strength")
+            // .dataLabelsEnabled(false)
+            .tooltipValueSuffix("dBm")
+            .colorsTheme(arrayOf(chart.color))
+            .legendEnabled(false)
+            .zoomType(AAChartZoomType.XY)
             .series(
                 arrayOf(
                     AASeriesElement()
-                        .name("Wifi")
-                        .data(
-//                            arrayOf(
-//                                -83, -85, -81, -82, -80, -83, -84, -80, -81, -81
-//                            )
-                        nums2
-                        ),
-                    AASeriesElement()
-                        .name("Cellular")
-                        .data(
-                            arrayOf(-75, -70, -71, -72, -79)
-                        )
-                ),
-
+                        .name(chart.title)
+                        .data(chart.ySet),
                 )
+            )
 
         aaChartView.aa_drawChartWithChartModel(aaChartModel)
-
     }
 }

@@ -9,6 +9,7 @@ import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
+import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.utils.Signal
@@ -16,7 +17,6 @@ import com.example.androidDeviceDetails.utils.Signal
 /**
  * Implements [BaseViewModel]
  */
-@RequiresApi(Build.VERSION_CODES.N)
 class SignalViewModel(
     private val signalBinding: ActivitySignalBinding,
     val context: Context
@@ -26,6 +26,7 @@ class SignalViewModel(
     private lateinit var cellularList: ArrayList<SignalRaw>
     private lateinit var wifiList: ArrayList<SignalRaw>
     private val db = RoomDB.getDatabase()!!
+    var signalList= arrayListOf<SignalEntry>()
 
     init {
         observeSignal()
@@ -36,7 +37,6 @@ class SignalViewModel(
      * It is used to observe the last live data of [SignalRaw].
      * And on notification, updates values via [updateValue].
      */
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun observeSignal() {
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
             if (it != null) updateValue(it)
@@ -47,7 +47,6 @@ class SignalViewModel(
      * This method updates the values of wifi strength, link speed,
      * cellular strength and cell info type upon call from [observeSignal].
      */
-    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     fun updateValue(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
@@ -62,7 +61,6 @@ class SignalViewModel(
     /**
      * This method updates the Card view in the UI based on the selected menu - CELLULAR or WIFI.
      */
-    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     fun updateCardView() {
         signalBinding.pointerCellularSpeedometer.post() {
@@ -89,6 +87,7 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
+        signalList= outputList as ArrayList<SignalEntry>
 
         signalBinding.mostUsedOperator.textView3.text =
             (outputList.first() as SignalCookedData).mostUsedOperator
@@ -111,7 +110,6 @@ class SignalViewModel(
      * views are updated.
      * @param type to indicate which signal menu is chosen - CELLULAR or WIFI.
      */
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun filter(type: Int) {
     }
 
