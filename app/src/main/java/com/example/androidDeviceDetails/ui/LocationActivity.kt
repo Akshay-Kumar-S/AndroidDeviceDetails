@@ -19,6 +19,7 @@ import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
+import org.osmdroid.tileprovider.tilesource.MapBoxTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
@@ -73,7 +74,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         binding.apply {
             mapView.isHorizontalMapRepetitionEnabled = true
             mapView.isVerticalMapRepetitionEnabled = false
-            mapView.setTileSource(TileSourceFactory.MAPNIK)
             mapView.setMultiTouchControls(true)
             mapView.isTilesScaledToDpi = true
             mapView.minZoomLevel = 2.0
@@ -82,58 +82,67 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
                 getTileSystem().minLatitude,
                 0
             )
-            mapView.overlayManager.tilesOverlay.setColorFilter(test());
+//            val a = "pk.eyJ1IjoiaXNoYW1tb2hhbWVkIiwiYSI6ImNrazZyNjdhdjA2c3cyb3A4ODh4enJmY3IifQ.VZnhQTW29WXxinitrbX8Hw"
+//            val b= "mapbox.mapbox-streets-v8"
+//            val tilemap= MapBoxTileSource(b,a)
+            mapView.setTileSource(TileSourceFactory.WIKIMEDIA)
+            mapView.overlayManager.tilesOverlay.setColorFilter(test())
             mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
         }
 
     }
 
 
-    fun test(): ColorMatrixColorFilter {
-        val inverseMatrix = ColorMatrix(floatArrayOf(
-            -1.0f, 0.0f, 0.0f, 0.0f, 255f,
-            0.0f, -1.0f, 0.0f, 0.0f, 255f,
-            0.0f, 0.0f, -1.0f, 0.0f, 255f,
-            0.0f, 0.0f, 0.0f, 1.0f, 0.0f
-        ))
-        val destinationColor = Color.parseColor("#FF2A2A2A");
-        val lr = (255.0f - Color.red(destinationColor))/255.0f;
-        val lg = (255.0f - Color.green(destinationColor))/255.0f;
-        val lb = (255.0f - Color.blue(destinationColor))/255.0f;
+    private fun test(): ColorMatrixColorFilter {
+        val inverseMatrix = ColorMatrix(
+            floatArrayOf(
+                -1.0f, 0.0f, 0.0f, 0.0f, 255f,
+                0.0f, -1.0f, 0.0f, 0.0f, 255f,
+                0.0f, 0.0f, -1.0f, 0.0f, 255f,
+                0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+            )
+        )
+        val destinationColor = Color.parseColor("#FF2A2A2A")
+        val lr = (255.0f - Color.red(destinationColor))/255.0f
+        val lg = (255.0f - Color.green(destinationColor))/255.0f
+        val lb = (255.0f - Color.blue(destinationColor))/255.0f
         val grayscaleMatrix = ColorMatrix(
             floatArrayOf(
-                lr, lg, lb, 0F, 0F, //
-                lr, lg, lb, 0F, 0F, //
-                lr, lg, lb, 0F, 0F, //
-                0F, 0F, 0F, 0F, 255F, //
-            ))
-        grayscaleMatrix.preConcat(inverseMatrix);
-        val dr = Color.red(destinationColor);
-        val dg = Color.green(destinationColor);
-        val db = Color.blue(destinationColor);
+                lr, lg, lb, 0F, 0F,
+                lr, lg, lb, 0F, 0F,
+                lr, lg, lb, 0F, 0F,
+                0F, 0F, 0F, 0F, 255F,
+            )
+        )
+        grayscaleMatrix.preConcat(inverseMatrix)
+        val dr = Color.red(destinationColor)
+        val dg = Color.green(destinationColor)
+        val db = Color.blue(destinationColor)
         val drf = dr / 255f
         val dgf = dg / 255f
         val dbf = db / 255f
         val tintMatrix =  ColorMatrix(
             floatArrayOf(
-                drf, 0F, 0F, 0F, 0F, //
-                0F, dgf, 0F, 0F, 0F, //
-                0F, 0F, dbf, 0F, 0F, //
-                0F, 0F, 0F, 1F, 0F, //
-            ))
-        tintMatrix.preConcat(grayscaleMatrix);
-        val lDestination = drf * lr + dgf * lg + dbf * lb;
-        val scale = 1f - lDestination;
-        val translate = 1 - scale * 0.5f;
+                drf, 0F, 0F, 0F, 0F,
+                0F, dgf, 0F, 0F, 0F,
+                0F, 0F, dbf, 0F, 0F,
+                0F, 0F, 0F, 1F, 0F,
+            )
+        )
+        tintMatrix.preConcat(grayscaleMatrix)
+        val lDestination = drf * lr + dgf * lg + dbf * lb
+        val scale = 1f - lDestination
+        val translate = 1 - scale * 0.5f
         val scaleMatrix =  ColorMatrix(
             floatArrayOf(
-            scale, 0F, 0F, 0F, dr * translate, //
-                0F, scale, 0F, 0F, dg * translate, //
-                0F, 0F, scale, 0F, db * translate, //
-                0F, 0F, 0F, 1F, 0F, //
-            ))
-        scaleMatrix.preConcat(tintMatrix);
-       return ColorMatrixColorFilter(scaleMatrix);
+                scale, 0F, 0F, 0F, dr * translate,
+                0F, scale, 0F, 0F, dg * translate,
+                0F, 0F, scale, 0F, db * translate,
+                0F, 0F, 0F, 1F, 0F,
+            )
+        )
+        scaleMatrix.preConcat(tintMatrix)
+       return ColorMatrixColorFilter(scaleMatrix)
     }
 
     private fun initDatePicker() {
@@ -159,7 +168,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         when (v!!.id) {
             R.id.sortButton -> {
                 if (binding.bottomLocation.sortButton.tag == "down") {
-                    activityController.sortView(SortBy.Descending.ordinal)
+                    activityController.sortView(SortBy.DESCENDING.ordinal)
                 } else
                     activityController.sortView(SortBy.ASCENDING.ordinal)
             }

@@ -7,11 +7,12 @@ import android.graphics.drawable.Drawable
 import android.view.View.GONE
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getDrawable
+import com.example.androidDeviceDetails.CustomMarkerCluster
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
