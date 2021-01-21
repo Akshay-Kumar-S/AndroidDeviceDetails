@@ -6,13 +6,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
-import com.example.androidDeviceDetails.database.RoomDB
-import com.example.androidDeviceDetails.models.signal.SignalRaw
+import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -56,11 +55,6 @@ class WifiCollector : BaseCollector() {
             } else {
                 WifiManager.calculateSignalLevel(strength, 4)
             }
-            Log.d("wifi", "onReceive: $level $strength ")
-            Log.d(
-                "wifi",
-                "onReceive: ${wifiManager.connectionInfo.bssid}  ${wifiManager.connectionInfo.networkId} ${wifiManager.connectionInfo.ssid} "
-            )
 
             val db = RoomDB.getDatabase(context)
             signalRaw = SignalRaw(
@@ -95,6 +89,10 @@ class WifiCollector : BaseCollector() {
                     else -> WifiLevel.NONE.ordinal
                 }
             }*/
+    }
+
+    init {
+        start()
     }
 
     /**

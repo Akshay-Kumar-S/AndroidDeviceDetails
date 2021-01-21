@@ -5,5 +5,7 @@ data class SignalCookedData(
     var mostUsedOperator:String?,
     var mostUsedWifi:String?,
     var mostUsedLevel:String,
-    var mostUsedWifiLevel:String
+    var mostUsedWifiLevel:String,
+    var lastWifiStrength:Int,
+    var lasCellularStrength:Int,
 )

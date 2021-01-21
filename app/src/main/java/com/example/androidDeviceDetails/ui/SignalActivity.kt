@@ -33,7 +33,6 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         binding.more.setOnClickListener {
             startActivity(Intent(this, GraphActivity::class.java))
         }
-
     }
 
     override fun onClick(v: View?) {

@@ -1,11 +1,11 @@
 package com.example.androidDeviceDetails.cooker
 
-import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
@@ -28,72 +28,63 @@ class SignalCooker : BaseCooker() {
      */
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
-            Log.e("time11", "${System.currentTimeMillis()}")
             val cellularList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
             val wifiList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
-
-            val cellularBandUsage = ArrayList<Usage>()
-            val cellularOperatorUsage = ArrayList<Usage>()
-            val wifiOperatorUsage = ArrayList<Usage>()
-            val wifiLevelUsage = ArrayList<Usage>()
-            var roamingTime: Long = 0
-
-
-            var previousSignalEntity = cellularList.first()
-
-            cellularList.forEach { signalEntity ->
-                if (cellularBandUsage.none { it.name == signalEntity.band })
-                    cellularBandUsage.add(Usage(signalEntity.band, 0))
-                cellularBandUsage.first { it.name == previousSignalEntity.band }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-
-                if (cellularOperatorUsage.none { it.name == signalEntity.operatorName })
-                    cellularOperatorUsage.add(Usage(signalEntity.operatorName, 0))
-                cellularOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-
-                if (previousSignalEntity.isRoaming == true) roamingTime += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-
-                previousSignalEntity = signalEntity
-            }
-            if(wifiList.isNotEmpty())
-            {
-                previousSignalEntity = wifiList.first()
-                wifiList.forEach { signalEntity ->
-                    if (wifiLevelUsage.none { it.name == signalEntity.level.toString() })
-                        wifiLevelUsage.add(Usage(signalEntity.level.toString(), 0))
-                    wifiLevelUsage.first { it.name == previousSignalEntity.level.toString() }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-
-                    if (wifiOperatorUsage.none { it.name == signalEntity.operatorName })
-                        wifiOperatorUsage.add(Usage(signalEntity.operatorName, 0))
-                    wifiOperatorUsage.first { it.name == previousSignalEntity.operatorName }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-
-                    previousSignalEntity = signalEntity
-                }
-            }
-
-
-            cellularBandUsage.sortBy { it.time }
-            cellularOperatorUsage.sortBy { it.time }
-            wifiLevelUsage.sortBy { it.time }
-            wifiOperatorUsage.sortBy { it.time }
+            var lastCellStrength=cellularList.last().strength
+            var lastWifiStrength=wifiList.last().strength
+            var roamingTime: Long = roamingTime(cellularList)
             val cookedDataList = ArrayList<SignalCookedData>()
-            var cookedData = SignalCookedData(
+            val cookedData = SignalCookedData(
                 roamingTime,
-                cellularOperatorUsage.last().name,
-                wifiOperatorUsage.last().name,
-                cellularBandUsage.last().name!!,
-                wifiLevelUsage.last().name!!
+                getMostUsed(cellularList, "operator"),
+                getMostUsed(wifiList, "operator"),
+                getMostUsed(cellularList, "band"),
+                getMostUsed(wifiList, "level"),
+                lastWifiStrength,
+                lastCellStrength
             )
             cookedDataList.add(cookedData)
-            Log.e(
-                "usage",
-                "$cellularBandUsage $cellularOperatorUsage $wifiLevelUsage $wifiOperatorUsage $roamingTime"
-            )
             if (cellularList.isNotEmpty()) {
                 callback.onDone(cookedDataList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
         }
+    }
+
+    private fun getMostUsed(
+        rawList: List<SignalRaw>,
+        data: String,
+    ): String {
+        if (rawList.isEmpty()) return "no data"
+        val usageList = ArrayList<Usage>()
+        var dataValue: String
+        var previousSignalEntity = rawList.first()
+        rawList.forEach { signalEntity ->
+            dataValue = when (data) {
+                "band" -> signalEntity.band.toString()
+                "operator" -> signalEntity.operatorName
+                "level" -> signalEntity.level.toString()
+                else -> signalEntity.operatorName
+            }
+            if (usageList.none { it.name == dataValue })
+                usageList.add(Usage(dataValue, 0))
+            usageList.first { it.name == dataValue }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+            previousSignalEntity = signalEntity
+        }
+        usageList.sortBy { it.time }
+        return usageList.last().name.toString()
+    }
+
+    private fun roamingTime(cellularList: List<SignalRaw>): Long {
+        if (cellularList.isEmpty()) return 0
+        var roamingTime: Long = 0
+        var previousSignalEntity = cellularList.first()
+        for (i in cellularList) {
+            if (i.isRoaming == true) roamingTime += i.timeStamp - previousSignalEntity.timeStamp
+            previousSignalEntity = i
+        }
+        return roamingTime
     }
 }
 
