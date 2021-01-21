@@ -2,6 +2,7 @@ package com.example.androidDeviceDetails.models.database
 
 import androidx.room.*
 import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 
 /**
  * A data class used to enter details into [AppHistoryDao]
@@ -80,4 +81,7 @@ interface AppHistoryDao {
 
     @Delete
     fun delete(user: AppHistoryRaw)
+
+    @Query("SELECT * FROM AppHistoryRaw GROUP BY appId")
+    fun getAllApps(): List<AppHistoryRaw>
 }

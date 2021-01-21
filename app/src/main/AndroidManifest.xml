@@ -32,11 +32,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
+        <activity android:name=".ui.PermittedAppsActivity"
+            android:label="Permitted Apps"
+            android:parentActivityName=".ui.PermissionsActivity">
+        </activity>
         <activity
             android:name=".ui.PermissionsActivity"
             android:label="App Permissions"
-            android:parentActivityName=".ui.MainActivity">
-        </activity>
+            android:parentActivityName=".ui.MainActivity"/>
         <activity
             android:name=".ui.AppInfoActivity"
             android:label="Application Info"
