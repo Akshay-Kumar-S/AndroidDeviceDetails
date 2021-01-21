@@ -1,5 +1,5 @@
 package com.example.androidDeviceDetails.collectors
-
+import com.example.androidDeviceDetails.collectors.PermissionCollector
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -26,6 +26,7 @@ class AppInfoCollector : BaseCollector() {
          *
          */
         override fun onReceive(context: Context, intent: Intent) {
+            PermissionCollector(context).installedApps()
             val action = intent.action
             val packageName = intent.data?.schemeSpecificPart ?: "not found"
 
