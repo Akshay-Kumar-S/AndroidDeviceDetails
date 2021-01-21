@@ -31,6 +31,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
+        <activity android:name=".ui.PermittedAppsActivity"
+            android:label="Permitted Apps"
+            android:parentActivityName=".ui.PermissionsActivity">
+        </activity>
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"

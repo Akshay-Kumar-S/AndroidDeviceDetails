@@ -20,6 +20,7 @@ abstract class BaseCooker {
                 LocationActivity.NAME -> LocationCooker()
                 AppTypeActivity.NAME -> AppTypeCooker()
                 PermissionsActivity.NAME -> PermissionsCooker()
+                PermittedAppsActivity.NAME -> PermittedAppsCooker()
                 else -> null
             }
         }

@@ -4,26 +4,28 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
-import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
+import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 
-class PermissionsActivity : AppCompatActivity(), View.OnClickListener {
+class PermittedAppsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPermissionsBinding
-    private lateinit var controller: ActivityController<String>
+    private lateinit var binding: ActivityPermittedAppsBinding
+    private lateinit var controller: ActivityController<PermittedAppsCookedData>
 
     companion object {
-        const val NAME = "permissions"
+        const val NAME = "permittedapps"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_permissions)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_permitted_apps)
         controller = ActivityController(
             NAME,
             binding,
@@ -31,27 +33,19 @@ class PermissionsActivity : AppCompatActivity(), View.OnClickListener {
             null,
             supportFragmentManager
         )
+        Log.d("Tag", intent.getStringExtra("permission").toString())
         binding.apply {
-            permissionsListView.isEnabled = true
-            permissionsListView.setOnItemClickListener { parent, _, position, _ ->
-                showApps(parent, position)
-            }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
+            permittedAppsListView.isEnabled = true
         }
     }
 
     private fun showApps(parent: AdapterView<*>, position: Int) {
         val adapter = parent.adapter as PermissionsListAdapter
         val item = adapter.getItem(position)
-        val infoIntent = Intent(this@PermissionsActivity, PermittedAppsActivity::class.java)
-        infoIntent.putExtra("permission", item)
+        val infoIntent = Intent(Settings.ACTION_PRIVACY_SETTINGS)
+        intent.putExtra("permission", item)
 //        infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
 //        infoIntent.data = Uri.parse("package:${item?.get(position)}")
         startActivity(infoIntent)
     }
-
 }
