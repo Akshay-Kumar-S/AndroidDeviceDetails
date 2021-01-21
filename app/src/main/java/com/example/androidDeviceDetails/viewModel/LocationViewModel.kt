@@ -11,11 +11,12 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.locationModels.LocationDisplayModel
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Overlay
 
 
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
@@ -73,7 +74,25 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
+    fun drawableToBitmap(drawable: Drawable): Bitmap? {
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+        val bitmap =
+            Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+
     private fun addPointOnMap() {
+        val overlays: MutableList<Overlay> = binding.mapView.overlays
+        overlays.clear()
+        val cluster = CustomMarkerCluster(context)
+        cluster.setIcon(getDrawable(context,R.drawable.location_bubble)?.let {drawableToBitmap(it)})
+        cluster.setRadius(90)
+        cluster.textPaint.textSize = 24F
         for (location in cookedDataList) {
             val latLong = decodeHash(location.geoHash)
             val marker = Marker(binding.mapView)
@@ -81,15 +100,17 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
                 marker.icon = generateMarker(location.count.toString())
                 marker.position = GeoPoint(latLong.lat, latLong.lon)
                 marker.infoWindow.view.visibility=GONE
+                marker.title=location.count.toString()
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                binding.mapView.overlays.add(marker)
+                cluster.add(marker)
+                overlays.add(cluster)
             }
         }
     }
 
     private fun generateMarker(count: String): Drawable {
         val icg = IconGenerator(context)
-        icg.setBackground(getDrawable(context,R.drawable.location_bubble))
+        icg.setBackground(getDrawable(context, R.drawable.location_bubble))
         icg.setTextAppearance(R.style.LocationBubble)
         return BitmapDrawable(context.resources, icg.makeIcon(count))
     }
