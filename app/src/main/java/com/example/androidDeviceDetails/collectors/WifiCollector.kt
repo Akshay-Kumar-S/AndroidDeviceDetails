@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
@@ -44,6 +45,7 @@ class WifiCollector : BaseCollector() {
             val linkSpeed: Int
             val level: Int
             val operatorName: String
+            var wifiPercentage=0F
 
             val wifiManager: WifiManager =
                 context?.applicationContext?.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
@@ -53,9 +55,9 @@ class WifiCollector : BaseCollector() {
             level = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                 wifiManager.calculateSignalLevel(strength)
             } else {
-                WifiManager.calculateSignalLevel(strength, 4)
+                WifiManager.calculateSignalLevel(strength, 5)
             }
-
+            wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
             val db = RoomDB.getDatabase(context)
             signalRaw = SignalRaw(
                 System.currentTimeMillis(),
@@ -66,7 +68,7 @@ class WifiCollector : BaseCollector() {
                 operatorName,
                 null,
                 null,
-                null
+                wifiPercentage
 
             )
             GlobalScope.launch {

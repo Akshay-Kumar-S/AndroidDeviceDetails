@@ -2,8 +2,6 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
@@ -22,11 +20,12 @@ class SignalViewModel(
     val context: Context
 ) : BaseViewModel() {
     private var cellularStrength: Int = -124
-    private var wifiStrength: Int = -127
+    private var wifiStrength: Float = 0F
     private lateinit var cellularList: ArrayList<SignalRaw>
     private lateinit var wifiList: ArrayList<SignalRaw>
     private val db = RoomDB.getDatabase()!!
-    var signalList= arrayListOf<SignalEntry>()
+    var signalList = arrayListOf<SignalEntry>()
+    lateinit var listData: SignalCookedData
 
     init {
         observeSignal()
@@ -51,7 +50,7 @@ class SignalViewModel(
     fun updateValue(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
             Signal.WIFI.ordinal ->
-                wifiStrength = signalRaw.strength
+                wifiStrength = signalRaw.wifiPercentage!!
             Signal.CELLULAR.ordinal ->
                 cellularStrength = signalRaw.strength
         }
@@ -69,7 +68,7 @@ class SignalViewModel(
                 1000
             )
             signalBinding.pointerWifiSpeedometer.speedTo(
-                (-127 - wifiStrength) / 103.toFloat() * (-100),
+                wifiStrength,
                 1000
             )
         }
@@ -87,18 +86,13 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
-        signalList= outputList[1] as ArrayList<SignalEntry>
-
-        signalBinding.mostUsedOperator.textView3.text =
-            (outputList.first() as SignalCookedData).mostUsedOperator
-        signalBinding.mostUsedBand.textView3.text =
-            (outputList.first() as SignalCookedData).mostUsedLevel
-        signalBinding.roamingTime.textView3.text =
-            (outputList.first() as SignalCookedData).roamingTime.toString()
-        signalBinding.mostUsedWifi.textView3.text =
-            (outputList.first() as SignalCookedData).mostUsedWifi
-        signalBinding.mostUsedWifiLevel.textView3.text = "good"
-        // (outputList.first() as SignalCookedData).mostUsedWifiLevel
+        signalList = outputList[1] as ArrayList<SignalEntry>
+        listData = outputList as SignalCookedData
+        signalBinding.mostUsedOperator.textView3.text = listData.mostUsedOperator
+        signalBinding.mostUsedBand.textView3.text = listData.mostUsedLevel
+        signalBinding.roamingTime.textView3.text = listData.roamingTime.toString()
+        signalBinding.mostUsedWifi.textView3.text = listData.mostUsedWifi
+        signalBinding.mostUsedWifiLevel.textView3.text = listData.mostUsedWifiLevel
         cellularStrength = (outputList.first() as SignalCookedData).lasCellularStrength
         wifiStrength = (outputList.first() as SignalCookedData).lastWifiStrength
         updateCardView()

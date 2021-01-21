@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.cooker
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
@@ -39,7 +40,7 @@ class SignalCooker : BaseCooker() {
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
 
             val lastCellStrength=cellularList.last().strength
-            val lastWifiStrength=wifiList.last().strength
+            val lastWifiStrength=wifiList.last().wifiPercentage
             val roamingTime: Long = roamingTime(cellularList)
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
@@ -48,7 +49,7 @@ class SignalCooker : BaseCooker() {
                 getMostUsed(wifiList, "operator"),
                 getMostUsed(cellularList, "band"),
                 getMostUsed(wifiList, "level"),
-                lastWifiStrength,
+                lastWifiStrength!!,
                 lastCellStrength
             )
             cookedDataList.add(cookedData)

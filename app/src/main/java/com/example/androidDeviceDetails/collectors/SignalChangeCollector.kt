@@ -144,7 +144,7 @@ class SignalChangeCollector() : BaseCollector(), Parcelable {
                 operatorName,
                 isRoaming,
                 networkBand,
-                countryCode
+                0F
             )
             GlobalScope.launch {
                 signalDB?.signalDao()?.insertAll(signalEntity)
