@@ -29,10 +29,10 @@ class GraphActivity : AppCompatActivity() {
                 wifiSize += 1
         }
 
-        val cellularTimeList = Array(cellularSize) {""}
+        val cellularTimeList = Array(cellularSize) { "" }
         val cellularValueList = Array<Any>(cellularSize) {}
         val wifiValueList = Array<Any>(wifiSize) {}
-        val wifiTimeList = Array(wifiSize) {""}
+        val wifiTimeList = Array(wifiSize) { "" }
 
         var c = 0
         var w = 0
@@ -51,31 +51,28 @@ class GraphActivity : AppCompatActivity() {
         setContentView(R.layout.activity_graph)
 
         val wifiChart = Chart(
-            R.id.wifi_chart, "WIFI", -127f, 0f,
-            "#ffc069",wifiTimeList,wifiValueList
+            R.id.wifi_chart, "WIFI", -127f, 0f, "#ffc069"
         )
-        drawChart(wifiChart)
+        drawChart(wifiChart, wifiTimeList, wifiValueList)
         val cellularChart = Chart(
-            R.id.cellular_chart, "CELLULAR", -150f, -50f,
-            "#06caf4",cellularTimeList,cellularValueList
+            R.id.cellular_chart, "CELLULAR", -150f, -50f, "#06caf4"
         )
-        drawChart(cellularChart)
+        drawChart(cellularChart, cellularTimeList, cellularValueList)
     }
 
-    private fun drawChart(chart: Chart) {
+    private fun drawChart(chart: Chart, xSet: Array<String>, ySet: Array<Any>) {
         val aaChartView = findViewById<AAChartView>(chart.id)
         val aaChartModel: AAChartModel = AAChartModel()
             .chartType(AAChartType.Spline)
             .title(chart.title)
-            .categories(chart.xSet)
+            .categories(xSet)
             .yAxisLabelsEnabled(true)
             .yAxisGridLineWidth(0f)
             .xAxisLabelsEnabled(false)
-            // .touchEventEnabled(true)
+            .touchEventEnabled(true)
             .yAxisMin(chart.yAxisMin)
             .yAxisMax(chart.yAxisMax)
             .yAxisTitle("strength")
-            // .dataLabelsEnabled(false)
             .tooltipValueSuffix("dBm")
             .colorsTheme(arrayOf(chart.color))
             .legendEnabled(false)
@@ -84,7 +81,7 @@ class GraphActivity : AppCompatActivity() {
                 arrayOf(
                     AASeriesElement()
                         .name(chart.title)
-                        .data(chart.ySet),
+                        .data(ySet),
                 )
             )
 

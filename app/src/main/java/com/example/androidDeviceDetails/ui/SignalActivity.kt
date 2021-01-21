@@ -2,14 +2,12 @@ package com.example.androidDeviceDetails.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 import com.google.gson.Gson
 

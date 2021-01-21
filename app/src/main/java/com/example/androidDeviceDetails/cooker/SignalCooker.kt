@@ -103,7 +103,7 @@ class SignalCooker : BaseCooker() {
 
     private fun findTimeInterval(time: TimePeriod): Long {
         val timeDifference = time.endTime - time.startTime
-        var timeInterval: Long = 0
+        val timeInterval: Long
         timeInterval = when {
             timeDifference <= Time.HOUR -> Time.TWO_MIN
             timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
@@ -120,14 +120,14 @@ class SignalCooker : BaseCooker() {
     private fun findPattern(time: TimePeriod): String{
         val timeDifference = time.endTime - time.startTime
         return when {
-            timeDifference <= Time.TEN_DAY -> "dd MMM yyyy HH:mm"
+            timeDifference <= Time.TEN_DAY -> "HH:mm dd MMM yyyy"
             else -> "dd MMM yyyy"
         }
     }
 
     @SuppressLint("SimpleDateFormat")
     private fun addList(list:List<SignalRaw>, timeInterval:Long,pattern:String){
-        var currentTime: Long = 0
+        var currentTime: Long
         var timeStamp:String
         val formatter = SimpleDateFormat(pattern)
         currentTime = list.first().timeStamp

@@ -6,6 +6,4 @@ data class Chart(
     var yAxisMin: Float,
     var yAxisMax: Float,
     var color: String,
-    var xSet: Array<String>,
-    var ySet: Array<Any>
 )
