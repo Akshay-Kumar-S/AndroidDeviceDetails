@@ -84,10 +84,8 @@ class SignalViewModel(
      * @param outputList List of cooked data.
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
-        wifiList = arrayListOf()
-        cellularList = arrayListOf()
         signalList = outputList[1] as ArrayList<SignalEntry>
-        listData = outputList as SignalCookedData
+        listData = outputList[0] as SignalCookedData
         signalBinding.mostUsedOperator.textView3.text = listData.mostUsedOperator
         signalBinding.mostUsedBand.textView3.text = listData.mostUsedLevel
         signalBinding.roamingTime.textView3.text = listData.roamingTime.toString()
