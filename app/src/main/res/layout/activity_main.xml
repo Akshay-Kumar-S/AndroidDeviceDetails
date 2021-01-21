@@ -17,31 +17,41 @@
                 <include
                     android:id="@+id/appInfo"
                     layout="@layout/main_activity_chart_card"
-                    app:title='@{"App Info"}'
+                    app:label1='@{"System Apps"}'
+                    app:label2='@{"User Apps"}'
+                    app:title='@{@string/app_info}'
                     app:iconSource='@{@drawable/ic_twotone_system_update_24}'>
                 </include>
                 <include
                     android:id="@+id/batteryInfo"
                     layout="@layout/activity_main_number_card"
-                    app:title='@{"Battery Usage"}'
+                    app:title='@{@string/battery_usage}'
+                    app:label1='@{"%"}'
+                    app:label2='@{"Used"}'
                     app:iconSource='@{@drawable/ic_round_battery_std_24}'>
                 </include>
                 <include
                     android:id="@+id/locationInfo"
                     layout="@layout/activity_main_number_card"
-                    app:title='@{"Location Info"}'
+                    app:label1='@{"Locations"}'
+                    app:label2='@{"Visited"}'
+                    app:title='@{@string/location_data}'
                     app:iconSource='@{@drawable/ic_twotone_location_on_24}'>
                 </include>
                 <include
                     android:id="@+id/networkUsage"
                     layout="@layout/main_activity_chart_card"
-                    app:title='@{"Network Usage"}'
+                    app:label1='@{"Wifi Data"}'
+                    app:label2='@{"Cellular Data"}'
+                    app:title='@{@string/network_usage}'
                     app:iconSource='@{@drawable/ic_round_data_usage_24}'>
                 </include>
                 <include
                     android:id="@+id/signalData"
                     layout="@layout/activity_main_number_card"
-                    app:title='@{"Signal Data"}'
+                    app:label1='@{"Signal Data:"}'
+                    app:label2='@{"Signal Data2"}'
+                    app:title='@{@string/signal_data}'
                     app:iconSource='@{@drawable/ic_twotone_cell_wifi_24}'>
                 </include>
             </LinearLayout>

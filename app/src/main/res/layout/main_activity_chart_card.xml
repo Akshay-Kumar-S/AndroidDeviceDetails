@@ -6,6 +6,12 @@
             name="title"
             type="String" />
         <variable
+            name="label1"
+            type="String" />
+        <variable
+            name="label2"
+            type="String" />
+        <variable
             name="iconSource"
             type="android.graphics.drawable.Drawable" />
     </data>
@@ -144,7 +150,7 @@
                                 android:id="@+id/label_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Label 1 : " />
+                                android:text="@{label1}" />
 
                             <TextView
                                 android:id="@+id/label_1_value"
@@ -164,7 +170,7 @@
                                 android:id="@+id/label_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Label 2 : " />
+                                android:text="@{label2}" />
 
                             <TextView
                                 android:id="@+id/label_2_value"
