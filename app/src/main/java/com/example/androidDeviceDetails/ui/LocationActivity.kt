@@ -19,11 +19,12 @@ import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
+import org.osmdroid.views.MapView.getTileSystem
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickListener {
+class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener {
     private lateinit var activityController: ActivityController<LocationDisplayModel>
     lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
@@ -41,7 +42,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
         initBottomSheet()
         activityController = ActivityController(
             NAME, binding, this,
-            binding.bottomLocation.dateTimePickerLayout, supportFragmentManager)
+            binding.bottomLocation.dateTimePickerLayout, supportFragmentManager
+        )
         locationViewModel = activityController.viewModel as LocationViewModel
         initDatePicker()
         initMap()
@@ -53,8 +55,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
     private fun initRecyclerView() {
         val arrayList = ArrayList<LocationDisplayModel>()
         arrayList.add(LocationDisplayModel("NoData", 0, ""))
-        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList,this)
-        binding.bottomLocation.locationListView.isNestedScrollingEnabled=true
+        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList, this)
+        binding.bottomLocation.locationListView.isNestedScrollingEnabled = true
     }
 
     private fun initMap() {
@@ -64,15 +66,24 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener,OnItemClickLi
             )
         )
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-        binding.apply{
+        binding.apply {
+            mapView.isHorizontalMapRepetitionEnabled = true
+            mapView.isVerticalMapRepetitionEnabled = false
             mapView.setTileSource(TileSourceFactory.MAPNIK)
             mapView.setMultiTouchControls(true)
+            mapView.isTilesScaledToDpi = true
+            mapView.minZoomLevel = 2.0
+            mapView.setScrollableAreaLimitLatitude(
+                getTileSystem().maxLatitude,
+                getTileSystem().minLatitude,
+                0
+            )
             mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
         }
     }
 
     private fun initDatePicker() {
-        binding.apply{
+        binding.apply {
             bottomLocation.dateTimePickerLayout.startTime
                 .setOnClickListener(this@LocationActivity)
             bottomLocation.dateTimePickerLayout.startDate

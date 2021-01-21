@@ -78,9 +78,8 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             val latLong = decodeHash(location.geoHash)
             val marker = Marker(binding.mapView)
             binding.root.post {
-                marker.icon = writeOnDrawable(location.count.toString())
+                marker.icon = generateMarker(location.count.toString())
                 marker.position = GeoPoint(latLong.lat, latLong.lon)
-                marker.title = "Visited ${location.count} times"
                 marker.infoWindow.view.visibility=GONE
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                 binding.mapView.overlays.add(marker)
@@ -88,7 +87,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    private fun writeOnDrawable(count: String): Drawable {
+    private fun generateMarker(count: String): Drawable {
         val icg = IconGenerator(context)
         icg.setBackground(getDrawable(context,R.drawable.location_bubble))
         icg.setTextAppearance(R.style.LocationBubble)
