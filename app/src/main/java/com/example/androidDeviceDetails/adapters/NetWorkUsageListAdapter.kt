@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
@@ -13,8 +12,7 @@ import com.example.androidDeviceDetails.models.networkUsage.NetworkUsageItemView
 import com.example.androidDeviceDetails.utils.Utils
 
 class NetWorkUsageListAdapter(
-    private var _context: Context,
-    private var resource: Int,
+    private var _context: Context, private var resource: Int,
     private var items: ArrayList<AppNetworkUsageRaw>
 ) : ArrayAdapter<AppNetworkUsageRaw>(_context, resource, items) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -38,17 +36,10 @@ class NetWorkUsageListAdapter(
         text =
             Utils.getFileSize(items[position].receivedDataMobile + items[position].transferredDataMobile)
         holder.cellularUsageView?.text = text
-
-        if (items[position].receivedDataMobile + items[position].transferredDataMobile == 0L) {
+        if (items[position].receivedDataMobile + items[position].transferredDataMobile == 0L)
             holder.cellularUsageView?.visibility = GONE
-        } else {
-            holder.cellularUsageView?.visibility = VISIBLE
-        }
-        if (items[position].receivedDataWifi + items[position].receivedDataWifi == 0L) {
+        if (items[position].receivedDataWifi + items[position].receivedDataWifi == 0L)
             holder.wifiUsageView?.visibility = GONE
-        } else {
-            holder.wifiUsageView?.visibility = VISIBLE
-        }
         holder.appIconView?.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
 
         return vi!!
