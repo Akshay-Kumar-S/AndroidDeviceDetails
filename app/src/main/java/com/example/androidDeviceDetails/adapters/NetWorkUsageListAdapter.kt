@@ -3,6 +3,8 @@ package com.example.androidDeviceDetails.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
@@ -36,6 +38,34 @@ class NetWorkUsageListAdapter(
         text =
             Utils.getFileSize(items[position].receivedDataMobile + items[position].transferredDataMobile)
         holder.cellularUsageView?.text = text
+
+        if (items[position].receivedDataMobile + items[position].transferredDataMobile == 0L) {
+            holder.cellularUsageView?.visibility = GONE
+        } else {
+            holder.cellularUsageView?.visibility = VISIBLE
+        }
+        if (items[position].receivedDataWifi + items[position].receivedDataWifi == 0L) {
+            holder.wifiUsageView?.visibility = GONE
+        } else {
+            holder.wifiUsageView?.visibility = VISIBLE
+        }
+
+       /* if (items[position].receivedDataMobile + items[position].transferredDataMobile == 0L || items[position].receivedDataWifi + items[position].receivedDataWifi == 0L) {
+            if(items[position].receivedDataMobile + items[position].transferredDataMobile == 0L){
+                holder.cellularUsageView?.visibility = GONE
+                holder.cellularIcon?.visibility = GONE
+            }
+            else{
+                holder.wifiUsageView?.visibility = GONE
+                holder.wifiIcon?.visibility = GONE
+            }
+        }
+        else{
+            holder.cellularUsageView?.visibility = VISIBLE
+            holder.cellularIcon?.visibility = VISIBLE
+            holder.wifiUsageView?.visibility = VISIBLE
+            holder.wifiIcon?.visibility = VISIBLE
+        }*/
         holder.appIconView?.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
 
         return vi!!

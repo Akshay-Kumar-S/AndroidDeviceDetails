@@ -38,49 +38,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/wifiIcon"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/wifi"
-                android:src="@drawable/ic_baseline_network_wifi_18"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/appWifiData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:drawablePadding="6dp"
+                    android:text="@string/wifi_data_usage"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_baseline_network_wifi_18" />
+                <TextView
+                    android:id="@+id/appCellularData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:drawablePadding="6dp"
+                    android:text="@string/cellular_data_usage"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_round_network_cell_18" />
 
-            <TextView
-                android:id="@+id/appWifiData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:text="@string/wifi_data_usage"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/wifiIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/cellularIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="84dp"
-                android:contentDescription="@string/wifi"
-                android:src="@drawable/ic_round_network_cell_18"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/appCellularData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:text="@string/cellular_data_usage"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/cellularIcon"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

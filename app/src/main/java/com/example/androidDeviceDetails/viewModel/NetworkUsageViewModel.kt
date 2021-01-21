@@ -30,6 +30,7 @@ class NetworkUsageViewModel(
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
+            itemList.clear()
             itemList =
                 outputList.filterIsInstance<AppNetworkUsageRaw>() as ArrayList<AppNetworkUsageRaw>
             binding.root.post {
@@ -55,6 +56,7 @@ class NetworkUsageViewModel(
             SortBy.ALPHABETICAL.ordinal -> itemList.sortBy {  Utils.getApplicationLabel(it.packageName)}
             SortBy.REVERSE_ALPHABETICAL.ordinal -> itemList.sortByDescending { Utils.getApplicationLabel(it.packageName) }
         }
+        itemList=itemList.filterNot { it.receivedDataWifi+  it.receivedDataMobile +it.transferredDataMobile +it.transferredDataWifi==0L} as ArrayList<AppNetworkUsageRaw>
         val adapter = NetWorkUsageListAdapter(context, R.layout.appdata_tile, itemList)
         binding.appDataListView.adapter = adapter
         adapter.notifyDataSetChanged()
