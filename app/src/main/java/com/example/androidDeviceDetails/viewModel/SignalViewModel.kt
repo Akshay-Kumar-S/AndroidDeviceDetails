@@ -83,11 +83,11 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         signalList = outputList[1] as ArrayList<SignalEntry>
         listData = outputList[0] as SignalCookedData
-        signalBinding.mostUsedOperator.textView3.text = listData.mostUsedOperator
-        signalBinding.mostUsedBand.textView3.text = listData.mostUsedLevel
-        signalBinding.roamingTime.textView3.text = listData.roamingTime.toString()
-        signalBinding.mostUsedWifi.textView3.text = listData.mostUsedWifi
-        signalBinding.mostUsedWifiLevel.textView3.text = listData.mostUsedWifiLevel
+        signalBinding.mostUsedOperator.cookedValue.text = listData.mostUsedOperator
+        signalBinding.mostUsedBand.cookedValue.text = listData.mostUsedLevel
+        signalBinding.roamingTime.cookedValue.text = listData.roamingTime.toString()
+        signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
+        signalBinding.mostUsedWifiLevel.cookedValue.text = listData.mostUsedWifiLevel
         cellularStrength = (outputList.first() as SignalCookedData).lasCellularStrength
         wifiStrength = (outputList.first() as SignalCookedData).lastWifiStrength
         updateCardView()
