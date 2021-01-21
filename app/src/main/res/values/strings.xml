@@ -22,7 +22,7 @@
     <string name="date">Mon, 14 Dec</string>
     <string name="pie_chart_size">200dp</string>
     <string name="day_wise">Day wise</string>
-    <string name="network_usage">NETWORK USAGE</string>
+    <string name="network_usage">Network Usage</string>
     <string name="wifi_data_usage">550 MB</string>
     <string name="cellular_data_usage">10 MB</string>
     <string name="wifi">Wifi</string>
