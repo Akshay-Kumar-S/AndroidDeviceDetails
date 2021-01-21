@@ -20,8 +20,6 @@ class SignalViewModel(
 ) : BaseViewModel() {
     private var cellularStrength: Int = -124
     private var wifiStrength: Float = 0F
-    private lateinit var cellularList: ArrayList<SignalRaw>
-    private lateinit var wifiList: ArrayList<SignalRaw>
     private val db = RoomDB.getDatabase()!!
     var signalList = arrayListOf<SignalEntry>()
     lateinit var listData: SignalCookedData
@@ -61,7 +59,7 @@ class SignalViewModel(
      */
     @SuppressLint("SetTextI18n")
     fun updateCardView() {
-        signalBinding.pointerCellularSpeedometer.post {
+        signalBinding.pointerCellularSpeedometer.post{
             signalBinding.pointerCellularSpeedometer.speedTo(
                 (-124 - cellularStrength) / 96.toFloat() * (-100),
                 1000
@@ -77,6 +75,7 @@ class SignalViewModel(
     /**
      * This method is called once the [SignalCooker] finishes cooking.
      * This method separates the cooked data into CELLULAR list and WIFI list
+     * and calls [updateListView] to update list.
      * >
      * Overrides : [onDone] in [BaseViewModel].
      * @param outputList List of cooked data.
