@@ -41,7 +41,7 @@ class SignalCooker : BaseCooker() {
             val lastCellStrength=cellularList.last().strength
             val lastWifiStrength=wifiList.last().strength
             val roamingTime: Long = roamingTime(cellularList)
-            val cookedDataList = ArrayList<SignalCookedData>()
+            val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
                 roamingTime,
                 getMostUsed(cellularList, "operator"),
@@ -52,16 +52,14 @@ class SignalCooker : BaseCooker() {
                 lastCellStrength
             )
             cookedDataList.add(cookedData)
-            ///////////////////////////////////
+
             val timeInterval = findTimeInterval(time)
             val pattern=findPattern(time)
             addList(cellularList,timeInterval,pattern)
             addList(wifiList,timeInterval,pattern)
-        /*    if (signalList.isNotEmpty()) {
-                callback.onDone(signalList as ArrayList<T>)
-            } else callback.onDone(arrayListOf())
-        }*/
-            if (cellularList.isNotEmpty()) {
+            cookedDataList.add(signalList)
+
+            if (cookedDataList.isNotEmpty()) {
                 callback.onDone(cookedDataList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
         }
