@@ -87,7 +87,7 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
-        signalList= outputList as ArrayList<SignalEntry>
+     //   signalList= outputList as ArrayList<SignalEntry>
 
         signalBinding.mostUsedOperator.textView3.text =
             (outputList.first() as SignalCookedData).mostUsedOperator

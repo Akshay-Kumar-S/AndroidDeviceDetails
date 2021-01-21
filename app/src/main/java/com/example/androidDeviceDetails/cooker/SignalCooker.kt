@@ -8,7 +8,6 @@ import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.Time
@@ -38,9 +37,10 @@ class SignalCooker : BaseCooker() {
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
             val wifiList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
-            var lastCellStrength=cellularList.last().strength
-            var lastWifiStrength=wifiList.last().strength
-            var roamingTime: Long = roamingTime(cellularList)
+
+            val lastCellStrength=cellularList.last().strength
+            val lastWifiStrength=wifiList.last().strength
+            val roamingTime: Long = roamingTime(cellularList)
             val cookedDataList = ArrayList<SignalCookedData>()
             val cookedData = SignalCookedData(
                 roamingTime,
@@ -52,18 +52,19 @@ class SignalCooker : BaseCooker() {
                 lastCellStrength
             )
             cookedDataList.add(cookedData)
+            ///////////////////////////////////
             val timeInterval = findTimeInterval(time)
             val pattern=findPattern(time)
             addList(cellularList,timeInterval,pattern)
             addList(wifiList,timeInterval,pattern)
-            if (signalList.isNotEmpty()) {
+        /*    if (signalList.isNotEmpty()) {
                 callback.onDone(signalList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
-        }/*
+        }*/
             if (cellularList.isNotEmpty()) {
                 callback.onDone(cookedDataList as ArrayList<T>)
             } else callback.onDone(arrayListOf())
-        }*/
+        }
     }
 
     private fun getMostUsed(
@@ -100,6 +101,7 @@ class SignalCooker : BaseCooker() {
         }
         return roamingTime
     }
+
     private fun findTimeInterval(time: TimePeriod): Long {
         val timeDifference = time.endTime - time.startTime
         var timeInterval: Long = 0
