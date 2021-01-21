@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.wifi.SupplicantState
+import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.util.Log
@@ -16,6 +18,7 @@ import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 /**
  *  Implements [BaseCollector].
@@ -58,6 +61,13 @@ class WifiCollector : BaseCollector() {
                 WifiManager.calculateSignalLevel(strength, 5)
             }
             wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
+            val wifiInfo: WifiInfo
+            val ssid:String
+            wifiInfo = wifiManager.connectionInfo
+            if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
+                ssid = wifiInfo.ssid
+                Log.d("llb", "onReceive: $ssid")
+            }
             val db = RoomDB.getDatabase(context)
             signalRaw = SignalRaw(
                 System.currentTimeMillis(),
