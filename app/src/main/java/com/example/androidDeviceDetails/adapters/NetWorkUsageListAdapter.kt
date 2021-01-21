@@ -49,23 +49,6 @@ class NetWorkUsageListAdapter(
         } else {
             holder.wifiUsageView?.visibility = VISIBLE
         }
-
-       /* if (items[position].receivedDataMobile + items[position].transferredDataMobile == 0L || items[position].receivedDataWifi + items[position].receivedDataWifi == 0L) {
-            if(items[position].receivedDataMobile + items[position].transferredDataMobile == 0L){
-                holder.cellularUsageView?.visibility = GONE
-                holder.cellularIcon?.visibility = GONE
-            }
-            else{
-                holder.wifiUsageView?.visibility = GONE
-                holder.wifiIcon?.visibility = GONE
-            }
-        }
-        else{
-            holder.cellularUsageView?.visibility = VISIBLE
-            holder.cellularIcon?.visibility = VISIBLE
-            holder.wifiUsageView?.visibility = VISIBLE
-            holder.wifiIcon?.visibility = VISIBLE
-        }*/
         holder.appIconView?.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
 
         return vi!!

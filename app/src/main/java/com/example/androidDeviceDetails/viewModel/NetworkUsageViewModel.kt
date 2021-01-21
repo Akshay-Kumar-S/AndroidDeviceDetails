@@ -30,7 +30,6 @@ class NetworkUsageViewModel(
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
-            itemList.clear()
             itemList =
                 outputList.filterIsInstance<AppNetworkUsageRaw>() as ArrayList<AppNetworkUsageRaw>
             binding.root.post {
