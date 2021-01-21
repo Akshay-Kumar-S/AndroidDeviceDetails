@@ -65,6 +65,7 @@ class SignalCooker : BaseCooker() {
         }
     }
 
+    //TODO use enumerators
     private fun getMostUsed(
         rawList: List<SignalRaw>,
         data: String,
@@ -100,10 +101,10 @@ class SignalCooker : BaseCooker() {
         return roamingTime
     }
 
+    //TODO look for inbuilt functions
     private fun findTimeInterval(time: TimePeriod): Long {
         val timeDifference = time.endTime - time.startTime
-        val timeInterval: Long
-        timeInterval = when {
+        return when {
             timeDifference <= Time.HOUR -> Time.TWO_MIN
             timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
             timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
@@ -113,7 +114,6 @@ class SignalCooker : BaseCooker() {
             timeDifference <= Time.TEN_DAY -> Time.MIDDAY
             else -> Time.DAY
         }
-        return timeInterval
     }
 
     private fun findPattern(time: TimePeriod): String {
@@ -140,4 +140,3 @@ class SignalCooker : BaseCooker() {
 
     }
 }
-

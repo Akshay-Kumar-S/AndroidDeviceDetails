@@ -61,6 +61,8 @@ class WifiCollector : BaseCollector() {
                 WifiManager.calculateSignalLevel(strength, 5)
             }
             wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
+            //TODO wifi percentage,move declaration to up
+
 
             val wifiInfo: WifiInfo
             val ssid:String
@@ -87,21 +89,6 @@ class WifiCollector : BaseCollector() {
             }
         }
 
-        /**
-         * Retrieve level for wifi signal.
-         * @param strength whose level is to be found
-         * @return a single integer from 0 to 4 representing general signal quality. 0 represents
-         * very poor while 4 represents excellent signal quality.
-         **/
-        /*    private fun getWifiLevel(strength: Int): Int {
-                return when {
-                    strength > -30 -> WifiLevel.GREAT.ordinal
-                    strength > -50 -> WifiLevel.GOOD.ordinal
-                    strength > -60 -> WifiLevel.MODERATE.ordinal
-                    strength > -70 -> WifiLevel.POOR.ordinal
-                    else -> WifiLevel.NONE.ordinal
-                }
-            }*/
     }
 
     init {
@@ -120,9 +107,6 @@ class WifiCollector : BaseCollector() {
             WifiReceiver,
             filter
         )
-    }
-
-    override fun collect() {
     }
 
     /**

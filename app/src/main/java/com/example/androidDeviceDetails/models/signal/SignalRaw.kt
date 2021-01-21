@@ -29,14 +29,13 @@ data class SignalRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "signal") val signal: Int,
     @ColumnInfo(name = "strength") val strength: Int,
-    @ColumnInfo(name = "attribute") val attribute: String,//linkspeed for wifi and type for cellular
+    @ColumnInfo(name = "attribute") val attribute: String,
     @ColumnInfo(name = "level") val level: Int,
     @ColumnInfo(name = "operatorName") val operatorName: String,
     @ColumnInfo(name = "isRoaming") val isRoaming: Boolean?,
     @ColumnInfo(name = "band") val band: String?,
     @ColumnInfo(name = "wifiPercentage") val wifiPercentage: Float?
 )
-
 
 /**
  * An interface that contains functions to handle database operations.

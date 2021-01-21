@@ -24,15 +24,10 @@ import kotlinx.coroutines.launch
  *  initialization of this class.
  *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
  **/
-class SignalChangeCollector() : BaseCollector(), Parcelable {
+class SignalChangeCollector() : BaseCollector() {
 
     private var mTelephonyManager: TelephonyManager =
         DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-
-    constructor(parcel: Parcel) : this() {
-
-    }
-
 
     /**
      * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
@@ -53,7 +48,6 @@ class SignalChangeCollector() : BaseCollector(), Parcelable {
             val signalDB = RoomDB.getDatabase()
             val isRoaming: Boolean
             var operatorName = ""
-            var countryCode = ""
             var networkBand = ""
             val telephonyManager =
                 DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -132,7 +126,6 @@ class SignalChangeCollector() : BaseCollector(), Parcelable {
             }
             isRoaming = telephonyManager.isNetworkRoaming
             operatorName = telephonyManager.networkOperatorName
-            countryCode = telephonyManager.simCountryIso
             signalEntity = SignalRaw(
                 System.currentTimeMillis(),
                 Signal.CELLULAR.ordinal,
@@ -161,9 +154,6 @@ class SignalChangeCollector() : BaseCollector(), Parcelable {
         mTelephonyManager.listen(SignalChangeListener, LISTEN_SIGNAL_STRENGTHS)
     }
 
-    override fun collect() {
-    }
-
     /**
      * Unregisters the [SignalChangeListener] with [LISTEN_NONE].
      **/
@@ -171,21 +161,4 @@ class SignalChangeCollector() : BaseCollector(), Parcelable {
         mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<SignalChangeCollector> {
-        override fun createFromParcel(parcel: Parcel): SignalChangeCollector {
-            return SignalChangeCollector(parcel)
-        }
-
-        override fun newArray(size: Int): Array<SignalChangeCollector?> {
-            return arrayOfNulls(size)
-        }
-    }
 }
