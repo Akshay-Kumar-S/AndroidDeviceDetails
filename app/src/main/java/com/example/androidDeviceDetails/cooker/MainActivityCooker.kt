@@ -1,9 +1,7 @@
 package com.example.androidDeviceDetails.cooker
 
-import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
-import com.example.androidDeviceDetails.models.MainActivityCookedData
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
@@ -19,7 +17,15 @@ class MainActivityCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
-        val batteryCallBack = object : ICookingDone<BatteryAppEntry> {
+        val total = arrayListOf<Any>()
+        val subCallbacks = ArrayList<Any>()
+        val subCallback = object : ICookingDone<Any> {
+            override fun onDone(outputList: ArrayList<Any>) {
+                total.addAll(outputList)
+                callback.onDone(total as ArrayList<T>)
+            }
+        }
+        /*val batteryCallBack = object : ICookingDone<BatteryAppEntry> {
             override fun onDone(outputList: ArrayList<BatteryAppEntry>) {
                 var totalDrop = 0L
                 for (i in outputList) totalDrop += i.drop
@@ -84,16 +90,36 @@ class MainActivityCooker : BaseCooker() {
                     ) as ArrayList<T>
                 )
             }
-        }
+        }*/
         GlobalScope.launch(Dispatchers.IO) {
-            appInfoCallBack.onDone(
-                RoomDB.getDatabase()?.appsDao()?.getAll()
-                    ?.filter { it.currentVersionCode != 0L } as ArrayList<AppInfoRaw>
-            )
+           ( subCallback as ICookingDone<AppInfoRaw>)
+                .onDone(
+                    RoomDB.getDatabase()?.appsDao()?.getAll()
+                        ?.filter { it.currentVersionCode != 0L } as ArrayList<AppInfoRaw>
+                )
         }
-        SignalCooker().cook(time, signalDataCallBack)
-        LocationCooker().cook(time, locationDataCallBack)
-        BatteryCooker().cook(time, batteryCallBack)
-        DeviceNetworkUsageCooker().cook(time, deviceNetworkUsageCallBack)
+
+        SignalCooker().cook(
+            time,
+            subCallback as ICookingDone<SignalRaw>
+
+        )
+        BatteryCooker().cook(
+            time,
+            subCallback as ICookingDone<BatteryAppEntry>
+
+        )
+
+        DeviceNetworkUsageCooker().cook(
+            time,
+            subCallback as ICookingDone<DeviceNetworkUsageRaw>
+
+        )
+        LocationCooker().cook(
+            time,
+            subCallback as ICookingDone<LocationModel>
+
+        )
+
     }
 }
