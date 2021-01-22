@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
-import com.example.androidDeviceDetails.models.MainActivityCookedData
 import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainActivityController: ActivityController<MainActivityCookedData>
+    private lateinit var mainActivityController: ActivityController<Any>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)

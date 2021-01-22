@@ -18,108 +18,22 @@ class MainActivityCooker : BaseCooker() {
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         val total = arrayListOf<Any>()
-        val subCallbacks = ArrayList<Any>()
         val subCallback = object : ICookingDone<Any> {
             override fun onDone(outputList: ArrayList<Any>) {
                 total.addAll(outputList)
                 callback.onDone(total as ArrayList<T>)
             }
         }
-        /*val batteryCallBack = object : ICookingDone<BatteryAppEntry> {
-            override fun onDone(outputList: ArrayList<BatteryAppEntry>) {
-                var totalDrop = 0L
-                for (i in outputList) totalDrop += i.drop
-                callback.onDone(
-                    arrayListOf(
-                        MainActivityCookedData(totalDrop = totalDrop)
-                    ) as ArrayList<T>
-                )
-            }
-        }
-        val deviceNetworkUsageCallBack = object : ICookingDone<DeviceNetworkUsageRaw> {
-            override fun onDone(outputList: ArrayList<DeviceNetworkUsageRaw>) {
-                Log.d("callback", "onDone: ")
-                if (outputList.isNotEmpty()) {
-                    val totalWifiData =
-                        outputList.first().transferredDataWifi + outputList.first().receivedDataWifi
-                    val totalCellularData =
-                        outputList.first().transferredDataMobile + outputList.first().transferredDataMobile
-                    callback.onDone(
-                        arrayListOf(
-                            MainActivityCookedData(
-                                deviceNetworkUsage = Pair(
-                                    totalWifiData,
-                                    totalCellularData
-                                )
-                            )
-                        ) as ArrayList<T>
-                    )
-                } else {
-                    callback.onDone(
-                        arrayListOf(
-                            MainActivityCookedData(deviceNetworkUsage = Pair(1, 1) )
-                        ) as ArrayList<T>
-                    )
-                }
-            }
-        }
-        val appInfoCallBack = object : ICookingDone<AppInfoRaw> {
-            override fun onDone(outputList: ArrayList<AppInfoRaw>) {
-                callback.onDone(
-                    arrayListOf(
-                        MainActivityCookedData(appInfo = outputList)
-                    ) as ArrayList<T>
-                )
-            }
-        }
-        val locationDataCallBack = object : ICookingDone<LocationModel> {
-            override fun onDone(outputList: ArrayList<LocationModel>) {
-                Log.d("locationcheck", "onDone: ")
-                callback.onDone(
-                    arrayListOf(
-                        MainActivityCookedData(totalPlacesVisited =  outputList.size)
-                    ) as ArrayList<T>
-                )
-            }
-        }
-        val signalDataCallBack = object : ICookingDone<SignalRaw> {
-            override fun onDone(outputList: ArrayList<SignalRaw>) {
-                callback.onDone(
-                    arrayListOf(
-                        MainActivityCookedData(signalStrength =  outputList.first().strength)
-                    ) as ArrayList<T>
-                )
-            }
-        }*/
         GlobalScope.launch(Dispatchers.IO) {
-           ( subCallback as ICookingDone<AppInfoRaw>)
-                .onDone(
-                    RoomDB.getDatabase()?.appsDao()?.getAll()
-                        ?.filter { it.currentVersionCode != 0L } as ArrayList<AppInfoRaw>
+            (subCallback as ICookingDone<AppInfoRaw>)
+                .onDone(RoomDB.getDatabase()?.appsDao()?.getAll()?.filter {
+                    it.currentVersionCode != 0L
+                } as ArrayList<AppInfoRaw>
                 )
         }
-
-        SignalCooker().cook(
-            time,
-            subCallback as ICookingDone<SignalRaw>
-
-        )
-        BatteryCooker().cook(
-            time,
-            subCallback as ICookingDone<BatteryAppEntry>
-
-        )
-
-        DeviceNetworkUsageCooker().cook(
-            time,
-            subCallback as ICookingDone<DeviceNetworkUsageRaw>
-
-        )
-        LocationCooker().cook(
-            time,
-            subCallback as ICookingDone<LocationModel>
-
-        )
-
+        SignalCooker().cook(time, subCallback as ICookingDone<SignalRaw>)
+        BatteryCooker().cook(time, subCallback as ICookingDone<BatteryAppEntry>)
+        DeviceNetworkUsageCooker().cook(time, subCallback as ICookingDone<DeviceNetworkUsageRaw>)
+        LocationCooker().cook(time, subCallback as ICookingDone<LocationModel>)
     }
 }
