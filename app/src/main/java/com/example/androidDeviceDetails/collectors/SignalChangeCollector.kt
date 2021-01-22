@@ -131,6 +131,7 @@ class SignalChangeCollector() : BaseCollector() {
                 Signal.CELLULAR.ordinal,
                 strength,
                 type,
+                null,
                 level,
                 operatorName,
                 isRoaming,
