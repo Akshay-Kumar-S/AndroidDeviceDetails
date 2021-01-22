@@ -25,11 +25,7 @@
                 </include>
                 <include
                     android:id="@+id/batteryInfo"
-                    layout="@layout/activity_main_number_card"
-                    app:title='@{@string/battery_usage}'
-                    app:label1='@{"%"}'
-                    app:label2='@{"Used"}'
-                    app:iconSource='@{@drawable/ic_round_battery_std_24}'>
+                    layout="@layout/main_activity_battery_tile">
                 </include>
                 <include
                     android:id="@+id/locationInfo"

@@ -87,14 +87,14 @@
                     android:backgroundTint="#83b899">
 
                 </ImageView>
-                <LinearLayout
+             <!--   <LinearLayout
                     android:id="@+id/usingProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintHorizontal_bias="0.5"
@@ -107,7 +107,7 @@
                         android:id="@+id/pieChart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <!-- ProgressBar that represents a total of 100% -->
+                        &lt;!&ndash; ProgressBar that represents a total of 100% &ndash;&gt;
                         <ProgressBar
                             android:id="@+id/progressbarFirst"
                             style="?android:attr/progressBarStyleHorizontal"
@@ -121,7 +121,7 @@
                             card_view:layout_constraintEnd_toEndOf="parent"
                             card_view:layout_constraintStart_toStartOf="parent"
                             card_view:layout_constraintTop_toTopOf="parent" />
-                        <!-- ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice -->
+                        &lt;!&ndash; ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice &ndash;&gt;
                         <ProgressBar
                             android:id="@+id/progressbarSecond"
                             style="?android:attr/progressBarStyleHorizontal"
@@ -185,7 +185,7 @@
                                 android:textColor="?attr/progressbarSecond" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"

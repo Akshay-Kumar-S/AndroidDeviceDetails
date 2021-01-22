@@ -2,6 +2,8 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
 import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
@@ -45,6 +47,34 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
 
     private fun updateBatteryCard(outputList: ArrayList<BatteryAppEntry>) {
         val totalDrop = outputList.sumBy { it.drop }
+        outputList.sortBy { it.drop }
+        binding.batteryInfo.app1.visibility = GONE
+        binding.batteryInfo.app2.visibility = GONE
+        binding.batteryInfo.app3.visibility = GONE
+        binding.batteryInfo.app1Icon.visibility = GONE
+        binding.batteryInfo.app2Icon.visibility = GONE
+        binding.batteryInfo.app3Icon.visibility = GONE
+        if (outputList.size > 2) {
+            binding.batteryInfo.app3.text = outputList[2].drop.toString()
+            binding.batteryInfo.app3.visibility = VISIBLE
+            binding.batteryInfo.app3Icon.visibility = VISIBLE
+
+            binding.batteryInfo.app3Icon.setImageDrawable( Utils.getApplicationIcon(outputList[2].packageId))
+        }
+        if (outputList.size > 1) {
+            binding.batteryInfo.app2.text = outputList[1].drop.toString()
+            binding.batteryInfo.app2.visibility = VISIBLE
+            binding.batteryInfo.app2Icon.visibility = VISIBLE
+
+            binding.batteryInfo.app2Icon.setImageDrawable( Utils.getApplicationIcon(outputList[1].packageId))
+        }
+        if (outputList.size > 0) {
+            binding.batteryInfo.app1.text = outputList[0].drop.toString()
+            binding.batteryInfo.app1.visibility = VISIBLE
+            binding.batteryInfo.app1Icon.visibility = VISIBLE
+            binding.batteryInfo.app1Icon.setImageDrawable( Utils.getApplicationIcon(outputList[0].packageId))
+
+        }
         binding.batteryInfo.mainValue.text = totalDrop.toString()
     }
 
