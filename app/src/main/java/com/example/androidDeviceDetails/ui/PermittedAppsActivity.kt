@@ -12,12 +12,13 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
+import com.example.androidDeviceDetails.models.database.PermittedAppList
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 
 class PermittedAppsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPermittedAppsBinding
-    private lateinit var controller: ActivityController<PermittedAppsCookedData>
+    private lateinit var controller: ActivityController<PermittedAppList>
 
     companion object {
         const val NAME = "permittedapps"
@@ -27,7 +28,7 @@ class PermittedAppsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_permitted_apps)
         controller = ActivityController(
-            NAME,
+            NAME+intent.getStringExtra("permission").toString(),
             binding,
             this,
             null,
@@ -44,8 +45,6 @@ class PermittedAppsActivity : AppCompatActivity() {
         val item = adapter.getItem(position)
         val infoIntent = Intent(Settings.ACTION_PRIVACY_SETTINGS)
         intent.putExtra("permission", item)
-//        infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
-//        infoIntent.data = Uri.parse("package:${item?.get(position)}")
         startActivity(infoIntent)
     }
 }

@@ -14,9 +14,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class PermissionCollector(var context: Context) : BaseCollector() {
-
+    val db=RoomDB.getDatabase()!!
     fun installedApps() {
-        val db=RoomDB.getDatabase()!!
         val list = context.packageManager.getInstalledPackages(0)
         for (i in list.indices) {
             val packageInfo = list[i]
@@ -26,19 +25,17 @@ class PermissionCollector(var context: Context) : BaseCollector() {
                 val packageName = packageInfo.packageName.toString()
                 Log.e("perms $packageName", getGrantedPermissions(packageName).toString())
                 var perms = getGrantedPermissions(packageName).toString()
-                GlobalScope.launch {var uid = db.appsDao()?.getIdByName(packageName)
+                GlobalScope.launch {
+                    var uid = db.appsDao()?.getIdByName(packageName)
                     val appPermissions =  AppPermissionsInfo( uid, perms)
-                    db.AppPermissionDao()?.insert(appPermissions)}
-
-                //Log.e("Permission$i",checkPermission("READ_CONTACTS",1,0).toString())
-                //Log.e("Permission$i", packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS).toString())
-                //Log.e("App List$i", packageName)
-//                arrayAdapter = ArrayAdapter(this,
-//                    R.layout.support_simple_spinner_dropdown_item, list as List<*>)
-//                listView.adapter = arrayAdapter
-                //packageManager.getPackageInfo(packageName,PackageManager.GET_PERMISSIONS)
+                    db.AppPermissionDao()?.insert(appPermissions)
+                }
             }
         }
+    }
+
+    override fun start() {
+        //installedApps()
     }
 
     fun getGrantedPermissions(appPackage: String?): List<String> {

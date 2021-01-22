@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
@@ -49,8 +48,6 @@ class PermissionsActivity : AppCompatActivity(), View.OnClickListener {
         val item = adapter.getItem(position)
         val infoIntent = Intent(this@PermissionsActivity, PermittedAppsActivity::class.java)
         infoIntent.putExtra("permission", item)
-//        infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
-//        infoIntent.data = Uri.parse("package:${item?.get(position)}")
         startActivity(infoIntent)
     }
 
