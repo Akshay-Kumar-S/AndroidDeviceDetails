@@ -33,10 +33,6 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         }
     }
 
-    private fun refresh() {
-        mainActivityModel = MainActivityCookedData()
-    }
-
     private fun updateUI() {
 
         if (mainActivityModel.appInfo != null) {
