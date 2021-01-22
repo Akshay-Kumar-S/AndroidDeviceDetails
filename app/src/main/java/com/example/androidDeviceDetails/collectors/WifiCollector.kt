@@ -67,7 +67,6 @@ class WifiCollector : BaseCollector() {
             wifiInfo = wifiManager.connectionInfo
             if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
                 ssid = wifiInfo.ssid
-                Log.d("llb", "onReceive: $ssid")
             }
 
             val db = RoomDB.getDatabase(context)

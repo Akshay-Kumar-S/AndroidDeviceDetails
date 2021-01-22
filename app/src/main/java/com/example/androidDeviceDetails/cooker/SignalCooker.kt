@@ -1,14 +1,13 @@
 package com.example.androidDeviceDetails.cooker
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.models.signalModels.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.Time
@@ -39,8 +38,8 @@ class SignalCooker : BaseCooker() {
             val wifiList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
 
-            val lastCellStrength=cellularList.last().strength
-            val lastWifiStrength=wifiList.last().wifiPercentage
+            val lastCellStrength = cellularList.last().strength
+            val lastWifiStrength = wifiList.last().wifiPercentage
             val roamingTime: Long = roamingTime(cellularList)
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
@@ -55,9 +54,9 @@ class SignalCooker : BaseCooker() {
             cookedDataList.add(cookedData)
 
             val timeInterval = findTimeInterval(time)
-            val pattern=findPattern(time)
-            addList(cellularList,timeInterval,pattern)
-            addList(wifiList,timeInterval,pattern)
+            val pattern = findPattern(time)
+            addList(cellularList, timeInterval, pattern)
+            addList(wifiList, timeInterval, pattern)
             cookedDataList.add(signalList)
 
             if (cookedDataList.isNotEmpty()) {
@@ -117,7 +116,7 @@ class SignalCooker : BaseCooker() {
         return timeInterval
     }
 
-    private fun findPattern(time: TimePeriod): String{
+    private fun findPattern(time: TimePeriod): String {
         val timeDifference = time.endTime - time.startTime
         return when {
             timeDifference <= Time.TEN_DAY -> "HH:mm dd MMM yyyy"
@@ -126,16 +125,16 @@ class SignalCooker : BaseCooker() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun addList(list:List<SignalRaw>, timeInterval:Long,pattern:String){
+    private fun addList(list: List<SignalRaw>, timeInterval: Long, pattern: String) {
         var currentTime: Long
-        var timeStamp:String
+        var timeStamp: String
         val formatter = SimpleDateFormat(pattern)
         currentTime = list.first().timeStamp
         for (signal in list) {
             if (signal.timeStamp >= currentTime) {
-                timeStamp=formatter.format(signal.timeStamp)
+                timeStamp = formatter.format(signal.timeStamp)
                 signalList.add(SignalEntry(timeStamp, signal.signal, signal.strength))
-                currentTime = (timeInterval+signal.timeStamp)
+                currentTime = (timeInterval + signal.timeStamp)
             }
         }
 

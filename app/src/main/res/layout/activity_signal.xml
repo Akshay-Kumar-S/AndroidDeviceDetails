@@ -149,7 +149,7 @@
             <include
                 android:id="@+id/most_used_wifi_level"
                 layout="@layout/signal_activity_data"
-                app:data='@{"Most used wifi level"}'
+                app:data='@{"Most used wifi speed"}'
                 app:value='@{"no data available"}' />
 
         </LinearLayout>
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="264dp"
             android:textColor="@color/soti_blue"
-            android:text="More Details>"
+            android:text="More Details>>"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
