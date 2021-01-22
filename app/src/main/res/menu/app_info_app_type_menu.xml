@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.AppInfoActivity"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <item
+        android:id="@+id/filterAppType"
+        android:orderInCategory="100"
+        android:title="@string/appTypeAll"
+        android:textAllCaps="false"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/appTypeAll"
+        app:actionViewClass="android.widget.Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:layout_marginTop="10dp"
+        android:title="@string/appTypeAll" />
+    <item
+        android:id="@+id/appTypeUser"
+        app:actionViewClass="android.widget.Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:layout_marginTop="10dp"
+        android:title="@string/appTypeUser" />
+    <item
+        android:id="@+id/appTypeSystem"
+        app:actionViewClass="android.widget.Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:layout_marginTop="10dp"
+        android:title="@string/appTypeSystem" />
+</menu>

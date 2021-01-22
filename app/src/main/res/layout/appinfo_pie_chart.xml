@@ -85,13 +85,14 @@
 
     <LinearLayout
         android:id="@+id/stats_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/stats1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -123,7 +124,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -137,6 +138,7 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/stats2Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -154,7 +156,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -168,6 +170,7 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/stats3Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -185,6 +188,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/stats4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

@@ -33,7 +33,7 @@ interface AppInfoDao {
      * Retrieve all the records from [AppInfoDao]
      * @return List of [AppInfoRaw]
      */
-    @Query("SELECT * FROM AppInfoRaw")
+    @Query("SELECT * FROM AppInfoRaw where current_version_code != 0")
     fun getAll(): List<AppInfoRaw>
 
     /**

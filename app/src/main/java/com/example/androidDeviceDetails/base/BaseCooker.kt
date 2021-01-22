@@ -17,6 +17,7 @@ abstract class BaseCooker {
                 NetworkUsageActivity.NAME -> AppNetworkUsageCooker()
                 SignalActivity.NAME -> SignalCooker()
                 LocationActivity.NAME -> LocationCooker()
+                AppInfoAppTypeActivity.NAME -> AppInfoTypeCooker()
                 else -> null
             }
         }
