@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="50dp"
+    tools:context=".ui.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/appInfo"
+            layout="@layout/main_activity_button"
+            app:title='@{"Install/Uninstall"}'
+            app:iconSource='@{@drawable/ic_twotone_system_update_24}'>
+
+        </include>
+        <include
+            android:id="@+id/batteryInfo"
+            layout="@layout/main_activity_button"
+            app:title='@{"System/User Apps"}'
+            app:iconSource='@{@drawable/ic_round_battery_std_24}'>
+
+        </include>
+        <include
+            android:id="@+id/appPermissions"
+            layout="@layout/main_activity_button"
+            app:title='@{"App Permissions"}'
+            app:iconSource='@{@drawable/ic_baseline_app_settings_alt_24}'>
+
+        </include>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
