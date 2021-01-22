@@ -41,7 +41,7 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
             val gson = Gson()
             val signalJson = gson.toJson(signalList)
             val intent = Intent(this@SignalActivity, GraphActivity::class.java)
-            intent.putExtra("key", signalJson)
+            intent.putExtra("signal", signalJson)
             startActivity(intent)
         }
     }

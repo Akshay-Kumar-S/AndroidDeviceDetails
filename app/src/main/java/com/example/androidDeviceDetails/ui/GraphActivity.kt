@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.signalModels.Chart
@@ -15,35 +16,29 @@ class GraphActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val gson = Gson()
-        val sig = intent.getStringExtra("key")
-        val signalList = gson.fromJson(sig, Array<SignalEntry>::class.java)
-        var size = signalList.size
+        val signal = intent.getStringExtra("signal")
+        val signalList = gson.fromJson(signal, Array<SignalEntry>::class.java)
         var wifiSize = 0
         var cellularSize = 0
 
-        size -= 1
-        for (i in 0..size) {
-            if (signalList[i].signal == Signal.CELLULAR.ordinal)
-                cellularSize += 1
-            else if (signalList[i].signal == Signal.WIFI.ordinal)
-                wifiSize += 1
-        }
+        cellularSize = signalList.filter { it.signal == Signal.CELLULAR.ordinal }.size
+        wifiSize = signalList.size- cellularSize
 
-        val cellularTimeList = Array(cellularSize) { "" }
+        val cellularTimeList = Array(cellularSize){""}
         val cellularValueList = Array<Any>(cellularSize) {}
         val wifiValueList = Array<Any>(wifiSize) {}
-        val wifiTimeList = Array(wifiSize) { "" }
+        val wifiTimeList = Array(wifiSize){""}
 
         var c = 0
         var w = 0
-        for (i in 0..size) {
-            if (signalList[i].signal == Signal.CELLULAR.ordinal) {
-                cellularTimeList[c] = signalList[i].timeStamp
-                cellularValueList[c] = signalList[i].strength
+        for (item in signalList) {
+            if (item.signal == Signal.CELLULAR.ordinal) {
+                cellularTimeList[c] = item.timeStamp
+                cellularValueList[c] = item.strength
                 c += 1
-            } else if (signalList[i].signal == Signal.WIFI.ordinal) {
-                wifiTimeList[w] = signalList[i].timeStamp
-                wifiValueList[w] = signalList[i].strength
+            } else  {
+                wifiTimeList[w] = item.timeStamp
+                wifiValueList[w] = item.strength
                 w += 1
             }
         }
