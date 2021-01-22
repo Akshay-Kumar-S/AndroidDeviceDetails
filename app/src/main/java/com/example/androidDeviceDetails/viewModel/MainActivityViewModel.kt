@@ -22,13 +22,13 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val deviceNetworkUsageList = arrayListOf<DeviceNetworkUsageRaw>()
         val locationList = arrayListOf<LocationDisplayModel>()
         val signalList = arrayListOf<SignalRaw>()
-        for (i in 0..outputList.size) {
-            when {
-                outputList[i] is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
-                outputList[i] is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
-                outputList[i] is DeviceNetworkUsageRaw -> deviceNetworkUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
-                outputList[i] is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
-                outputList[i] is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
+        for (i in outputList) {
+            when (i) {
+                is AppInfoRaw -> appInfoList.add(i as AppInfoRaw)
+                is BatteryAppEntry -> batteryList.add(i as BatteryAppEntry)
+                is DeviceNetworkUsageRaw -> deviceNetworkUsageList.add(i as DeviceNetworkUsageRaw)
+                is LocationDisplayModel -> locationList.add(i as LocationDisplayModel)
+                is SignalRaw -> signalList.add(i as SignalRaw)
             }
         }
         binding.root.post {
