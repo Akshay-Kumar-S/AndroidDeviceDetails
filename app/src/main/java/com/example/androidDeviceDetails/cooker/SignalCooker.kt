@@ -3,8 +3,8 @@ package com.example.androidDeviceDetails.cooker
 import android.annotation.SuppressLint
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw

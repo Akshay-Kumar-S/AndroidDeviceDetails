@@ -5,7 +5,7 @@ import android.content.Context
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
-import com.example.androidDeviceDetails.models.RoomDB
+import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.signalModels.SignalRaw

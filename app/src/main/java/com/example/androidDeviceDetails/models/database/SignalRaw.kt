@@ -5,7 +5,6 @@ import androidx.room.*
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector
 import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.models.RoomDB
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 /**
@@ -43,13 +42,6 @@ data class SignalRaw(
  */
 @Dao
 interface SignalDao {
-
-    /**
-     * Retrieve all records from [SignalRaw] table.
-     * @return List of [SignalRaw].
-     */
-    @Query("SELECT * FROM SignalRaw")
-    fun getAll(): List<SignalRaw>
 
     /**
      * Insert the [signalRaw] into the table.
