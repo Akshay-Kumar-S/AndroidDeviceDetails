@@ -7,6 +7,7 @@ import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfo.DonutChartData
 import com.example.androidDeviceDetails.models.appInfo.EventType
 
 /**
@@ -39,8 +40,25 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
         binding.root.post {
             binding.appInfoListView.adapter =
-                AppInfoListAdapter(context, R.layout.appinfo_tile, filteredList, appList)
+                AppInfoListAdapter(context, R.layout.appinfo_tile, filteredList, calculateProgressbarStats(),false)
         }
+    }
+
+    private fun calculateProgressbarStats() : DonutChartData{
+        val total = savedAppList.size
+        val enrolledAppCount =
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+                .eachCount()[true] ?: 0
+        val installedAppCount =
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+                .eachCount()[true] ?: 0
+        val updateAppCount =
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+                .eachCount()[true] ?: 0
+        val uninstalledAppCount =
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+                .eachCount()[true] ?: 0
+        return DonutChartData(total,enrolledAppCount,installedAppCount,updateAppCount,uninstalledAppCount)
     }
 
     /**
