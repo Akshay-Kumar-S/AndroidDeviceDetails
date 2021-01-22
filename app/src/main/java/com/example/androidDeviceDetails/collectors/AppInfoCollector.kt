@@ -25,7 +25,6 @@ class AppInfoCollector : BaseCollector() {
          *
          */
         override fun onReceive(context: Context, intent: Intent) {
-            PermissionCollector(context).installedApps()
             val action = intent.action
             val packageName = intent.data?.schemeSpecificPart ?: "not found"
             val appEventCollectionHelper = AppEventCollectionHelper()
