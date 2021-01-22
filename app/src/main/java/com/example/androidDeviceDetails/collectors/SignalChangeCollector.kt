@@ -9,7 +9,7 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector.SignalChangeListener
 import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.signalModels.SignalRaw
+import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

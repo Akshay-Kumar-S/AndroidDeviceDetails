@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.signalModels
+package com.example.androidDeviceDetails.models.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
