@@ -7,7 +7,7 @@ import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
 import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
-import com.example.androidDeviceDetails.models.location.LocationModel
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Utils
 import kotlin.math.ceil
@@ -16,25 +16,31 @@ import kotlin.math.pow
 
 class MainActivityViewModel(private val binding: ActivityMainBinding, val context: Context) :
     BaseViewModel() {
-    private var count = 0
     override fun <T> onDone(outputList: ArrayList<T>) {
-        count++
-        if (count == 5) {
-            count = 0
-            val appInfoList = outputList.filterIsInstance<AppInfoRaw>() as ArrayList
-            val batteryList = outputList.filterIsInstance<BatteryAppEntry>() as ArrayList
-            val deviceNetworkUsageList =
-                outputList.filterIsInstance<DeviceNetworkUsageRaw>() as ArrayList
-            val locationList = outputList.filterIsInstance<LocationModel>() as ArrayList
-            val signalList = outputList.filterIsInstance<SignalRaw>() as ArrayList
-            binding.root.post {
-                if (appInfoList.isNotEmpty()) updateAppInfoCard(appInfoList)
-                if (batteryList.isNotEmpty()) updateBatteryCard(batteryList)
-                if (deviceNetworkUsageList.isNotEmpty()) updateDeviceNetworkUsageCard(deviceNetworkUsageList)
-                if (locationList.isNotEmpty()) updateLocationDataCard(locationList)
-                if (signalList.isNotEmpty()) updateSignalDataCard(signalList)
+        val appInfoList = arrayListOf<AppInfoRaw>()
+        val batteryList = arrayListOf<BatteryAppEntry>()
+        val deviceNetworkUsageList = arrayListOf<DeviceNetworkUsageRaw>()
+        val locationList = arrayListOf<LocationDisplayModel>()
+        val signalList = arrayListOf<SignalRaw>()
+        for (i in 0..outputList.size) {
+            when {
+                outputList[i] is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
+                outputList[i] is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
+                outputList[i] is DeviceNetworkUsageRaw -> deviceNetworkUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
+                outputList[i] is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
+                outputList[i] is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
             }
         }
+        binding.root.post {
+            if (appInfoList.isNotEmpty()) updateAppInfoCard(appInfoList)
+            if (batteryList.isNotEmpty()) updateBatteryCard(batteryList)
+            if (deviceNetworkUsageList.isNotEmpty()) updateDeviceNetworkUsageCard(
+                deviceNetworkUsageList
+            )
+            if (locationList.isNotEmpty()) updateLocationDataCard(locationList)
+            if (signalList.isNotEmpty()) updateSignalDataCard(signalList)
+        }
+
     }
 
     private fun updateBatteryCard(outputList: ArrayList<BatteryAppEntry>) {
@@ -82,8 +88,8 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.networkUsage.progressbarSecond.progress = cellularDataProgress
     }
 
-    private fun updateLocationDataCard(outputList: ArrayList<LocationModel>) {
-        binding.locationInfo.mainValue.text  = outputList.size.toString()
+    private fun updateLocationDataCard(outputList: ArrayList<LocationDisplayModel>) {
+        binding.locationInfo.mainValue.text = outputList.size.toString()
     }
 
     private fun updateSignalDataCard(outputList: ArrayList<SignalRaw>) {
