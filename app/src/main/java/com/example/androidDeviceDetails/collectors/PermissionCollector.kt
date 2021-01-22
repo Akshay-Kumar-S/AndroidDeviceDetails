@@ -7,11 +7,16 @@ import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.base.BaseCollector
+import com.example.androidDeviceDetails.models.database.AppPermissionsInfo
+
+import com.example.androidDeviceDetails.models.database.RoomDB
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PermissionCollector(var context: Context) : BaseCollector() {
 
     fun installedApps() {
-
+        val db=RoomDB.getDatabase()!!
         val list = context.packageManager.getInstalledPackages(0)
         for (i in list.indices) {
             val packageInfo = list[i]
@@ -21,6 +26,10 @@ class PermissionCollector(var context: Context) : BaseCollector() {
                 val packageName = packageInfo.packageName.toString()
                 Log.e("perms $packageName", getGrantedPermissions(packageName).toString())
                 var perms = getGrantedPermissions(packageName).toString()
+                GlobalScope.launch {var uid = db.appsDao()?.getIdByName(packageName)
+                    val appPermissions =  AppPermissionsInfo( uid, perms)
+                    db.AppPermissionDao()?.insert(appPermissions)}
+
                 //Log.e("Permission$i",checkPermission("READ_CONTACTS",1,0).toString())
                 //Log.e("Permission$i", packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS).toString())
                 //Log.e("App List$i", packageName)
@@ -32,7 +41,7 @@ class PermissionCollector(var context: Context) : BaseCollector() {
         }
     }
 
-    fun getGrantedPermissions(appPackage: String?): List<String>? {
+    fun getGrantedPermissions(appPackage: String?): List<String> {
         val granted: MutableList<String> = ArrayList()
         try {
             val pi = context.packageManager.getPackageInfo(appPackage!!, PackageManager.GET_PERMISSIONS)

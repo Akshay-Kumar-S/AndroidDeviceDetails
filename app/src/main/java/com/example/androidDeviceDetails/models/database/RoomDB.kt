@@ -10,7 +10,7 @@ import com.example.androidDeviceDetails.models.signal.SignalRaw
 
 
 @Database(
-    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppInfoRaw::class, AppHistoryRaw::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
+    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppInfoRaw::class, AppHistoryRaw::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class, AppPermissionsInfo::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
@@ -22,7 +22,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun signalDao(): SignalDao
     abstract fun appNetworkUsageDao(): AppNetworkUsageDao
     abstract fun deviceNetworkUsageDao(): DeviceNetworkUsageDao
-
+    abstract fun AppPermissionDao(): AppPermissionDao
     companion object {
         private var INSTANCE: RoomDB? = null
         fun getDatabase(context: Context = DeviceDetailsApplication.instance): RoomDB? {

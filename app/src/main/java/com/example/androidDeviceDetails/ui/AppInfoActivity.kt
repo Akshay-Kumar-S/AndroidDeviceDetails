@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.collectors.PermissionCollector
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
@@ -86,7 +87,10 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
                 .setOnClickListener(this@AppInfoActivity)
             dateTimePickerLayout.endDate
                 .setOnClickListener(this@AppInfoActivity)
+
         }
+        PermissionCollector(this).installedApps()
+
     }
 
     fun deleteApp(view: View) {
