@@ -31,14 +31,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.PermittedAppsActivity"
+        <activity android:name=".ui.BaseAppInfoActivity"
+            android:label="Base App Info"
+            android:parentActivityName=".ui.MainActivity"/>
+        <activity
+            android:name=".ui.PermittedAppsActivity"
             android:label="Permitted Apps"
-            android:parentActivityName=".ui.PermissionsActivity">
-        </activity>
+            android:parentActivityName=".ui.PermissionsActivity"/>
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName=".ui.BaseAppInfoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
