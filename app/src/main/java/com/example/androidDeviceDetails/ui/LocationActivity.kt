@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.ui
 
 import android.content.Context
+import android.content.res.Configuration.*
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -17,9 +18,7 @@ import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
@@ -27,6 +26,7 @@ import org.osmdroid.views.MapView.getTileSystem
 import org.osmdroid.views.overlay.TilesOverlay
 import java.util.*
 import kotlin.collections.ArrayList
+import org.osmdroid.config.Configuration as osmConfig
 
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener {
@@ -65,13 +65,14 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     }
 
     private fun initMap() {
-        Configuration.getInstance().load(
+        osmConfig.getInstance().load(
             applicationContext, getSharedPreferences(
                 "my.app.packagename_preferences", Context.MODE_PRIVATE
             )
         )
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        osmConfig.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         binding.apply {
+            mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
             mapView.isHorizontalMapRepetitionEnabled = true
             mapView.isVerticalMapRepetitionEnabled = false
             mapView.setMultiTouchControls(true)
@@ -82,12 +83,11 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
                 getTileSystem().minLatitude,
                 0
             )
-//            val a = "pk.eyJ1IjoiaXNoYW1tb2hhbWVkIiwiYSI6ImNrazZyNjdhdjA2c3cyb3A4ODh4enJmY3IifQ.VZnhQTW29WXxinitrbX8Hw"
-//            val b= "mapbox.mapbox-streets-v8"
-//            val tilemap= MapBoxTileSource(b,a)
-            mapView.setTileSource(TileSourceFactory.WIKIMEDIA)
-            mapView.overlayManager.tilesOverlay.setColorFilter(test())
-            mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
+            mapView.setTileSource(TileSourceFactory.MAPNIK)
+            when (resources?.configuration?.uiMode?.and(UI_MODE_NIGHT_MASK)) {
+                UI_MODE_NIGHT_YES -> mapView.overlayManager.tilesOverlay.setColorFilter(test())
+            }
+
         }
 
     }
@@ -103,9 +103,9 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
             )
         )
         val destinationColor = Color.parseColor("#FF2A2A2A")
-        val lr = (255.0f - Color.red(destinationColor))/255.0f
-        val lg = (255.0f - Color.green(destinationColor))/255.0f
-        val lb = (255.0f - Color.blue(destinationColor))/255.0f
+        val lr = (255.0f - Color.red(destinationColor)) / 255.0f
+        val lg = (255.0f - Color.green(destinationColor)) / 255.0f
+        val lb = (255.0f - Color.blue(destinationColor)) / 255.0f
         val grayscaleMatrix = ColorMatrix(
             floatArrayOf(
                 lr, lg, lb, 0F, 0F,
@@ -121,7 +121,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         val drf = dr / 255f
         val dgf = dg / 255f
         val dbf = db / 255f
-        val tintMatrix =  ColorMatrix(
+        val tintMatrix = ColorMatrix(
             floatArrayOf(
                 drf, 0F, 0F, 0F, 0F,
                 0F, dgf, 0F, 0F, 0F,
@@ -133,7 +133,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         val lDestination = drf * lr + dgf * lg + dbf * lb
         val scale = 1f - lDestination
         val translate = 1 - scale * 0.5f
-        val scaleMatrix =  ColorMatrix(
+        val scaleMatrix = ColorMatrix(
             floatArrayOf(
                 scale, 0F, 0F, 0F, dr * translate,
                 0F, scale, 0F, 0F, dg * translate,
@@ -142,7 +142,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
             )
         )
         scaleMatrix.preConcat(tintMatrix)
-       return ColorMatrixColorFilter(scaleMatrix)
+        return ColorMatrixColorFilter(scaleMatrix)
     }
 
     private fun initDatePicker() {
