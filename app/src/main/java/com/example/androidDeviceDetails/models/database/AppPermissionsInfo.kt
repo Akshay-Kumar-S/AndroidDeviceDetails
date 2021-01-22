@@ -3,13 +3,16 @@ package com.example.androidDeviceDetails.models.database
 import androidx.room.*
 
 @Entity(foreignKeys = [ForeignKey(entity = AppInfoRaw::class, parentColumns = ["uid"], childColumns =["uid"] )])
-//@Entity
 data class AppPermissionsInfo(
-   // @PrimaryKey(autoGenerate = true) val rowId: Int,
     @PrimaryKey val uid: Int,
-   // @ColumnInfo(name = "packageName ") var packageName: String,
     @ColumnInfo(name = "permission") var permission: String,
-   // @ColumnInfo(name = "allowed") var allowed: Boolean,
+)
+
+data class PermittedAppList(
+    @ColumnInfo(name="package_name") var package_name:String,
+    @ColumnInfo(name = "apk_title") var apk_title:String,
+    @ColumnInfo(name = "version_name") var version_name:String,
+    @ColumnInfo(name = "permission") var permission: String,
 )
 
 @Dao
@@ -19,6 +22,9 @@ interface AppPermissionDao {
 
     @Query("SELECT * FROM AppPermissionsInfo WHERE permission =(:permission)")
     fun getAppPermissions(permission: String): List<AppPermissionsInfo>
+
+    @Query("SELECT package_name,apk_title,version_name,permission FROM AppInfoRaw ,AppPermissionsInfo WHERE AppInfoRaw.uid = AppPermissionsInfo.uid")
+    fun getPermittedApps():List<PermittedAppList>
 
     @Insert
     fun insert(vararg appPermissionsInfo: AppPermissionsInfo)

@@ -89,7 +89,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
                 .setOnClickListener(this@AppInfoActivity)
 
         }
-        PermissionCollector(this).installedApps()
+        //PermissionCollector(this).installedApps()
 
     }
 

@@ -17,8 +17,9 @@ class ApplicationController {
         "AppStateReceiver" to AppInfoCollector(),
         "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
         "SignalChangeListener" to SignalChangeCollector(),
-      //  "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance),
-        "LocationCollector" to LocationCollector(DeviceDetailsApplication.instance)
+        "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance),
+        "LocationCollector" to LocationCollector(DeviceDetailsApplication.instance),
+        "permissions" to PermissionCollector(DeviceDetailsApplication.instance)
     )
 
     fun runTimer(intervalInMinuets: Long) {
