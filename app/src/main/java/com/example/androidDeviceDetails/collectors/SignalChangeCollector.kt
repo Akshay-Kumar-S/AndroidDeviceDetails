@@ -46,6 +46,7 @@ class SignalChangeCollector : BaseCollector() {
             val isRoaming: Boolean
             var operatorName = ""
             var networkBand = ""
+            var strengthPercentage=0F
             val telephonyManager =
                 DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
@@ -123,6 +124,7 @@ class SignalChangeCollector : BaseCollector() {
             }
             isRoaming = telephonyManager.isNetworkRoaming
             operatorName = telephonyManager.networkOperatorName
+            strengthPercentage=(-124 - strength) / 96.toFloat() * (-100)
             signalEntity = SignalRaw(
                 System.currentTimeMillis(),
                 Signal.CELLULAR.ordinal,
@@ -133,7 +135,7 @@ class SignalChangeCollector : BaseCollector() {
                 operatorName,
                 isRoaming,
                 networkBand,
-                0F
+                strengthPercentage
             )
             GlobalScope.launch {
                 signalDB?.signalDao()?.insertAll(signalEntity)
