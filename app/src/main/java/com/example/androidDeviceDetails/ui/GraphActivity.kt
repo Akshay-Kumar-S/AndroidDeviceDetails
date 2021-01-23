@@ -1,7 +1,6 @@
 package com.example.androidDeviceDetails.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.signalModels.Chart
@@ -18,28 +17,19 @@ class GraphActivity : AppCompatActivity() {
         val gson = Gson()
         val signal = intent.getStringExtra("signal")
         val signalList = gson.fromJson(signal, Array<SignalEntry>::class.java)
-        var wifiSize = 0
-        var cellularSize = 0
 
-        cellularSize = signalList.filter { it.signal == Signal.CELLULAR.ordinal }.size
-        wifiSize = signalList.size- cellularSize
+        val cellularTimeList = arrayListOf<String>()
+        val cellularValueList = arrayListOf<Any>()
+        val wifiValueList = arrayListOf<Any>()
+        val wifiTimeList = arrayListOf<String>()
 
-        val cellularTimeList = Array(cellularSize){""}
-        val cellularValueList = Array<Any>(cellularSize) {}
-        val wifiValueList = Array<Any>(wifiSize) {}
-        val wifiTimeList = Array(wifiSize){""}
-
-        var c = 0
-        var w = 0
         for (item in signalList) {
             if (item.signal == Signal.CELLULAR.ordinal) {
-                cellularTimeList[c] = item.timeStamp
-                cellularValueList[c] = item.strength
-                c += 1
+                cellularTimeList.add(item.timeStamp)
+                cellularValueList.add(item.strength)
             } else  {
-                wifiTimeList[w] = item.timeStamp
-                wifiValueList[w] = item.strength
-                w += 1
+                wifiTimeList.add(item.timeStamp)
+                wifiValueList.add(item.strength)
             }
         }
 
@@ -48,11 +38,12 @@ class GraphActivity : AppCompatActivity() {
         val wifiChart = Chart(
             R.id.wifi_chart, "WIFI", -127f, 0f, "#ffc069"
         )
-        drawChart(wifiChart, wifiTimeList, wifiValueList)
+        drawChart(wifiChart, wifiTimeList.toTypedArray(), wifiValueList.toArray())
+
         val cellularChart = Chart(
             R.id.cellular_chart, "CELLULAR", -150f, -50f, "#06caf4"
         )
-        drawChart(cellularChart, cellularTimeList, cellularValueList)
+        drawChart(cellularChart, cellularTimeList.toTypedArray(), cellularValueList.toArray())
     }
 
     private fun drawChart(chart: Chart, xSet: Array<String>, ySet: Array<Any>) {
@@ -79,7 +70,6 @@ class GraphActivity : AppCompatActivity() {
                         .data(ySet),
                 )
             )
-
         aaChartView.aa_drawChartWithChartModel(aaChartModel)
     }
 }

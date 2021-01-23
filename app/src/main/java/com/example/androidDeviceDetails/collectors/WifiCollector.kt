@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.wifi.SupplicantState
-import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -46,10 +44,12 @@ class WifiCollector : BaseCollector() {
             val linkSpeed: Int
             val level: Int
             val operatorName: String
-            var wifiPercentage=0F
+            val wifiPercentage: Float
 
             val wifiManager: WifiManager =
                 context?.applicationContext?.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
+            val db = RoomDB.getDatabase(context)
+
             strength = wifiManager.connectionInfo.rssi
             linkSpeed = wifiManager.connectionInfo.linkSpeed
             operatorName = wifiManager.connectionInfo.ssid
@@ -67,26 +67,10 @@ class WifiCollector : BaseCollector() {
             //TODO wifi percentage,move declaration to up
 
 
-            val wifiInfo: WifiInfo
-            val ssid:String
-            wifiInfo = wifiManager.connectionInfo
-            if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
-                ssid = wifiInfo.ssid
-            }
-
-            val db = RoomDB.getDatabase(context)
             signalRaw = SignalRaw(
                 System.currentTimeMillis(),
-                Signal.WIFI.ordinal,
-                strength,
-                null,
-                linkSpeed,
-                level,
-                operatorName,
-                null,
-                null,
-                wifiPercentage
-
+                Signal.WIFI.ordinal, strength, null,
+                linkSpeed, level, operatorName, null, null, wifiPercentage
             )
             GlobalScope.launch {
                 db?.signalDao()?.insertAll(signalRaw)

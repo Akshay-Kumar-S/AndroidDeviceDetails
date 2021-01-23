@@ -14,7 +14,6 @@ import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 /**
  *  Implements [BaseCollector].
  *  An event based collector which collects the CELLULAR signal data.

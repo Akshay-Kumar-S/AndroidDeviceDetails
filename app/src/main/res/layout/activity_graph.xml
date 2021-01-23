@@ -20,13 +20,12 @@
     <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
         android:id="@+id/cellular_chart"
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent=".45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="1.0" />
 
-    </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
 </androidx.constraintlayout.widget.ConstraintLayout>

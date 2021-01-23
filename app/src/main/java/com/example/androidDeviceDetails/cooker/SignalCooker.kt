@@ -5,9 +5,9 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
-import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.SignalList
@@ -32,6 +32,7 @@ class SignalCooker : BaseCooker() {
      * @param time data class object that contains start time and end time.
      * @param callback A callback that accepts the cooked list once cooking is done
      */
+    @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
             val cellularList =
@@ -56,8 +57,8 @@ class SignalCooker : BaseCooker() {
 
             val timeInterval = findTimeInterval(time)
             val pattern = findPattern(time)
-            addList(cellularList, timeInterval, pattern)
-            addList(wifiList, timeInterval, pattern)
+            addToList(cellularList, timeInterval, pattern)
+            addToList(wifiList, timeInterval, pattern)
             cookedDataList.add(signalList)
 
             if (cookedDataList.isNotEmpty()) {
@@ -106,16 +107,25 @@ class SignalCooker : BaseCooker() {
     private fun findTimeInterval(time: TimePeriod): Long {
         val timeDifference = time.endTime - time.startTime
         return when {
-            timeDifference <= Time.HOUR -> Time.TWO_MIN
-            timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
-            timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
-            timeDifference <= Time.DAY -> Time.THIRTY_MIN
-            timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
+           // timeDifference <= Time.HOUR -> Time.TWO_MIN
+            //timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
+            timeDifference <= Time.MIDDAY -> Time.TWO_MIN
+           // timeDifference <= Time.DAY -> Time.THIRTY_MIN
+            //timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
             timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
-            timeDifference <= Time.TEN_DAY -> Time.MIDDAY
+          //  timeDifference <= Time.TEN_DAY -> Time.MIDDAY
             else -> Time.DAY
         }
     }
+
+ /*   timeDifference <= Time.HOUR -> Time.TWO_MIN
+    timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
+    timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
+    timeDifference <= Time.DAY -> Time.THIRTY_MIN
+    timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
+    timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
+    timeDifference <= Time.TEN_DAY -> Time.MIDDAY
+    else -> Time.DAY*/
 
     private fun findPattern(time: TimePeriod): String {
         val timeDifference = time.endTime - time.startTime
@@ -126,7 +136,7 @@ class SignalCooker : BaseCooker() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun addList(list: List<SignalRaw>, timeInterval: Long, pattern: String) {
+    private fun addToList(list: List<SignalRaw>, timeInterval: Long, pattern: String) {
         var currentTime: Long
         var timeStamp: String
         val formatter = SimpleDateFormat(pattern)
@@ -138,6 +148,5 @@ class SignalCooker : BaseCooker() {
                 currentTime = (timeInterval + signal.timeStamp)
             }
         }
-
     }
 }

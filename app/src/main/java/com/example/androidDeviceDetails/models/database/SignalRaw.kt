@@ -82,4 +82,7 @@ interface SignalDao {
      */
     @Query("DELETE FROM SignalRaw")
     fun deleteAll()
+
+    @Insert
+    fun insertAll(signalRawList: List<SignalRaw>)
 }
