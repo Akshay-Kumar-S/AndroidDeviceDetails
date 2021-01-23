@@ -39,12 +39,10 @@ class SignalChangeCollector : BaseCollector() {
          **/
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
             val signalEntity: SignalRaw
+            val signalDB = RoomDB.getDatabase()
             var level = 0
             var strength = -120
             var type = ""
-            val signalDB = RoomDB.getDatabase()
-            val isRoaming: Boolean
-            var operatorName = ""
             var networkBand = ""
             var strengthPercentage=0F
             val telephonyManager =
@@ -122,8 +120,7 @@ class SignalChangeCollector : BaseCollector() {
                 } catch (e: SecurityException) {
                 }
             }
-            isRoaming = telephonyManager.isNetworkRoaming
-            operatorName = telephonyManager.networkOperatorName
+
             strengthPercentage=(-124 - strength) / 96.toFloat() * (-100)
             signalEntity = SignalRaw(
                 System.currentTimeMillis(),
@@ -132,19 +129,15 @@ class SignalChangeCollector : BaseCollector() {
                 type,
                 null,
                 level,
-                operatorName,
-                isRoaming,
+                telephonyManager.networkOperatorName,
+                telephonyManager.isNetworkRoaming,
                 networkBand,
                 strengthPercentage
             )
             GlobalScope.launch {
-                signalDB?.signalDao()?.insertAll(signalEntity)
+                signalDB?.signalDao()?.insert(signalEntity)
             }
         }
-    }
-
-    init {
-        start()
     }
 
     /**

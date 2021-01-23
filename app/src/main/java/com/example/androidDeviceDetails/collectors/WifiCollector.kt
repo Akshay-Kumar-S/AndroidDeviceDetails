@@ -41,9 +41,7 @@ class WifiCollector : BaseCollector() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val signalRaw: SignalRaw
             val strength: Int
-            val linkSpeed: Int
             val level: Int
-            val operatorName: String
             val wifiPercentage: Float
 
             val wifiManager: WifiManager =
@@ -51,8 +49,6 @@ class WifiCollector : BaseCollector() {
             val db = RoomDB.getDatabase(context)
 
             strength = wifiManager.connectionInfo.rssi
-            linkSpeed = wifiManager.connectionInfo.linkSpeed
-            operatorName = wifiManager.connectionInfo.ssid
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)
@@ -63,24 +59,19 @@ class WifiCollector : BaseCollector() {
                     wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
                 }
             }
-
-            //TODO wifi percentage,move declaration to up
-
+//TODO constants wifi percentage
 
             signalRaw = SignalRaw(
                 System.currentTimeMillis(),
                 Signal.WIFI.ordinal, strength, null,
-                linkSpeed, level, operatorName, null, null, wifiPercentage
+                wifiManager.connectionInfo.linkSpeed, level,
+                wifiManager.connectionInfo.ssid, null, null,
+                wifiPercentage
             )
             GlobalScope.launch {
-                db?.signalDao()?.insertAll(signalRaw)
+                db?.signalDao()?.insert(signalRaw)
             }
         }
-
-    }
-
-    init {
-        start()
     }
 
     /**
@@ -92,8 +83,7 @@ class WifiCollector : BaseCollector() {
         filter.addAction(WifiManager.RSSI_CHANGED_ACTION)
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
         DeviceDetailsApplication.instance.registerReceiver(
-            WifiReceiver,
-            filter
+            WifiReceiver, filter
         )
     }
 

@@ -48,7 +48,7 @@ interface SignalDao {
      * @param signalRaw record to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg signalRaw: SignalRaw)
+    fun insert(vararg signalRaw: SignalRaw)
 
     /**
      * Delete the [signalRaw] record from the [SignalRaw] table.

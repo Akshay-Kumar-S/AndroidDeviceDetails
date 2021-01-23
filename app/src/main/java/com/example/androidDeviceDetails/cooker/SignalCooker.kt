@@ -40,8 +40,9 @@ class SignalCooker : BaseCooker() {
             val wifiList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
 
+            //TODO handle empty list , change variable, roamingTime
             val lastCellStrength = cellularList.last().strength
-            val lastWifiStrength = wifiList.last().wifiPercentage
+            val lastWifiStrength = wifiList.last().Percentage
             val roamingTime: Long = roamingTime(cellularList)
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
@@ -67,7 +68,6 @@ class SignalCooker : BaseCooker() {
         }
     }
 
-    //TODO use enumerators
     private fun getMostUsed(
         rawList: List<SignalRaw>,
         data: Int,

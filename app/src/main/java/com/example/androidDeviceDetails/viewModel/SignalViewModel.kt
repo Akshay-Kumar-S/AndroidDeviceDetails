@@ -48,7 +48,7 @@ class SignalViewModel(
     fun updateValue(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
             Signal.WIFI.ordinal ->
-                wifiStrength = signalRaw.wifiPercentage!!
+                wifiStrength = signalRaw.Percentage!!
             Signal.CELLULAR.ordinal ->
                 cellularStrength = signalRaw.strength
         }
@@ -81,6 +81,7 @@ class SignalViewModel(
      * Overrides : [onDone] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
+    @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
         listData = outputList[0] as SignalCookedData
         signalList = outputList[1] as ArrayList<SignalEntry>
