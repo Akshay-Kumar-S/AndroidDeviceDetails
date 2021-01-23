@@ -40,19 +40,16 @@ class SignalCooker : BaseCooker() {
             val wifiList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
 
-            //TODO handle empty list , change variable, roamingTime
-            val lastCellStrength = cellularList.last().strength
-            val lastWifiStrength = wifiList.last().Percentage
-            val roamingTime: Long = roamingTime(cellularList)
+            //TODO handle empty list
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
-                roamingTime,
+                roamingTime(cellularList),
                 getMostUsed(cellularList, SignalList.OPERATOR.ordinal),
                 getMostUsed(wifiList, SignalList.OPERATOR.ordinal),
                 getMostUsed(cellularList, SignalList.BAND.ordinal),
                 getMostUsed(wifiList, SignalList.BAND.ordinal),
-                lastWifiStrength!!,
-                lastCellStrength
+                wifiList.last().strengthPercentage,
+                cellularList.last().strengthPercentage
             )
             cookedDataList.add(cookedData)
 
@@ -89,7 +86,7 @@ class SignalCooker : BaseCooker() {
             previousSignalEntity = signalEntity
         }
         usageList.sortBy { it.time }
-        return usageList.last().name.toString()
+        return usageList.last().name
     }
 
     private fun roamingTime(cellularList: List<SignalRaw>): Long {
@@ -103,7 +100,7 @@ class SignalCooker : BaseCooker() {
         return roamingTime
     }
 
-    //TODO look for inbuilt functions
+    //TODO look for inbuilt functions,add equation
     private fun findTimeInterval(time: TimePeriod): Long {
         val timeDifference = time.endTime - time.startTime
         return when {

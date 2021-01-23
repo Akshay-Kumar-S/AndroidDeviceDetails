@@ -18,7 +18,7 @@ class SignalViewModel(
     private val signalBinding: ActivitySignalBinding,
     val context: Context
 ) : BaseViewModel() {
-    private var cellularStrength: Int = -124
+    private var cellularStrength: Float = 0F
     private var wifiStrength: Float = 0F
     private val db = RoomDB.getDatabase()!!
     var signalList = arrayListOf<SignalEntry>()
@@ -48,9 +48,9 @@ class SignalViewModel(
     fun updateValue(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
             Signal.WIFI.ordinal ->
-                wifiStrength = signalRaw.Percentage!!
+                wifiStrength = signalRaw.strengthPercentage!!
             Signal.CELLULAR.ordinal ->
-                cellularStrength = signalRaw.strength
+                cellularStrength = signalRaw.strengthPercentage!!
         }
         updateGuage()
     }
@@ -63,7 +63,7 @@ class SignalViewModel(
         signalBinding.pointerCellularSpeedometer.post {
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
-                    wifiStrength,
+                    cellularStrength,
                     1000
                 )
                 pointerWifiSpeedometer.speedTo(
@@ -96,7 +96,7 @@ class SignalViewModel(
         signalBinding.roamingTime.cookedValue.text = listData.roamingTime.toString()
         signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = listData.mostUsedWifiLevel
-        cellularStrength = listData.lasCellularStrength
+        cellularStrength = listData.lastCellularStrength
         wifiStrength = listData.lastWifiStrength
     }
 }

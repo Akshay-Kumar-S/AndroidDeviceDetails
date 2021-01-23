@@ -34,7 +34,7 @@ data class SignalRaw(
     @ColumnInfo(name = "operatorName") val operatorName: String,
     @ColumnInfo(name = "isRoaming") val isRoaming: Boolean?,
     @ColumnInfo(name = "band") val band: String?,
-    @ColumnInfo(name = "percentage") val percentage: Float?
+    @ColumnInfo(name = "percentage") val strengthPercentage: Float
 )
 
 /**
