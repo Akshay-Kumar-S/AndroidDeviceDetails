@@ -53,12 +53,17 @@ class WifiCollector : BaseCollector() {
             strength = wifiManager.connectionInfo.rssi
             linkSpeed = wifiManager.connectionInfo.linkSpeed
             operatorName = wifiManager.connectionInfo.ssid
-            level = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                wifiManager.calculateSignalLevel(strength)
-            } else {
-                WifiManager.calculateSignalLevel(strength, 5)
+            when {
+                Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
+                    level = wifiManager.calculateSignalLevel(strength)
+                    wifiPercentage=(-127-strength)/103.toFloat()*100
+                }
+                else -> {
+                    level = WifiManager.calculateSignalLevel(strength, 5)
+                    wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
+                }
             }
-            wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
+
             //TODO wifi percentage,move declaration to up
 
 

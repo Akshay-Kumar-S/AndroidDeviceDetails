@@ -10,6 +10,7 @@ import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.SignalList
 import com.example.androidDeviceDetails.utils.Time
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,10 +45,10 @@ class SignalCooker : BaseCooker() {
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
                 roamingTime,
-                getMostUsed(cellularList, "operator"),
-                getMostUsed(wifiList, "operator"),
-                getMostUsed(cellularList, "band"),
-                getMostUsed(wifiList, "level"),
+                getMostUsed(cellularList, SignalList.OPERATOR.ordinal),
+                getMostUsed(wifiList, SignalList.OPERATOR.ordinal),
+                getMostUsed(cellularList, SignalList.BAND.ordinal),
+                getMostUsed(wifiList, SignalList.BAND.ordinal),
                 lastWifiStrength!!,
                 lastCellStrength
             )
@@ -68,7 +69,7 @@ class SignalCooker : BaseCooker() {
     //TODO use enumerators
     private fun getMostUsed(
         rawList: List<SignalRaw>,
-        data: String,
+        data: Int,
     ): String {
         if (rawList.isEmpty()) return "no data"
         val usageList = ArrayList<Usage>()
@@ -76,9 +77,9 @@ class SignalCooker : BaseCooker() {
         var previousSignalEntity = rawList.first()
         rawList.forEach { signalEntity ->
             dataValue = when (data) {
-                "band" -> signalEntity.band.toString()
-                "operator" -> signalEntity.operatorName
-                "level" -> signalEntity.level.toString()
+                SignalList.BAND.ordinal -> signalEntity.band.toString()
+                SignalList.OPERATOR.ordinal -> signalEntity.operatorName
+                SignalList.LEVEL.ordinal -> signalEntity.level.toString()
                 else -> signalEntity.operatorName
             }
             if (usageList.none { it.name == dataValue })

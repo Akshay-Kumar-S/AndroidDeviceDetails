@@ -6,9 +6,9 @@ import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
-import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 
 /**
@@ -23,6 +23,7 @@ class SignalViewModel(
     private val db = RoomDB.getDatabase()!!
     var signalList = arrayListOf<SignalEntry>()
     lateinit var listData: SignalCookedData
+    var guageSet:Boolean=false
 
     init {
         observeSignal()
@@ -51,15 +52,14 @@ class SignalViewModel(
             Signal.CELLULAR.ordinal ->
                 cellularStrength = signalRaw.strength
         }
-        updateCardView()
+        updateGuage()
     }
 
     /**
      * This method updates the Card view in the UI based on the selected menu - CELLULAR or WIFI.
      */
     @SuppressLint("SetTextI18n")
-    fun updateCardView() {
-
+    fun updateGuage() {
         signalBinding.pointerCellularSpeedometer.post {
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
@@ -84,14 +84,18 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         listData = outputList[0] as SignalCookedData
         signalList = outputList[1] as ArrayList<SignalEntry>
+        if(!guageSet){updateGuage()
+        guageSet=true}
+        updateList()
+    }
+
+    private fun updateList() {
         signalBinding.mostUsedOperator.cookedValue.text = listData.mostUsedOperator
         signalBinding.mostUsedBand.cookedValue.text = listData.mostUsedLevel
         signalBinding.roamingTime.cookedValue.text = listData.roamingTime.toString()
         signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = listData.mostUsedWifiLevel
-        cellularStrength = (outputList.first() as SignalCookedData).lasCellularStrength
-        wifiStrength = (outputList.first() as SignalCookedData).lastWifiStrength
-        updateCardView()
+        cellularStrength = listData.lasCellularStrength
+        wifiStrength = listData.lastWifiStrength
     }
-
 }
