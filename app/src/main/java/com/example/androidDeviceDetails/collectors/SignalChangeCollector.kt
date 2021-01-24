@@ -44,7 +44,7 @@ class SignalChangeCollector : BaseCollector() {
             var strength = -120
             var type = ""
             var networkBand = ""
-            var strengthPercentage=0F
+            val strengthPercentage: Float
             val telephonyManager =
                 DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
@@ -121,7 +121,7 @@ class SignalChangeCollector : BaseCollector() {
                 }
             }
             //TODO rename to constants
-            strengthPercentage=(-124 - strength) / 96.toFloat() * (-100)
+            strengthPercentage = (-124 - strength) / 96.toFloat() * (-100)
             signalEntity = SignalRaw(
                 System.currentTimeMillis(),
                 Signal.CELLULAR.ordinal,

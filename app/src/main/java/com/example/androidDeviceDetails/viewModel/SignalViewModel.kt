@@ -84,8 +84,12 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         listData = outputList.filterIsInstance<SignalCookedData>().first()
         signalList = outputList.filterIsInstance<ArrayList<SignalEntry>>().first()
-        if (signalBinding.pointerCellularSpeedometer.tag == "true")
+        if (signalBinding.pointerCellularSpeedometer.tag == "true") {
             updateGauge()
+            cellularStrength = listData.lastCellularStrength
+            wifiStrength = listData.lastWifiStrength
+        }
+
         signalBinding.pointerCellularSpeedometer.tag = "false"
         updateList()
     }
@@ -96,7 +100,5 @@ class SignalViewModel(
         signalBinding.roamingTime.cookedValue.text = listData.roamingTime.toString()
         signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = listData.mostUsedWifiLevel
-        cellularStrength = listData.lastCellularStrength
-        wifiStrength = listData.lastWifiStrength
     }
 }
