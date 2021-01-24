@@ -49,6 +49,7 @@ class WifiCollector : BaseCollector() {
             val db = RoomDB.getDatabase(context)
 
             strength = wifiManager.connectionInfo.rssi
+            //TODO rename to constants
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)

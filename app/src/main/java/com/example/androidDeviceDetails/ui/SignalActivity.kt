@@ -28,30 +28,28 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         signalController = ActivityController(
             NAME, binding, this, binding.pickerBinding, supportFragmentManager
         )
-        val signalViewModel = signalController.viewModel as SignalViewModel
-        binding.apply {
-            pickerBinding.startTime.setOnClickListener(this@SignalActivity)
-            pickerBinding.startDate.setOnClickListener(this@SignalActivity)
-            pickerBinding.endTime.setOnClickListener(this@SignalActivity)
-            pickerBinding.endDate.setOnClickListener(this@SignalActivity)
+        binding.pickerBinding.apply {
+            startTime.setOnClickListener(this@SignalActivity)
+            startDate.setOnClickListener(this@SignalActivity)
+            endTime.setOnClickListener(this@SignalActivity)
+            endDate.setOnClickListener(this@SignalActivity)
         }
-
-        binding.more.setOnClickListener {
-            val signalList = signalViewModel.signalList
-            val gson = Gson()
-            val signalJson = gson.toJson(signalList)
-            val intent = Intent(this@SignalActivity, GraphActivity::class.java)
-            intent.putExtra("signal", signalJson)
-            startActivity(intent)
-        }
+        binding.moreDetails.setOnClickListener(this@SignalActivity)
     }
 
     override fun onClick(v: View?) {
+        val signalViewModel = signalController.viewModel as SignalViewModel
         when (v!!.id) {
             R.id.startTime -> signalController.setTime(this, R.id.startTime)
             R.id.startDate -> signalController.setDate(this, R.id.startDate)
             R.id.endTime -> signalController.setTime(this, R.id.endTime)
             R.id.endDate -> signalController.setDate(this, R.id.endDate)
+            R.id.more_details -> {
+                val signalJson = Gson().toJson(signalViewModel.signalList)
+                val intent = Intent(this@SignalActivity, GraphActivity::class.java)
+                intent.putExtra("signal", signalJson)
+                startActivity(intent)
+            }
         }
     }
 

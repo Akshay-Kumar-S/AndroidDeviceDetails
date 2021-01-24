@@ -24,6 +24,7 @@ class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
     private val signalList = arrayListOf<SignalEntry>()
 
+
     /**
      * Cook data for Signal Strength from the collected data available in the [RoomDB.signalDao]
      * table for the requested time interval.
@@ -45,7 +46,6 @@ class SignalCooker : BaseCooker() {
             if (cellularList.isNotEmpty()) cellularPercentage =
                 cellularList.last().strengthPercentage
 
-            //TODO handle empty list
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
                 roamingTime(cellularList),
@@ -58,7 +58,8 @@ class SignalCooker : BaseCooker() {
             )
             cookedDataList.add(cookedData)
 
-            val timeInterval = findTimeInterval(time)
+            val timeDifference = time.endTime - time.startTime
+            val timeInterval = timeDifference / PLOT_POINTS
             val pattern = findPattern(time)
             addToList(cellularList, timeInterval, pattern)
             addToList(wifiList, timeInterval, pattern)
@@ -70,6 +71,7 @@ class SignalCooker : BaseCooker() {
         }
     }
 
+    //TODO change enumerators to constant
     private fun getMostUsed(
         rawList: List<SignalRaw>,
         data: Int,
@@ -105,29 +107,21 @@ class SignalCooker : BaseCooker() {
         return roamingTime
     }
 
-    //TODO look for inbuilt functions,add equation
-    private fun findTimeInterval(time: TimePeriod): Long {
-        val timeDifference = time.endTime - time.startTime
-        return when {
-            // timeDifference <= Time.HOUR -> Time.TWO_MIN
-            //timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
-            timeDifference <= Time.MIDDAY -> Time.TWO_MIN
-            // timeDifference <= Time.DAY -> Time.THIRTY_MIN
-            //timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
-            timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
-            //  timeDifference <= Time.TEN_DAY -> Time.MIDDAY
-            else -> Time.DAY
-        }
-    }
-
-    /*   timeDifference <= Time.HOUR -> Time.TWO_MIN
-       timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
-       timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
-       timeDifference <= Time.DAY -> Time.THIRTY_MIN
-       timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
-       timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
-       timeDifference <= Time.TEN_DAY -> Time.MIDDAY
-       else -> Time.DAY*/
+/*
+       private fun findTimeInterval(time: TimePeriod): Long {
+           val timeDifference = time.endTime - time.startTime
+           return when {
+              // timeDifference <= Time.HOUR -> Time.TWO_MIN
+               //timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
+               timeDifference <= Time.MIDDAY -> Time.TWO_MIN
+              // timeDifference <= Time.DAY -> Time.THIRTY_MIN
+               //timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
+               timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
+             //  timeDifference <= Time.TEN_DAY -> Time.MIDDAY
+               else -> Time.DAY
+           }
+       }
+   */
 
     private fun findPattern(time: TimePeriod): String {
         val timeDifference = time.endTime - time.startTime
@@ -139,16 +133,22 @@ class SignalCooker : BaseCooker() {
 
     @SuppressLint("SimpleDateFormat")
     private fun addToList(list: List<SignalRaw>, timeInterval: Long, pattern: String) {
-        var currentTime: Long
+        var startTime: Long
         var timeStamp: String
-        val formatter = SimpleDateFormat(pattern)
-        currentTime = list.first().timeStamp
-        for (signal in list) {
-            if (signal.timeStamp >= currentTime) {
-                timeStamp = formatter.format(signal.timeStamp)
-                signalList.add(SignalEntry(timeStamp, signal.signal, signal.strength))
-                currentTime = (timeInterval + signal.timeStamp)
+        if (list.isNotEmpty()) {
+            val formatter = SimpleDateFormat(pattern)
+            startTime = list.first().timeStamp
+            for (signal in list) {
+                if (signal.timeStamp >= startTime) {
+                    timeStamp = formatter.format(signal.timeStamp)
+                    signalList.add(SignalEntry(timeStamp, signal.signal, signal.strength))
+                    startTime = (timeInterval + signal.timeStamp)
+                }
             }
         }
+    }
+
+    companion object {
+        const val PLOT_POINTS: Int = 30
     }
 }

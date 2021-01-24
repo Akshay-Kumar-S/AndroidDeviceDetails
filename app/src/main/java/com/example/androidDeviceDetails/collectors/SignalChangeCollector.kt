@@ -120,7 +120,7 @@ class SignalChangeCollector : BaseCollector() {
                 } catch (e: SecurityException) {
                 }
             }
-
+            //TODO rename to constants
             strengthPercentage=(-124 - strength) / 96.toFloat() * (-100)
             signalEntity = SignalRaw(
                 System.currentTimeMillis(),

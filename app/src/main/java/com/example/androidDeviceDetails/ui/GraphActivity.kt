@@ -14,9 +14,8 @@ class GraphActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val gson = Gson()
         val signal = intent.getStringExtra("signal")
-        val signalList = gson.fromJson(signal, Array<SignalEntry>::class.java)
+        val signalList = Gson().fromJson(signal, Array<SignalEntry>::class.java)
 
         val cellularTimeList = arrayListOf<String>()
         val cellularValueList = arrayListOf<Any>()
