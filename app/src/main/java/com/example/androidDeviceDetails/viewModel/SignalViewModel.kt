@@ -23,7 +23,6 @@ class SignalViewModel(
     private val db = RoomDB.getDatabase()!!
     var signalList = arrayListOf<SignalEntry>()
     lateinit var listData: SignalCookedData
-    var guageSet:Boolean=false
 
     init {
         observeSignal()
@@ -48,9 +47,9 @@ class SignalViewModel(
     fun updateValue(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
             Signal.WIFI.ordinal ->
-                wifiStrength = signalRaw.strengthPercentage!!
+                wifiStrength = signalRaw.strengthPercentage
             Signal.CELLULAR.ordinal ->
-                cellularStrength = signalRaw.strengthPercentage!!
+                cellularStrength = signalRaw.strengthPercentage
         }
         updateGuage()
     }
@@ -61,6 +60,7 @@ class SignalViewModel(
     @SuppressLint("SetTextI18n")
     fun updateGuage() {
         signalBinding.pointerCellularSpeedometer.post {
+            if(signalBinding.pointerCellularSpeedometer.tag=="true")
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
                     cellularStrength,
@@ -69,7 +69,9 @@ class SignalViewModel(
                 pointerWifiSpeedometer.speedTo(
                     wifiStrength, 1000
                 )
+               pointerCellularSpeedometer.tag="false"
             }
+
         }
 
     }
@@ -81,12 +83,10 @@ class SignalViewModel(
      * Overrides : [onDone] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
-    @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
-        listData = outputList[0] as SignalCookedData
-        signalList = outputList[1] as ArrayList<SignalEntry>
-        if(!guageSet){updateGuage()
-        guageSet=true}
+        listData = outputList.filterIsInstance<SignalCookedData>().first()
+        signalList = outputList.filterIsInstance<ArrayList<SignalEntry>>().first()
+        updateGuage()
         updateList()
     }
 

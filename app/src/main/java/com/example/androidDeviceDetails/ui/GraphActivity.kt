@@ -33,6 +33,7 @@ class GraphActivity : AppCompatActivity() {
             }
         }
 
+
         setContentView(R.layout.activity_graph)
 
         val wifiChart = Chart(

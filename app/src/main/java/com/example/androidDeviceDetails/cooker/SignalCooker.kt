@@ -35,10 +35,15 @@ class SignalCooker : BaseCooker() {
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
+            var wifiPercentage = 0F
+            var cellularPercentage = 0F
             val cellularList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
             val wifiList =
                 db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
+            if (wifiList.isNotEmpty()) wifiPercentage = wifiList.last().strengthPercentage
+            if (cellularList.isNotEmpty()) cellularPercentage =
+                cellularList.last().strengthPercentage
 
             //TODO handle empty list
             val cookedDataList = ArrayList<Any>()
@@ -48,8 +53,8 @@ class SignalCooker : BaseCooker() {
                 getMostUsed(wifiList, SignalList.OPERATOR.ordinal),
                 getMostUsed(cellularList, SignalList.BAND.ordinal),
                 getMostUsed(wifiList, SignalList.BAND.ordinal),
-                wifiList.last().strengthPercentage,
-                cellularList.last().strengthPercentage
+                wifiPercentage,
+                cellularPercentage
             )
             cookedDataList.add(cookedData)
 
@@ -104,25 +109,25 @@ class SignalCooker : BaseCooker() {
     private fun findTimeInterval(time: TimePeriod): Long {
         val timeDifference = time.endTime - time.startTime
         return when {
-           // timeDifference <= Time.HOUR -> Time.TWO_MIN
+            // timeDifference <= Time.HOUR -> Time.TWO_MIN
             //timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
             timeDifference <= Time.MIDDAY -> Time.TWO_MIN
-           // timeDifference <= Time.DAY -> Time.THIRTY_MIN
+            // timeDifference <= Time.DAY -> Time.THIRTY_MIN
             //timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
             timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
-          //  timeDifference <= Time.TEN_DAY -> Time.MIDDAY
+            //  timeDifference <= Time.TEN_DAY -> Time.MIDDAY
             else -> Time.DAY
         }
     }
 
- /*   timeDifference <= Time.HOUR -> Time.TWO_MIN
-    timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
-    timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
-    timeDifference <= Time.DAY -> Time.THIRTY_MIN
-    timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
-    timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
-    timeDifference <= Time.TEN_DAY -> Time.MIDDAY
-    else -> Time.DAY*/
+    /*   timeDifference <= Time.HOUR -> Time.TWO_MIN
+       timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
+       timeDifference <= Time.MIDDAY -> Time.TWENTY_MIN
+       timeDifference <= Time.DAY -> Time.THIRTY_MIN
+       timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
+       timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
+       timeDifference <= Time.TEN_DAY -> Time.MIDDAY
+       else -> Time.DAY*/
 
     private fun findPattern(time: TimePeriod): String {
         val timeDifference = time.endTime - time.startTime
