@@ -49,10 +49,10 @@ class SignalCooker : BaseCooker() {
             val cookedDataList = ArrayList<Any>()
             val cookedData = SignalCookedData(
                 roamingTime(cellularList),
-                getMostUsed(cellularList, SignalList.OPERATOR.ordinal),
-                getMostUsed(wifiList, SignalList.OPERATOR.ordinal),
-                getMostUsed(cellularList, SignalList.BAND.ordinal),
-                getMostUsed(wifiList, SignalList.BAND.ordinal),
+                getMostUsed(cellularList, OPERATOR),
+                getMostUsed(wifiList, OPERATOR),
+                getMostUsed(cellularList, BAND),
+                getMostUsed(wifiList, LEVEL),
                 wifiPercentage,
                 cellularPercentage
             )
@@ -71,7 +71,6 @@ class SignalCooker : BaseCooker() {
         }
     }
 
-    //TODO change enumerators to constant
     private fun getMostUsed(
         rawList: List<SignalRaw>,
         data: Int,
@@ -82,9 +81,9 @@ class SignalCooker : BaseCooker() {
         var previousSignalEntity = rawList.first()
         rawList.forEach { signalEntity ->
             dataValue = when (data) {
-                SignalList.BAND.ordinal -> signalEntity.band.toString()
-                SignalList.OPERATOR.ordinal -> signalEntity.operatorName
-                SignalList.LEVEL.ordinal -> signalEntity.level.toString()
+                BAND -> signalEntity.band.toString()
+                OPERATOR -> signalEntity.operatorName
+                LEVEL -> signalEntity.level.toString()
                 else -> signalEntity.operatorName
             }
             if (usageList.none { it.name == dataValue })
@@ -150,5 +149,8 @@ class SignalCooker : BaseCooker() {
 
     companion object {
         const val PLOT_POINTS: Int = 30
+        const val LEVEL=1
+        const val OPERATOR=2
+        const val BAND=3
     }
 }

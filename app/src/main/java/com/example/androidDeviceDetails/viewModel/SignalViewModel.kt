@@ -51,14 +51,14 @@ class SignalViewModel(
             Signal.CELLULAR.ordinal ->
                 cellularStrength = signalRaw.strengthPercentage
         }
-        updateGuage()
+        updateGauge()
     }
 
     /**
      * This method updates the Card view in the UI based on the selected menu - CELLULAR or WIFI.
      */
     @SuppressLint("SetTextI18n")
-    fun updateGuage() {
+    fun updateGauge() {
         signalBinding.pointerCellularSpeedometer.post {
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
@@ -85,7 +85,7 @@ class SignalViewModel(
         listData = outputList.filterIsInstance<SignalCookedData>().first()
         signalList = outputList.filterIsInstance<ArrayList<SignalEntry>>().first()
         if (signalBinding.pointerCellularSpeedometer.tag == "true")
-            updateGuage()
+            updateGauge()
         signalBinding.pointerCellularSpeedometer.tag = "false"
         updateList()
     }
