@@ -60,7 +60,6 @@ class SignalViewModel(
     @SuppressLint("SetTextI18n")
     fun updateGuage() {
         signalBinding.pointerCellularSpeedometer.post {
-            if(signalBinding.pointerCellularSpeedometer.tag=="true")
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
                     cellularStrength,
@@ -69,7 +68,6 @@ class SignalViewModel(
                 pointerWifiSpeedometer.speedTo(
                     wifiStrength, 1000
                 )
-               pointerCellularSpeedometer.tag="false"
             }
 
         }
@@ -86,7 +84,9 @@ class SignalViewModel(
     override fun <T> onDone(outputList: ArrayList<T>) {
         listData = outputList.filterIsInstance<SignalCookedData>().first()
         signalList = outputList.filterIsInstance<ArrayList<SignalEntry>>().first()
-        updateGuage()
+        if (signalBinding.pointerCellularSpeedometer.tag == "true")
+            updateGuage()
+        signalBinding.pointerCellularSpeedometer.tag = "false"
         updateList()
     }
 
