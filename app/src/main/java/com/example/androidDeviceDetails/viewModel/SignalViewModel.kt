@@ -7,8 +7,8 @@ import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.database.SignalRaw
-import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
-import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.models.signal.SignalCookedData
+import com.example.androidDeviceDetails.models.signal.SignalEntry
 import com.example.androidDeviceDetails.utils.Signal
 
 /**
@@ -22,7 +22,7 @@ class SignalViewModel(
     private var wifiStrength: Float = 0F
     private val db = RoomDB.getDatabase()!!
     var signalList = arrayListOf<SignalEntry>()
-    lateinit var listData: SignalCookedData
+    private lateinit var listData: SignalCookedData
 
     init {
         observeSignal()

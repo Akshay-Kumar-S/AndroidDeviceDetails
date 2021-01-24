@@ -3,8 +3,8 @@ package com.example.androidDeviceDetails.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.signalModels.Chart
-import com.example.androidDeviceDetails.models.signalModels.SignalEntry
+import com.example.androidDeviceDetails.models.signal.Chart
+import com.example.androidDeviceDetails.models.signal.SignalEntry
 import com.example.androidDeviceDetails.utils.Signal
 import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.google.gson.Gson

@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
  *  initialization of this class.
  *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
  **/
+@Suppress("DEPRECATION")
 class WifiCollector : BaseCollector() {
 
     /**

@@ -6,9 +6,9 @@ import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.database.SignalRaw
-import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
-import com.example.androidDeviceDetails.models.signalModels.SignalEntry
-import com.example.androidDeviceDetails.models.signalModels.Usage
+import com.example.androidDeviceDetails.models.signal.SignalCookedData
+import com.example.androidDeviceDetails.models.signal.SignalEntry
+import com.example.androidDeviceDetails.models.signal.Usage
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.Time
 import kotlinx.coroutines.GlobalScope

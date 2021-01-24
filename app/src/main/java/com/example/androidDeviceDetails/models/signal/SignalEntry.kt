@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.signalModels
+package com.example.androidDeviceDetails.models.signal
 
 data class SignalEntry (
     val timeStamp: String,
