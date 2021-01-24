@@ -10,7 +10,6 @@ import com.example.androidDeviceDetails.models.signalModels.SignalCookedData
 import com.example.androidDeviceDetails.models.signalModels.SignalEntry
 import com.example.androidDeviceDetails.models.signalModels.Usage
 import com.example.androidDeviceDetails.utils.Signal
-import com.example.androidDeviceDetails.utils.SignalList
 import com.example.androidDeviceDetails.utils.Time
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -149,8 +148,8 @@ class SignalCooker : BaseCooker() {
 
     companion object {
         const val PLOT_POINTS: Int = 30
-        const val LEVEL=1
-        const val OPERATOR=2
-        const val BAND=3
+        const val LEVEL = 1
+        const val OPERATOR = 2
+        const val BAND = 3
     }
 }
