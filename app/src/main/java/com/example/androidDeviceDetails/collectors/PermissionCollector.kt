@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.base.BaseCollector
@@ -19,23 +20,23 @@ class PermissionCollector(var context: Context) : BaseCollector() {
         val list = context.packageManager.getInstalledPackages(0)
         for (i in list.indices) {
             val packageInfo = list[i]
-
-            if (packageInfo!!.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
-                val appName = packageInfo.applicationInfo.loadLabel(context.packageManager).toString()
+            if (packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
                 val packageName = packageInfo.packageName.toString()
                 Log.e("perms $packageName", getGrantedPermissions(packageName).toString())
                 var perms = getGrantedPermissions(packageName).toString()
                 GlobalScope.launch {
-                    var uid = db.appsDao()?.getIdByName(packageName)
+                    var uid = db.appsDao().getIdByName(packageName)
                     val appPermissions =  AppPermissionsInfo( uid, perms)
-                    db.AppPermissionDao()?.insert(appPermissions)
+                    try {
+                        db.AppPermissionDao().insert(appPermissions)
+                    } catch (e: SQLiteConstraintException){ }
                 }
             }
         }
     }
 
     override fun start() {
-        //installedApps()
+        installedApps()
     }
 
     fun getGrantedPermissions(appPackage: String?): List<String> {
@@ -47,8 +48,7 @@ class PermissionCollector(var context: Context) : BaseCollector() {
                     granted.add(pi.requestedPermissions[i])
                 }
             }
-        } catch (e: Exception) {
-        }
+        } catch (e: Exception) { }
         return granted
     }
 }
