@@ -55,11 +55,10 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.batteryInfo.app2Icon.visibility = GONE
         binding.batteryInfo.app3Icon.visibility = GONE
         if (outputList.size > 2) {
-            (outputList[2].drop.toString() + "%").also { binding.batteryInfo.app3.text = it }
-            binding.batteryInfo.app3.visibility = VISIBLE
-            binding.batteryInfo.app3Icon.visibility = VISIBLE
-
-            binding.batteryInfo.app3Icon.setImageDrawable( Utils.getApplicationIcon(outputList[2].packageId))
+            (outputList[2].drop.toString() + "%").also { binding.batteryInfo.app1.text = it }
+            binding.batteryInfo.app1.visibility = VISIBLE
+            binding.batteryInfo.app1Icon.visibility = VISIBLE
+            binding.batteryInfo.app1Icon.setImageDrawable( Utils.getApplicationIcon(outputList[2].packageId))
         }
         if (outputList.size > 1) {
             (outputList[1].drop.toString() + "%").also { binding.batteryInfo.app2.text = it }
@@ -69,11 +68,10 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
             binding.batteryInfo.app2Icon.setImageDrawable( Utils.getApplicationIcon(outputList[1].packageId))
         }
         if (outputList.size > 0) {
-            (outputList[0].drop.toString() + "%").also { binding.batteryInfo.app1.text = it }
-            binding.batteryInfo.app1.visibility = VISIBLE
-            binding.batteryInfo.app1Icon.visibility = VISIBLE
-            binding.batteryInfo.app1Icon.setImageDrawable( Utils.getApplicationIcon(outputList[0].packageId))
-
+            (outputList[0].drop.toString() + "%").also { binding.batteryInfo.app3.text = it }
+            binding.batteryInfo.app3.visibility = VISIBLE
+            binding.batteryInfo.app3Icon.visibility = VISIBLE
+            binding.batteryInfo.app3Icon.setImageDrawable( Utils.getApplicationIcon(outputList[0].packageId))
         }
         binding.batteryInfo.mainValue.text = totalDrop.toString()
     }
