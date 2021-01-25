@@ -1,12 +1,10 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
-import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.AppInfoListAdapter
+import android.util.Log
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoAppTypeBinding
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfo.DonutChartData
 import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.models.appInfo.appType.FilterType
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
@@ -22,7 +20,10 @@ class AppInfoAppTypeViewModel(
     companion object {
         var eventFilter = 0
         var savedAppList = arrayListOf<AppInfoRaw>()
+        var userApps = arrayListOf<AppInfoCookedData>()
+        var systemApps = arrayListOf<AppInfoCookedData>()
     }
+
 
     /**
      * Displays provided data on UI as List view and a donut chart
@@ -43,40 +44,40 @@ class AppInfoAppTypeViewModel(
                 filteredList.removeAll { it.isSystemApp }
         }
         filteredList = filteredList.sortedBy { it.appTitle }.toMutableList()
-        if (appList.isNotEmpty()) filteredList.add(0, appList[0])
-        binding.root.post {
-            binding.appTypeListView.adapter =
-                AppInfoListAdapter(
-                    context,
-                    R.layout.appinfo_tile,
-                    toCookedData(filteredList),
-                    calculateProgressbarStats(),
-                    true
-                )
-        }
+        divideList(filteredList)
+        Log.d("AppType", "onDone: ${systemApps.size}")
     }
 
-    private fun calculateProgressbarStats(): DonutChartData {
-        val total = savedAppList.size
-        val systemAppsCount = savedAppList.filter { it.isSystemApp }.size
-        return DonutChartData(total,total - systemAppsCount, systemAppsCount)
-    }
 
-    private fun toCookedData(appList: MutableList<AppInfoRaw>): ArrayList<AppInfoCookedData> {
-        val cookedData = arrayListOf<AppInfoCookedData>()
-        appList.forEach {
-            cookedData.add(
-                AppInfoCookedData(
-                    it.appTitle,
-                    EventType.ALL_EVENTS,
-                    it.currentVersionCode,
-                    it.uid,
-                    it.isSystemApp,
-                    it.packageName
-                )
-            )
+    private fun divideList(appList: MutableList<AppInfoRaw>){
+        if(systemApps.isEmpty() || userApps.isEmpty()) {
+            appList.forEach {
+                if (it.isSystemApp) {
+                    systemApps.add(
+                        AppInfoCookedData(
+                            it.appTitle,
+                            EventType.ALL_EVENTS,
+                            it.currentVersionCode,
+                            it.uid,
+                            it.isSystemApp,
+                            it.packageName
+                        )
+                    )
+                } else {
+                    userApps.add(
+                        AppInfoCookedData(
+                            it.appTitle,
+                            EventType.ALL_EVENTS,
+                            it.currentVersionCode,
+                            it.uid,
+                            it.isSystemApp,
+                            it.packageName
+                        )
+                    )
+                    Log.d("Final", "divideList: ${systemApps.size}")
+                }
+            }
         }
-        return cookedData
     }
 
     /**

@@ -2,6 +2,7 @@ package com.example.androidDeviceDetails.utils
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
+import android.app.AlertDialog
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,9 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.androidDeviceDetails.DeviceDetailsApplication
@@ -208,6 +212,23 @@ object Utils {
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
+    }
+
+    fun showAlertDialog(context: Context, icon: Drawable, title: String?, description: String?) {
+        val dialogLayout = LayoutInflater.from(context).inflate(R.layout.app_type_more_info, null)
+        val popupIcon = dialogLayout.findViewById<ImageView>(R.id.Icon)
+        popupIcon.setImageDrawable(icon)
+        val popupTitle = dialogLayout.findViewById<TextView>(R.id.appTitle)
+        val popupDescription = dialogLayout.findViewById<TextView>(R.id.appSize)
+        popupTitle.text = title
+        popupDescription.text = description
+        AlertDialog.Builder(context)
+            .setCancelable(false)
+            .setView(dialogLayout)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
 }

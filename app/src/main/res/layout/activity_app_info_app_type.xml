@@ -18,16 +18,34 @@
 
 
         </LinearLayout>
-
-        <ListView
-            android:id="@+id/appTypeListView"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:divider="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container" />
+            android:layout_height="wrap_content"
+            android:background="#00a294"
+            app:layout_constraintBottom_toTopOf="@id/viewPager"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabTextColor="@android:color/background_light">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+        </androidx.viewpager.widget.ViewPager>
+
+<!--                <ListView-->
+<!--            android:id="@+id/appTypeListView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:divider="@null"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/container" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

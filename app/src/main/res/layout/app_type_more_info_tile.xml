@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="description"
+            type="String" />
+        <variable
+            name="iconSource"
+            type="android.graphics.drawable.Drawable" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="10sp"
+            android:layout_marginStart="10dp"
+            android:src="@{iconSource}"
+            android:contentDescription="Icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6sp"
+            android:padding="6sp"
+            android:text="@{description}"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/banner" />
+
+        <TextView
+            android:id="@+id/tileValue"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6sp"
+            android:padding="6sp"
+            android:text="No Data"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/banner" />
+
+    </LinearLayout>
+
+</layout>

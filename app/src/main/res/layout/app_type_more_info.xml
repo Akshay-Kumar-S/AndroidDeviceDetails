@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_margin="0sp"
+            android:background="@color/soti_wave"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/Icon"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_marginStart="32dp"
+            android:contentDescription="AppIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/banner"
+            app:layout_constraintStart_toStartOf="@id/banner"
+            app:layout_constraintTop_toTopOf="@+id/banner" />
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Sample App "
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/banner"
+            app:layout_constraintStart_toEndOf="@id/Icon"
+            app:layout_constraintTop_toTopOf="@id/banner" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/banner">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="10sp"
+                    android:src="@drawable/ic_baseline_storage_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="Size :"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/banner" />
+
+                <TextView
+                    android:id="@+id/appSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="10KB"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/banner" />
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/firstInstall"
+                layout="@layout/app_type_more_info_tile"
+                app:description= '@{"First Install : "}'
+                app:iconSource='@{@drawable/ic_baseline_access_time_24}'/>
+            <include
+                android:id="@+id/lastUpdated"
+                layout="@layout/app_type_more_info_tile"
+                app:description= '@{"First Install : "}'
+                app:iconSource='@{@drawable/ic_baseline_access_time_24}'/>
+            <include
+                android:id="@+id/versionName"
+                layout="@layout/app_type_more_info_tile"
+                app:description= '@{"First Install : "}'
+                app:iconSource='@{@drawable/ic_baseline_access_time_24}'/>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
