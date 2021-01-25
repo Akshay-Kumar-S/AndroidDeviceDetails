@@ -29,11 +29,7 @@
                 </include>
                 <include
                     android:id="@+id/locationInfo"
-                    layout="@layout/activity_main_number_card"
-                    app:label1='@{"Locations"}'
-                    app:label2='@{"Visited"}'
-                    app:title='@{@string/location_data}'
-                    app:iconSource='@{@drawable/ic_twotone_location_on_24}'>
+                    layout="@layout/main_activity_location_tile">
                 </include>
                 <include
                     android:id="@+id/networkUsage"
