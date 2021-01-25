@@ -85,5 +85,7 @@ dependencies {
     implementation 'com.github.MKergall:osmbonuspack:6.6.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
     implementation 'com.github.anastr:speedviewlib:1.5.3'
 }
