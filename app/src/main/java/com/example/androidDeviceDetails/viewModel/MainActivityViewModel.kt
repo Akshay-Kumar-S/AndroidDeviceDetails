@@ -22,15 +22,19 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
         val locationList = arrayListOf<LocationDisplayModel>()
         val signalList = arrayListOf<SignalRaw>()
-        for (i in 0 until outputList.size) {
-            when (outputList[i]) {
-                is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
-                is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
-                is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
-                is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
-                is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
+        try {
+            for (i in 0 until outputList.size) {
+                when (outputList[i]) {
+                    is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
+                    is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
+                    is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
+                    is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
+                    is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
+                }
             }
+        } catch (e: ArrayIndexOutOfBoundsException) {
         }
+
         binding.root.post {
             if (appInfoList.isNotEmpty()) updateAppInfoCard(appInfoList)
             if (batteryList.isNotEmpty()) updateBatteryCard(batteryList)
