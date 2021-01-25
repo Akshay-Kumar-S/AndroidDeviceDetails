@@ -32,7 +32,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
                     is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
                 }
             }
-        } catch (e: ArrayIndexOutOfBoundsException) {
+        } catch (e: Exception) {
         }
 
         binding.root.post {
