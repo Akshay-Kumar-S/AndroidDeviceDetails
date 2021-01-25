@@ -13,6 +13,7 @@ class GraphActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_graph)
 
         val signal = intent.getStringExtra("signal")
         val signalList = Gson().fromJson(signal, Array<SignalEntry>::class.java)
@@ -31,9 +32,6 @@ class GraphActivity : AppCompatActivity() {
                 wifiValueList.add(item.strength)
             }
         }
-
-
-        setContentView(R.layout.activity_graph)
 
         val wifiChart = Chart(
             R.id.wifi_chart, "WIFI", -127f, 0f, "#ffc069"

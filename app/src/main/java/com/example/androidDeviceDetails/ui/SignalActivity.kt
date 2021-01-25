@@ -20,7 +20,6 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal)
@@ -52,5 +51,4 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
 }

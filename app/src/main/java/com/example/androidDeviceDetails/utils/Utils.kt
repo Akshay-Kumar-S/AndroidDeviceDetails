@@ -129,7 +129,7 @@ object Utils {
                 @Suppress("DEPRECATION")
                 appDetails.versionCode = pInfo.versionCode.toLong()
             }
-          //  appDetails.versionName = pInfo.versionName
+            appDetails.versionName = pInfo.versionName
             val file = File(pInfo2.sourceDir)
             appDetails.appSize = file.length()
             appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()

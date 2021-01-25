@@ -5,4 +5,3 @@ data class SignalEntry (
     val signal: Int,
     val strength: Int,
 )
-

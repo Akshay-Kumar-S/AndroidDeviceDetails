@@ -62,14 +62,12 @@ class SignalViewModel(
         signalBinding.pointerCellularSpeedometer.post {
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
-                    cellularStrength,
-                    1000
+                    cellularStrength, 1000
                 )
                 pointerWifiSpeedometer.speedTo(
                     wifiStrength, 1000
                 )
             }
-
         }
     }
 

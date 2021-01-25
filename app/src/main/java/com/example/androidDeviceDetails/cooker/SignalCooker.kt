@@ -22,7 +22,6 @@ class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
     private val signalList = arrayListOf<SignalEntry>()
 
-
     /**
      * Cook data for Signal Strength from the collected data available in the [RoomDB.signalDao]
      * table for the requested time interval.
