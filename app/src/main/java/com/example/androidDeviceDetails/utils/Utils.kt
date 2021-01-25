@@ -13,6 +13,9 @@ import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
+import android.view.LayoutInflater
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
