@@ -22,6 +22,7 @@ class MainActivityCooker : BaseCooker() {
             override fun onDone(outputList: ArrayList<Any>) {
                 total.addAll(outputList)
                 callback.onDone(total as ArrayList<T>)
+                total.clear()
             }
         }
         GlobalScope.launch(Dispatchers.IO) {
