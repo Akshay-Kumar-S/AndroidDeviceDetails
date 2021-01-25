@@ -25,7 +25,7 @@
         <item name="bottomSheetDialogColor">#EAEAEA</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/mainBackground</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

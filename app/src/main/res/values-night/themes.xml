@@ -15,7 +15,6 @@
         <item name="mainBackground">@color/black</item>
         <item name="cardBackground">#1A1A1B</item>
         <item name="sv_speedometerBackColor">#121212</item>
-
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
@@ -24,7 +23,7 @@
         <item name="iconTint">@color/white</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/mainBackground</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
