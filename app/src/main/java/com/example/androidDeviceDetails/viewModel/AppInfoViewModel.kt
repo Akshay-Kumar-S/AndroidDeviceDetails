@@ -40,11 +40,11 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
         binding.root.post {
             binding.appInfoListView.adapter =
-                AppInfoListAdapter(context, R.layout.appinfo_tile, filteredList, calculateProgressbarStats(),false)
+                AppInfoListAdapter(context, R.layout.appinfo_tile, filteredList, appList,false)
         }
     }
 
-    private fun calculateProgressbarStats() : DonutChartData{
+    private fun calculateProgressbarStats() : DonutChartData {
         val total = savedAppList.size
         val enrolledAppCount =
             savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
