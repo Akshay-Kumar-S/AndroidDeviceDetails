@@ -10,7 +10,6 @@ import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalEntry
 import com.example.androidDeviceDetails.models.signal.Usage
 import com.example.androidDeviceDetails.utils.Signal
-import com.example.androidDeviceDetails.utils.Time
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -57,11 +56,9 @@ class SignalCooker : BaseCooker() {
             )
             cookedDataList.add(cookedData)
 
-            val timeDifference = time.endTime - time.startTime
-            val timeInterval = timeDifference / PLOT_POINTS
             val pattern = findPattern(time)
-            addToList(cellularList, timeInterval, pattern)
-            addToList(wifiList, timeInterval, pattern)
+            addToList(cellularList, pattern)
+            addToList(wifiList, pattern)
             cookedDataList.add(signalList)
 
             if (cookedDataList.isNotEmpty()) {
@@ -107,37 +104,25 @@ class SignalCooker : BaseCooker() {
         return "$hours hours $minutes min"
     }
 
-/*
-       private fun findTimeInterval(time: TimePeriod): Long {
-           val timeDifference = time.endTime - time.startTime
-           return when {
-              // timeDifference <= Time.HOUR -> Time.TWO_MIN
-               //timeDifference <= Time.SIX_HOUR -> Time.TEN_MIN
-               timeDifference <= Time.MIDDAY -> Time.TWO_MIN
-              // timeDifference <= Time.DAY -> Time.THIRTY_MIN
-               //timeDifference <= Time.THREE_DAY -> Time.TWO_HOUR
-               timeDifference <= Time.SIX_DAY -> Time.SIX_HOUR
-             //  timeDifference <= Time.TEN_DAY -> Time.MIDDAY
-               else -> Time.DAY
-           }
-       }
-   */
-
     private fun findPattern(time: TimePeriod): String {
         val timeDifference = time.endTime - time.startTime
         return when {
-            timeDifference <= Time.TEN_DAY -> "HH:mm dd MMM yyyy"
+            timeDifference <= TEN_DAY -> "HH:mm dd MMM yyyy"
             else -> "dd MMM yyyy"
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun addToList(list: List<SignalRaw>, timeInterval: Long, pattern: String) {
+    private fun addToList(list: List<SignalRaw>, pattern: String) {
         var startTime: Long
+        val endTime: Long
         var timeStamp: String
         if (list.isNotEmpty()) {
             val formatter = SimpleDateFormat(pattern)
             startTime = list.first().timeStamp
+            endTime = list.last().timeStamp
+            val timeDifference = endTime - startTime
+            val timeInterval = maxOf(timeDifference / PLOT_POINTS, MINUTE)
             for (signal in list) {
                 if (signal.timeStamp >= startTime) {
                     timeStamp = formatter.format(signal.timeStamp)
@@ -153,5 +138,7 @@ class SignalCooker : BaseCooker() {
         const val LEVEL = 1
         const val OPERATOR = 2
         const val BAND = 3
+        const val MINUTE: Long = 60 * 1000
+        const val TEN_DAY: Long = 10 * 24 * 60 * 60 * 1000
     }
 }
