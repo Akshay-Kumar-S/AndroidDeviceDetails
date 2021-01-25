@@ -53,7 +53,7 @@ class WifiCollector : BaseCollector() {
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)
-                    wifiPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * 100
+                    wifiPercentage = (WIFI_MIN - strength) / WIFI_RANGE.toFloat() * 100
                 }
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
@@ -98,8 +98,8 @@ class WifiCollector : BaseCollector() {
     }
 
     companion object {
-        const val CELLULAR_MIN: Int = -120
+        const val WIFI_MIN: Int = -120
         const val WIFI_LEVEL = 45
-        const val CELLULAR_RANGE=97
+        const val WIFI_RANGE=97
     }
 }

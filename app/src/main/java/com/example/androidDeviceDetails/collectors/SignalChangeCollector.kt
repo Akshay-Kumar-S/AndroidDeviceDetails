@@ -120,8 +120,7 @@ class SignalChangeCollector : BaseCollector() {
                 } catch (e: SecurityException) {
                 }
             }
-            //TODO rename to constants
-            strengthPercentage = (-124 - strength) / 96.toFloat() * (-100)
+            strengthPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * (-100)
             signalEntity = SignalRaw(
                 System.currentTimeMillis(),
                 Signal.CELLULAR.ordinal,
@@ -152,6 +151,10 @@ class SignalChangeCollector : BaseCollector() {
      **/
     override fun stop() {
         mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
+    }
+    companion object {
+        const val CELLULAR_MIN: Int = -124
+        const val CELLULAR_RANGE=96
     }
 
 }
