@@ -94,15 +94,17 @@ class SignalCooker : BaseCooker() {
         return usageList.last().name
     }
 
-    private fun roamingTime(cellularList: List<SignalRaw>): Long {
-        if (cellularList.isEmpty()) return 0
+    private fun roamingTime(cellularList: List<SignalRaw>): String {
+        if (cellularList.isEmpty()) return "0"
         var roamingTime: Long = 0
         var previousSignalEntity = cellularList.first()
         for (i in cellularList) {
             if (i.isRoaming == true) roamingTime += i.timeStamp - previousSignalEntity.timeStamp
             previousSignalEntity = i
         }
-        return roamingTime
+        val hours:Int=roamingTime.toInt()/(1000*60*60)
+        val minutes:Int=(roamingTime.toInt()/1000)%(60*60)
+        return "$hours hours $minutes min"
     }
 
 /*

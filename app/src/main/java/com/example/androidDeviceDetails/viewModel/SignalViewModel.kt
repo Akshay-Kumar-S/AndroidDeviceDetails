@@ -97,8 +97,17 @@ class SignalViewModel(
     private fun updateList() {
         signalBinding.mostUsedOperator.cookedValue.text = listData.mostUsedOperator
         signalBinding.mostUsedBand.cookedValue.text = listData.mostUsedLevel
-        signalBinding.roamingTime.cookedValue.text = listData.roamingTime.toString()
+        signalBinding.roamingTime.cookedValue.text = listData.roamingTime
         signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
-        signalBinding.mostUsedWifiLevel.cookedValue.text = listData.mostUsedWifiLevel
+        signalBinding.mostUsedWifiLevel.cookedValue.text =getWifiLevel(listData.mostUsedWifiLevel)
+    }
+    private fun getWifiLevel(level:String):String{
+        return when (level) {
+            "0" -> "Poor"
+            "1" -> "low"
+            "2" -> "medium"
+            "3" -> "good"
+            else -> "excellent"
+        }
     }
 }

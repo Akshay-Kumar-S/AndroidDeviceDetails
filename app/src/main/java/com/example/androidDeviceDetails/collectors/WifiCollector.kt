@@ -49,18 +49,19 @@ class WifiCollector : BaseCollector() {
             val db = RoomDB.getDatabase(context)
 
             strength = wifiManager.connectionInfo.rssi
-            //TODO rename to constants
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)
-                    wifiPercentage=(-127-strength)/103.toFloat()*100
+                    wifiPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * 100
                 }
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
-                    wifiPercentage=WifiManager.calculateSignalLevel(strength, 45)/45.toFloat()*100
+                    wifiPercentage = WifiManager.calculateSignalLevel(
+                        strength,
+                        WIFI_LEVEL
+                    ) / WIFI_LEVEL.toFloat() * 100
                 }
             }
-//TODO constants wifi percentage
 
             signalRaw = SignalRaw(
                 System.currentTimeMillis(),
@@ -93,5 +94,11 @@ class WifiCollector : BaseCollector() {
      **/
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(WifiReceiver)
+    }
+
+    companion object {
+        const val CELLULAR_MIN: Int = -120
+        const val WIFI_LEVEL = 45
+        const val CELLULAR_RANGE=97
     }
 }
