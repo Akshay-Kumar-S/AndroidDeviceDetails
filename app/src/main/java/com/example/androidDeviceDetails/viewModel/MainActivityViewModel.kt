@@ -24,13 +24,13 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val deviceNetworkUsageList = arrayListOf<DeviceNetworkUsageRaw>()
         val locationList = arrayListOf<LocationDisplayModel>()
         val signalList = arrayListOf<SignalRaw>()
-        for (i in outputList) {
-            when (i) {
-                is AppInfoRaw -> appInfoList.add(i as AppInfoRaw)
-                is BatteryAppEntry -> batteryList.add(i as BatteryAppEntry)
-                is DeviceNetworkUsageRaw -> deviceNetworkUsageList.add(i as DeviceNetworkUsageRaw)
-                is LocationDisplayModel -> locationList.add(i as LocationDisplayModel)
-                is SignalRaw -> signalList.add(i as SignalRaw)
+        for (i in 0 until outputList.size) {
+            when (outputList[i]) {
+                is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
+                is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
+                is DeviceNetworkUsageRaw -> deviceNetworkUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
+                is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
+                is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
             }
         }
         binding.root.post {
@@ -55,21 +55,21 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.batteryInfo.app2Icon.visibility = GONE
         binding.batteryInfo.app3Icon.visibility = GONE
         if (outputList.size > 2) {
-            binding.batteryInfo.app3.text = outputList[2].drop.toString()
+            (outputList[2].drop.toString() + "%").also { binding.batteryInfo.app3.text = it }
             binding.batteryInfo.app3.visibility = VISIBLE
             binding.batteryInfo.app3Icon.visibility = VISIBLE
 
             binding.batteryInfo.app3Icon.setImageDrawable( Utils.getApplicationIcon(outputList[2].packageId))
         }
         if (outputList.size > 1) {
-            binding.batteryInfo.app2.text = outputList[1].drop.toString()
+            (outputList[1].drop.toString() + "%").also { binding.batteryInfo.app2.text = it }
             binding.batteryInfo.app2.visibility = VISIBLE
             binding.batteryInfo.app2Icon.visibility = VISIBLE
 
             binding.batteryInfo.app2Icon.setImageDrawable( Utils.getApplicationIcon(outputList[1].packageId))
         }
         if (outputList.size > 0) {
-            binding.batteryInfo.app1.text = outputList[0].drop.toString()
+            (outputList[0].drop.toString() + "%").also { binding.batteryInfo.app1.text = it }
             binding.batteryInfo.app1.visibility = VISIBLE
             binding.batteryInfo.app1Icon.visibility = VISIBLE
             binding.batteryInfo.app1Icon.setImageDrawable( Utils.getApplicationIcon(outputList[0].packageId))
@@ -123,6 +123,8 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
     }
 
     private fun updateSignalDataCard(outputList: ArrayList<SignalRaw>) {
-        binding.signalData.mainValue.text = outputList.first().strength.toString()
+        binding.signalData.pointerCellularSpeedometer.speedTo(50F,1000)
+        binding.signalData.pointerWifiSpeedometer.speedTo(70F,1000)
+
     }
 }

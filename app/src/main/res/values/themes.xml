@@ -15,6 +15,7 @@
         <item name="progressbarSecond">#E1AA06</item>
         <item name="mainBackground">#E1E2E1</item>
         <item name="cardBackground">#F5F5F6</item>
+        <item name="sv_speedometerBackColor">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/soti_wave</item>
         <item name="colorSecondaryVariant">@color/soti_electric</item>
