@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.cooker
 
-import android.annotation.SuppressLint
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
@@ -30,7 +29,6 @@ class SignalCooker : BaseCooker() {
         const val OPERATOR = 2
         const val BAND = 3
         const val MINUTE: Long = 60 * 1000
-        const val TEN_DAY: Long = 10 * 24 * 60 * 60 * 1000
     }
 
     /**
@@ -46,16 +44,25 @@ class SignalCooker : BaseCooker() {
         GlobalScope.launch {
             var wifiPercentage = 0F
             var cellularPercentage = 0F
-            val cellularList =
-                db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.CELLULAR.ordinal)
-            val wifiList =
-                db.signalDao().getAllBetween(time.startTime, time.endTime, Signal.WIFI.ordinal)
-            if (wifiList.isNotEmpty()) wifiPercentage = wifiList.last().strengthPercentage
-            if (cellularList.isNotEmpty()) cellularPercentage =
-                cellularList.last().strengthPercentage
+
+            val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
+            val cellularList = arrayListOf<SignalRaw>()
+            val wifiList = arrayListOf<SignalRaw>()
+            for (signalRaw in signalRawList) {
+                when (signalRaw.signal) {
+                    Signal.CELLULAR.ordinal -> cellularList.add(signalRaw)
+                    Signal.WIFI.ordinal -> wifiList.add(signalRaw)
+                }
+            }
+
+            if (wifiList.isNotEmpty()) {
+                wifiPercentage = wifiList.last().strengthPercentage
+            }
+            if (cellularList.isNotEmpty())
+                cellularPercentage = cellularList.last().strengthPercentage
 
             val cookedDataList = ArrayList<Any>()
-            val cookedData = SignalCookedData(
+            val signalCookedData = SignalCookedData(
                 roamingTime(cellularList),
                 getMostUsed(cellularList, OPERATOR),
                 getMostUsed(wifiList, OPERATOR),
@@ -64,7 +71,7 @@ class SignalCooker : BaseCooker() {
                 wifiPercentage,
                 cellularPercentage
             )
-            cookedDataList.add(cookedData)
+            cookedDataList.add(signalCookedData)
 
             addToList(cellularList)
             addToList(wifiList)
@@ -118,7 +125,7 @@ class SignalCooker : BaseCooker() {
         val endTime: Long
         var timeStamp: String
         if (list.isNotEmpty()) {
-            val formatter = SimpleDateFormat("HH:mm dd MMM yyyy",Locale.ENGLISH)
+            val formatter = SimpleDateFormat("HH:mm dd MMM yyyy", Locale.ENGLISH)
             startTime = list.first().timeStamp
             endTime = list.last().timeStamp
             val timeDifference = endTime - startTime
