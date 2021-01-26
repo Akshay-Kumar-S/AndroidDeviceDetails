@@ -5,19 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfo.AppInfoItemViewHolder
-import com.example.androidDeviceDetails.models.appInfo.EventType
-import com.example.androidDeviceDetails.models.appInfo.ProgressbarViewHolder
-import com.example.androidDeviceDetails.models.database.PermittedAppList
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppInfoItemViewHolder
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 import com.example.androidDeviceDetails.utils.Utils
-import kotlin.math.ceil
-
 
 class PermittedAppsListAdapter(
     private var _context: Context,

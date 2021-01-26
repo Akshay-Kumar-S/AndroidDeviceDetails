@@ -7,7 +7,7 @@ import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.models.database.PermittedAppList
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 
 /**
  * Implements [BaseViewModel]
@@ -31,7 +31,6 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
         var filteredList = appList.toMutableList()
         savedAppList = appList
         filteredList = filteredList.sortedBy { it.apk_title }.toMutableList()
-        if (appList.isNotEmpty()) filteredList.add(0, appList[0])
         filteredList.removeAll { it.package_name == DeviceDetailsApplication.instance.packageName }
         binding.root.post {
             binding.permittedAppsListView.adapter =

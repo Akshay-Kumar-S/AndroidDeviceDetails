@@ -3,8 +3,8 @@ package com.example.androidDeviceDetails.cooker
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.database.PermittedAppList
 import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 import com.example.androidDeviceDetails.ui.PermittedAppsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -43,8 +43,8 @@ class PermittedAppsCooker(var type: String) : BaseCooker() {
                     "Body Sensors" -> perm="BODY_SENSORS"
                     "Physical Activity" -> perm="ACTIVITY_RECOGNITION"
                 }
-                if(id.permission.contains(perm)){
-                appList.add(PermittedAppList(id.package_name,id.apk_title,id.version_name,id.permission))
+                if(id.allowed_permissions.contains(perm)){
+                appList.add(PermittedAppList(id.package_name,id.apk_title,id.version_name,id.allowed_permissions,id.denied_permissions))
                 }
             }
                 callback.onDone(appList as ArrayList<T>)
