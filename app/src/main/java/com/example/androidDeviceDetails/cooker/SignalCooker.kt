@@ -22,6 +22,15 @@ class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
     private val signalList = arrayListOf<SignalEntry>()
 
+    companion object {
+        const val PLOT_POINTS: Int = 40
+        const val LEVEL = 1
+        const val OPERATOR = 2
+        const val BAND = 3
+        const val MINUTE: Long = 60 * 1000
+        const val TEN_DAY: Long = 10 * 24 * 60 * 60 * 1000
+    }
+
     /**
      * Cook data for Signal Strength from the collected data available in the [RoomDB.signalDao]
      * table for the requested time interval.
@@ -130,14 +139,5 @@ class SignalCooker : BaseCooker() {
                 }
             }
         }
-    }
-
-    companion object {
-        const val PLOT_POINTS: Int = 30
-        const val LEVEL = 1
-        const val OPERATOR = 2
-        const val BAND = 3
-        const val MINUTE: Long = 60 * 1000
-        const val TEN_DAY: Long = 10 * 24 * 60 * 60 * 1000
     }
 }

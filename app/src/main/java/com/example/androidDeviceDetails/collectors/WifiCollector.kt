@@ -26,6 +26,12 @@ import kotlinx.coroutines.launch
 @Suppress("DEPRECATION")
 class WifiCollector : BaseCollector() {
 
+    companion object {
+        const val WIFI_MIN: Int = -120
+        const val WIFI_LEVEL = 45
+        const val WIFI_RANGE=97
+    }
+
     /**
      * A [BroadcastReceiver] which gets notified from [WifiManager.RSSI_CHANGED_ACTION] and
      * [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
@@ -95,11 +101,5 @@ class WifiCollector : BaseCollector() {
      **/
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(WifiReceiver)
-    }
-
-    companion object {
-        const val WIFI_MIN: Int = -120
-        const val WIFI_LEVEL = 45
-        const val WIFI_RANGE=97
     }
 }

@@ -22,9 +22,13 @@ import kotlinx.coroutines.launch
  *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
  **/
 class SignalChangeCollector : BaseCollector() {
-
     private var mTelephonyManager: TelephonyManager =
         DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+
+    companion object {
+        const val CELLULAR_MIN: Int = -124
+        const val CELLULAR_RANGE = 96
+    }
 
     /**
      * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
@@ -152,9 +156,4 @@ class SignalChangeCollector : BaseCollector() {
     override fun stop() {
         mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
     }
-    companion object {
-        const val CELLULAR_MIN: Int = -124
-        const val CELLULAR_RANGE=96
-    }
-
 }
