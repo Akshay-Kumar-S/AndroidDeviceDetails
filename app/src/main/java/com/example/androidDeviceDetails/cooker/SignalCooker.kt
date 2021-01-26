@@ -13,6 +13,8 @@ import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Implements [BaseCooker].
@@ -23,7 +25,7 @@ class SignalCooker : BaseCooker() {
     private val signalList = arrayListOf<SignalEntry>()
 
     companion object {
-        const val PLOT_POINTS: Int = 40
+        const val MAX_PLOT_POINTS: Int = 40
         const val LEVEL = 1
         const val OPERATOR = 2
         const val BAND = 3
@@ -64,9 +66,8 @@ class SignalCooker : BaseCooker() {
             )
             cookedDataList.add(cookedData)
 
-            val pattern = findPattern(time)
-            addToList(cellularList, pattern)
-            addToList(wifiList, pattern)
+            addToList(cellularList)
+            addToList(wifiList)
             cookedDataList.add(signalList)
 
             if (cookedDataList.isNotEmpty()) {
@@ -107,30 +108,21 @@ class SignalCooker : BaseCooker() {
             if (i.isRoaming == true) roamingTime += i.timeStamp - previousSignalEntity.timeStamp
             previousSignalEntity = i
         }
-        val hours:Int=roamingTime.toInt()/(1000*60*60)
-        val minutes:Int=(roamingTime.toInt()/1000)%(60*60)
+        val hours: Int = roamingTime.toInt() / (1000 * 60 * 60)
+        val minutes: Int = (roamingTime.toInt() / 1000) % (60 * 60)
         return "$hours hours $minutes min"
     }
 
-    private fun findPattern(time: TimePeriod): String {
-        val timeDifference = time.endTime - time.startTime
-        return when {
-            timeDifference <= TEN_DAY -> "HH:mm dd MMM yyyy"
-            else -> "dd MMM yyyy"
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun addToList(list: List<SignalRaw>, pattern: String) {
+    private fun addToList(list: List<SignalRaw>) {
         var startTime: Long
         val endTime: Long
         var timeStamp: String
         if (list.isNotEmpty()) {
-            val formatter = SimpleDateFormat(pattern)
+            val formatter = SimpleDateFormat("HH:mm dd MMM yyyy",Locale.ENGLISH)
             startTime = list.first().timeStamp
             endTime = list.last().timeStamp
             val timeDifference = endTime - startTime
-            val timeInterval = maxOf(timeDifference / PLOT_POINTS, MINUTE)
+            val timeInterval = maxOf(timeDifference / MAX_PLOT_POINTS, MINUTE)
             for (signal in list) {
                 if (signal.timeStamp >= startTime) {
                     timeStamp = formatter.format(signal.timeStamp)

@@ -23,13 +23,12 @@ import kotlinx.coroutines.launch
  *  initialization of this class.
  *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
  **/
-@Suppress("DEPRECATION")
 class WifiCollector : BaseCollector() {
 
     companion object {
         const val WIFI_MIN: Int = -120
         const val WIFI_LEVEL = 45
-        const val WIFI_RANGE=97
+        const val WIFI_RANGE = 97
     }
 
     /**
@@ -56,6 +55,7 @@ class WifiCollector : BaseCollector() {
             val db = RoomDB.getDatabase(context)
 
             strength = wifiManager.connectionInfo.rssi
+            @Suppress("DEPRECATION")
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)
