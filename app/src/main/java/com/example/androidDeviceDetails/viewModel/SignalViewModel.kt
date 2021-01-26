@@ -98,6 +98,7 @@ class SignalViewModel(
         signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text =getWifiLevel(listData.mostUsedWifiLevel)
     }
+
     private fun getWifiLevel(level:String):String{
         return when (level) {
             "0" -> "Poor"

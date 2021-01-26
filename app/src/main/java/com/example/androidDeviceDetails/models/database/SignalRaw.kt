@@ -17,7 +17,7 @@ import com.example.androidDeviceDetails.viewModel.SignalViewModel
  *
  * 1 for WIFI.
  * @param strength Signal strength in dBm.
- * @param attribute LinkSpeed in Mbps for WIFI and CellInfo Type for CELLULAR
+ * @param cellInfoType LinkSpeed in Mbps for WIFI and CellInfo Type for CELLULAR
  * @param level Signal level.
  *
  *  @see [RoomDB]
@@ -28,7 +28,7 @@ data class SignalRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "signal") val signal: Int,
     @ColumnInfo(name = "strength") val strength: Int,
-    @ColumnInfo(name = "cellInfoType") val attribute: String?,
+    @ColumnInfo(name = "cellInfoType") val cellInfoType: String?,
     @ColumnInfo(name = "linkSpeed") val linkSpeed: Int?,
     @ColumnInfo(name = "level") val level: Int,
     @ColumnInfo(name = "operatorName") val operatorName: String,
@@ -71,9 +71,6 @@ interface SignalDao {
      * @param endTime End Time.
      * @return List of [SignalRaw].
      */
-    @Query("SELECT * FROM SignalRaw WHERE (timeStamp BETWEEN (:startTime) AND (:endTime)) AND (signal==(:signal))")
-    fun getAllBetween(startTime: Long, endTime: Long, signal: Int): List<SignalRaw>
-
     @Query("SELECT * FROM SignalRaw WHERE (timeStamp BETWEEN (:startTime) AND (:endTime))")
     fun getAllSignalBetween(startTime: Long, endTime: Long): List<SignalRaw>
 

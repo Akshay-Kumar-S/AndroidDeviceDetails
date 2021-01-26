@@ -30,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.GraphActivity" />
+        <activity android:name=".ui.SignalGraphActivity" />
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
