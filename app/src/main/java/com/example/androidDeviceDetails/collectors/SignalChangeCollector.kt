@@ -42,7 +42,6 @@ class SignalChangeCollector : BaseCollector() {
          *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
          **/
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
-            val signalEntity: SignalRaw
             val signalDB = RoomDB.getDatabase()
             var level = 0
             var strength = -120
@@ -125,20 +124,20 @@ class SignalChangeCollector : BaseCollector() {
                 }
             }
             strengthPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * (-100)
-            signalEntity = SignalRaw(
-                System.currentTimeMillis(),
-                Signal.CELLULAR.ordinal,
-                strength,
-                type,
-                null,
-                level,
-                telephonyManager.networkOperatorName,
-                telephonyManager.isNetworkRoaming,
-                networkBand,
-                strengthPercentage
+            val signalRaw = SignalRaw(
+                timeStamp = System.currentTimeMillis(),
+                signal = Signal.CELLULAR.ordinal,
+                strength = strength,
+                cellInfoType = type,
+                linkSpeed = null,
+                level = level,
+                operatorName = telephonyManager.networkOperatorName,
+                isRoaming = telephonyManager.isNetworkRoaming,
+                band = networkBand,
+                strengthPercentage = strengthPercentage
             )
             GlobalScope.launch {
-                signalDB?.signalDao()?.insert(signalEntity)
+                signalDB?.signalDao()?.insert(signalRaw)
             }
         }
     }

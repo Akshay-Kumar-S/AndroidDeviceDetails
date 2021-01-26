@@ -45,7 +45,6 @@ class WifiCollector : BaseCollector() {
          *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
          **/
         override fun onReceive(context: Context?, intent: Intent?) {
-            val signalRaw: SignalRaw
             val strength: Int
             val level: Int
             val wifiPercentage: Float
@@ -70,12 +69,17 @@ class WifiCollector : BaseCollector() {
                 }
             }
 
-            signalRaw = SignalRaw(
-                System.currentTimeMillis(),
-                Signal.WIFI.ordinal, strength, null,
-                wifiManager.connectionInfo.linkSpeed, level,
-                wifiManager.connectionInfo.ssid, null, null,
-                wifiPercentage
+            val signalRaw = SignalRaw(
+                timeStamp = System.currentTimeMillis(),
+                signal = Signal.WIFI.ordinal,
+                strength = strength,
+                cellInfoType = null,
+                linkSpeed = wifiManager.connectionInfo.linkSpeed,
+                level = level,
+                operatorName = wifiManager.connectionInfo.ssid,
+                isRoaming = null,
+                band = null,
+                strengthPercentage = wifiPercentage
             )
             GlobalScope.launch {
                 db?.signalDao()?.insert(signalRaw)
