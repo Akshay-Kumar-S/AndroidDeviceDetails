@@ -5,15 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
-import com.example.androidDeviceDetails.models.database.PermittedAppList
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 
 class PermittedAppsActivity : AppCompatActivity() {
 
@@ -27,6 +25,7 @@ class PermittedAppsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_permitted_apps)
+        this.setTitle(intent.getStringExtra("permission").toString());
         controller = ActivityController(
             NAME+intent.getStringExtra("permission").toString(),
             binding,
