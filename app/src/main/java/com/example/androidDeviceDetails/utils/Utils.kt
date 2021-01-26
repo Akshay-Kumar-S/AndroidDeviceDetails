@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -24,7 +25,11 @@ import com.example.androidDeviceDetails.models.appInfo.AppDetails
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.AppTypeModel
 import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
+import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.signal.Chart
 import com.example.androidDeviceDetails.services.AppService
+import com.github.aachartmodel.aainfographics.aachartcreator.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -260,4 +265,31 @@ object Utils {
 
     fun graphCalculator(dataSize: Double, total: Double) =
         ceil((dataSize).div(total).times(100)).toInt()
+
+    fun drawChart(chart: Chart, xSet: Array<String>, ySet: Array<Any>) {
+        val aaChartView = chart.aaChartView
+        val aaChartModel: AAChartModel = AAChartModel()
+            .chartType(AAChartType.Spline)
+            .title(chart.title)
+            .categories(xSet)
+            .yAxisLabelsEnabled(true)
+            .yAxisGridLineWidth(0f)
+            .xAxisLabelsEnabled(false)
+            .touchEventEnabled(true)
+            .yAxisMin(chart.yAxisMin)
+            .yAxisMax(chart.yAxisMax)
+            .yAxisTitle("strength")
+            .tooltipValueSuffix("dBm")
+            .colorsTheme(arrayOf(chart.color))
+            .legendEnabled(false)
+            .zoomType(AAChartZoomType.XY)
+            .series(
+                arrayOf(
+                    AASeriesElement()
+                        .name(chart.title)
+                        .data(ySet),
+                )
+            )
+        aaChartView.aa_drawChartWithChartModel(aaChartModel)
+    }
 }
