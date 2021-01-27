@@ -7,7 +7,7 @@ import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 
 /**
  * Implements [BaseViewModel]
@@ -16,7 +16,7 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
     BaseViewModel() {
     companion object {
         var eventFilter = 4
-        var savedAppList = arrayListOf<PermittedAppList>()
+        var savedAppList = arrayListOf<PermittedAppsCookedData>()
     }
 
     /**
@@ -27,14 +27,24 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
      */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
-        val appList = outputList as ArrayList<PermittedAppList>
+        val appList = outputList as ArrayList<PermittedAppsCookedData>
         var filteredList = appList.toMutableList()
         savedAppList = appList
         filteredList = filteredList.sortedBy { it.apk_title }.toMutableList()
         filteredList.removeAll { it.package_name == DeviceDetailsApplication.instance.packageName }
+        val allowedList: MutableList<PermittedAppsCookedData> = ArrayList()
+        val deniedList: MutableList<PermittedAppsCookedData> = ArrayList()
+        for(i in filteredList){
+            if(i.isAllowed)
+                allowedList.add(i)
+            else
+                deniedList.add(i)
+        }
         binding.root.post {
             binding.permittedAppsListView.adapter =
-                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, filteredList)
+                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, allowedList)
+            binding.deniedAppsListView.adapter =
+                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, deniedList)
         }
     }
 
