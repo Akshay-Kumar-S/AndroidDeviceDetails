@@ -28,7 +28,7 @@ class AppNetworkUsageCooker : BaseCooker() {
                 val firstElementTime = inBetweenList.first().timeStamp
                 val initialAppDataList = inBetweenList.filter { it.timeStamp == firstElementTime }
                 val lastElementTime = inBetweenList.last().timeStamp
-                val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }
+                val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }.distinctBy { it.packageName }
                 val totalDataUsageList = arrayListOf<AppNetworkUsageRaw>()
                 finalAppDataList.forEach {
                     val nullCheckList =
