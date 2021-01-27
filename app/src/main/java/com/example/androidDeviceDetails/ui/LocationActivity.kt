@@ -14,14 +14,12 @@ import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
-import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationItemViewHolder
 import com.example.androidDeviceDetails.utils.SortBy
-import com.example.androidDeviceDetails.viewModel.LocationViewModel
+import com.example.androidDeviceDetails.viewModel.location.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.library.BuildConfig
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
 import org.osmdroid.views.MapView.getTileSystem
@@ -31,7 +29,7 @@ import org.osmdroid.config.Configuration as osmConfig
 
 
 class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener {
-    private lateinit var activityController: ActivityController<LocationDisplayModel>
+    private lateinit var activityController: ActivityController<LocationItemViewHolder>
     lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var binding: ActivityLocationBinding
@@ -59,8 +57,8 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     }
 
     private fun initRecyclerView() {
-        val arrayList = ArrayList<LocationDisplayModel>()
-        arrayList.add(LocationDisplayModel("NoData", 0, ""))
+        val arrayList = ArrayList<LocationItemViewHolder>()
+        arrayList.add(LocationItemViewHolder("NoData", 0, ""))
         binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList, this)
         binding.bottomLocation.locationListView.isNestedScrollingEnabled = true
     }
@@ -175,7 +173,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         }
     }
 
-    override fun onItemClicked(clickedItem: LocationDisplayModel) {
+    override fun onItemClicked(clickedItem: LocationItemViewHolder) {
         locationViewModel.focusMapTo(clickedItem.geoHash)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
