@@ -9,8 +9,8 @@ import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
 import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCollector
+import com.example.androidDeviceDetails.models.database.LocationModel
 import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.location.LocationModel
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -73,7 +73,7 @@ class LocationCollector(val context: Context) : BaseCollector() {
 
     fun insert(location: Location?) {
         val locationObj = LocationModel(
-            0, location?.latitude, location?.longitude,
+            0, location!!.latitude, location.longitude,
             System.currentTimeMillis()
         )
         GlobalScope.launch {
