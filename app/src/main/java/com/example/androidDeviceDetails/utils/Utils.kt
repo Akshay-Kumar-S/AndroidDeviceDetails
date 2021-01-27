@@ -29,7 +29,10 @@ import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.Chart
 import com.example.androidDeviceDetails.services.AppService
-import com.github.aachartmodel.aainfographics.aachartcreator.*
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartZoomType
+import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -291,5 +294,11 @@ object Utils {
                 )
             )
         aaChartView.aa_drawChartWithChartModel(aaChartModel)
+    }
+
+    fun getTimePeriod(timeStamp: Long): String {
+        val hours: Int = timeStamp.toInt() / (1000 * 60 * 60)
+        val minutes: Int = (timeStamp.toInt() / 1000) % (60 * 60)
+        return "$hours hours $minutes min"
     }
 }
