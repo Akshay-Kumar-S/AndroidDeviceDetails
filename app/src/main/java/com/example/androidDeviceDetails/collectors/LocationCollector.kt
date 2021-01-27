@@ -1,8 +1,8 @@
 package com.example.androidDeviceDetails.collectors
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
@@ -16,26 +16,24 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class LocationCollector(val context: Context) : BaseCollector() {
-    private var hasGps = false
-    private var hasNetwork = false
-    private var locationGps: Location? = null
-    private var locationNetwork: Location? = null
+class LocationCollector(private val context: Context) : BaseCollector() {
+    private lateinit var locationGps: Location
+    private lateinit var locationNetwork: Location
     private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
     private var locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
 
-    @SuppressLint("MissingPermission")
     override fun start() {
-        hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
-        hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
+        val hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
+        val hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
         Log.d("Location", "getLocation: $hasGps $hasNetwork ")
-        if (hasGps || hasNetwork) {
+        if (context.checkCallingOrSelfPermission(
+                "android.Manifest.permission.ACCESS_FINE_LOCATION"
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             if (hasGps) {
                 Log.d("CodeAndroidLocation", "hasGpsp")
                 locationManager.requestLocationUpdates(
-                    GPS_PROVIDER,
-                    TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL),
-                    0F
+                    GPS_PROVIDER, TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL), 0F
                 ) { location ->
                     Log.d("CodeAndroidLocation", "gpsLocation not null $location")
                     locationGps = location
@@ -44,9 +42,7 @@ class LocationCollector(val context: Context) : BaseCollector() {
             if (hasNetwork) {
                 Log.d("CodeAndroidLocation", "hasNetworkGpsp")
                 locationManager.requestLocationUpdates(
-                    NETWORK_PROVIDER,
-                    TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL),
-                    0F
+                    NETWORK_PROVIDER, TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL), 0F
                 ) { location ->
                     Log.d("CodeAndroidLocation", "networkLocation not null $location")
                     locationNetwork = location
@@ -57,24 +53,23 @@ class LocationCollector(val context: Context) : BaseCollector() {
 
     override fun collect() {
         Log.d("Collect Location", "has")
-        if (locationGps != null && locationNetwork != null) {
+        if (this::locationGps.isInitialized && this::locationNetwork.isInitialized) {
             Log.d("CodeAndroidLocation", "has both")
-            if (locationGps!!.accuracy > locationNetwork!!.accuracy) {
+            if (locationGps.accuracy > locationNetwork.accuracy) {
                 insert(locationNetwork)
             } else {
                 insert(locationGps)
             }
-        } else if (locationGps != null) {
+        } else if (this::locationGps.isInitialized) {
             insert(locationGps)
-        } else if (locationNetwork != null) {
+        } else if (this::locationNetwork.isInitialized) {
             insert(locationNetwork)
         }
     }
 
-    fun insert(location: Location?) {
+    fun insert(location: Location) {
         val locationObj = LocationModel(
-            0, location!!.latitude, location.longitude,
-            System.currentTimeMillis()
+            0, location.latitude, location.longitude, System.currentTimeMillis()
         )
         GlobalScope.launch {
             locationDatabase.locationDao().insertLocation(locationObj)

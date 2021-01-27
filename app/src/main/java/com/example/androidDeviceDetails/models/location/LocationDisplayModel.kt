@@ -5,7 +5,7 @@ import com.example.androidDeviceDetails.adapters.LocationAdapter
 /**
  * A data class used by the list view adaptor for displaying in the [LocationAdapter]
  */
-data class LocationItemViewHolder(
+data class LocationDisplayModel(
     val geoHash: String,
     val count: Int,
     val address: String
