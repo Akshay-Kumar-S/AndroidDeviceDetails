@@ -90,7 +90,7 @@ class SignalCooker : BaseCooker() {
                 }
                 signalCookedData.lastCellularStrength = lastCellularEntity.strengthPercentage
                 signalCookedData.mostUsedOperator = carrierNameList.last().name
-                signalCookedData.mostUsedLevel = cellularBandList.last().name.toInt()
+                signalCookedData.mostUsedCellularBand = cellularBandList.last().name
                 signalCookedData.roamingTime = Utils.getTimePeriod(roamingTime)
             }
             if (wifiList.isNotEmpty()) {
@@ -133,7 +133,7 @@ class SignalCooker : BaseCooker() {
                 ssidList.sortBy { it.time }
                 signalCookedData.lastWifiStrength = lastWifiEntity.strengthPercentage
                 signalCookedData.mostUsedWifi = ssidList.last().name
-                signalCookedData.mostUsedWifiLevel = wifiLevelList.last().name
+                signalCookedData.mostUsedWifiLevel = wifiLevelList.last().name.toInt()
             }
 
             cookedDataList.add(signalCookedData)

@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.database.DeviceNetworkUsageRaw
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.location.LocationDisplayModel
-import com.example.androidDeviceDetails.models.signal.SignalRaw
+import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.utils.Utils
 
 
