@@ -25,9 +25,6 @@ class SignalCooker : BaseCooker() {
 
     companion object {
         const val MAX_PLOT_POINTS: Int = 40
-        const val LEVEL = 1
-        const val OPERATOR = 2
-        const val BAND = 3
         const val MINUTE: Long = 60 * 1000
     }
 
@@ -49,17 +46,19 @@ class SignalCooker : BaseCooker() {
             var cellularNameList= ArrayList<Usage>()
             var wifiNameList= ArrayList<Usage>()
             var previousCellularEntity:SignalRaw
+            var roamingTime: Long = 0
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
             val cellularList = signalRawList.filter { it.signal == Signal.CELLULAR.ordinal }
             val wifiList = signalRawList.filter { it.signal == Signal.WIFI.ordinal }
 
 
-
+            if (wifiList.isNotEmpty()) {wifiPercentage = wifiList.last().strengthPercentage
+                }
             if (cellularList.isNotEmpty()) cellularPercentage =
                 cellularList.last().strengthPercentage
 
-
+            previousCellularEntity = cellularList.first()
             var previousWifiEntity = wifiList.first()
             cellularList.forEach { cellularEntity ->
                cellularBandList= getMostUsed(cellularBandList,cellularEntity.band!!,previousCellularEntity.timeStamp,cellularEntity.timeStamp)
@@ -67,14 +66,13 @@ class SignalCooker : BaseCooker() {
                 previousCellularEntity=cellularEntity
             }
 
-            if (wifiList.isNotEmpty()) {wifiPercentage = wifiList.last().strengthPercentage
-                previousCellularEntity = cellularList.first()
+
             wifiList.forEach { wifiEntity ->
                wifiLevelList= getMostUsed(wifiLevelList,wifiEntity.level.toString(),previousWifiEntity.timeStamp,wifiEntity.timeStamp)
                 wifiNameList= getMostUsed(wifiNameList,wifiEntity.operatorName.toString(),previousWifiEntity.timeStamp,wifiEntity.timeStamp)
                 previousWifiEntity=wifiEntity
             }
-            }
+
             cellularBandList.sortBy { it.time }
             wifiLevelList.sortBy { it.time }
             cellularNameList.sortBy { it.time }
@@ -96,9 +94,7 @@ class SignalCooker : BaseCooker() {
             addToList(wifiList)
             cookedDataList.add(signalList)
 
-            if (cookedDataList.isNotEmpty()) {
                 callback.onDone(cookedDataList as ArrayList<T>)
-            } else callback.onDone(arrayListOf())
         }
     }
 
