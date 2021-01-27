@@ -196,24 +196,6 @@ object Utils {
         }
     }
 
-    fun getGeoHashWidth(len: Int): Double {
-        return when (len) {
-            1 -> 5000000.0
-            2 -> 1250000.0
-            3 -> 156000.0
-            4 -> 39100.0
-            5 -> 4890.0
-            6 -> 1220.0
-            7 -> 153.0
-            8 -> 38.2
-            9 -> 4.77
-            10 -> 1.19
-            11 -> 0.149
-            12 -> 0.0372
-            else -> 0.0
-        }
-    }
-
     fun isUsageAccessGranted(context: Context): Boolean {
         return try {
             val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager

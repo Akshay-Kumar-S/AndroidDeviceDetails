@@ -1,13 +1,16 @@
 package com.example.androidDeviceDetails.collectors
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
 import android.util.Log
+import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.database.LocationModel
 import com.example.androidDeviceDetails.models.database.RoomDB
@@ -25,26 +28,23 @@ class LocationCollector(private val context: Context) : BaseCollector() {
     override fun start() {
         val hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
         val hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
-        Log.d("Location", "getLocation: $hasGps $hasNetwork ")
-        if (context.checkCallingOrSelfPermission(
-                "android.Manifest.permission.ACCESS_FINE_LOCATION"
-            ) == PackageManager.PERMISSION_GRANTED
+        Log.d("Location", "gps:$hasGps network:$hasNetwork ")
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
+            && checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
         ) {
             if (hasGps) {
-                Log.d("CodeAndroidLocation", "hasGpsp")
                 locationManager.requestLocationUpdates(
                     GPS_PROVIDER, TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL), 0F
                 ) { location ->
-                    Log.d("CodeAndroidLocation", "gpsLocation not null $location")
+                    Log.d("CodeAndroidLocation", "gpsLocation :$location")
                     locationGps = location
                 }
             }
             if (hasNetwork) {
-                Log.d("CodeAndroidLocation", "hasNetworkGpsp")
                 locationManager.requestLocationUpdates(
                     NETWORK_PROVIDER, TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL), 0F
                 ) { location ->
-                    Log.d("CodeAndroidLocation", "networkLocation not null $location")
+                    Log.d("CodeAndroidLocation", "networkLocation :$location")
                     locationNetwork = location
                 }
             }
@@ -52,7 +52,6 @@ class LocationCollector(private val context: Context) : BaseCollector() {
     }
 
     override fun collect() {
-        Log.d("Collect Location", "has")
         if (this::locationGps.isInitialized && this::locationNetwork.isInitialized) {
             Log.d("CodeAndroidLocation", "has both")
             if (locationGps.accuracy > locationNetwork.accuracy) {

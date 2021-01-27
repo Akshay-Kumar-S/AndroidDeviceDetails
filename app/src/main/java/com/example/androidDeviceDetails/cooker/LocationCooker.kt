@@ -17,7 +17,6 @@ class LocationCooker : BaseCooker() {
     private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
     private val geoCoder: Geocoder = Geocoder(DeviceDetailsApplication.instance)
 
-
     private fun cookData(locationList: ArrayList<LocationModel>): ArrayList<LocationDisplayModel> {
         val geoHashList = ArrayList<String>()
         var prevLocationHash = ""
