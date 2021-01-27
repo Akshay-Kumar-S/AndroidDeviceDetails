@@ -6,8 +6,8 @@ import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
 import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
+import com.example.androidDeviceDetails.models.database.LocationModel
 import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.location.LocationModel
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
