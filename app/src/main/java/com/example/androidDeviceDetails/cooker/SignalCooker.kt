@@ -47,17 +47,23 @@ class SignalCooker : BaseCooker() {
             var wifiNameList = ArrayList<Usage>()
             var previousCellularEntity: SignalRaw
             var roamingTime: Long = 0
+            var startTime: Long
+            var endTime: Long
+            var timeStamp: String
+            var timeDifference:Long
+            var timeInterval:Long
+            val formatter = SimpleDateFormat("HH:mm dd MMM yyyy", Locale.ENGLISH)
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
             val cellularList = signalRawList.filter { it.signal == Signal.CELLULAR.ordinal }
             val wifiList = signalRawList.filter { it.signal == Signal.WIFI.ordinal }
 
 
-            if (wifiList.isNotEmpty()) {
-                wifiPercentage = wifiList.last().strengthPercentage
-            }
-            if (cellularList.isNotEmpty()) cellularPercentage =
-                cellularList.last().strengthPercentage
+            if (cellularList.isNotEmpty()) {
+                val lastCellularEntity = cellularList.last()
+                cellularPercentage = lastCellularEntity.strengthPercentage
+
+
 
             previousCellularEntity = cellularList.first()
             var previousWifiEntity = wifiList.first()
@@ -78,6 +84,15 @@ class SignalCooker : BaseCooker() {
                 previousCellularEntity = cellularEntity
             }
 
+            if (wifiList.isNotEmpty()) {
+                var previousWifiEntity = wifiList.first()
+                val lastWifiEntity = wifiList.last()
+
+                wifiPercentage = lastWifiEntity.strengthPercentage
+                startTime=previousWifiEntity.timeStamp
+                endTime=lastWifiEntity.timeStamp
+                timeDifference=endTime-startTime
+                timeInterval = maxOf(timeDifference / MAX_PLOT_POINTS, MINUTE)
 
             wifiList.forEach { wifiEntity ->
                 wifiLevelList = getMostUsed(
@@ -93,12 +108,17 @@ class SignalCooker : BaseCooker() {
                     wifiEntity.timeStamp
                 )
                 previousWifiEntity = wifiEntity
+                if (previousWifiEntity.timeStamp >= startTime) {
+                    timeStamp = formatter.format(previousWifiEntity.timeStamp)
+                    signalList.add(SignalEntry(timeStamp, previousWifiEntity.signal, previousWifiEntity.strength))
+                    startTime = (timeInterval + previousWifiEntity.timeStamp)
+                }
+                previousWifiEntity = wifiEntity
             }
+                wifiLevelList.sortBy { it.time }
+                wifiNameList.sortBy { it.time }
 
-            cellularBandList.sortBy { it.time }
-            wifiLevelList.sortBy { it.time }
-            cellularNameList.sortBy { it.time }
-            wifiNameList.sortBy { it.time }
+            }
 
             val cookedDataList = ArrayList<Any>()
             val signalCookedData = SignalCookedData(
@@ -110,14 +130,25 @@ class SignalCooker : BaseCooker() {
                 wifiPercentage,
                 cellularPercentage
             )
-            cookedDataList.add(signalCookedData)
 
-            addToList(cellularList)
-            addToList(wifiList)
+            cookedDataList.add(signalCookedData)
             cookedDataList.add(signalList)
 
             callback.onDone(cookedDataList as ArrayList<T>)
         }
+    }
+
+    private fun getRoamingTime(cellularList: List<SignalRaw>): String {
+        if (cellularList.isEmpty()) return "0"
+        var roamingTime: Long = 0
+        var previousSignalEntity = cellularList.first()
+        for (i in cellularList) {
+            if (i.isRoaming == true) roamingTime += i.timeStamp - previousSignalEntity.timeStamp
+            previousSignalEntity = i
+        }
+        val hours: Int = roamingTime.toInt() / (1000 * 60 * 60)
+        val minutes: Int = (roamingTime.toInt() / 1000) % (60 * 60)
+        return "$hours hours $minutes min"
     }
 
     private fun addToList(list: List<SignalRaw>) {
