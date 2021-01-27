@@ -8,13 +8,14 @@ import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppInfoItemViewHolder
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.example.androidDeviceDetails.utils.Utils
 
 class PermittedAppsListAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: List<PermittedAppList>
-) : ArrayAdapter<PermittedAppList>(_context, resource, items) {
+    private var items: List<PermittedAppsCookedData>
+) : ArrayAdapter<PermittedAppsCookedData>(_context, resource, items) {
 
     override fun getViewTypeCount(): Int {
         return 2

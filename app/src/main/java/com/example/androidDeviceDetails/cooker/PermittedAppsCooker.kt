@@ -4,7 +4,7 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.example.androidDeviceDetails.ui.PermittedAppsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,7 +25,7 @@ class PermittedAppsCooker(var type: String) : BaseCooker() {
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch(Dispatchers.IO) {
             val db = RoomDB.getDatabase()!!
-            val appList = arrayListOf<PermittedAppList>()
+            val appList = arrayListOf<PermittedAppsCookedData>()
             val ids = db.AppPermissionDao().getPermittedApps()
             var perm = ""
             for (id in ids) {
@@ -44,7 +44,10 @@ class PermittedAppsCooker(var type: String) : BaseCooker() {
                     "Physical Activity" -> perm="ACTIVITY_RECOGNITION"
                 }
                 if(id.allowed_permissions.contains(perm)){
-                appList.add(PermittedAppList(id.package_name,id.apk_title,id.version_name,id.allowed_permissions,id.denied_permissions))
+                appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,true))
+                }
+                if(id.denied_permissions.contains(perm)){
+                    appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,false))
                 }
             }
                 callback.onDone(appList as ArrayList<T>)
