@@ -26,7 +26,7 @@ class SignalChangeCollector : BaseCollector() {
         DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     companion object {
-        const val CELLULAR_MIN: Int = -124
+        const val CELLULAR_MIN: Int = -120
         const val CELLULAR_RANGE = 96
     }
 
@@ -44,7 +44,7 @@ class SignalChangeCollector : BaseCollector() {
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
             val signalDB = RoomDB.getDatabase()
             var level = 0
-            var strength = -120
+            var strength = CELLULAR_MIN
             var type = ""
             var networkBand = ""
             val strengthPercentage: Float
