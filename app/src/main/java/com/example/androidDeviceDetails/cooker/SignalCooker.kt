@@ -54,12 +54,10 @@ class SignalCooker : BaseCooker() {
             val cellularList = signalRawList.filter { it.signal == Signal.CELLULAR.ordinal }
             val wifiList = signalRawList.filter { it.signal == Signal.WIFI.ordinal }
 
-            if (wifiList.isNotEmpty()) {wifiPercentage = wifiList.last().strengthPercentage
-                 previousCellularEntity = cellularList.first()}
+
 
             if (cellularList.isNotEmpty()) cellularPercentage =
                 cellularList.last().strengthPercentage
-
 
 
             var previousWifiEntity = wifiList.first()
@@ -68,10 +66,14 @@ class SignalCooker : BaseCooker() {
                 cellularNameList= getMostUsed(cellularNameList,cellularEntity.operatorName,previousCellularEntity.timeStamp,cellularEntity.timeStamp)
                 previousCellularEntity=cellularEntity
             }
+
+            if (wifiList.isNotEmpty()) {wifiPercentage = wifiList.last().strengthPercentage
+                previousCellularEntity = cellularList.first()
             wifiList.forEach { wifiEntity ->
                wifiLevelList= getMostUsed(wifiLevelList,wifiEntity.level.toString(),previousWifiEntity.timeStamp,wifiEntity.timeStamp)
                 wifiNameList= getMostUsed(wifiNameList,wifiEntity.operatorName.toString(),previousWifiEntity.timeStamp,wifiEntity.timeStamp)
                 previousWifiEntity=wifiEntity
+            }
             }
             cellularBandList.sortBy { it.time }
             wifiLevelList.sortBy { it.time }

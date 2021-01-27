@@ -18,6 +18,14 @@ class SignalViewModel(
     private val signalBinding: ActivitySignalBinding,
     val context: Context
 ) : BaseViewModel() {
+    companion object {
+        const val LEVEL_POOR = 0
+        const val LEVEL_LOW = 1
+        const val LEVEL_MEDIUM = 2
+        const val LEVEL_GOOD = 3
+        const val LEVEL_EXCELLENT = 4
+    }
+
     private var cellularStrength: Float = 0F
     private var wifiStrength: Float = 0F
     private val db = RoomDB.getDatabase()!!
@@ -82,9 +90,9 @@ class SignalViewModel(
         listData = outputList.filterIsInstance<SignalCookedData>().first()
         signalList = outputList.filterIsInstance<ArrayList<SignalEntry>>().first()
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
-            updateGauge()
             cellularStrength = listData.lastCellularStrength
             wifiStrength = listData.lastWifiStrength
+            updateGauge()
         }
 
         signalBinding.pointerCellularSpeedometer.tag = "false"
@@ -96,16 +104,18 @@ class SignalViewModel(
         signalBinding.mostUsedBand.cookedValue.text = listData.mostUsedLevel
         signalBinding.roamingTime.cookedValue.text = listData.roamingTime
         signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
-        signalBinding.mostUsedWifiLevel.cookedValue.text =getWifiLevel(listData.mostUsedWifiLevel)
+        signalBinding.mostUsedWifiLevel.cookedValue.text =
+            getWifiLevel(listData.mostUsedWifiLevel.toInt())
     }
 
-    private fun getWifiLevel(level:String):String{
+    private fun getWifiLevel(level: Int): String {
         return when (level) {
-            "0" -> "Poor"
-            "1" -> "low"
-            "2" -> "medium"
-            "3" -> "good"
-            else -> "excellent"
+            LEVEL_POOR -> "Poor"
+            LEVEL_LOW -> "Low"
+            LEVEL_MEDIUM -> "Medium"
+            LEVEL_GOOD -> "Good"
+            LEVEL_EXCELLENT -> "Excellent"
+            else -> "unknown"
         }
     }
 }
