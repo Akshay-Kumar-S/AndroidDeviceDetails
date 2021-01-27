@@ -7,7 +7,7 @@ import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
 import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
-import com.example.androidDeviceDetails.models.location.LocationItemViewHolder
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Utils
 import kotlin.math.ceil
@@ -20,7 +20,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val appInfoList = arrayListOf<AppInfoRaw>()
         val batteryList = arrayListOf<BatteryAppEntry>()
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
-        val locationList = arrayListOf<LocationItemViewHolder>()
+        val locationList = arrayListOf<LocationDisplayModel>()
         val signalList = arrayListOf<SignalRaw>()
         try {
             for (i in 0 until outputList.size) {
@@ -28,7 +28,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
                     is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
                     is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
                     is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
-                    is LocationItemViewHolder -> locationList.add(outputList[i] as LocationItemViewHolder)
+                    is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
                     is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
                 }
             }
@@ -97,7 +97,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.networkUsage.progressbarSecond.progress = cellularDataProgress
     }
 
-    private fun updateLocationDataCard(outputList: ArrayList<LocationItemViewHolder>) {
+    private fun updateLocationDataCard(outputList: ArrayList<LocationDisplayModel>) {
         binding.locationInfo.mainValue.text = outputList.size.toString()
     }
 

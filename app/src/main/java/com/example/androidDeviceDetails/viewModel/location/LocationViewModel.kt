@@ -12,7 +12,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.location.LocationItemViewHolder
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
@@ -23,7 +23,7 @@ import org.osmdroid.views.overlay.Overlay
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
-    private lateinit var cookedDataList: ArrayList<LocationItemViewHolder>
+    private lateinit var cookedDataList: ArrayList<LocationDisplayModel>
 
     private fun toggleSortButton() {
         if (binding.bottomLocation.sortButton.tag == "down") {
@@ -74,7 +74,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
     private fun addPointOnMap() {
-        val overlays: MutableList<Overlay> = binding.mapView.overlays
+        val overlays = binding.mapView.overlays
         overlays.clear()
         val cluster = CustomMarkerCluster(context)
         cluster.setIcon(
@@ -113,9 +113,8 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
-        cookedDataList = outputList as ArrayList<LocationItemViewHolder>
+        cookedDataList = outputList.filterIsInstance<LocationDisplayModel>() as ArrayList<LocationDisplayModel>
         if (cookedDataList.isEmpty())
             onNoData()
         else {
