@@ -5,9 +5,6 @@
         <variable
             name="description"
             type="String" />
-        <variable
-            name="iconSource"
-            type="android.graphics.drawable.Drawable" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,13 +12,6 @@
         android:layout_marginHorizontal="20dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="10sp"
-            android:layout_marginStart="10dp"
-            android:src="@{iconSource}"
-            android:contentDescription="Icon" />
 
         <TextView
             android:layout_width="wrap_content"
