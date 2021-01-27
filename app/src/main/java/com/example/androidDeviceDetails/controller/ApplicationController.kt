@@ -12,7 +12,7 @@ class ApplicationController {
     @RequiresApi(Build.VERSION_CODES.M)
     var instanceMap: MutableMap<String, BaseCollector> = mutableMapOf(
         "BatteryReceiver" to BatteryCollector(),
-        "WifiReceiver" to WifiCollector(),
+        "WifiReceiver" to WifiCollector(DeviceDetailsApplication.instance),
         "AppStateReceiver" to AppInfoCollector(),
         "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
         "SignalChangeListener" to SignalChangeCollector(),

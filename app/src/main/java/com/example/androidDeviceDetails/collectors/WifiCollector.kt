@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
 import com.example.androidDeviceDetails.models.database.RoomDB
@@ -23,10 +22,10 @@ import kotlinx.coroutines.launch
  *  initialization of this class.
  *  This broadcast requires [android.Manifest.permission.ACCESS_WIFI_STATE] permission.
  **/
-class WifiCollector : BaseCollector() {
+class WifiCollector(val context: Context) : BaseCollector() {
 
     companion object {
-        const val WIFI_MIN: Int = -120
+        const val WIFI_MIN = -120
         const val WIFI_LEVEL = 45
         const val WIFI_RANGE = 97
     }
@@ -62,9 +61,8 @@ class WifiCollector : BaseCollector() {
                 }
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
-                    wifiPercentage = WifiManager.calculateSignalLevel(
-                        strength, WIFI_LEVEL
-                    ) / WIFI_LEVEL.toFloat() * 100
+                    wifiPercentage = WifiManager.calculateSignalLevel(strength, WIFI_LEVEL) /
+                            WIFI_LEVEL.toFloat() * 100
                 }
             }
 
@@ -80,9 +78,7 @@ class WifiCollector : BaseCollector() {
                 band = null,
                 strengthPercentage = wifiPercentage
             )
-            GlobalScope.launch {
-                db?.signalDao()?.insert(signalRaw)
-            }
+            GlobalScope.launch { db?.signalDao()?.insert(signalRaw) }
         }
     }
 
@@ -94,15 +90,13 @@ class WifiCollector : BaseCollector() {
         val wifiIntentFilter = IntentFilter()
         wifiIntentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION)
         wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
-        DeviceDetailsApplication.instance.registerReceiver(
-            WifiReceiver, wifiIntentFilter
-        )
+        context.registerReceiver(WifiReceiver, wifiIntentFilter)
     }
 
     /**
      * Unregisters the [WifiCollector].
      **/
     override fun stop() {
-        DeviceDetailsApplication.instance.unregisterReceiver(WifiReceiver)
+        context.unregisterReceiver(WifiReceiver)
     }
 }

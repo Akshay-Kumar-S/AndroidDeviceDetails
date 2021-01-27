@@ -135,9 +135,7 @@ class SignalChangeCollector : BaseCollector() {
                 band = networkBand,
                 strengthPercentage = strengthPercentage
             )
-            GlobalScope.launch {
-                signalDB?.signalDao()?.insert(signalRaw)
-            }
+            GlobalScope.launch { signalDB?.signalDao()?.insert(signalRaw) }
         }
     }
 

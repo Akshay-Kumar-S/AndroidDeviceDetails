@@ -20,26 +20,24 @@ class SignalGraphActivity : AppCompatActivity() {
         signalGraphBinding = DataBindingUtil.setContentView(this, R.layout.activity_signal_graph)
 
         val signal = intent.getStringExtra("signal")
-        val signalEntryList = Gson().fromJson(signal, Array<SignalGraphEntry>::class.java)
+        val graphEntryList = Gson().fromJson(signal, Array<SignalGraphEntry>::class.java)
 
         val cellularTimeList = arrayListOf<String>()
         val cellularValueList = arrayListOf<Int>()
         val wifiValueList = arrayListOf<Int>()
         val wifiTimeList = arrayListOf<String>()
 
-        for (signalEntry in signalEntryList) {
-            when (signalEntry.signal) {
-                Signal.CELLULAR.ordinal -> {
-                    cellularTimeList.add(signalEntry.timeStamp)
-                    cellularValueList.add(signalEntry.strength)
-                }
-                Signal.WIFI.ordinal -> {
-                    wifiTimeList.add(signalEntry.timeStamp)
-                    wifiValueList.add(signalEntry.strength)
-                }
+        graphEntryList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
+            first.forEach {
+                cellularTimeList.add(it.timeStamp)
+                cellularValueList.add(it.strength)
+            }
+            second.forEach {
+                wifiTimeList.add(it.timeStamp)
+                wifiValueList.add(it.strength)
             }
         }
-
+     
         val wifiChart = Chart(
             aaChartView = signalGraphBinding.wifiChart,
             title = "WIFI",

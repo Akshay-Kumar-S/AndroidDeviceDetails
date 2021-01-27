@@ -32,7 +32,6 @@ class SignalCooker : BaseCooker() {
      * @param time data class object that contains start time and end time.
      * @param callback A callback that accepts the cooked list once cooking is done
      */
-    @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
             val graphEntryList = arrayListOf<SignalGraphEntry>()
@@ -44,7 +43,6 @@ class SignalCooker : BaseCooker() {
             var roamingTime: Long = 0
             var startTime: Long
             var endTime: Long
-            var timeDifference: Long
             var timeInterval: Long
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
@@ -57,8 +55,7 @@ class SignalCooker : BaseCooker() {
                 var previousCellularEntity = cellularList.first()
                 startTime = previousCellularEntity.timeStamp
                 endTime = lastCellularEntity.timeStamp
-                timeDifference = endTime - startTime
-                timeInterval = maxOf(timeDifference / MAX_PLOT_POINTS, MINUTE)
+                timeInterval = maxOf((endTime - startTime) / MAX_PLOT_POINTS, MINUTE)
 
                 cellularList.forEach { cellularEntity ->
 
@@ -102,8 +99,7 @@ class SignalCooker : BaseCooker() {
 
                 startTime = previousWifiEntity.timeStamp
                 endTime = lastWifiEntity.timeStamp
-                timeDifference = endTime - startTime
-                timeInterval = maxOf(timeDifference / MAX_PLOT_POINTS, MINUTE)
+                timeInterval = maxOf((endTime - startTime) / MAX_PLOT_POINTS, MINUTE)
 
                 wifiList.forEach { wifiEntity ->
                     wifiLevelList = getMostUsed(
@@ -147,10 +143,7 @@ class SignalCooker : BaseCooker() {
     }
 
     private fun getMostUsed(
-        usageList: ArrayList<Usage>,
-        dataValue: String,
-        previousTime: Long,
-        currentTime: Long
+        usageList: ArrayList<Usage>, dataValue: String, previousTime: Long, currentTime: Long
     ): ArrayList<Usage> {
         if (usageList.none { it.name == dataValue })
             usageList.add(Usage(dataValue, 0))

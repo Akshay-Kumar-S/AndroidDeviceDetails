@@ -45,7 +45,7 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
             R.id.endTime -> signalController.setTime(this, R.id.endTime)
             R.id.endDate -> signalController.setDate(this, R.id.endDate)
             R.id.more_details -> {
-                val signalJson = Gson().toJson(signalViewModel.signalList)
+                val signalJson = Gson().toJson(signalViewModel.graphEntryList)
                 val intent = Intent(this@SignalActivity, SignalGraphActivity::class.java)
                 intent.putExtra("signal", signalJson)
                 startActivity(intent)
