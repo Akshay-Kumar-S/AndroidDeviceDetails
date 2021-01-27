@@ -25,9 +25,7 @@ abstract class BaseViewModel {
                 NetworkUsageActivity.NAME -> NetworkUsageViewModel(
                     binding as ActivityAppDataBinding, context
                 )
-                AppInfoAppTypeActivity.NAME -> AppInfoAppTypeViewModel(
-                    binding as ActivityAppInfoAppTypeBinding, context
-                )
+                AppInfoAppTypeActivity.NAME -> AppInfoAppTypeViewModel(context)
                 else -> null
             }
         }
