@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="60sp"
             android:layout_margin="0sp"
-            android:background="@color/soti_wave"
+            android:background="?attr/colorPrimary"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -31,6 +31,7 @@
             android:layout_marginStart="10dp"
             android:text="Sample App "
             android:textSize="20sp"
+            android:textColor="?attr/batteryTitle"
             app:layout_constraintBottom_toBottomOf="@id/banner"
             app:layout_constraintStart_toEndOf="@id/Icon"
             app:layout_constraintTop_toTopOf="@id/banner" />
