@@ -6,7 +6,6 @@ import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoAppTypeBinding
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.EventType
-import com.example.androidDeviceDetails.models.appInfo.appType.FilterType
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
 
 /**
@@ -18,11 +17,15 @@ class AppInfoAppTypeViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        var eventFilter = 0
+        private const val  FILTER_ALL = 0
+        private const val  FILTER_SYSTEM = 1
+        var eventFilter = FILTER_ALL
         var savedAppList = arrayListOf<AppInfoRaw>()
         var userApps = arrayListOf<AppInfoCookedData>()
         var systemApps = arrayListOf<AppInfoCookedData>()
     }
+
+
 
 
     /**
@@ -37,8 +40,8 @@ class AppInfoAppTypeViewModel(
         var filteredList = appList.toMutableList()
         savedAppList = appList
 
-        if (eventFilter != FilterType.ALL.ordinal) {
-            if (eventFilter == FilterType.SYSTEM.ordinal)
+        if (eventFilter != FILTER_ALL) {
+            if (eventFilter == FILTER_SYSTEM)
                 filteredList.removeAll { !it.isSystemApp }
             else
                 filteredList.removeAll { it.isSystemApp }
@@ -60,7 +63,8 @@ class AppInfoAppTypeViewModel(
                             it.currentVersionCode,
                             it.uid,
                             it.isSystemApp,
-                            it.packageName
+                            it.packageName,
+                            it.appSize
                         )
                     )
                 } else {
@@ -71,7 +75,8 @@ class AppInfoAppTypeViewModel(
                             it.currentVersionCode,
                             it.uid,
                             it.isSystemApp,
-                            it.packageName
+                            it.packageName,
+                            it.appSize
                         )
                     )
                     Log.d("Final", "divideList: ${systemApps.size}")

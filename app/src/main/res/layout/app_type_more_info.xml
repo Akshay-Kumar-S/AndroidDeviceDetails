@@ -9,7 +9,7 @@
         <View
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="100sp"
+            android:layout_height="60sp"
             android:layout_margin="0sp"
             android:background="@color/soti_wave"
             app:layout_constraintTop_toTopOf="parent" />
@@ -18,7 +18,7 @@
             android:id="@+id/Icon"
             android:layout_width="40sp"
             android:layout_height="40sp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="15dp"
             android:contentDescription="AppIcon"
             app:layout_constraintBottom_toBottomOf="@+id/banner"
             app:layout_constraintStart_toStartOf="@id/banner"
@@ -28,7 +28,7 @@
             android:id="@+id/appTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="Sample App "
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/banner"
@@ -39,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/banner">
 
@@ -47,20 +49,85 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_margin="10sp"
-                    android:src="@drawable/ic_baseline_storage_24" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="Package Name:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/packageName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="com.example.app"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6sp"
                     android:padding="6sp"
-                    android:text="Size :"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@+id/banner" />
+                    android:text="Version Code:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/versionCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="223332"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="Version Name:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/versionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="16.1.1"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="Package Size :"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/appSize"
@@ -69,26 +136,57 @@
                     android:layout_marginTop="6sp"
                     android:padding="6sp"
                     android:text="10KB"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@+id/banner" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
-            <include
-                android:id="@+id/firstInstall"
-                layout="@layout/app_type_more_info_tile"
-                app:description= '@{"First Install : "}'
-                app:iconSource='@{@drawable/ic_baseline_access_time_24}'/>
-            <include
-                android:id="@+id/lastUpdated"
-                layout="@layout/app_type_more_info_tile"
-                app:description= '@{"First Install : "}'
-                app:iconSource='@{@drawable/ic_baseline_access_time_24}'/>
-            <include
-                android:id="@+id/versionName"
-                layout="@layout/app_type_more_info_tile"
-                app:description= '@{"First Install : "}'
-                app:iconSource='@{@drawable/ic_baseline_access_time_24}'/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="Install Time:"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/installTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="time"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="Update Time:"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/updateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6sp"
+                    android:padding="6sp"
+                    android:text="time"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -117,14 +117,14 @@ class AppInfoListAdapter(
     @SuppressLint("SetTextI18n")
     private fun setAppInfoHolder(holder: AppInfoItemViewHolder, position: Int): AppInfoItemViewHolder{
         holder.appNameView.text = items[position].appName
-        holder.versionCodeTextView.text =
-            "Version Code : " + items[position].versionCode.toString()
         holder.eventTypeTextView.isVisible = !isAppType
         holder.uninstallButton.isVisible = !isAppType
         holder.eventBadge.isVisible = !isAppType
         holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
         holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
         if(!isAppType) {
+            holder.versionCodeTextView.text =
+                "Version Code : " + items[position].versionCode.toString()
             val color = when (items[position].eventType.ordinal) {
                 0 -> R.color.teal_700
                 1 -> R.color.purple_500
@@ -146,6 +146,9 @@ class AppInfoListAdapter(
             } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
                 holder.uninstallButton.isVisible = false
             }
+        }
+        else{
+            holder.versionCodeTextView.text = items[position].packageName
         }
         return holder
     }

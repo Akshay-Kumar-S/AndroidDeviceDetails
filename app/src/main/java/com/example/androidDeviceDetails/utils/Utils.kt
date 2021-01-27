@@ -12,14 +12,16 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
+import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.services.AppService
 import kotlinx.coroutines.Dispatchers
@@ -127,7 +129,7 @@ object Utils {
             }
             appDetails.versionName = pInfo.versionName
             val file = File(pInfo2.sourceDir)
-            appDetails.appSize = file.length() / 1024
+            appDetails.appSize = file.length()
             appDetails.appTitle = context.packageManager.getApplicationLabel(pInfo2).toString()
             val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
             appDetails.isSystemApp = (pInfo2.flags and mask == 0).not()
@@ -139,6 +141,21 @@ object Utils {
             e.printStackTrace()
         }
         return appDetails
+    }
+
+    fun getPackageDetails(context: Context, appInfoCookedData: AppInfoCookedData) : AppTypeModel{
+        val simpleDateFormat = SimpleDateFormat("EEE, MMM d ''yy, hh:mm a", Locale.ENGLISH)
+        val packageInfo = context.packageManager.getPackageInfo(appInfoCookedData.packageName, 0)
+        val details = AppTypeModel()
+        details.appIcon = getApplicationIcon(appInfoCookedData.packageName)
+        details.appTitle = appInfoCookedData.appName
+        details.packageName = appInfoCookedData.packageName
+        details.versionCode = appInfoCookedData.versionCode.toString()
+        details.versionName = packageInfo.versionName.toString()
+        details.packageSize = getFileSize(appInfoCookedData.size)
+        details.installTime = simpleDateFormat.format(Date(packageInfo.firstInstallTime))
+        details.updateTime = simpleDateFormat.format(Date(packageInfo.lastUpdateTime))
+        return details
     }
 
     @SuppressLint("QueryPermissionsNeeded")
@@ -214,17 +231,23 @@ object Utils {
         }
     }
 
-    fun showAlertDialog(context: Context, icon: Drawable, title: String?, description: String?) {
-        val dialogLayout = LayoutInflater.from(context).inflate(R.layout.app_type_more_info, null)
-        val popupIcon = dialogLayout.findViewById<ImageView>(R.id.Icon)
-        popupIcon.setImageDrawable(icon)
-        val popupTitle = dialogLayout.findViewById<TextView>(R.id.appTitle)
-        val popupDescription = dialogLayout.findViewById<TextView>(R.id.appSize)
-        popupTitle.text = title
-        popupDescription.text = description
+    fun showAlertDialog(context: Context, appTypeModel: AppTypeModel) {
+        val binding : AppTypeMoreInfoBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.app_type_more_info,
+            null,
+            false
+        )
+        binding.Icon.setImageDrawable(appTypeModel.appIcon)
+        binding.appTitle.text = appTypeModel.appTitle
+        binding.versionCode.text = appTypeModel.versionCode
+        binding.versionName.text = appTypeModel.versionName
+        binding.appSize.text = appTypeModel.packageSize
+        binding.installTime.text = appTypeModel.installTime
+        binding.updateTime.text = appTypeModel.updateTime
         AlertDialog.Builder(context)
             .setCancelable(false)
-            .setView(dialogLayout)
+            .setView(binding.root)
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }

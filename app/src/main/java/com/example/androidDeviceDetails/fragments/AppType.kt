@@ -38,11 +38,10 @@ class AppTypeUser(private var userApps: ArrayList<AppInfoCookedData>) : Fragment
 
         binding.appTypeListUser.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
+                val packageDetails = Utils.getPackageDetails(mContext!!, userApps[position])
                 Utils.showAlertDialog(
                     mContext!!,
-                    Utils.getApplicationIcon(userApps[position].packageName),
-                    "test",
-                    "testing"
+                    packageDetails
                 )
             }
     }

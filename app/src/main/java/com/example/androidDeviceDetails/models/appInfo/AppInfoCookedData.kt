@@ -18,5 +18,6 @@ data class AppInfoCookedData(
     var versionCode: Long,
     var appId: Int,
     var isSystemApp: Boolean,
-    var packageName: String = "null"
+    var packageName: String = "null",
+    var size: Long = 0
 )
