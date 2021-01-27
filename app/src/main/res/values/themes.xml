@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.AndroidDeviceDetails" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:fontFamily">@string/default_font</item>
@@ -24,6 +24,7 @@
         <item name="iconTint">@color/gray_600</item>
         <item name="bottomSheetDialogColor">#EAEAEA</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/mainBackground</item>
         <!-- Customize your theme here. -->
