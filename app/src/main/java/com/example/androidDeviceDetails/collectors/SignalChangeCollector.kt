@@ -46,8 +46,8 @@ class SignalChangeCollector : BaseCollector() {
             val signalDB = RoomDB.getDatabase()
             var level = 0
             var strength = CELLULAR_MIN
-            var band = ""
-            var networkBand = ""
+            var band = "unknown"
+            var networkBand = "unknown"
             val strengthPercentage: Float
             val telephonyManager =
                 DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager

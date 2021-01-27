@@ -4,16 +4,13 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
-import com.example.androidDeviceDetails.models.signal.SignalEntry
+import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.models.signal.Usage
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Implements [BaseCooker].
@@ -21,7 +18,6 @@ import kotlin.collections.ArrayList
  **/
 class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
-    private val signalList = arrayListOf<SignalEntry>()
 
     companion object {
         const val MAX_PLOT_POINTS: Int = 40
@@ -39,29 +35,26 @@ class SignalCooker : BaseCooker() {
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
-            var wifiPercentage = 0F
-            var cellularPercentage = 0F
+            val graphEntryList = arrayListOf<SignalGraphEntry>()
             var cellularBandList = ArrayList<Usage>()
             var wifiLevelList = ArrayList<Usage>()
-            var cellularNameList = ArrayList<Usage>()
-            var wifiNameList = ArrayList<Usage>()
+            var carrierNameList = ArrayList<Usage>()
+            var ssidList = ArrayList<Usage>()
+            val cookedDataList = ArrayList<Any>()
             var roamingTime: Long = 0
             var startTime: Long
             var endTime: Long
-            var timeStamp: String
             var timeDifference: Long
             var timeInterval: Long
-            val formatter = SimpleDateFormat("HH:mm dd MMM yyyy", Locale.ENGLISH)
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
             val cellularList = signalRawList.filter { it.signal == Signal.CELLULAR.ordinal }
             val wifiList = signalRawList.filter { it.signal == Signal.WIFI.ordinal }
+            val signalCookedData = SignalCookedData()
 
             if (cellularList.isNotEmpty()) {
                 val lastCellularEntity = cellularList.last()
                 var previousCellularEntity = cellularList.first()
-
-                cellularPercentage = lastCellularEntity.strengthPercentage
                 startTime = previousCellularEntity.timeStamp
                 endTime = lastCellularEntity.timeStamp
                 timeDifference = endTime - startTime
@@ -76,8 +69,8 @@ class SignalCooker : BaseCooker() {
                         cellularEntity.timeStamp
                     )
 
-                    cellularNameList = getMostUsed(
-                        cellularNameList,
+                    carrierNameList = getMostUsed(
+                        carrierNameList,
                         cellularEntity.operatorName,
                         previousCellularEntity.timeStamp,
                         cellularEntity.timeStamp
@@ -87,70 +80,69 @@ class SignalCooker : BaseCooker() {
                         roamingTime += cellularEntity.timeStamp - previousCellularEntity.timeStamp
 
                     if (cellularEntity.timeStamp >= startTime) {
-                        timeStamp = formatter.format(cellularEntity.timeStamp)
-                        signalList.add(
-                            SignalEntry(timeStamp, cellularEntity.signal, cellularEntity.strength)
+                        graphEntryList.add(
+                            SignalGraphEntry(
+                                Utils.getDateTime(cellularEntity.timeStamp),
+                                cellularEntity.signal,
+                                cellularEntity.strength
+                            )
                         )
                         startTime = (timeInterval + cellularEntity.timeStamp)
                     }
                     previousCellularEntity = cellularEntity
                 }
+                signalCookedData.lastCellularStrength = lastCellularEntity.strengthPercentage
+                signalCookedData.mostUsedOperator = carrierNameList.last().name
+                signalCookedData.mostUsedLevel = cellularBandList.last().name
+                signalCookedData.roamingTime = roamingTime.toString()
+            }
+            if (wifiList.isNotEmpty()) {
+                var previousWifiEntity = wifiList.first()
+                val lastWifiEntity = wifiList.last()
 
-                if (wifiList.isNotEmpty()) {
-                    var previousWifiEntity = wifiList.first()
-                    val lastWifiEntity = wifiList.last()
+                startTime = previousWifiEntity.timeStamp
+                endTime = lastWifiEntity.timeStamp
+                timeDifference = endTime - startTime
+                timeInterval = maxOf(timeDifference / MAX_PLOT_POINTS, MINUTE)
 
-                    wifiPercentage = lastWifiEntity.strengthPercentage
-                    startTime = previousWifiEntity.timeStamp
-                    endTime = lastWifiEntity.timeStamp
-                    timeDifference = endTime - startTime
-                    timeInterval = maxOf(timeDifference / MAX_PLOT_POINTS, MINUTE)
+                wifiList.forEach { wifiEntity ->
+                    wifiLevelList = getMostUsed(
+                        wifiLevelList,
+                        wifiEntity.level.toString(),
+                        previousWifiEntity.timeStamp,
+                        wifiEntity.timeStamp
+                    )
 
-                    wifiList.forEach { wifiEntity ->
-                        wifiLevelList = getMostUsed(
-                            wifiLevelList,
-                            wifiEntity.level.toString(),
-                            previousWifiEntity.timeStamp,
-                            wifiEntity.timeStamp
-                        )
+                    ssidList = getMostUsed(
+                        ssidList,
+                        wifiEntity.operatorName,
+                        previousWifiEntity.timeStamp,
+                        wifiEntity.timeStamp
+                    )
 
-                        wifiNameList = getMostUsed(
-                            wifiNameList,
-                            wifiEntity.operatorName.toString(),
-                            previousWifiEntity.timeStamp,
-                            wifiEntity.timeStamp
-                        )
-
-                        if (wifiEntity.timeStamp >= startTime) {
-                            timeStamp = formatter.format(wifiEntity.timeStamp)
-                            signalList.add(
-                                SignalEntry(timeStamp, wifiEntity.signal, wifiEntity.strength)
+                    if (wifiEntity.timeStamp >= startTime) {
+                        graphEntryList.add(
+                            SignalGraphEntry(
+                                Utils.getDateTime(wifiEntity.timeStamp),
+                                wifiEntity.signal,
+                                wifiEntity.strength
                             )
-                            startTime = (timeInterval + wifiEntity.timeStamp)
-                        }
-                        previousWifiEntity = wifiEntity
+                        )
+                        startTime = (timeInterval + wifiEntity.timeStamp)
                     }
-
-                    wifiLevelList.sortBy { it.time }
-                    wifiNameList.sortBy { it.time }
+                    previousWifiEntity = wifiEntity
                 }
 
-                val cookedDataList = ArrayList<Any>()
-                val signalCookedData = SignalCookedData(
-                    roamingTime.toString(),
-                    cellularNameList.last().name,
-                    wifiNameList.last().name,
-                    cellularBandList.last().name,
-                    wifiLevelList.last().name,
-                    wifiPercentage,
-                    cellularPercentage
-                )
-
-                cookedDataList.add(signalCookedData)
-                cookedDataList.add(signalList)
-
-                callback.onDone(cookedDataList as ArrayList<T>)
+                wifiLevelList.sortBy { it.time }
+                ssidList.sortBy { it.time }
+                signalCookedData.lastWifiStrength = lastWifiEntity.strengthPercentage
+                signalCookedData.mostUsedWifi = ssidList.last().name
+                signalCookedData.mostUsedWifiLevel = wifiLevelList.last().name
             }
+
+            cookedDataList.add(signalCookedData)
+            cookedDataList.add(graphEntryList)
+            callback.onDone(cookedDataList as ArrayList<T>)
         }
     }
 

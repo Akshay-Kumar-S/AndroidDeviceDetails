@@ -1,11 +1,11 @@
 package com.example.androidDeviceDetails.models.signal
 
 data class SignalCookedData(
-    var roamingTime: String,
-    var mostUsedOperator: String?,
-    var mostUsedWifi: String?,
-    var mostUsedLevel: String,
-    var mostUsedWifiLevel: String,
-    var lastWifiStrength: Float,
-    var lastCellularStrength: Float,
+    var roamingTime: String = "0",
+    var mostUsedOperator: String = "Unknown",
+    var mostUsedWifi: String = "Unknown",
+    var mostUsedLevel: String = "Unknown",
+    var mostUsedWifiLevel: String = "Unknown",
+    var lastWifiStrength: Float = 0F,
+    var lastCellularStrength: Float = 0F,
 )

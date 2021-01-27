@@ -8,7 +8,7 @@ import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
-import com.example.androidDeviceDetails.models.signal.SignalEntry
+import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.utils.Signal
 
 /**
@@ -26,11 +26,11 @@ class SignalViewModel(
         const val LEVEL_EXCELLENT = 4
     }
 
-    private var cellularStrength: Float = 0F
-    private var wifiStrength: Float = 0F
+    private var cellularStrengthPercentage: Float = 0F
+    private var wifiStrengthPercentage: Float = 0F
     private val db = RoomDB.getDatabase()!!
-    var signalList = arrayListOf<SignalEntry>()
-    private lateinit var listData: SignalCookedData
+    var signalList = arrayListOf<SignalGraphEntry>()
+    private lateinit var mostUsedData: SignalCookedData
 
     init {
         observeSignal()
@@ -39,11 +39,11 @@ class SignalViewModel(
     /**
      * This method is called on the initialisation of the [SignalViewModel].
      * It is used to observe the last live data of [SignalRaw].
-     * And on notification, updates values via [updateValue].
+     * And on notification, updates values via [updateStrengthPercentage].
      */
     private fun observeSignal() {
         db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
-            if (it != null) updateValue(it)
+            if (it != null) updateStrengthPercentage(it)
         }
     }
 
@@ -52,12 +52,12 @@ class SignalViewModel(
      * cellular strength and cell info type upon call from [observeSignal].
      */
     @SuppressLint("SetTextI18n")
-    fun updateValue(signalRaw: SignalRaw) {
+    fun updateStrengthPercentage(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
             Signal.WIFI.ordinal ->
-                wifiStrength = signalRaw.strengthPercentage
+                wifiStrengthPercentage = signalRaw.strengthPercentage
             Signal.CELLULAR.ordinal ->
-                cellularStrength = signalRaw.strengthPercentage
+                cellularStrengthPercentage = signalRaw.strengthPercentage
         }
         updateGauge()
     }
@@ -70,10 +70,10 @@ class SignalViewModel(
         signalBinding.pointerCellularSpeedometer.post {
             signalBinding.apply {
                 pointerCellularSpeedometer.speedTo(
-                    cellularStrength, 1000
+                    cellularStrengthPercentage, 1000
                 )
                 pointerWifiSpeedometer.speedTo(
-                    wifiStrength, 1000
+                    wifiStrengthPercentage, 1000
                 )
             }
         }
@@ -87,11 +87,11 @@ class SignalViewModel(
      * @param outputList List of cooked data.
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
-        listData = outputList.filterIsInstance<SignalCookedData>().first()
-        signalList = outputList.filterIsInstance<ArrayList<SignalEntry>>().first()
+        mostUsedData = outputList.filterIsInstance<SignalCookedData>().first()
+        signalList = outputList.filterIsInstance<ArrayList<SignalGraphEntry>>().first()
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
-            cellularStrength = listData.lastCellularStrength
-            wifiStrength = listData.lastWifiStrength
+            cellularStrengthPercentage = mostUsedData.lastCellularStrength
+            wifiStrengthPercentage = mostUsedData.lastWifiStrength
             updateGauge()
         }
 
@@ -100,12 +100,12 @@ class SignalViewModel(
     }
 
     private fun updateList() {
-        signalBinding.mostUsedOperator.cookedValue.text = listData.mostUsedOperator
-        signalBinding.mostUsedBand.cookedValue.text = listData.mostUsedLevel
-        signalBinding.roamingTime.cookedValue.text = listData.roamingTime
-        signalBinding.mostUsedWifi.cookedValue.text = listData.mostUsedWifi
+        signalBinding.mostUsedOperator.cookedValue.text = mostUsedData.mostUsedOperator
+        signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedLevel
+        signalBinding.roamingTime.cookedValue.text = mostUsedData.roamingTime
+        signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text =
-            getWifiLevel(listData.mostUsedWifiLevel.toInt())
+            getWifiLevel(mostUsedData.mostUsedWifiLevel.toInt())
     }
 
     private fun getWifiLevel(level: Int): String {
