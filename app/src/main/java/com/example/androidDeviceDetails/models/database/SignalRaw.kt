@@ -17,7 +17,8 @@ import com.example.androidDeviceDetails.viewModel.SignalViewModel
  *
  * 1 for WIFI.
  * @param strength Signal strength in dBm.
- * @param cellInfoType LinkSpeed in Mbps for WIFI and CellInfo Type for CELLULAR
+ * @param cellInfoType cellInfo Type for CELLULAR
+ * @param linkSpeed LinkSpeed in Mbps for WIFI
  * @param level Signal level.
  *
  *  @see [RoomDB]

@@ -24,13 +24,12 @@
 
     <application
         android:name=".DeviceDetailsApplication"
+        android:fullBackupContent="@xml/auto_backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidDeviceDetails"
-        tools:ignore="AllowBackup">
-        <activity android:name=".ui.SignalGraphActivity" />
+        android:theme="@style/Theme.AndroidDeviceDetails">
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
@@ -66,6 +65,7 @@
             android:name=".ui.SignalActivity"
             android:label="Signal Strength"
             android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.SignalGraphActivity" />
 
         <service
             android:name=".services.AppService"
