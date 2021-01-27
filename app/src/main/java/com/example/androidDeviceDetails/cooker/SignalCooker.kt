@@ -90,8 +90,8 @@ class SignalCooker : BaseCooker() {
                 }
                 signalCookedData.lastCellularStrength = lastCellularEntity.strengthPercentage
                 signalCookedData.mostUsedOperator = carrierNameList.last().name
-                signalCookedData.mostUsedLevel = cellularBandList.last().name
-                signalCookedData.roamingTime = roamingTime.toString()
+                signalCookedData.mostUsedLevel = cellularBandList.last().name.toInt()
+                signalCookedData.roamingTime = Utils.getTimePeriod(roamingTime)
             }
             if (wifiList.isNotEmpty()) {
                 var previousWifiEntity = wifiList.first()

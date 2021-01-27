@@ -6,6 +6,7 @@ import android.os.Build
 import android.telephony.*
 import android.telephony.PhoneStateListener.LISTEN_NONE
 import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
+import android.util.Log
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector.SignalChangeListener
@@ -122,6 +123,7 @@ class SignalChangeCollector : BaseCollector() {
                             }
                         }
             }
+            Log.e("pers","$strength")
             strengthPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * (-100)
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
