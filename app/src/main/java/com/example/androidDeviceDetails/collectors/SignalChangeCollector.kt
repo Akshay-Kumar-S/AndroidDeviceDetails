@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.collectors
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.telephony.*
 import android.telephony.PhoneStateListener.LISTEN_NONE
@@ -45,7 +46,7 @@ class SignalChangeCollector : BaseCollector() {
             val signalDB = RoomDB.getDatabase()
             var level = 0
             var strength = CELLULAR_MIN
-            var type = ""
+            var band = ""
             var networkBand = ""
             val strengthPercentage: Float
             val telephonyManager =
@@ -57,78 +58,76 @@ class SignalChangeCollector : BaseCollector() {
                         is CellSignalStrengthLte -> {
                             strength = cellInfo.rsrp
                             level = cellInfo.level
-                            type = "LTE"
+                            band = "LTE"
                             networkBand = "4g"
                         }
                         is CellSignalStrengthGsm -> {
                             strength = cellInfo.dbm
                             level = cellInfo.level
-                            type = "GSM"
+                            band = "GSM"
                             networkBand = "2g"
                         }
                         is CellSignalStrengthCdma -> {
                             strength = cellInfo.cdmaDbm
-                            type = "CDMA"
+                            band = "CDMA"
                             level = cellInfo.level
                             networkBand = "3g"
                         }
                         is CellSignalStrengthWcdma -> {
                             strength = cellInfo.dbm
-                            type = "WCDMA"
+                            band = "WCDMA"
                             level = cellInfo.level
                             networkBand = "3g"
                         }
                         is CellSignalStrengthNr -> {
                             strength = cellInfo.csiRsrp
-                            type = "NR"
+                            band = "NR"
                             level = cellInfo.level
                             networkBand = "5g"
                         }
                         is CellSignalStrengthTdscdma -> {
                             strength = cellInfo.dbm
-                            type = "TDSCDMA"
+                            band = "TDSCDMA"
                             level = cellInfo.level
                             networkBand = "3g"
                         }
                     }
             } else {
-                try {
+                if (DeviceDetailsApplication.instance.checkCallingOrSelfPermission("android.Manifest.permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_GRANTED)
                     if (telephonyManager.allCellInfo.isNotEmpty())
                         when (val cellInfo = telephonyManager.allCellInfo[0]) {
                             is CellInfoLte -> {
-                                type = "LTE"
+                                band = "LTE"
                                 strength = cellInfo.cellSignalStrength.dbm
                                 level = cellInfo.cellSignalStrength.level
                                 networkBand = "4g"
                             }
                             is CellInfoGsm -> {
-                                type = "GSM"
+                                band = "GSM"
                                 strength = cellInfo.cellSignalStrength.dbm
                                 level = cellInfo.cellSignalStrength.level
                                 networkBand = "2g"
                             }
                             is CellInfoCdma -> {
-                                type = "CDMA"
+                                band = "CDMA"
                                 strength = cellInfo.cellSignalStrength.dbm
                                 level = cellInfo.cellSignalStrength.level
                                 networkBand = "3g"
                             }
                             is CellInfoWcdma -> {
-                                type = "WCDMA"
+                                band = "WCDMA"
                                 strength = cellInfo.cellSignalStrength.dbm
                                 level = cellInfo.cellSignalStrength.level
                                 networkBand = "3g"
                             }
                         }
-                } catch (e: SecurityException) {
-                }
             }
             strengthPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * (-100)
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
                 signal = Signal.CELLULAR.ordinal,
                 strength = strength,
-                cellInfoType = type,
+                cellInfoType = band,
                 linkSpeed = null,
                 level = level,
                 operatorName = telephonyManager.networkOperatorName,

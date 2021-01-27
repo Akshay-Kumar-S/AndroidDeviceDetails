@@ -44,7 +44,6 @@ class SignalCooker : BaseCooker() {
         GlobalScope.launch {
             var wifiPercentage = 0F
             var cellularPercentage = 0F
-
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
             val cellularList = arrayListOf<SignalRaw>()
             val wifiList = arrayListOf<SignalRaw>()
@@ -63,7 +62,7 @@ class SignalCooker : BaseCooker() {
 
             val cookedDataList = ArrayList<Any>()
             val signalCookedData = SignalCookedData(
-                roamingTime(cellularList),
+                getRoamingTime(cellularList),
                 getMostUsed(cellularList, OPERATOR),
                 getMostUsed(wifiList, OPERATOR),
                 getMostUsed(cellularList, BAND),
@@ -107,7 +106,7 @@ class SignalCooker : BaseCooker() {
         return usageList.last().name
     }
 
-    private fun roamingTime(cellularList: List<SignalRaw>): String {
+    private fun getRoamingTime(cellularList: List<SignalRaw>): String {
         if (cellularList.isEmpty()) return "0"
         var roamingTime: Long = 0
         var previousSignalEntity = cellularList.first()
