@@ -63,7 +63,7 @@ class SignalViewModel(
     }
 
     /**
-     * This method updates the Card view in the UI based on the selected menu - CELLULAR or WIFI.
+     * This method updates gauge in the UI.
      */
     @SuppressLint("SetTextI18n")
     fun updateGauge() {

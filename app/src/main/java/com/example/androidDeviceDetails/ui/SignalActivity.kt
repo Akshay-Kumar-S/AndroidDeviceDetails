@@ -14,6 +14,7 @@ import com.google.gson.Gson
 class SignalActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignalBinding
     private lateinit var signalController: ActivityController<Any>
+    private lateinit var signalViewModel: SignalViewModel
 
     companion object {
         const val NAME = "signal"
@@ -37,7 +38,7 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val signalViewModel = signalController.viewModel as SignalViewModel
+        signalViewModel = signalController.viewModel as SignalViewModel
         when (v!!.id) {
             R.id.startTime -> signalController.setTime(this, R.id.startTime)
             R.id.startDate -> signalController.setDate(this, R.id.startDate)

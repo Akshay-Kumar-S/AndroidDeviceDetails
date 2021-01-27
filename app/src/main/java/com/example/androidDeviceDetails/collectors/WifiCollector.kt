@@ -63,8 +63,7 @@ class WifiCollector : BaseCollector() {
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
                     wifiPercentage = WifiManager.calculateSignalLevel(
-                        strength,
-                        WIFI_LEVEL
+                        strength, WIFI_LEVEL
                     ) / WIFI_LEVEL.toFloat() * 100
                 }
             }
@@ -92,11 +91,11 @@ class WifiCollector : BaseCollector() {
      * and [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
      **/
     override fun start() {
-        val filter = IntentFilter()
-        filter.addAction(WifiManager.RSSI_CHANGED_ACTION)
-        filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        val wifiIntentFilter = IntentFilter()
+        wifiIntentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION)
+        wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
         DeviceDetailsApplication.instance.registerReceiver(
-            WifiReceiver, filter
+            WifiReceiver, wifiIntentFilter
         )
     }
 
