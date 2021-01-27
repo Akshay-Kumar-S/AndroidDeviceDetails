@@ -37,8 +37,8 @@ class AppInfoAppTypeActivity : AppCompatActivity() {
         )
         //binding.appTypeListView.isEnabled = true
 
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("User"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("System"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("User App"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("System System"))
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
         val adapter = AppTypeAdapter(
