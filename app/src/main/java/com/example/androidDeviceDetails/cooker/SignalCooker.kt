@@ -102,30 +102,6 @@ class SignalCooker : BaseCooker() {
         }
     }
 
-//    private fun getMostUsed(
-//        rawList: List<SignalRaw>,
-//        data: Int,
-//    ): String {
-//        if (rawList.isEmpty()) return "unknown"
-//        val usageList = ArrayList<Usage>()
-//        var dataValue: String
-//        var previousSignalEntity = rawList.first()
-//        rawList.forEach { signalEntity ->
-//            dataValue = when (data) {
-//                BAND -> signalEntity.band.toString()
-//                OPERATOR -> signalEntity.operatorName
-//                LEVEL -> signalEntity.level.toString()
-//                else -> signalEntity.operatorName
-//            }
-//            if (usageList.none { it.name == dataValue })
-//                usageList.add(Usage(dataValue, 0))
-//            usageList.first { it.name == dataValue }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-//            previousSignalEntity = signalEntity
-//        }
-//        usageList.sortBy { it.time }
-//        return usageList.last().name
-//    }
-
     private fun getRoamingTime(cellularList: List<SignalRaw>): String {
         if (cellularList.isEmpty()) return "0"
         var roamingTime: Long = 0
