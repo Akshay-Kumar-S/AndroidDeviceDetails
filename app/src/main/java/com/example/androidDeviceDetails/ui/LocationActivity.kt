@@ -19,11 +19,12 @@ import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.library.BuildConfig
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
 import org.osmdroid.views.MapView.getTileSystem
-import org.osmdroid.views.overlay.TilesOverlay
 import java.util.*
 import kotlin.collections.ArrayList
 import org.osmdroid.config.Configuration as osmConfig
@@ -45,13 +46,13 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         setContentView(binding.root)
         initRecyclerView()
         initBottomSheet()
+        initDatePicker()
+        initMap()
         activityController = ActivityController(
             NAME, binding, this,
             binding.bottomLocation.dateTimePickerLayout, supportFragmentManager
         )
         locationViewModel = activityController.viewModel as LocationViewModel
-        initDatePicker()
-        initMap()
         binding.apply {
             bottomLocation.sortButton.setOnClickListener(this@LocationActivity)
         }
@@ -72,6 +73,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         )
         osmConfig.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         binding.apply {
+            mapView.setTileSource(TileSourceFactory.MAPNIK)
             mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
             mapView.isHorizontalMapRepetitionEnabled = true
             mapView.isVerticalMapRepetitionEnabled = false
@@ -79,19 +81,13 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
             mapView.isTilesScaledToDpi = true
             mapView.minZoomLevel = 2.0
             mapView.setScrollableAreaLimitLatitude(
-                getTileSystem().maxLatitude,
-                getTileSystem().minLatitude,
-                0
+                getTileSystem().maxLatitude, getTileSystem().minLatitude, 0
             )
-            mapView.setTileSource(TileSourceFactory.MAPNIK)
             when (resources?.configuration?.uiMode?.and(UI_MODE_NIGHT_MASK)) {
                 UI_MODE_NIGHT_YES -> mapView.overlayManager.tilesOverlay.setColorFilter(test())
             }
-
         }
-
     }
-
 
     private fun test(): ColorMatrixColorFilter {
         val inverseMatrix = ColorMatrix(

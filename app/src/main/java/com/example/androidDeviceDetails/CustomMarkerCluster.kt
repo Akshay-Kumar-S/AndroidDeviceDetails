@@ -19,11 +19,11 @@ class CustomMarkerCluster(context: Context) : RadiusMarkerClusterer(context) {
             Bitmap.createBitmap(mClusterIcon.width, mClusterIcon.height, mClusterIcon.config)
         val iconCanvas = Canvas(finalIcon)
         iconCanvas.drawBitmap(mClusterIcon, 0f, 0f, null)
-        var text = 0
-        for(i in 0 until cluster.size) text+=cluster.getItem(i).title.toInt()
+        var count = 0
+        for(i in 0 until cluster.size) count+=cluster.getItem(i).title.toInt()
         val textHeight = (mTextPaint.descent() + mTextPaint.ascent()).toInt()
         iconCanvas.drawText(
-            text.toString(),
+            if (count > 999) "999+" else count.toString(),
             mTextAnchorU * finalIcon.width,
             mTextAnchorV * finalIcon.height - textHeight / 2,
             mTextPaint
