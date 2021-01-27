@@ -44,29 +44,47 @@ class SignalCooker : BaseCooker() {
         GlobalScope.launch {
             var wifiPercentage = 0F
             var cellularPercentage = 0F
-            val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
-            val cellularList = arrayListOf<SignalRaw>()
-            val wifiList = arrayListOf<SignalRaw>()
-            for (signalRaw in signalRawList) {
-                when (signalRaw.signal) {
-                    Signal.CELLULAR.ordinal -> cellularList.add(signalRaw)
-                    Signal.WIFI.ordinal -> wifiList.add(signalRaw)
-                }
-            }
+            var cellularBandList= ArrayList<Usage>()
+            var wifiLevelList= ArrayList<Usage>()
+            var cellularNameList= ArrayList<Usage>()
+            var wifiNameList= ArrayList<Usage>()
+            var previousCellularEntity:SignalRaw
 
-            if (wifiList.isNotEmpty()) {
-                wifiPercentage = wifiList.last().strengthPercentage
+            val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
+            val cellularList = signalRawList.filter { it.signal == Signal.CELLULAR.ordinal }
+            val wifiList = signalRawList.filter { it.signal == Signal.WIFI.ordinal }
+
+            if (wifiList.isNotEmpty()) {wifiPercentage = wifiList.last().strengthPercentage
+                 previousCellularEntity = cellularList.first()}
+
+            if (cellularList.isNotEmpty()) cellularPercentage =
+                cellularList.last().strengthPercentage
+
+
+
+            var previousWifiEntity = wifiList.first()
+            cellularList.forEach { cellularEntity ->
+               cellularBandList= getMostUsed(cellularBandList,cellularEntity.band!!,previousCellularEntity.timeStamp,cellularEntity.timeStamp)
+                cellularNameList= getMostUsed(cellularNameList,cellularEntity.operatorName,previousCellularEntity.timeStamp,cellularEntity.timeStamp)
+                previousCellularEntity=cellularEntity
             }
-            if (cellularList.isNotEmpty())
-                cellularPercentage = cellularList.last().strengthPercentage
+            wifiList.forEach { wifiEntity ->
+               wifiLevelList= getMostUsed(wifiLevelList,wifiEntity.level.toString(),previousWifiEntity.timeStamp,wifiEntity.timeStamp)
+                wifiNameList= getMostUsed(wifiNameList,wifiEntity.operatorName.toString(),previousWifiEntity.timeStamp,wifiEntity.timeStamp)
+                previousWifiEntity=wifiEntity
+            }
+            cellularBandList.sortBy { it.time }
+            wifiLevelList.sortBy { it.time }
+            cellularNameList.sortBy { it.time }
+            wifiNameList.sortBy { it.time }
 
             val cookedDataList = ArrayList<Any>()
             val signalCookedData = SignalCookedData(
                 getRoamingTime(cellularList),
-                getMostUsed(cellularList, OPERATOR),
-                getMostUsed(wifiList, OPERATOR),
-                getMostUsed(cellularList, BAND),
-                getMostUsed(wifiList, LEVEL),
+                cellularNameList.last().name,
+                wifiNameList.last().name,
+                cellularBandList.last().name,
+                wifiLevelList.last().name,
                 wifiPercentage,
                 cellularPercentage
             )
@@ -82,29 +100,29 @@ class SignalCooker : BaseCooker() {
         }
     }
 
-    private fun getMostUsed(
-        rawList: List<SignalRaw>,
-        data: Int,
-    ): String {
-        if (rawList.isEmpty()) return "no data"
-        val usageList = ArrayList<Usage>()
-        var dataValue: String
-        var previousSignalEntity = rawList.first()
-        rawList.forEach { signalEntity ->
-            dataValue = when (data) {
-                BAND -> signalEntity.band.toString()
-                OPERATOR -> signalEntity.operatorName
-                LEVEL -> signalEntity.level.toString()
-                else -> signalEntity.operatorName
-            }
-            if (usageList.none { it.name == dataValue })
-                usageList.add(Usage(dataValue, 0))
-            usageList.first { it.name == dataValue }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
-            previousSignalEntity = signalEntity
-        }
-        usageList.sortBy { it.time }
-        return usageList.last().name
-    }
+//    private fun getMostUsed(
+//        rawList: List<SignalRaw>,
+//        data: Int,
+//    ): String {
+//        if (rawList.isEmpty()) return "unknown"
+//        val usageList = ArrayList<Usage>()
+//        var dataValue: String
+//        var previousSignalEntity = rawList.first()
+//        rawList.forEach { signalEntity ->
+//            dataValue = when (data) {
+//                BAND -> signalEntity.band.toString()
+//                OPERATOR -> signalEntity.operatorName
+//                LEVEL -> signalEntity.level.toString()
+//                else -> signalEntity.operatorName
+//            }
+//            if (usageList.none { it.name == dataValue })
+//                usageList.add(Usage(dataValue, 0))
+//            usageList.first { it.name == dataValue }.time += (signalEntity.timeStamp - previousSignalEntity.timeStamp)
+//            previousSignalEntity = signalEntity
+//        }
+//        usageList.sortBy { it.time }
+//        return usageList.last().name
+//    }
 
     private fun getRoamingTime(cellularList: List<SignalRaw>): String {
         if (cellularList.isEmpty()) return "0"
@@ -137,5 +155,12 @@ class SignalCooker : BaseCooker() {
                 }
             }
         }
+    }
+
+    private fun getMostUsed(usageList: ArrayList<Usage>, dataValue: String, previousTime:Long, currentTime:Long): ArrayList<Usage> {
+        if (usageList.none { it.name == dataValue })
+            usageList.add(Usage(dataValue, 0))
+        usageList.first { it.name == dataValue }.time += (currentTime - previousTime)
+        return usageList
     }
 }
