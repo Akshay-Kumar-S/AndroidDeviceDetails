@@ -15,7 +15,7 @@ import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCoo
 class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, val context: Context, var type:String) :
     BaseViewModel() {
     companion object {
-        var eventFilter = 4
+        var eventFilter = 1
         var savedAppList = arrayListOf<PermittedAppsCookedData>()
     }
 
@@ -32,19 +32,24 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
         savedAppList = appList
         filteredList = filteredList.sortedBy { it.apk_title }.toMutableList()
         filteredList.removeAll { it.package_name == DeviceDetailsApplication.instance.packageName }
-        val allowedList: MutableList<PermittedAppsCookedData> = ArrayList()
-        val deniedList: MutableList<PermittedAppsCookedData> = ArrayList()
-        for(i in filteredList){
-            if(i.isAllowed)
-                allowedList.add(i)
-            else
-                deniedList.add(i)
+        val savedAppList: MutableList<PermittedAppsCookedData> = ArrayList()
+        if(eventFilter==1){
+            savedAppList.clear()
+            for(i in filteredList){
+                if(i.isAllowed)
+                    savedAppList.add(i)
+            }
+        }
+        else{
+            savedAppList.clear()
+            for(i in filteredList){
+                if(!i.isAllowed)
+                    savedAppList.add(i)
+            }
         }
         binding.root.post {
             binding.permittedAppsListView.adapter =
-                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, allowedList)
-            binding.deniedAppsListView.adapter =
-                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, deniedList)
+                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, savedAppList)
         }
     }
 
