@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.ui
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -12,6 +13,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
+import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.models.appInfo.EventType
@@ -39,6 +41,9 @@ class PermittedAppsActivity : AppCompatActivity() {
         )
         Log.d("Tag", intent.getStringExtra("permission").toString())
         binding.apply {
+            permittedAppsListView.setOnItemClickListener { parent, _, position, _ ->
+                showApps(parent, position)
+            }
             permittedAppsListView.isEnabled = true
         }
     }
@@ -68,10 +73,11 @@ class PermittedAppsActivity : AppCompatActivity() {
     }
 
     private fun showApps(parent: AdapterView<*>, position: Int) {
-        val adapter = parent.adapter as PermissionsListAdapter
+        val adapter = parent.adapter as PermittedAppsListAdapter
         val item = adapter.getItem(position)
-        val infoIntent = Intent(Settings.ACTION_PRIVACY_SETTINGS)
-        intent.putExtra("permission", item)
+        val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        infoIntent.addCategory(Intent.CATEGORY_DEFAULT)
+        infoIntent.data = Uri.parse("package:${item?.package_name}")
         startActivity(infoIntent)
     }
 }
