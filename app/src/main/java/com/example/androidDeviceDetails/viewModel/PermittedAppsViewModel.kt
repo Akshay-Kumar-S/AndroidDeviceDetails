@@ -1,13 +1,13 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
-import android.widget.Toast
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
+import com.example.androidDeviceDetails.viewModel.AppInfoViewModel.Companion.savedAppList
 
 /**
  * Implements [BaseViewModel]
@@ -53,6 +53,12 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
         }
     }
 
+    /**
+     * Filters [savedAppList] based on given filter type
+     *
+     * Overrides : [onDone] in [BaseViewModel]
+     * @param [type] Type of filter
+     */
     override fun filter(type: Int) {
         eventFilter = type
         onDone(savedAppList)

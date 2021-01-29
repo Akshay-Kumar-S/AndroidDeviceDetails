@@ -8,11 +8,16 @@ import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.models.database.AppPermissionsInfo
-
 import com.example.androidDeviceDetails.models.database.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Implements [BaseCollector].
+ *
+ * A time based collector which collects the allowed and denied permissions of individual apps.
+ *
+ */
 class PermissionCollector(var context: Context) : BaseCollector() {
     val db = RoomDB.getDatabase()!!
     private fun installedApps() {

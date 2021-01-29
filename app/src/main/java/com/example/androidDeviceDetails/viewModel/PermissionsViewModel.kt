@@ -11,6 +11,13 @@ import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
  */
 class PermissionsViewModel(private val binding: ActivityPermissionsBinding, val context: Context) :
     BaseViewModel() {
+
+    /**
+     * Displays provided data on UI as List view
+     *
+     * Overrides : [onDone] in [BaseViewModel]
+     * @param [outputList] list of cooked data
+     */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
         var permissionList = outputList as ArrayList<String>
