@@ -28,9 +28,7 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
-        controller = ActivityController(
-            NAME, binding, this, binding.pickerBinding, supportFragmentManager
-        )
+        controller = ActivityController(this, NAME, binding)
         sortBySheet = SortBySheet(options, controller::sortView, SortBy.DESCENDING.ordinal)
         binding.apply {
             listView.setOnItemClickListener { parent, _, position, _ ->

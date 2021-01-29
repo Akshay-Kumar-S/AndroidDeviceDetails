@@ -46,10 +46,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         initBottomSheet()
         initDatePicker()
         initMap()
-        activityController = ActivityController(
-            NAME, binding, this,
-            binding.bottomLocation.dateTimePickerLayout, supportFragmentManager
-        )
+        activityController = ActivityController(this, NAME, binding)
         locationViewModel = activityController.viewModel as LocationViewModel
         binding.apply {
             bottomLocation.sortButton.setOnClickListener(this@LocationActivity)

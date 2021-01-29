@@ -26,9 +26,7 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_data)
-        controller = ActivityController(
-            NAME, binding, this, binding.pickerBinding, supportFragmentManager
-        )
+        controller = ActivityController(this, NAME, binding)
         sortBySheet = SortBySheet(options, controller::sortView, SortBy.WIFI_DESCENDING.ordinal)
         binding.apply {
             pickerBinding.startTime.setOnClickListener(this@NetworkUsageActivity)

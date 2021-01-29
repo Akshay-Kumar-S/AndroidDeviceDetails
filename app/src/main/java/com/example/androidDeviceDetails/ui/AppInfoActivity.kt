@@ -68,13 +68,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
-        controller = ActivityController(
-            NAME,
-            binding,
-            this,
-            binding.dateTimePickerLayout,
-            supportFragmentManager
-        )
+        controller = ActivityController(this, NAME, binding)
         binding.appInfoListView.isEnabled = true
         binding.apply {
             dateTimePickerLayout.startTime
