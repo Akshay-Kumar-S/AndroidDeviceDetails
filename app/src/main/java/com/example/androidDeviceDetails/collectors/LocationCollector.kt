@@ -22,10 +22,9 @@ import java.util.concurrent.TimeUnit
 class LocationCollector(private val context: Context) : BaseCollector() {
     private lateinit var locationGps: Location
     private lateinit var locationNetwork: Location
-    private var locationDatabase: RoomDB = RoomDB.getDatabase()!!
-    private var locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
 
     override fun start() {
+        val locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
         val hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
         val hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
         Log.d("Location", "gps:$hasGps network:$hasNetwork ")
@@ -71,7 +70,7 @@ class LocationCollector(private val context: Context) : BaseCollector() {
             0, location.latitude, location.longitude, System.currentTimeMillis()
         )
         GlobalScope.launch {
-            locationDatabase.locationDao().insertLocation(locationObj)
+            RoomDB.getDatabase()!!.locationDao().insertLocation(locationObj)
         }
     }
 }

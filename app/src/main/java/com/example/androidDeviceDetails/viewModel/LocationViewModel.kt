@@ -23,8 +23,6 @@ import org.osmdroid.views.overlay.Marker
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
-    private lateinit var cookedDataList: ArrayList<LocationData>
-
     private fun toggleSortButton() {
         if (binding.locationBottomSheet.sortButton.tag == "down") {
             binding.locationBottomSheet.sortButton.tag = "up"
@@ -53,7 +51,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         toggleSortButton()
     }
 
-    private fun buildAdapterView() {
+    private fun buildAdapterView(cookedDataList: ArrayList<LocationData>) {
         binding.root.post {
             (binding.locationBottomSheet.locationListView.adapter as LocationAdapter).refreshList(
                 cookedDataList
@@ -73,7 +71,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         return bitmap
     }
 
-    private fun addPointOnMap() {
+    private fun addPointOnMap(cookedDataList: ArrayList<LocationData>) {
         val overlays = binding.mapView.overlays
         overlays.clear()
         val cluster = CustomMarkerCluster(context)
@@ -114,13 +112,13 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
     override fun <T> onDone(outputList: ArrayList<T>) {
-        cookedDataList = outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
+        val cookedDataList= outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
         if (cookedDataList.isEmpty())
             onNoData()
         else {
             focusMapTo(cookedDataList[0].geoHash)
-            addPointOnMap()
-            buildAdapterView()
+            addPointOnMap(cookedDataList)
+            buildAdapterView(cookedDataList)
         }
     }
 
