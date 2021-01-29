@@ -9,6 +9,7 @@ import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.Utils
 
 /**
  * Implements [BaseViewModel]
@@ -83,7 +84,7 @@ class SignalViewModel(
     private fun updateList() {
         signalBinding.mostUsedOperator.cookedValue.text = mostUsedData.mostUsedOperator
         signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedCellularBand
-        signalBinding.roamingTime.cookedValue.text = mostUsedData.roamingTime
+        signalBinding.roamingTime.cookedValue.text = Utils.getTimePeriod(mostUsedData.roamingTime)
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
     }
