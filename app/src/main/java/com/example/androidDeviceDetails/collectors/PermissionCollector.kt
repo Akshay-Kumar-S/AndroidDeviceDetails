@@ -33,7 +33,7 @@ class PermissionCollector(var context: Context) : BaseCollector() {
         }
     }
 
-    override fun start() {
+    override fun collect() {
         installedApps()
     }
 

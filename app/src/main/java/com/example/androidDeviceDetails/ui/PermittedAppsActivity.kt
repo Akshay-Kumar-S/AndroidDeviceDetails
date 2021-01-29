@@ -12,11 +12,9 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
 import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
-import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 
 class PermittedAppsActivity : AppCompatActivity() {
@@ -26,14 +24,16 @@ class PermittedAppsActivity : AppCompatActivity() {
 
     companion object {
         const val NAME = "permittedapps"
+        var PERMISSION = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_permitted_apps)
-        this.setTitle(intent.getStringExtra("permission").toString());
+        this.title = intent.getStringExtra("permission").toString();
+        PERMISSION = intent.getStringExtra("permission").toString()
         controller = ActivityController(
-            NAME+intent.getStringExtra("permission").toString(),
+            NAME,
             binding,
             this,
             null,

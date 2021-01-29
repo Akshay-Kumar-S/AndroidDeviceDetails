@@ -11,7 +11,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class PermittedAppsCooker(var type: String) : BaseCooker() {
+class PermittedAppsCooker() : BaseCooker() {
 
     /**
      * Cook data for App Info from the collected data available in the [AppPermissionDao] database for
@@ -27,26 +27,25 @@ class PermittedAppsCooker(var type: String) : BaseCooker() {
             val db = RoomDB.getDatabase()!!
             val appList = arrayListOf<PermittedAppsCookedData>()
             val ids = db.AppPermissionDao().getPermittedApps()
-            var perm = ""
+            var permission = ""
             for (id in ids) {
-                var str = type.replace(PermittedAppsActivity.NAME,"")
-                when(str){
-                    "Phone" -> perm="PHONE"
-                    "Call Logs" -> perm="CALL_LOG"
-                    "Contacts" -> perm="CONTACTS"
-                    "SMS" -> perm="SMS"
-                    "Location" -> perm="LOCATION"
-                    "Camera" -> perm="CAMERA"
-                    "Microphone" -> perm="RECORD_AUDIO"
-                    "Storage" -> perm="STORAGE"
-                    "Calender" -> perm="CALENDAR"
-                    "Body Sensors" -> perm="BODY_SENSORS"
-                    "Physical Activity" -> perm="ACTIVITY_RECOGNITION"
+                when(PermittedAppsActivity.PERMISSION){
+                    "Phone" -> permission="PHONE"
+                    "Call Logs" -> permission="CALL_LOG"
+                    "Contacts" -> permission="CONTACTS"
+                    "SMS" -> permission="SMS"
+                    "Location" -> permission="LOCATION"
+                    "Camera" -> permission="CAMERA"
+                    "Microphone" -> permission="RECORD_AUDIO"
+                    "Storage" -> permission="STORAGE"
+                    "Calender" -> permission="CALENDAR"
+                    "Body Sensors" -> permission="BODY_SENSORS"
+                    "Physical Activity" -> permission="ACTIVITY_RECOGNITION"
                 }
-                if(id.allowed_permissions.contains(perm)){
+                if(id.allowed_permissions.contains(permission)){
                 appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,true))
                 }
-                if(id.denied_permissions.contains(perm)){
+                if(id.denied_permissions.contains(permission)){
                     appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,false))
                 }
             }

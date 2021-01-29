@@ -3,7 +3,6 @@ package com.example.androidDeviceDetails.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
@@ -11,7 +10,7 @@ import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
 
-class PermissionsActivity : AppCompatActivity(), View.OnClickListener {
+class PermissionsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPermissionsBinding
     private lateinit var controller: ActivityController<String>
@@ -35,11 +34,6 @@ class PermissionsActivity : AppCompatActivity(), View.OnClickListener {
             permissionsListView.setOnItemClickListener { parent, _, position, _ ->
                 showApps(parent, position)
             }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
         }
     }
 

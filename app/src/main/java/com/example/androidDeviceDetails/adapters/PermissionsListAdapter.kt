@@ -14,8 +14,7 @@ import com.example.androidDeviceDetails.models.appInfoModels.*
 class PermissionsListAdapter(
     private var _context: Context,
     private var resource: Int,
-    private var items: List<String>,
-    private var appList: List<String>
+    private var items: List<String>
 ) : ArrayAdapter<String>(_context, resource, items) {
 
     @SuppressLint("InflateParams")

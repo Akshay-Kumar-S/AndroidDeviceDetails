@@ -12,7 +12,7 @@ import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCoo
 /**
  * Implements [BaseViewModel]
  */
-class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, val context: Context, var type:String) :
+class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, val context: Context) :
     BaseViewModel() {
     companion object {
         var eventFilter = 1
@@ -57,9 +57,4 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
         eventFilter = type
         onDone(savedAppList)
     }
-
-    private fun onNoData() =
-        binding.root.post {
-            Toast.makeText(context, "No data", Toast.LENGTH_SHORT).show()
-        }
 }

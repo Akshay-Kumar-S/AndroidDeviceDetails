@@ -13,8 +13,6 @@ abstract class BaseCooker {
 
     companion object {
         fun getCooker(type: String): BaseCooker? {
-            if(type.startsWith(PermittedAppsActivity.NAME))
-                return PermittedAppsCooker(type)
             return when (type) {
                 MainActivity.NAME->MainActivityCooker()
                 BatteryActivity.NAME -> BatteryCooker()
@@ -24,6 +22,7 @@ abstract class BaseCooker {
                 LocationActivity.NAME -> LocationCooker()
                 AppTypeActivity.NAME -> AppTypeCooker()
                 PermissionsActivity.NAME -> PermissionsCooker()
+                PermittedAppsActivity.NAME -> PermittedAppsCooker()
                 else -> null
             }
         }
