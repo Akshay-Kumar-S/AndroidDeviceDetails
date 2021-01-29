@@ -8,13 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class AppInfoTypeCooker : BaseCooker() {
+class AppTypeCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch(Dispatchers.IO) {
-            val appList = RoomDB.getDatabase()?.appsDao()?.getAll()
-            callback.onDone(appList as ArrayList<T>)
+            callback.onDone(RoomDB.getDatabase()?.appsDao()?.getAll() as ArrayList<T>)
         }
     }
 

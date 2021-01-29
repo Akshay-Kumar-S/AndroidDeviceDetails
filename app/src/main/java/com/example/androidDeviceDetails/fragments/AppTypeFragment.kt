@@ -15,10 +15,9 @@ import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.utils.Utils
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [Fragment] subclass for AppType.
  */
-
-class AppTypeUser(private var userApps: ArrayList<AppInfoCookedData>) : Fragment() {
+class AppTypeFragment(private var userApps: List<AppInfoCookedData>) : Fragment() {
 
     private lateinit var binding: FragmentAppTypeBinding
     private var mContext: Context? = null
@@ -31,8 +30,9 @@ class AppTypeUser(private var userApps: ArrayList<AppInfoCookedData>) : Fragment
         }
         binding.appTypeListUser.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                val packageDetails = Utils.getPackageDetails(mContext!!, userApps[position])
-                Utils.showAlertDialog(mContext!!, packageDetails)
+                Utils.showAlertDialog(
+                    mContext!!, Utils.getPackageDetails(mContext!!, userApps[position])
+                )
             }
     }
 
