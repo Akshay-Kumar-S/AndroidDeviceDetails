@@ -138,6 +138,7 @@ class SignalCooker : BaseCooker() {
 
             cookedDataList.add(signalCookedData)
             cookedDataList.add(graphEntryList)
+            @Suppress("UNCHECKED_CAST")
             callback.onDone(cookedDataList as ArrayList<T>)
         }
     }

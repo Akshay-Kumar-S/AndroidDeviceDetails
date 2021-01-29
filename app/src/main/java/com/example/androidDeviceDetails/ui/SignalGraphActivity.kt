@@ -9,7 +9,6 @@ import com.example.androidDeviceDetails.models.signal.Chart
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.utils.Signal
 import com.example.androidDeviceDetails.utils.Utils
-import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.google.gson.Gson
 
 class SignalGraphActivity : AppCompatActivity() {
