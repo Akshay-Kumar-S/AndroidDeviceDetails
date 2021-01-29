@@ -16,7 +16,6 @@ import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
-
 class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAppInfoBinding
@@ -102,5 +101,4 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             R.id.endDate -> controller.setDate(this, R.id.endDate)
         }
     }
-
 }

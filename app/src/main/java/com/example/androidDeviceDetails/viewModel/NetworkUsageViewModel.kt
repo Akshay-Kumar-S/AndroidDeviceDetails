@@ -44,7 +44,6 @@ class NetworkUsageViewModel(
         }
     }
 
-
     override fun sort(type: Int) {
         sortBy = type
         when (type) {
@@ -52,10 +51,13 @@ class NetworkUsageViewModel(
             SortBy.WIFI_ASCENDING.ordinal -> itemList.sortBy { it.transferredDataWifi + it.receivedDataWifi }
             SortBy.CELLULAR_DESCENDING.ordinal -> itemList.sortByDescending { it.transferredDataMobile + it.receivedDataMobile }
             SortBy.CELLULAR_ASCENDING.ordinal -> itemList.sortBy { it.transferredDataMobile + it.receivedDataMobile }
-            SortBy.ALPHABETICAL.ordinal -> itemList.sortBy {  Utils.getApplicationLabel(it.packageName)}
-            SortBy.REVERSE_ALPHABETICAL.ordinal -> itemList.sortByDescending { Utils.getApplicationLabel(it.packageName) }
+            SortBy.ALPHABETICAL.ordinal -> itemList.sortBy { Utils.getApplicationLabel(it.packageName) }
+            SortBy.REVERSE_ALPHABETICAL.ordinal -> itemList.sortByDescending {
+                Utils.getApplicationLabel(it.packageName)
+            }
         }
-        itemList=itemList.filterNot { it.receivedDataWifi+  it.receivedDataMobile +it.transferredDataMobile +it.transferredDataWifi==0L} as ArrayList<AppNetworkUsageRaw>
+        itemList =
+            itemList.filterNot { it.receivedDataWifi + it.receivedDataMobile + it.transferredDataMobile + it.transferredDataWifi == 0L } as ArrayList<AppNetworkUsageRaw>
         val adapter = NetWorkUsageListAdapter(context, R.layout.appdata_tile, itemList)
         binding.appDataListView.adapter = adapter
         adapter.notifyDataSetChanged()

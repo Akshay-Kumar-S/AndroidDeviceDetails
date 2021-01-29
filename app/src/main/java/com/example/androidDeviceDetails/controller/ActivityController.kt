@@ -30,8 +30,6 @@ class ActivityController<T>(
     private var previousStartTime: Long = 0
     private var previousEndTime: Long = 0
     private var isStartCalendar = true
-
-
     private val onCookingDone = object : ICookingDone<T> {
         override fun onDone(outputList: ArrayList<T>) {
 
@@ -84,7 +82,6 @@ class ActivityController<T>(
                     validateTimeInterval()
                 previousEndTime = endCalendar.timeInMillis
             }
-
         }
 
     fun setDate(context: Context, id: Int) {
