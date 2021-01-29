@@ -31,7 +31,7 @@ class LocationCooker : BaseCooker() {
                     latLong.lat, latLong.lon, 1).first().locality
             locationDisplayList.add(
                 LocationData(
-                    geoHash, count, address ?: "Location Unknown"
+                    geoHash, count, address ?: "Unknown Location"
                 )
             )
         }
