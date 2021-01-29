@@ -23,7 +23,7 @@ class AppTypeActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_type)
         controller = ActivityController(this, NAME, binding)
         binding.tabLayout.setTabTextColors(
-            ContextCompat.getColor(this, R.color.white),
+            ContextCompat.getColor(this, R.color.labelBackGround),
             ContextCompat.getColor(this, R.color.white)
         )
     }
