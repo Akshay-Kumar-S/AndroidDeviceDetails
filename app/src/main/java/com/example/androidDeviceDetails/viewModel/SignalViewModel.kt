@@ -22,13 +22,6 @@ class SignalViewModel(
     var graphEntryList = arrayListOf<SignalGraphEntry>()
     private lateinit var mostUsedData: SignalCookedData
 
-    companion object {
-        const val LEVEL_POOR = 0
-        const val LEVEL_LOW = 1
-        const val LEVEL_MEDIUM = 2
-        const val LEVEL_GOOD = 3
-        const val LEVEL_EXCELLENT = 4
-    }
 
     init {
         observeSignal()
@@ -93,18 +86,8 @@ class SignalViewModel(
         signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedCellularBand
         signalBinding.roamingTime.cookedValue.text = mostUsedData.roamingTime
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
-        signalBinding.mostUsedWifiLevel.cookedValue.text =
-            getWifiLevel(mostUsedData.mostUsedWifiLevel)
+        signalBinding.mostUsedWifiLevel.cookedValue.text =mostUsedData.mostUsedWifiLevel
+
     }
 
-    private fun getWifiLevel(level: Int): String {
-        return when (level) {
-            LEVEL_POOR -> "Poor"
-            LEVEL_LOW -> "Low"
-            LEVEL_MEDIUM -> "Medium"
-            LEVEL_GOOD -> "Good"
-            LEVEL_EXCELLENT -> "Excellent"
-            else -> "Unknown"
-        }
-    }
 }

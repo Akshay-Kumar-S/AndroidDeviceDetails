@@ -22,6 +22,11 @@ class SignalCooker : BaseCooker() {
     companion object {
         const val MAX_PLOT_POINTS: Int = 40
         const val MINUTE: Long = 60 * 1000
+        const val LEVEL_POOR = 0
+        const val LEVEL_LOW = 1
+        const val LEVEL_MEDIUM = 2
+        const val LEVEL_GOOD = 3
+        const val LEVEL_EXCELLENT = 4
     }
 
     /**
@@ -133,7 +138,7 @@ class SignalCooker : BaseCooker() {
                 ssidList.sortBy { it.time }
                 signalCookedData.lastWifiStrength = lastWifiEntity.strengthPercentage
                 signalCookedData.mostUsedWifi = ssidList.last().name
-                signalCookedData.mostUsedWifiLevel = wifiLevelList.last().name.toInt()
+                signalCookedData.mostUsedWifiLevel = getWifiSpeed(wifiLevelList.last().name.toInt())
             }
 
             cookedDataList.add(signalCookedData)
@@ -150,5 +155,16 @@ class SignalCooker : BaseCooker() {
             usageList.add(Usage(dataValue, 0))
         usageList.first { it.name == dataValue }.time += (currentTime - previousTime)
         return usageList
+    }
+
+    private fun getWifiSpeed(level: Int): String {
+        return when (level) {
+            LEVEL_POOR -> "Poor"
+            LEVEL_LOW -> "Low"
+            LEVEL_MEDIUM -> "Medium"
+            LEVEL_GOOD -> "Good"
+            LEVEL_EXCELLENT -> "Excellent"
+            else -> "Unknown"
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
@@ -65,7 +66,6 @@ class WifiCollector(val context: Context) : BaseCollector() {
                             WIFI_LEVEL.toFloat() * 100
                 }
             }
-
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
                 signal = Signal.WIFI.ordinal,
