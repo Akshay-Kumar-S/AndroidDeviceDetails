@@ -46,6 +46,11 @@ object Utils {
     private const val format = "dd/MM/yyyy HH:mm:ss:"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
     const val COLLECTION_INTERVAL: Long = 5 //in Minutes
+    const val LEVEL_POOR = 0
+    const val LEVEL_LOW = 1
+    const val LEVEL_MEDIUM = 2
+    const val LEVEL_GOOD = 3
+    const val LEVEL_EXCELLENT = 4
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 
@@ -299,13 +304,14 @@ object Utils {
         val minutes: Int = (timeStamp.toInt() / 1000 * 60 * 60) % 60
         return "$hours hours $minutes min"
     }
-    private fun getWifiSpeed(level: Int): String {
+
+    fun getSignalLevel(level: Int): String {
         return when (level) {
-            0 -> "Poor"
-            1 -> "Low"
-            2 -> "Medium"
-            3 -> "Good"
-            4 -> "Excellent"
+            LEVEL_POOR -> "Poor"
+            LEVEL_LOW -> "Low"
+            LEVEL_MEDIUM -> "Medium"
+            LEVEL_GOOD -> "Good"
+            LEVEL_EXCELLENT -> "Excellent"
             else -> "Unknown"
         }
     }

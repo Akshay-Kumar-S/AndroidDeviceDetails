@@ -12,6 +12,7 @@ import com.example.androidDeviceDetails.collectors.SignalChangeCollector.SignalC
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -130,7 +131,7 @@ class SignalChangeCollector : BaseCollector() {
                 strength = strength,
                 cellInfoType = band,
                 linkSpeed = null,
-                level = level,
+                level = Utils.getSignalLevel(level),
                 operatorName = telephonyManager.networkOperatorName,
                 isRoaming = telephonyManager.isNetworkRoaming,
                 band = networkBand,

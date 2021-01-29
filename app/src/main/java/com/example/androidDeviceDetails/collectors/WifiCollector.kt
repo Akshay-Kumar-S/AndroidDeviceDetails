@@ -12,6 +12,7 @@ import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -65,13 +66,14 @@ class WifiCollector(val context: Context) : BaseCollector() {
                             WIFI_LEVEL.toFloat() * 100
                 }
             }
+
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
                 signal = Signal.WIFI.ordinal,
                 strength = strength,
                 cellInfoType = null,
                 linkSpeed = wifiManager.connectionInfo.linkSpeed,
-                level = level,
+                level = Utils.getSignalLevel(level),
                 operatorName = wifiManager.connectionInfo.ssid,
                 isRoaming = null,
                 band = null,
