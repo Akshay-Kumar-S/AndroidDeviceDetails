@@ -56,7 +56,7 @@ interface AppNetworkUsageDao {
     fun insertAll(vararg appNetworkUsageRaw: AppNetworkUsageRaw)
 
     @Insert
-    fun insertList(finalList:List<AppNetworkUsageRaw>)
+    fun insertList(finalList: List<AppNetworkUsageRaw>)
 
     @Delete
     fun delete(appNetworkUsageRaw: AppNetworkUsageRaw)

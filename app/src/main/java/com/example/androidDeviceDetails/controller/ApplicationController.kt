@@ -9,7 +9,6 @@ import java.util.*
 
 class ApplicationController {
     lateinit var timer: Timer
-
     @RequiresApi(Build.VERSION_CODES.M)
     var instanceMap: MutableMap<String, BaseCollector> = mutableMapOf(
         "BatteryReceiver" to BatteryCollector(),

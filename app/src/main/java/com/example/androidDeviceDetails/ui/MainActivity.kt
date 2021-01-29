@@ -49,7 +49,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.locationInfo.cardView.setOnClickListener(this@MainActivity)
             binding.signalData.cardView.setOnClickListener(this@MainActivity)
         }
-
+        swipeToRefresh()
+    }
+    private fun swipeToRefresh() {
         binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
         binding.pullToRefresh.setOnRefreshListener {
             mainActivityController.refreshCooker()

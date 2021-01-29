@@ -65,5 +65,4 @@ class NetworkUsageActivity : AppCompatActivity(), View.OnClickListener {
         "Package Name (A to Z)" to SortBy.ALPHABETICAL.ordinal,
         "Package Name (Z to A)" to SortBy.REVERSE_ALPHABETICAL.ordinal
     )
-
 }

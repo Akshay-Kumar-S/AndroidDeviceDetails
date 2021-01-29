@@ -17,8 +17,7 @@ class DeviceNetworkUsageCooker : BaseCooker() {
             if (inBetweenList.isNotEmpty()) {
                 val initialData = inBetweenList.first()
                 val finalData = inBetweenList.last()
-                val totalDataUsageList =
-                    arrayListOf<DeviceNetworkUsageRaw>() //To return a list to keep signature of cook common.
+                val totalDataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
                 totalDataUsageList.add(
                     DeviceNetworkUsageRaw(
                         System.currentTimeMillis(),

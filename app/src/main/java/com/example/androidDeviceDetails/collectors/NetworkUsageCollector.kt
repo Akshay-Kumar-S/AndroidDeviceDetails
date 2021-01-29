@@ -52,12 +52,11 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
     private fun updateAppNetworkDataUsageDB() {
         var networkUsageList = ArrayList<AppNetworkUsageRaw>()
         val networkStatsWifi = networkStatsManager.querySummary(
-            NetworkCapabilities.TRANSPORT_WIFI,
-            null, firstInstallTime, System.currentTimeMillis()
+            NetworkCapabilities.TRANSPORT_WIFI, null, firstInstallTime, System.currentTimeMillis()
         )
         val networkStatsMobileData = networkStatsManager.querySummary(
-            NetworkCapabilities.TRANSPORT_CELLULAR,
-            null, firstInstallTime, System.currentTimeMillis()
+            NetworkCapabilities.TRANSPORT_CELLULAR, null, firstInstallTime,
+            System.currentTimeMillis()
         )
         val bucket = NetworkStats.Bucket()
         while (networkStatsWifi.hasNextBucket() or networkStatsMobileData.hasNextBucket()) {
@@ -73,7 +72,10 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         GlobalScope.launch { db.appNetworkUsageDao().insertList(networkUsageList) }
     }
 
-    private fun fillList(bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageRaw>, isWifi: Boolean): ArrayList<AppNetworkUsageRaw> {
+    private fun fillList(
+        bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageRaw>,
+        isWifi: Boolean
+    ): ArrayList<AppNetworkUsageRaw> {
         val packageName = context.packageManager.getNameForUid(bucket.uid)
         if (packageName != null && packageName != "null")
             if (networkUsageList.none { it.packageName == packageName })
@@ -105,8 +107,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         var totalMobileDataRx = 0L
         var totalMobileDataTx = 0L
         var bucket = networkStatsManager.querySummaryForDevice(
-            NetworkCapabilities.TRANSPORT_WIFI,
-            null, firstInstallTime, System.currentTimeMillis()
+            NetworkCapabilities.TRANSPORT_WIFI, null, firstInstallTime, System.currentTimeMillis()
         )
         totalWifiDataRx += bucket.rxBytes
         totalWifiDataTx += bucket.txBytes
@@ -119,8 +120,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         GlobalScope.launch {
             db.deviceNetworkUsageDao().insertAll(
                 DeviceNetworkUsageRaw(
-                    System.currentTimeMillis(),
-                    totalWifiDataTx, totalMobileDataTx,
+                    System.currentTimeMillis(), totalWifiDataTx, totalMobileDataTx,
                     totalWifiDataRx, totalMobileDataRx
                 )
             )
@@ -135,19 +135,13 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
         val timeNow = System.currentTimeMillis()
         return if (wifiEnable)
             AppNetworkUsageRaw(
-                0,
-                timeNow.minus(timeNow.rem(60 * 1000)), //To make resolution to minutes
-                packageName,
-                bucket.txBytes, 0L,
-                bucket.rxBytes, 0L
+                0, timeNow.minus(timeNow.rem(60 * 1000)),
+                packageName, bucket.txBytes, 0L, bucket.rxBytes, 0L
             )
         else
             AppNetworkUsageRaw(
-                0,
-                timeNow.minus(timeNow.rem(60 * 1000)),
-                packageName,
-                0L, bucket.txBytes, 0L,
-                bucket.rxBytes,
+                0, timeNow.minus(timeNow.rem(60 * 1000)),
+                packageName, 0L, bucket.txBytes, 0L, bucket.rxBytes,
             )
 
     }
