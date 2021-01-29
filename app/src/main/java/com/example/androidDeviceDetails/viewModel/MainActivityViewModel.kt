@@ -10,8 +10,6 @@ import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
 import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Utils
-import kotlin.math.ceil
-import kotlin.math.pow
 
 
 class MainActivityViewModel(private val binding: ActivityMainBinding, val context: Context) :
@@ -71,8 +69,10 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
     private fun updateAppInfoCard(outputList: ArrayList<AppInfoRaw>) {
         val systemAppsCount = outputList.filter { it.isSystemApp }.size
         val userAppsCount = outputList.size - systemAppsCount
-        val systemAppsProgress = graphCalculator(systemAppsCount, outputList.size)
-        val userAppsProgress = graphCalculator(userAppsCount, outputList.size)
+        val systemAppsProgress =
+            Utils.graphCalculator(systemAppsCount.toDouble(), outputList.size.toDouble())
+        val userAppsProgress =
+            Utils.graphCalculator(userAppsCount.toDouble(), outputList.size.toDouble())
         binding.appInfo.label1Value.text = systemAppsCount.toString()
         binding.appInfo.label2Value.text = userAppsCount.toString()
         binding.appInfo.progressbarFirst.progress = systemAppsProgress + userAppsProgress
@@ -80,21 +80,16 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
     }
 
     private fun updateDeviceNetworkUsageCard(outputList: ArrayList<DeviceNetworkUsageRaw>) {
-        val wifiData =
-            (outputList.first().transferredDataWifi + outputList.first().receivedDataWifi) /
-                    1024.0.pow(2.toDouble())
+        val wifiData = outputList.first().transferredDataWifi + outputList.first().receivedDataWifi
         val cellularData =
-            (outputList.first().transferredDataMobile + outputList.first().transferredDataMobile) /
-                    1024.0.pow(2.toDouble())
+            outputList.first().transferredDataMobile + outputList.first().receivedDataMobile
         val total = wifiData + cellularData
-        val wifiDataProgress = graphCalculator(wifiData.toInt(), total.toInt())
-        val cellularDataProgress = graphCalculator(cellularData.toInt(), total.toInt())
-        binding.networkUsage.label1Value.text =
-            Utils.getFileSize(outputList.first().transferredDataWifi + outputList.first().receivedDataWifi)
-        binding.networkUsage.label2Value.text =
-            Utils.getFileSize(outputList.first().transferredDataMobile + outputList.first().transferredDataMobile)
+        val wifiDataProgress = Utils.graphCalculator(wifiData.toDouble(), total.toDouble())
+        val cellularDataProgress = Utils.graphCalculator(cellularData.toDouble(), total.toDouble())
         binding.networkUsage.progressbarFirst.progress = wifiDataProgress + cellularDataProgress
         binding.networkUsage.progressbarSecond.progress = cellularDataProgress
+        binding.networkUsage.label1Value.text = Utils.getFileSize(wifiData)
+        binding.networkUsage.label2Value.text = Utils.getFileSize(cellularData)
     }
 
     private fun updateLocationDataCard(outputList: ArrayList<LocationDisplayModel>) {
@@ -105,7 +100,4 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.signalData.pointerCellularSpeedometer.speedTo(50F, 1000)
         binding.signalData.pointerWifiSpeedometer.speedTo(70F, 1000)
     }
-
-    private fun graphCalculator(dataSize: Int, total: Int) =
-        ceil(((dataSize).toDouble().div(total).times(100))).toInt()
 }
