@@ -18,13 +18,13 @@ import com.example.androidDeviceDetails.services.AppService
 import com.example.androidDeviceDetails.utils.PrefManager
 import com.example.androidDeviceDetails.utils.Utils
 
-const val permissionCode = 200
-val permissions: Array<String> =
-    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
-
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
     companion object {
         const val NAME = "Main Activity"
+        const val permissionCode = 200
+        val permissions: Array<String> =
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
     }
 
     private lateinit var binding: ActivityMainBinding
