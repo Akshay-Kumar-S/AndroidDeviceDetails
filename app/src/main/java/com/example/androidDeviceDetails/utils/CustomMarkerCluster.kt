@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.viewModel.location
+package com.example.androidDeviceDetails.utils
 
 import android.content.Context
 import android.graphics.Bitmap

@@ -16,7 +16,7 @@ import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.utils.SortBy
-import com.example.androidDeviceDetails.viewModel.location.LocationViewModel
+import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory

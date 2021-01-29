@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.viewModel.location
+package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -13,6 +13,7 @@ import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.utils.CustomMarkerCluster
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
