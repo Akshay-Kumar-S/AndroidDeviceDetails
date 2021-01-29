@@ -28,7 +28,7 @@ class LocationCooker : BaseCooker() {
         for ((geoHash, count) in geoHashCount) {
             val latLong = GeoHash.decodeHash(geoHash)
             val address = Geocoder(DeviceDetailsApplication.instance).getFromLocation(
-                    latLong.lat, latLong.lon, 1)[0]?.locality
+                    latLong.lat, latLong.lon, 1).first().locality
             locationDisplayList.add(
                 LocationData(
                     geoHash, count, address ?: "cannot locate"

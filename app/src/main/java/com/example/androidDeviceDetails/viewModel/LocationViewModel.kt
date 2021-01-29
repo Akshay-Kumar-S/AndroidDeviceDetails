@@ -116,7 +116,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         if (cookedDataList.isEmpty())
             onNoData()
         else {
-            focusMapTo(cookedDataList[0].geoHash)
+            focusMapTo(cookedDataList.first().geoHash)
             addPointOnMap(cookedDataList)
             buildAdapterView(cookedDataList)
         }
