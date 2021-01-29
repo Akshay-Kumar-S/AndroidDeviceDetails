@@ -12,7 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AppInfoCooker : BaseCooker() {
+class AppEventCooker : BaseCooker() {
 
     /**
      * Cook data for App Info from the collected data available in the [AppHistoryDao] database for

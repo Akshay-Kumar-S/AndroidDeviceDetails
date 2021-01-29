@@ -23,7 +23,7 @@ abstract class BaseViewModel {
             when (type) {
                 MainActivity.NAME -> MainActivityViewModel(binding as ActivityMainBinding, context)
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
-                AppEventActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
+                AppEventActivity.NAME -> AppEventViewModel(binding as ActivityAppInfoBinding, context)
                 SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)
                 LocationActivity.NAME -> LocationViewModel(
                     binding as ActivityLocationBinding, context
