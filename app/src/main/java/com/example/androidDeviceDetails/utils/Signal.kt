@@ -11,3 +11,4 @@ enum class Signal {
     CELLULAR,
     WIFI
 }
+

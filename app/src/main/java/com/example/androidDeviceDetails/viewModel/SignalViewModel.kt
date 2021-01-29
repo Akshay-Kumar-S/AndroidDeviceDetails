@@ -22,7 +22,6 @@ class SignalViewModel(
     var graphEntryList = arrayListOf<SignalGraphEntry>()
     private lateinit var mostUsedData: SignalCookedData
 
-
     init {
         observeSignal()
     }
@@ -76,8 +75,8 @@ class SignalViewModel(
             cellularStrengthPercentage = mostUsedData.lastCellularStrength
             wifiStrengthPercentage = mostUsedData.lastWifiStrength
             updateGauge()
+            signalBinding.pointerCellularSpeedometer.tag = "false"
         }
-        signalBinding.pointerCellularSpeedometer.tag = "false"
         updateList()
     }
 
@@ -87,7 +86,6 @@ class SignalViewModel(
         signalBinding.roamingTime.cookedValue.text = mostUsedData.roamingTime
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
-
     }
 
 }

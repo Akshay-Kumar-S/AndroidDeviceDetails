@@ -12,18 +12,18 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.EditText
-import android.view.LayoutInflater
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
+import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
+import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.Chart
 import com.example.androidDeviceDetails.services.AppService
@@ -298,5 +298,15 @@ object Utils {
         val hours: Int = timeStamp.toInt() / (1000 * 60 * 60)
         val minutes: Int = (timeStamp.toInt() / 1000 * 60 * 60) % 60
         return "$hours hours $minutes min"
+    }
+    private fun getWifiSpeed(level: Int): String {
+        return when (level) {
+            0 -> "Poor"
+            1 -> "Low"
+            2 -> "Medium"
+            3 -> "Good"
+            4 -> "Excellent"
+            else -> "Unknown"
+        }
     }
 }
