@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.adapters.AppTypeAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.database.AppInfoRaw
 import com.example.androidDeviceDetails.databinding.ActivityAppTypeBinding
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.EventType
-import com.example.androidDeviceDetails.models.database.AppInfoRaw
 import com.google.android.material.tabs.TabLayout
 
 
@@ -23,7 +23,7 @@ class AppTypeViewModel(val binding: ActivityAppTypeBinding, val context: Context
      * Overrides : [onDone] in [BaseViewModel]
      * @param [outputList] list of cooked data
      */
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         var appList = (outputList.filterIsInstance<AppInfoRaw>() as ArrayList).toMutableList()
         appList = appList.sortedBy { it.appTitle }.toMutableList()
         binding.root.post {
@@ -60,5 +60,4 @@ class AppTypeViewModel(val binding: ActivityAppTypeBinding, val context: Context
         }
         return convertedList.partition { !it.isSystemApp }
     }
-
 }

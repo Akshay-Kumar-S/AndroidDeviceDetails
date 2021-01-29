@@ -6,9 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
+import com.example.androidDeviceDetails.database.AppInfoRaw
 import com.example.androidDeviceDetails.databinding.ActivityAppTypeBinding
-import com.example.androidDeviceDetails.models.database.AppInfoRaw
-
 
 class AppTypeActivity : AppCompatActivity() {
 
@@ -22,7 +21,7 @@ class AppTypeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_type)
-        controller = ActivityController(NAME, binding, this, null, supportFragmentManager)
+        controller = ActivityController(this, NAME, binding)
         binding.tabLayout.setTabTextColors(
             ContextCompat.getColor(this, R.color.white),
             ContextCompat.getColor(this, R.color.white)
