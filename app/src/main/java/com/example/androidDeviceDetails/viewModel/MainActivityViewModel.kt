@@ -3,12 +3,12 @@ package com.example.androidDeviceDetails.viewModel
 import android.content.Context
 import android.view.View.VISIBLE
 import com.example.androidDeviceDetails.base.BaseViewModel
-import com.example.androidDeviceDetails.database.AppInfoRaw
-import com.example.androidDeviceDetails.database.DeviceNetworkUsageRaw
-import com.example.androidDeviceDetails.database.SignalRaw
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
-import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationData
+import com.example.androidDeviceDetails.models.database.AppInfoRaw
+import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
+import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Utils
 
 
@@ -18,7 +18,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val appInfoList = arrayListOf<AppInfoRaw>()
         val batteryList = arrayListOf<BatteryAppEntry>()
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
-        val locationList = arrayListOf<LocationDisplayModel>()
+        val locationList = arrayListOf<LocationData>()
         val signalList = arrayListOf<SignalRaw>()
         try {
             for (i in 0 until outputList.size) {
@@ -26,7 +26,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
                     is AppInfoRaw -> appInfoList.add(outputList[i] as AppInfoRaw)
                     is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
                     is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
-                    is LocationDisplayModel -> locationList.add(outputList[i] as LocationDisplayModel)
+                    is LocationData -> locationList.add(outputList[i] as LocationData)
                     is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
                 }
             }
@@ -92,7 +92,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.networkUsage.label2Value.text = Utils.getFileSize(cellularData)
     }
 
-    private fun updateLocationDataCard(outputList: ArrayList<LocationDisplayModel>) {
+    private fun updateLocationDataCard(outputList: ArrayList<LocationData>) {
         binding.locationInfo.mainValue.text = outputList.size.toString()
     }
 
