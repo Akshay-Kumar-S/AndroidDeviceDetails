@@ -36,8 +36,8 @@ abstract class BaseViewModel {
     fun updateDateTimeUI(
         startCalendar: Calendar, endCalendar: Calendar, binding: DateTimePickerBinding
     ) {
-        val simpleDateFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
         binding.apply {
+            val simpleDateFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
             startTime.text = simpleDateFormat.format(Date(startCalendar.timeInMillis))
             endTime.text = simpleDateFormat.format(Date(endCalendar.timeInMillis))
 
