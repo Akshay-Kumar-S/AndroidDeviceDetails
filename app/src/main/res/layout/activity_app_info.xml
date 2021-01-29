@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/dateTimePickerLayout"
+                android:id="@+id/picker_binding"
                 layout="@layout/date_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

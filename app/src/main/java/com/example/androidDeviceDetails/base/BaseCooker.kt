@@ -13,7 +13,7 @@ abstract class BaseCooker {
             return when (type) {
                 MainActivity.NAME->MainActivityCooker()
                 BatteryActivity.NAME -> BatteryCooker()
-                AppInfoActivity.NAME -> AppInfoCooker()
+                AppEventActivity.NAME -> AppInfoCooker()
                 NetworkUsageActivity.NAME -> AppNetworkUsageCooker()
                 SignalActivity.NAME -> SignalCooker()
                 LocationActivity.NAME -> LocationCooker()

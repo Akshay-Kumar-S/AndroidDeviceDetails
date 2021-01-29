@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -16,7 +15,7 @@ import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
 
-class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
+class AppEventActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAppInfoBinding
     private lateinit var controller: ActivityController<AppInfoCookedData>
@@ -26,34 +25,29 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
-    companion object {
-        const val NAME = "appInfo"
-    }
-
-    @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val title = findViewById<TextView>(R.id.filter_text)
         var filter = 0
         when (item.itemId) {
             R.id.spinner_all -> {
-                title.text = "All"
+                title.text = getString(R.string.filterAll)
                 filter = EventType.ALL_EVENTS.ordinal
             }
             R.id.spinner_enrolled -> {
-                title.text = "Enrolled"
+                title.text = getString(R.string.filterEnrolled)
                 filter = EventType.APP_ENROLL.ordinal
 
             }
             R.id.spinner_installed -> {
-                title.text = "Installed"
+                title.text = getString(R.string.filterInstalled)
                 filter = EventType.APP_INSTALLED.ordinal
             }
             R.id.spinner_updated -> {
-                title.text = "Updated"
+                title.text = getString(R.string.filterUpdated)
                 filter = EventType.APP_UPDATED.ordinal
             }
             R.id.spinner_uninstalled -> {
-                title.text = "Uninstalled"
+                title.text = getString(R.string.filterUninstalled)
                 filter = EventType.APP_UNINSTALLED.ordinal
             }
             R.id.filter_text -> {
@@ -71,21 +65,16 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
         controller = ActivityController(this, NAME, binding)
         binding.appInfoListView.isEnabled = true
         binding.apply {
-            dateTimePickerLayout.startTime
-                .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.startDate
-                .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.endTime
-                .setOnClickListener(this@AppInfoActivity)
-            dateTimePickerLayout.endDate
-                .setOnClickListener(this@AppInfoActivity)
+            pickerBinding.startTime.setOnClickListener(this@AppEventActivity)
+            pickerBinding.startDate.setOnClickListener(this@AppEventActivity)
+            pickerBinding.endTime.setOnClickListener(this@AppEventActivity)
+            pickerBinding.endDate.setOnClickListener(this@AppEventActivity)
         }
     }
 
     fun deleteApp(view: View) {
         Utils.uninstallApp(view.tag as String, packageManager, this)
     }
-
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -94,5 +83,9 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
             R.id.endTime -> controller.setTime(this, R.id.endTime)
             R.id.endDate -> controller.setDate(this, R.id.endDate)
         }
+    }
+
+    companion object {
+        const val NAME = "appInfo"
     }
 }
