@@ -13,7 +13,7 @@ import com.example.androidDeviceDetails.models.appInfo.EventType
 /**
  * Implements [BaseViewModel]
  */
-class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
+class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
     BaseViewModel() {
     companion object {
         var eventFilter = 4
@@ -40,12 +40,13 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
         binding.root.post {
             binding.appInfoListView.adapter =
-                AppInfoListAdapter(context, R.layout.appinfo_tile, filteredList, appList,false)
+                AppInfoListAdapter(
+                    context, R.layout.appinfo_tile, filteredList, calculateProgressbarStats(), false
+                )
         }
     }
 
-    private fun calculateProgressbarStats() : DonutChartData {
-        val total = savedAppList.size
+    private fun calculateProgressbarStats(): DonutChartData {
         val enrolledAppCount =
             savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
                 .eachCount()[true] ?: 0
@@ -58,7 +59,9 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
         val uninstalledAppCount =
             savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
                 .eachCount()[true] ?: 0
-        return DonutChartData(total,enrolledAppCount,installedAppCount,updateAppCount,uninstalledAppCount)
+        return DonutChartData(
+            enrolledAppCount, installedAppCount, updateAppCount, uninstalledAppCount
+        )
     }
 
     /**

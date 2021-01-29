@@ -9,10 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
-import com.example.androidDeviceDetails.models.appInfo.AppInfoItemViewHolder
-import com.example.androidDeviceDetails.models.appInfo.EventType
-import com.example.androidDeviceDetails.models.appInfo.ProgressbarViewHolder
+import com.example.androidDeviceDetails.models.appInfo.*
 import com.example.androidDeviceDetails.utils.Utils
 import kotlin.math.ceil
 
@@ -21,7 +18,7 @@ class AppInfoListAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: List<AppInfoCookedData>,
-    private var appList: List<AppInfoCookedData>?,
+    private val chart: DonutChartData?,
     private var isAppType: Boolean
 ) : ArrayAdapter<AppInfoCookedData>(_context, resource, items) {
 
@@ -42,7 +39,7 @@ class AppInfoListAdapter(
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
         if (position == 0 && !isAppType) {
-            var holder: ProgressbarViewHolder?
+            val holder: ProgressbarViewHolder?
             if (convertView == null) {
                 vi = layoutInflater.inflate(R.layout.appinfo_pie_chart, null)
                 holder = ProgressbarViewHolder(
@@ -57,10 +54,10 @@ class AppInfoListAdapter(
                 )
                 vi.tag = holder
             } else holder = vi?.tag as ProgressbarViewHolder
-            holder = setProgressbarHolder(holder)
+            setProgressbarHolder(holder)
 
         } else {
-            var holder: AppInfoItemViewHolder?
+            val holder: AppInfoItemViewHolder?
             if (convertView == null) {
                 vi = layoutInflater.inflate(resource, null)
                 holder = AppInfoItemViewHolder(
@@ -73,56 +70,43 @@ class AppInfoListAdapter(
                 )
                 vi.tag = holder
             } else holder = vi?.tag as AppInfoItemViewHolder
-            holder = setAppInfoHolder(holder,position)
+            setAppInfoHolder(holder, position)
         }
         return vi!!
     }
 
     private fun setProgressbarHolder(holder: ProgressbarViewHolder): ProgressbarViewHolder {
-        val total = appList!!.size.toDouble()
-        val enrolledAppCount =
-            appList!!.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
-                .eachCount()
-        val enrolled = ((enrolledAppCount[true] ?: 0).toDouble().div(total).times(100))
-
-        val installedAppCount =
-            appList!!.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
-                .eachCount()
-        val installed =
-            ceil(((installedAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-        val updateAppCount =
-            appList!!.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
-                .eachCount()
-        val updated = ceil(((updateAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-        val uninstalledAppCount =
-            appList!!.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
-                .eachCount()
-        val uninstalled =
-            ceil(((uninstalledAppCount[true] ?: 0).toDouble().div(total).times(100)))
-
-        holder.updated_progressBar.progress = (updated.toInt())
-        holder.installed_progressBar.progress = (updated + installed).toInt()
-        holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
-        holder.uninstalled_progressbar.progress =
-            (updated + installed + enrolled + uninstalled).toInt()
-        holder.enroll_count.text = (enrolledAppCount[true] ?: 0).toString()
-        holder.install_count.text = (installedAppCount[true] ?: 0).toString()
-        holder.update_count.text = (updateAppCount[true] ?: 0).toString()
-        holder.uninstall_count.text = (uninstalledAppCount[true] ?: 0).toString()
+        if (chart != null) {
+            val total = chart.value1 + chart.value2 + chart.value3 + chart.value4
+            val enrolled = (chart.value1.toDouble().div(total).times(100))
+            val installed = ceil((chart.value2.toDouble().div(total).times(100)))
+            val updated = ceil((chart.value3.toDouble().div(total).times(100)))
+            val uninstalled = ceil((chart.value4.toDouble().div(total).times(100)))
+            holder.updated_progressBar.progress = (updated.toInt())
+            holder.installed_progressBar.progress = (updated + installed).toInt()
+            holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
+            holder.uninstalled_progressbar.progress =
+                (updated + installed + enrolled + uninstalled).toInt()
+            holder.enroll_count.text = chart.value1.toString()
+            holder.install_count.text = chart.value2.toString()
+            holder.update_count.text = chart.value3.toString()
+            holder.uninstall_count.text = chart.value4.toString()
+        }
         return holder
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setAppInfoHolder(holder: AppInfoItemViewHolder, position: Int): AppInfoItemViewHolder{
+    private fun setAppInfoHolder(
+        holder: AppInfoItemViewHolder,
+        position: Int
+    ): AppInfoItemViewHolder {
         holder.appNameView.text = items[position].appName
         holder.eventTypeTextView.isVisible = !isAppType
         holder.uninstallButton.isVisible = !isAppType
         holder.eventBadge.isVisible = !isAppType
         holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
         holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
-        if(!isAppType) {
+        if (!isAppType) {
             holder.versionCodeTextView.text =
                 "Version Code : " + items[position].versionCode.toString()
             val color = when (items[position].eventType.ordinal) {
@@ -146,8 +130,7 @@ class AppInfoListAdapter(
             } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
                 holder.uninstallButton.isVisible = false
             }
-        }
-        else{
+        } else {
             holder.versionCodeTextView.text = items[position].packageName
         }
         return holder
