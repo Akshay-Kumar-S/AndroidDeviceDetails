@@ -13,8 +13,7 @@ class AppTypeCooker : BaseCooker() {
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch(Dispatchers.IO) {
-            iCookingDone.onDone(RoomDB.getDatabase()?.appsDao()?.getAll() as ArrayList<T>)
+            iCookingDone.onComplete(RoomDB.getDatabase()?.appsDao()?.getAll() as ArrayList<T>)
         }
     }
-
 }

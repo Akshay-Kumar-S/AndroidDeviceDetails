@@ -1,6 +1,9 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.AppInfoRaw
+import com.example.androidDeviceDetails.database.DeviceNetworkUsageRaw
+import com.example.androidDeviceDetails.database.LocationModel
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
