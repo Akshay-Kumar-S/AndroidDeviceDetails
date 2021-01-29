@@ -12,7 +12,7 @@
             android:id="@+id/permissionsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:paddingTop="1dp"
             android:divider="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
