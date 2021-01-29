@@ -6,7 +6,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.databinding.*
 import com.example.androidDeviceDetails.ui.*
 import com.example.androidDeviceDetails.viewModel.*
-import com.example.androidDeviceDetails.viewModel.location.LocationViewModel
+import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
