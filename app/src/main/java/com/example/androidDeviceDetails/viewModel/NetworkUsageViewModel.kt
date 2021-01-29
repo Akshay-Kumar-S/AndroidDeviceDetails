@@ -38,6 +38,7 @@ class NetworkUsageViewModel(
             }
         } else {
             binding.root.post {
+                itemList = arrayListOf()
                 binding.noData.isVisible = true
                 sort(sortBy)
             }
