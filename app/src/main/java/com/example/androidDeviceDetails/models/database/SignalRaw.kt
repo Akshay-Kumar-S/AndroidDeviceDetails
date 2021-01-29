@@ -33,7 +33,7 @@ data class SignalRaw(
     @ColumnInfo(name = "linkSpeed") val linkSpeed: Int?,
     @ColumnInfo(name = "level") val level: String,
     @ColumnInfo(name = "operatorName") val operatorName: String,
-    @ColumnInfo(name = "isRoaming") val isRoaming: Boolean?,
+    @ColumnInfo(name = "isRoaming") val isRoaming: Boolean,
     @ColumnInfo(name = "band") val band: String?,
     @ColumnInfo(name = "percentage") val strengthPercentage: Float
 )

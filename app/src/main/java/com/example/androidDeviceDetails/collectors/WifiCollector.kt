@@ -75,7 +75,7 @@ class WifiCollector(val context: Context) : BaseCollector() {
                 linkSpeed = wifiManager.connectionInfo.linkSpeed,
                 level = Utils.getSignalLevel(level),
                 operatorName = wifiManager.connectionInfo.ssid,
-                isRoaming = null,
+                isRoaming = false,
                 band = null,
                 strengthPercentage = wifiPercentage
             )

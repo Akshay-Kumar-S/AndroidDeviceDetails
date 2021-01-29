@@ -4,7 +4,6 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.models.signal.Usage
@@ -17,6 +16,7 @@ import kotlinx.coroutines.launch
  * Implements [BaseCooker].
  * A cooker class for handling the logic for cooking signal data.
  **/
+@Suppress("UNCHECKED_CAST")
 class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
 
@@ -41,47 +41,41 @@ class SignalCooker : BaseCooker() {
             var carrierNameList = ArrayList<Usage>()
             var ssidList = ArrayList<Usage>()
             val cookedDataList = ArrayList<Any>()
+            var roamingTime: Long = 0
             var startTime: Long
             var endTime: Long
             var timeInterval: Long
-            val cellularList = arrayListOf<SignalRaw>()
-            val wifiList = arrayListOf<SignalRaw>()
-            val signalCookedData = SignalCookedData()
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
-            signalRawList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
-                first.forEach() {
-                    cellularList.add(it)
-                }
-                second.forEach() {
-                    wifiList.add(it)
-                }
-            }
+            val cellularList = signalRawList.filter { it.signal == Signal.CELLULAR.ordinal }
+            val wifiList = signalRawList.filter { it.signal == Signal.WIFI.ordinal }
+            val signalCookedData = SignalCookedData()
 
             if (cellularList.isNotEmpty()) {
                 val lastCellularEntity = cellularList.last()
-                var previousCellularRaw = cellularList.first()
-                startTime = previousCellularRaw.timeStamp
+                var previousCellularEntity = cellularList.first()
+                startTime = previousCellularEntity.timeStamp
                 endTime = lastCellularEntity.timeStamp
                 timeInterval = maxOf((endTime - startTime) / MAX_PLOT_POINTS, MINUTE)
 
                 cellularList.forEach { cellularEntity ->
-                    cellularBandList = getMostUsed(
-                        previousCellularRaw.band!!,
+
+                    getMostUsed(
                         cellularBandList,
-                        previousCellularRaw.timeStamp,
+                        cellularEntity.band!!,
+                        previousCellularEntity.timeStamp,
                         cellularEntity.timeStamp
                     )
 
-                    carrierNameList = getMostUsed(
-                        previousCellularRaw.operatorName,
+                     getMostUsed(
                         carrierNameList,
-                        previousCellularRaw.timeStamp,
+                        cellularEntity.operatorName,
+                        previousCellularEntity.timeStamp,
                         cellularEntity.timeStamp
                     )
 
-                    if (cellularEntity.isRoaming == true)
-                        signalCookedData.roamingTime += cellularEntity.timeStamp - previousCellularRaw.timeStamp
+                    if (cellularEntity.isRoaming)
+                        roamingTime += cellularEntity.timeStamp - previousCellularEntity.timeStamp
 
                     if (cellularEntity.timeStamp >= startTime) {
                         graphEntryList.add(
@@ -93,13 +87,12 @@ class SignalCooker : BaseCooker() {
                         )
                         startTime = (timeInterval + cellularEntity.timeStamp)
                     }
-                    previousCellularRaw = cellularEntity
+                    previousCellularEntity = cellularEntity
                 }
-                carrierNameList.sortBy { it.time }
-                cellularBandList.sortBy { it.time }
                 signalCookedData.lastCellularStrength = lastCellularEntity.strengthPercentage
                 signalCookedData.mostUsedOperator = carrierNameList.last().name
                 signalCookedData.mostUsedCellularBand = cellularBandList.last().name
+                signalCookedData.roamingTime = Utils.getTimePeriod(roamingTime)
             }
             if (wifiList.isNotEmpty()) {
                 var previousWifiEntity = wifiList.first()
@@ -111,15 +104,15 @@ class SignalCooker : BaseCooker() {
 
                 wifiList.forEach { wifiEntity ->
                     wifiLevelList = getMostUsed(
-                        previousWifiEntity.level,
                         wifiLevelList,
+                        wifiEntity.level.toString(),
                         previousWifiEntity.timeStamp,
                         wifiEntity.timeStamp
                     )
 
                     ssidList = getMostUsed(
-                        previousWifiEntity.operatorName,
                         ssidList,
+                        wifiEntity.operatorName,
                         previousWifiEntity.timeStamp,
                         wifiEntity.timeStamp
                     )
@@ -146,13 +139,12 @@ class SignalCooker : BaseCooker() {
 
             cookedDataList.add(signalCookedData)
             cookedDataList.add(graphEntryList)
-            @Suppress("UNCHECKED_CAST")
             callback.onDone(cookedDataList as ArrayList<T>)
         }
     }
 
     private fun getMostUsed(
-        dataValue: String, usageList: ArrayList<Usage>, previousTime: Long, currentTime: Long
+        usageList: ArrayList<Usage>, dataValue: String, previousTime: Long, currentTime: Long
     ): ArrayList<Usage> {
         if (usageList.none { it.name == dataValue })
             usageList.add(Usage(dataValue, 0))
