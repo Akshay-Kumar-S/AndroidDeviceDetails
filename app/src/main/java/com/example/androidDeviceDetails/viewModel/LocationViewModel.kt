@@ -26,15 +26,15 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     private lateinit var cookedDataList: ArrayList<LocationDisplayModel>
 
     private fun toggleSortButton() {
-        if (binding.bottomLocation.sortButton.tag == "down") {
-            binding.bottomLocation.sortButton.tag = "up"
-            binding.bottomLocation.sortButton.setCompoundDrawables(
+        if (binding.locationBottomSheet.sortButton.tag == "down") {
+            binding.locationBottomSheet.sortButton.tag = "up"
+            binding.locationBottomSheet.sortButton.setCompoundDrawables(
                 null, null, getDrawable(context, R.drawable.ic_arrow_upward), null
             )
 
         } else {
-            binding.bottomLocation.sortButton.tag = "down"
-            binding.bottomLocation.sortButton.setCompoundDrawables(
+            binding.locationBottomSheet.sortButton.tag = "down"
+            binding.locationBottomSheet.sortButton.setCompoundDrawables(
                 null, null, getDrawable(context, R.drawable.ic_arrow_downward), null
             )
         }
@@ -48,14 +48,14 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 
     override fun sort(type: Int) {
         binding.root.post {
-            (binding.bottomLocation.locationListView.adapter as LocationAdapter).sortView(type)
+            (binding.locationBottomSheet.locationListView.adapter as LocationAdapter).sortView(type)
         }
         toggleSortButton()
     }
 
     private fun buildAdapterView() {
         binding.root.post {
-            (binding.bottomLocation.locationListView.adapter as LocationAdapter).refreshList(
+            (binding.locationBottomSheet.locationListView.adapter as LocationAdapter).refreshList(
                 cookedDataList
             )
         }

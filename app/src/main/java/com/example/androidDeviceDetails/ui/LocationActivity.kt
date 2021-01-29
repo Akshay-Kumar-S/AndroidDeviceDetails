@@ -49,15 +49,15 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         activityController = ActivityController(this, NAME, binding)
         locationViewModel = activityController.viewModel as LocationViewModel
         binding.apply {
-            bottomLocation.sortButton.setOnClickListener(this@LocationActivity)
+            locationBottomSheet.sortButton.setOnClickListener(this@LocationActivity)
         }
     }
 
     private fun initRecyclerView() {
         val arrayList = ArrayList<LocationDisplayModel>()
         arrayList.add(LocationDisplayModel("NoData", 0, ""))
-        binding.bottomLocation.locationListView.adapter = LocationAdapter(arrayList, this)
-        binding.bottomLocation.locationListView.isNestedScrollingEnabled = true
+        binding.locationBottomSheet.locationListView.adapter = LocationAdapter(arrayList, this)
+        binding.locationBottomSheet.locationListView.isNestedScrollingEnabled = true
     }
 
     private fun initMap() {
@@ -138,19 +138,19 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
 
     private fun initDatePicker() {
         binding.apply {
-            bottomLocation.dateTimePickerLayout.startTime
+            locationBottomSheet.dateTimePickerLayout.startTime
                 .setOnClickListener(this@LocationActivity)
-            bottomLocation.dateTimePickerLayout.startDate
+            locationBottomSheet.dateTimePickerLayout.startDate
                 .setOnClickListener(this@LocationActivity)
-            bottomLocation.dateTimePickerLayout.endTime
+            locationBottomSheet.dateTimePickerLayout.endTime
                 .setOnClickListener(this@LocationActivity)
-            bottomLocation.dateTimePickerLayout.endDate
+            locationBottomSheet.dateTimePickerLayout.endDate
                 .setOnClickListener(this@LocationActivity)
         }
     }
 
     private fun initBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomLocation.bottomSheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.locationBottomSheet.bottomSheet)
         bottomSheetBehavior.peekHeight = 300
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
@@ -158,7 +158,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.sortButton -> {
-                if (binding.bottomLocation.sortButton.tag == "down") {
+                if (binding.locationBottomSheet.sortButton.tag == "down") {
                     activityController.sortView(SortBy.DESCENDING.ordinal)
                 } else
                     activityController.sortView(SortBy.ASCENDING.ordinal)
