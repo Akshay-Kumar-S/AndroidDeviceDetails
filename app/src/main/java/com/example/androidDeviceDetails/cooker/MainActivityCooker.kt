@@ -7,11 +7,7 @@ import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.database.AppInfoRaw
 import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
 import com.example.androidDeviceDetails.models.database.LocationModel
-import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.SignalRaw
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivityCooker : BaseCooker() {
 
@@ -24,13 +20,7 @@ class MainActivityCooker : BaseCooker() {
                 callback.onDone(total as ArrayList<T>)
             }
         }
-        GlobalScope.launch(Dispatchers.IO) {
-            (subCallback as ICookingDone<AppInfoRaw>)
-                .onDone(RoomDB.getDatabase()?.appsDao()?.getAll()?.filter {
-                    it.currentVersionCode != 0L
-                } as ArrayList<AppInfoRaw>
-                )
-        }
+        AppTypeCooker().cook(time, subCallback as ICookingDone<AppInfoRaw>)
         SignalCooker().cook(time, subCallback as ICookingDone<SignalRaw>)
         BatteryCooker().cook(time, subCallback as ICookingDone<BatteryAppEntry>)
         DeviceNetworkUsageCooker().cook(time, subCallback as ICookingDone<DeviceNetworkUsageRaw>)
