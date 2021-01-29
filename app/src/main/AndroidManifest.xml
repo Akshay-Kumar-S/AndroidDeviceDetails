@@ -32,7 +32,7 @@
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".ui.AppInfoActivity"
+            android:name=".ui.AppEventActivity"
             android:label="Application Info"
             android:parentActivityName=".ui.MainActivity">
             <meta-data

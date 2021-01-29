@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v!!) {
             binding.locationInfo.cardView -> navigate(LocationActivity::class.java)
             binding.batteryInfo.cardView -> navigate(BatteryActivity::class.java)
-            binding.appInfo.cardView -> navigate(AppTypeActivity::class.java)
+            binding.appInfo.cardView -> navigate(AppEventActivity::class.java)
             binding.networkUsage.cardView -> navigate(NetworkUsageActivity::class.java)
             binding.signalData.cardView -> navigate(SignalActivity::class.java)
         }

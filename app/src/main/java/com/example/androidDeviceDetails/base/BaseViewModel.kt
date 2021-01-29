@@ -23,7 +23,7 @@ abstract class BaseViewModel {
             when (type) {
                 MainActivity.NAME -> MainActivityViewModel(binding as ActivityMainBinding, context)
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
-                AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
+                AppEventActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
                 SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)
                 LocationActivity.NAME -> LocationViewModel(
                     binding as ActivityLocationBinding, context
@@ -38,7 +38,7 @@ abstract class BaseViewModel {
         fun getPickerBinding(type: String, binding: ViewBinding): DateTimePickerBinding? =
             when (type) {
                 BatteryActivity.NAME -> (binding as ActivityBatteryBinding).pickerBinding
-                AppInfoActivity.NAME -> (binding as ActivityAppInfoBinding).dateTimePickerLayout
+                AppEventActivity.NAME -> (binding as ActivityAppInfoBinding).pickerBinding
                 SignalActivity.NAME -> (binding as ActivitySignalBinding).pickerBinding
                 LocationActivity.NAME -> (binding as ActivityLocationBinding).bottomLocation.dateTimePickerLayout
                 NetworkUsageActivity.NAME -> (binding as ActivityAppDataBinding).pickerBinding
