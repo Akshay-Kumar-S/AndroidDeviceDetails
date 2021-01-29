@@ -7,6 +7,14 @@ import java.util.*
 
 class PermissionsCooker : BaseCooker() {
 
+    /**
+     * Cook data for Permissions list
+     *>
+     * Overrides [cook] in [BaseCooker]
+     * >
+     * @param callback A callback that accepts the cooked list once the cooking is done.
+     */
+
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
             val permissionList = arrayListOf<String>()

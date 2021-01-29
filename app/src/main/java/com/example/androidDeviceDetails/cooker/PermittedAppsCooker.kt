@@ -3,6 +3,7 @@ package com.example.androidDeviceDetails.cooker
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.database.AppPermissionDao
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.example.androidDeviceDetails.ui.PermittedAppsActivity
@@ -14,11 +15,9 @@ import java.util.*
 class PermittedAppsCooker() : BaseCooker() {
 
     /**
-     * Cook data for App Info from the collected data available in the [AppPermissionDao] database for
-     * the requested time interval.
+     * Cook data for Permitted apps from the collected data available in the [AppPermissionDao] database.
      * >
      * Overrides : [cook] in [BaseCooker]
-     * @param time data class object that contains start time and end time.
      * @param callback A callback that accepts the cooked list once cooking is done
      */
     @Suppress("UNCHECKED_CAST")

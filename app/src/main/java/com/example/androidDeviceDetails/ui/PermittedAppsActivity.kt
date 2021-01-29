@@ -23,7 +23,7 @@ class PermittedAppsActivity : AppCompatActivity() {
     private lateinit var controller: ActivityController<PermittedAppList>
 
     companion object {
-        const val NAME = "permittedapps"
+        const val NAME = "permittedApps"
         var PERMISSION = ""
     }
 
