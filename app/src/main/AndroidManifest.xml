@@ -40,7 +40,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.AppInfoAppTypeActivity"
+            android:name=".ui.AppTypeActivity"
             android:label="App Type"
             android:parentActivityName=".ui.MainActivity" />
         <activity

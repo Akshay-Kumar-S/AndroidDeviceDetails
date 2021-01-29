@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
+
             app:layout_constraintBottom_toTopOf="@id/viewPager"
             app:layout_constraintTop_toTopOf="parent"
             app:tabTextColor="?attr/cardBackground">

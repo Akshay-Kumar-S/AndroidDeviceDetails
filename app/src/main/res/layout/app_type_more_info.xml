@@ -31,7 +31,7 @@
             android:layout_marginStart="10dp"
             android:text="Sample App "
             android:textSize="20sp"
-            android:textColor="?attr/batteryTitle"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/banner"
             app:layout_constraintStart_toEndOf="@id/Icon"
             app:layout_constraintTop_toTopOf="@id/banner" />

@@ -143,19 +143,19 @@ object Utils {
         return appDetails
     }
 
-    fun getPackageDetails(context: Context, appInfoCookedData: AppInfoCookedData) : AppTypeModel{
+    fun getPackageDetails(context: Context, appInfoCookedData: AppInfoCookedData): AppTypeModel {
         val simpleDateFormat = SimpleDateFormat("EEE, MMM d ''yy, hh:mm a", Locale.ENGLISH)
         val packageInfo = context.packageManager.getPackageInfo(appInfoCookedData.packageName, 0)
-        val details = AppTypeModel()
-        details.appIcon = getApplicationIcon(appInfoCookedData.packageName)
-        details.appTitle = appInfoCookedData.appName
-        details.packageName = appInfoCookedData.packageName
-        details.versionCode = appInfoCookedData.versionCode.toString()
-        details.versionName = packageInfo.versionName.toString()
-        details.packageSize = getFileSize(appInfoCookedData.size)
-        details.installTime = simpleDateFormat.format(Date(packageInfo.firstInstallTime))
-        details.updateTime = simpleDateFormat.format(Date(packageInfo.lastUpdateTime))
-        return details
+        return AppTypeModel(
+            getApplicationIcon(appInfoCookedData.packageName),
+            appInfoCookedData.appName,
+            appInfoCookedData.packageName,
+            appInfoCookedData.versionCode.toString(),
+            packageInfo.versionName.toString(),
+            getFileSize(appInfoCookedData.size),
+            simpleDateFormat.format(Date(packageInfo.firstInstallTime)),
+            simpleDateFormat.format(Date(packageInfo.lastUpdateTime))
+        )
     }
 
     @SuppressLint("QueryPermissionsNeeded")
@@ -232,7 +232,7 @@ object Utils {
     }
 
     fun showAlertDialog(context: Context, appTypeModel: AppTypeModel) {
-        val binding : AppTypeMoreInfoBinding = DataBindingUtil.inflate(
+        val binding: AppTypeMoreInfoBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
             R.layout.app_type_more_info,
             null,
@@ -240,6 +240,7 @@ object Utils {
         )
         binding.Icon.setImageDrawable(appTypeModel.appIcon)
         binding.appTitle.text = appTypeModel.appTitle
+        binding.packageName.text = appTypeModel.packageName
         binding.versionCode.text = appTypeModel.versionCode
         binding.versionName.text = appTypeModel.versionName
         binding.appSize.text = appTypeModel.packageSize
