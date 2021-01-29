@@ -23,9 +23,7 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal)
         binding.lifecycleOwner = this
-        signalController = ActivityController(
-            NAME, binding, this, binding.pickerBinding, supportFragmentManager
-        )
+        signalController = ActivityController(this, NAME, binding)
         binding.apply {
             pickerBinding.startTime.setOnClickListener(this@SignalActivity)
             pickerBinding.startDate.setOnClickListener(this@SignalActivity)

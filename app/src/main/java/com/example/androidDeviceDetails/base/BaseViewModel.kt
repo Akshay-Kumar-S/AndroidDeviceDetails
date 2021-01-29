@@ -2,6 +2,7 @@ package com.example.androidDeviceDetails.base
 
 import android.content.Context
 import androidx.core.view.isVisible
+import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.databinding.*
 import com.example.androidDeviceDetails.ui.*
 import com.example.androidDeviceDetails.viewModel.*
@@ -18,8 +19,8 @@ abstract class BaseViewModel {
     open fun sort(type: Int) {}
 
     companion object {
-        fun getViewModel(type: String, binding: Any?, context: Context): BaseViewModel? {
-            return when (type) {
+        fun getViewModel(type: String, binding: Any?, context: Context): BaseViewModel? =
+            when (type) {
                 MainActivity.NAME -> MainActivityViewModel(binding as ActivityMainBinding, context)
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
                 AppInfoActivity.NAME -> AppInfoViewModel(binding as ActivityAppInfoBinding, context)
@@ -33,13 +34,23 @@ abstract class BaseViewModel {
                 AppTypeActivity.NAME -> AppTypeViewModel(binding as ActivityAppTypeBinding, context)
                 else -> null
             }
-        }
+
+        fun getPickerBinding(type: String, binding: ViewBinding): DateTimePickerBinding? =
+            when (type) {
+                BatteryActivity.NAME -> (binding as ActivityBatteryBinding).pickerBinding
+                AppInfoActivity.NAME -> (binding as ActivityAppInfoBinding).dateTimePickerLayout
+                SignalActivity.NAME -> (binding as ActivitySignalBinding).pickerBinding
+                LocationActivity.NAME -> (binding as ActivityLocationBinding).bottomLocation.dateTimePickerLayout
+                NetworkUsageActivity.NAME -> (binding as ActivityAppDataBinding).pickerBinding
+                else -> null
+            }
+
     }
 
     fun updateDateTimeUI(
-        startCalendar: Calendar, endCalendar: Calendar, binding: DateTimePickerBinding
+        startCalendar: Calendar, endCalendar: Calendar, binding: ViewBinding, type: String
     ) {
-        binding.apply {
+        getPickerBinding(type, binding)?.apply {
             val simpleDateFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
             startTime.text = simpleDateFormat.format(Date(startCalendar.timeInMillis))
             endTime.text = simpleDateFormat.format(Date(endCalendar.timeInMillis))
@@ -56,7 +67,9 @@ abstract class BaseViewModel {
         }
     }
 
-    open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, enable: Boolean) {
-        dateTimePickerBinding.root.post { dateTimePickerBinding.progressBar.isVisible = enable }
+    open fun isLoading(binding: ViewBinding, enable: Boolean, type: String) {
+        getPickerBinding(type, binding)?.apply {
+            root.post { progressBar.isVisible = enable }
+        }
     }
 }
