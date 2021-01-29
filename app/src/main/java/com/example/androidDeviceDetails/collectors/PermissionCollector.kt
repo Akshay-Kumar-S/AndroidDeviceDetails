@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.collectors
 
+import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -7,6 +8,7 @@ import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCollector
+import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.models.database.AppPermissionsInfo
 import com.example.androidDeviceDetails.models.database.RoomDB
 import kotlinx.coroutines.GlobalScope
@@ -18,7 +20,14 @@ import kotlinx.coroutines.launch
  * A time based collector which collects the allowed and denied permissions of individual apps.
  *
  */
+
 class PermissionCollector(var context: Context) : BaseCollector() {
+    /**
+     * Collect permissions that are allowed and denied for each app using [PackageManager.GET_PERMISSIONS]
+     * store it as a List<[AppPermissionsInfo]>
+     * and writes into [RoomDB.AppPermissionDao].
+     *
+     */
     val db = RoomDB.getDatabase()!!
     private fun installedApps() {
         val list = context.packageManager.getInstalledPackages(PackageManager.GET_PERMISSIONS)
@@ -42,6 +51,12 @@ class PermissionCollector(var context: Context) : BaseCollector() {
         installedApps()
     }
 
+    /**
+     * Collects the allowed and denied permission list for each app
+     * store it as a List<List<String>>
+     * and returns it to installedApps().
+     *
+     */
     private fun getPermissions(packageInfo: PackageInfo): List<List<String>> {
         val allowed: MutableList<String> = ArrayList()
         val denied: MutableList<String> = ArrayList()

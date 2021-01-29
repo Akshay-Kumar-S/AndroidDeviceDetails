@@ -22,9 +22,17 @@ data class AppPermissionsInfo(
  */
 @Dao
 interface AppPermissionDao {
+    /**
+     * Retrieve all the records from [AppPermissionDao]
+     * @return A list of [AppPermissionsInfo].
+     */
     @Query("SELECT * FROM AppPermissionsInfo")
     fun getAll(): List<AppPermissionsInfo>
 
+    /**
+     * Retrieves package_name,apk_title,version_name,allowed_permissions and denied_permissions from [AppPermissionDao] and [AppInfoDao]
+     * @return A list of [PermittedAppList].
+     */
     @Query("SELECT package_name,apk_title,version_name,allowed_permissions,denied_permissions FROM AppInfoRaw ,AppPermissionsInfo WHERE AppInfoRaw.uid = AppPermissionsInfo.uid")
     fun getPermittedApps():List<PermittedAppList>
 
