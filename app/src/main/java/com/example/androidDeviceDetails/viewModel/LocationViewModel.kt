@@ -12,7 +12,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
-import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.CustomMarkerCluster
 import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
@@ -23,7 +23,7 @@ import org.osmdroid.views.overlay.Marker
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
-    private lateinit var cookedDataList: ArrayList<LocationDisplayModel>
+    private lateinit var cookedDataList: ArrayList<LocationData>
 
     private fun toggleSortButton() {
         if (binding.locationBottomSheet.sortButton.tag == "down") {
@@ -113,9 +113,8 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    override fun <T> onComplete(outputList: ArrayList<T>) {
-        cookedDataList =
-            outputList.filterIsInstance<LocationDisplayModel>() as ArrayList<LocationDisplayModel>
+    override fun <T> onDone(outputList: ArrayList<T>) {
+        cookedDataList = outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
         if (cookedDataList.isEmpty())
             onNoData()
         else {

@@ -1,7 +1,7 @@
 package com.example.androidDeviceDetails.interfaces
 
-import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.location.LocationData
 
 interface OnItemClickListener {
-    fun onItemClicked(clickedItem: LocationDisplayModel)
+    fun onItemClicked(clickedItem: LocationData)
 }
