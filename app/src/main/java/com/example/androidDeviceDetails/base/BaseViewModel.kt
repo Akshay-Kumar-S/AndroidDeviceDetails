@@ -11,6 +11,8 @@ import java.util.*
 
 abstract class BaseViewModel {
     abstract fun <T> onDone(outputList: ArrayList<T>)
+    open fun filter(type: Int) {}
+    open fun sort(type: Int) {}
 
     companion object {
         fun getViewModel(type: String, binding: Any?, context: Context): BaseViewModel? {
@@ -54,8 +56,4 @@ abstract class BaseViewModel {
     open fun isLoading(dateTimePickerBinding: DateTimePickerBinding, enable: Boolean) {
         dateTimePickerBinding.root.post { dateTimePickerBinding.progressBar.isVisible = enable }
     }
-
-    open fun filter(type: Int) {}
-
-    open fun sort(type: Int) {}
 }
