@@ -41,7 +41,7 @@ class PermittedAppsCooker() : BaseCooker() {
                     "Body Sensors" -> permission="BODY_SENSORS"
                     "Physical Activity" -> permission="ACTIVITY_RECOGNITION"
                 }
-                if(id.allowed_permissions.contains(permission)){
+                if(id.allowed_permissions.contains(permission) && !id.denied_permissions.contains(permission)){
                 appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,true))
                 }
                 if(id.denied_permissions.contains(permission)){
