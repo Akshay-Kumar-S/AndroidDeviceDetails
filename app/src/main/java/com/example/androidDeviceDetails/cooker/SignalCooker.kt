@@ -44,16 +44,16 @@ class SignalCooker : BaseCooker() {
             var startTime: Long
             var endTime: Long
             var timeInterval: Long
-            val cellularList= arrayListOf<SignalRaw>()
-            val wifiList= arrayListOf<SignalRaw>()
+            val cellularList = arrayListOf<SignalRaw>()
+            val wifiList = arrayListOf<SignalRaw>()
             val signalCookedData = SignalCookedData()
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
             signalRawList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
-                first.forEach(){
+                first.forEach() {
                     cellularList.add(it)
                 }
-                second.forEach(){
+                second.forEach() {
                     wifiList.add(it)
                 }
             }
