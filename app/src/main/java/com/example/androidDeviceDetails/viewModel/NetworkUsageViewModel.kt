@@ -57,7 +57,7 @@ class NetworkUsageViewModel(
             }
         }
         itemList =
-            itemList.filterNot { it.receivedDataWifi + it.receivedDataMobile + it.transferredDataMobile + it.transferredDataWifi == 0L } as ArrayList<AppNetworkUsageRaw>
+            itemList.filterNot { it.receivedDataWifi + it.receivedDataMobile + it.transferredDataMobile + it.transferredDataWifi == 0L } as ArrayList
         val adapter = NetWorkUsageListAdapter(context, R.layout.appdata_tile, itemList)
         binding.appDataListView.adapter = adapter
         adapter.notifyDataSetChanged()
