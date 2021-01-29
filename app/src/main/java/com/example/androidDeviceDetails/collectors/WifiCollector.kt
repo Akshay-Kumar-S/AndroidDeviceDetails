@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver

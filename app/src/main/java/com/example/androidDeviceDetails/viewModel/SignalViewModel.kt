@@ -86,7 +86,7 @@ class SignalViewModel(
         signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedCellularBand
         signalBinding.roamingTime.cookedValue.text = mostUsedData.roamingTime
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
-        signalBinding.mostUsedWifiLevel.cookedValue.text =mostUsedData.mostUsedWifiLevel
+        signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
 
     }
 

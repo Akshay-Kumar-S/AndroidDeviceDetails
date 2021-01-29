@@ -36,7 +36,7 @@ class SignalGraphActivity : AppCompatActivity() {
                 wifiValueList.add(it.strength)
             }
         }
-     
+
         val wifiChart = Chart(
             aaChartView = signalGraphBinding.wifiChart,
             title = "WIFI",

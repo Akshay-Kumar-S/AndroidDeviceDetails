@@ -296,7 +296,7 @@ object Utils {
 
     fun getTimePeriod(timeStamp: Long): String {
         val hours: Int = timeStamp.toInt() / (1000 * 60 * 60)
-        val minutes: Int = (timeStamp.toInt() / 1000*60*60) % 60
+        val minutes: Int = (timeStamp.toInt() / 1000 * 60 * 60) % 60
         return "$hours hours $minutes min"
     }
 }
