@@ -31,12 +31,12 @@ class ActivityController<T>(
     private var previousEndTime: Long = 0
     private var isStartCalendar = true
     private val onCookingDone = object : ICookingDone<T> {
-        override fun onDone(outputList: ArrayList<T>) {
+        override fun onComplete(outputList: ArrayList<T>) {
 
             if (pickerBinding != null) {
                 viewModel?.isLoading(pickerBinding, false)
             }
-            viewModel?.onDone(outputList)
+            viewModel?.onComplete(outputList)
         }
     }
 
@@ -154,4 +154,3 @@ class ActivityController<T>(
         viewModel?.sort(type)
     }
 }
-

@@ -6,7 +6,7 @@ import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.ui.*
 
 abstract class BaseCooker {
-    abstract fun <T> cook(time: TimePeriod, callback: ICookingDone<T>)
+    abstract fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>)
 
     companion object {
         fun getCooker(type: String): BaseCooker? {

@@ -1,10 +1,10 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
-import com.example.androidDeviceDetails.models.database.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -19,9 +19,9 @@ class BatteryCooker : BaseCooker() {
      * >
      * Overrides : [cook] in [BaseCooker]
      * @param time data class object that contains start time and end time.
-     * @param callback A callback that accepts the cooked list once cooking is done
+     * @param iCookingDone A callback that accepts the cooked list once cooking is done
      */
-    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch {
             val appEntryList = arrayListOf<BatteryAppEntry>()
             val db: RoomDB = RoomDB.getDatabase()!!
@@ -50,10 +50,8 @@ class BatteryCooker : BaseCooker() {
                     previousBattery = batteryInfo
                 }
                 @Suppress("UNCHECKED_CAST")
-                callback.onDone(appEntryList as ArrayList<T>)
-            } else callback.onDone(arrayListOf())
+                iCookingDone.onComplete(appEntryList as ArrayList<T>)
+            } else iCookingDone.onComplete(arrayListOf())
         }
     }
-
 }
-

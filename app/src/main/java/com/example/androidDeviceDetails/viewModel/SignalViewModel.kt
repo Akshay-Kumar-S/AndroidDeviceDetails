@@ -7,8 +7,8 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.SignalListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
-import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.ui.SignalActivity
 import com.example.androidDeviceDetails.utils.Signal
@@ -113,10 +113,10 @@ class SignalViewModel(
      * This method separates the cooked data into CELLULAR list and WIFI list
      * and calls [updateListView] to update list.
      * >
-     * Overrides : [onDone] in [BaseViewModel].
+     * Overrides : [onComplete] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         wifiList = arrayListOf()
         cellularList = arrayListOf()
         val signalList = outputList as ArrayList<SignalRaw>

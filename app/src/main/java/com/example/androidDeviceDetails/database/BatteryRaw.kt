@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.database
+package com.example.androidDeviceDetails.database
 
 import android.os.BatteryManager
 import androidx.room.*

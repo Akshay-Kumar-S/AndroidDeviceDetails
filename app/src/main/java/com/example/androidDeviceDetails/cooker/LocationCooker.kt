@@ -3,10 +3,10 @@ package com.example.androidDeviceDetails.cooker
 import android.location.Geocoder
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.LocationModel
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.database.LocationModel
-import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.github.davidmoten.geo.GeoHash
 import kotlinx.coroutines.GlobalScope
@@ -41,11 +41,11 @@ class LocationCooker : BaseCooker() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch {
             val res = locationDatabase.locationDao()
                 .readDataFromDate(time.startTime, time.endTime) as ArrayList<LocationModel>
-            callback.onDone(cookData(res) as ArrayList<T>)
+            iCookingDone.onComplete(cookData(res) as ArrayList<T>)
         }
     }
 

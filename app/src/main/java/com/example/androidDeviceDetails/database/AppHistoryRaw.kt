@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.database
+package com.example.androidDeviceDetails.database
 
 import androidx.room.*
 import com.example.androidDeviceDetails.models.appInfo.EventType

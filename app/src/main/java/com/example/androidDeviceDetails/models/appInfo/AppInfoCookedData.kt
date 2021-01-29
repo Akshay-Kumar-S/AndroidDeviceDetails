@@ -1,6 +1,6 @@
 package com.example.androidDeviceDetails.models.appInfo
 
-import com.example.androidDeviceDetails.models.database.AppInfoDao
+import com.example.androidDeviceDetails.database.AppInfoDao
 
 /**
  * A data class used to populate AppInfo UI

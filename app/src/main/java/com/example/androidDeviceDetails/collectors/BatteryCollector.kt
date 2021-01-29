@@ -8,11 +8,10 @@ import android.os.BatteryManager
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.BatteryCollector.BatteryReceiver
-import com.example.androidDeviceDetails.models.database.BatteryRaw
-import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.database.BatteryRaw
+import com.example.androidDeviceDetails.database.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 /**
  *  Implements [BaseCollector].
@@ -70,5 +69,4 @@ class BatteryCollector : BaseCollector() {
      * Unregisters the [BatteryReceiver].
      **/
     override fun stop() = DeviceDetailsApplication.instance.unregisterReceiver(BatteryReceiver)
-
 }
