@@ -28,8 +28,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidDeviceDetails">
-        <activity android:name=".ui.GraphActivity"></activity>
+        android:theme="@style/Theme.AndroidDeviceDetails"
+        tools:ignore="AllowBackup">
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
@@ -57,10 +57,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.LocationActivity"
-            android:label="Location Details"
-            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.SignalActivity"
             android:label="Signal Strength"
