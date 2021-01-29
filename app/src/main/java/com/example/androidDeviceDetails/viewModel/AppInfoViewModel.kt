@@ -23,11 +23,11 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
     /**
      * Displays provided data on UI as List view and a donut chart
      *
-     * Overrides : [onDone] in [BaseViewModel]
+     * Overrides : [onComplete] in [BaseViewModel]
      * @param [outputList] list of cooked data
      */
     @Suppress("UNCHECKED_CAST")
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         val appList = outputList as ArrayList<AppInfoCookedData>
         var filteredList = appList.toMutableList()
         savedAppList = appList
@@ -64,11 +64,11 @@ class AppInfoViewModel(private val binding: ActivityAppInfoBinding, val context:
     /**
      * Filters [savedAppList] based on given filter type
      *
-     * Overrides : [onDone] in [BaseViewModel]
+     * Overrides : [onComplete] in [BaseViewModel]
      * @param [type] Type of filter
      */
     override fun filter(type: Int) {
         eventFilter = type
-        onDone(savedAppList)
+        onComplete(savedAppList)
     }
 }

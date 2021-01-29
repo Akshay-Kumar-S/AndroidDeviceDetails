@@ -8,7 +8,7 @@ import android.telephony.PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector.SignalChangeListener
-import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Signal
 import kotlinx.coroutines.GlobalScope

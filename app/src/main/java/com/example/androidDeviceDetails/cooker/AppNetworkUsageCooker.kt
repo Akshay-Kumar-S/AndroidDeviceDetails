@@ -1,10 +1,10 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
-import com.example.androidDeviceDetails.models.database.RoomDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -18,9 +18,9 @@ class AppNetworkUsageCooker : BaseCooker() {
      * Overrides [cook] in [BaseCooker]
      * >
      * @param time A data class object that contains start time and end time.
-     * @param callback A callback that accepts the cooked list once the cooking is done.
+     * @param iCookingDone A callback that accepts the cooked list once the cooking is done.
      */
-    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         val db = RoomDB.getDatabase()?.appNetworkUsageDao()!!
         GlobalScope.launch {
             val inBetweenList = db.getAllBetween(time.startTime, time.endTime)
@@ -28,7 +28,8 @@ class AppNetworkUsageCooker : BaseCooker() {
                 val firstElementTime = inBetweenList.first().timeStamp
                 val initialAppDataList = inBetweenList.filter { it.timeStamp == firstElementTime }
                 val lastElementTime = inBetweenList.last().timeStamp
-                val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }.distinctBy { it.packageName }
+                val finalAppDataList = inBetweenList.filter { it.timeStamp == lastElementTime }
+                    .distinctBy { it.packageName }
                 val totalDataUsageList = arrayListOf<AppNetworkUsageRaw>()
                 finalAppDataList.forEach {
                     val nullCheckList =
@@ -47,8 +48,8 @@ class AppNetworkUsageCooker : BaseCooker() {
                     } else totalDataUsageList.add(it)
                 }
                 @Suppress("UNCHECKED_CAST")
-                callback.onDone(totalDataUsageList as ArrayList<T>)
-            } else callback.onDone(arrayListOf())
+                iCookingDone.onComplete(totalDataUsageList as ArrayList<T>)
+            } else iCookingDone.onComplete(arrayListOf())
 
         }
     }

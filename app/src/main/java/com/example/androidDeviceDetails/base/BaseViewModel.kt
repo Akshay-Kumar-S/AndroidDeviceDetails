@@ -10,8 +10,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class BaseViewModel {
-    abstract fun <T> onDone(outputList: ArrayList<T>)
+
+    abstract fun <T> onComplete(outputList: ArrayList<T>)
+
     open fun filter(type: Int) {}
+
     open fun sort(type: Int) {}
 
     companion object {

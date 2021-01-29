@@ -12,8 +12,8 @@ import android.location.LocationManager.NETWORK_PROVIDER
 import android.util.Log
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.models.database.LocationModel
-import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.database.LocationModel
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

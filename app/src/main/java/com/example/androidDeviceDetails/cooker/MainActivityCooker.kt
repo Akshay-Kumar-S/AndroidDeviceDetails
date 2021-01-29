@@ -4,20 +4,17 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
-import com.example.androidDeviceDetails.models.database.AppInfoRaw
-import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
-import com.example.androidDeviceDetails.models.database.LocationModel
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 
 class MainActivityCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         val total = arrayListOf<Any>()
         val subCallback = object : ICookingDone<Any> {
-            override fun onDone(outputList: ArrayList<Any>) {
+            override fun onComplete(outputList: ArrayList<Any>) {
                 total.addAll(outputList)
-                callback.onDone(total as ArrayList<T>)
+                iCookingDone.onComplete(total as ArrayList<T>)
             }
         }
         AppTypeCooker().cook(time, subCallback as ICookingDone<AppInfoRaw>)

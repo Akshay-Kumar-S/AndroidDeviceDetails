@@ -3,10 +3,10 @@ package com.example.androidDeviceDetails.viewModel
 import android.content.Context
 import android.view.View.VISIBLE
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.database.AppInfoRaw
+import com.example.androidDeviceDetails.database.DeviceNetworkUsageRaw
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
-import com.example.androidDeviceDetails.models.database.AppInfoRaw
-import com.example.androidDeviceDetails.models.database.DeviceNetworkUsageRaw
 import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.models.signal.SignalRaw
 import com.example.androidDeviceDetails.utils.Utils
@@ -14,7 +14,7 @@ import com.example.androidDeviceDetails.utils.Utils
 
 class MainActivityViewModel(private val binding: ActivityMainBinding, val context: Context) :
     BaseViewModel() {
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         val appInfoList = arrayListOf<AppInfoRaw>()
         val batteryList = arrayListOf<BatteryAppEntry>()
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()

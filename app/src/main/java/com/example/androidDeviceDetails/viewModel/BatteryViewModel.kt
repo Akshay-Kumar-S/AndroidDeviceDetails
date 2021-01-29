@@ -20,7 +20,7 @@ class BatteryViewModel(private val binding: ActivityBatteryBinding, val context:
      * This method is called once the [BatteryCooker] finishes cooking.
      * This updates the UI with the [BatteryListAdapter]
      */
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
             itemList = outputList.filterIsInstance<BatteryAppEntry>() as ArrayList<BatteryAppEntry>
             val totalDrop = itemList.sumOf { it.drop }

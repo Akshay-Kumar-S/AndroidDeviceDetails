@@ -17,7 +17,6 @@ import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Overlay
 
 
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
@@ -113,8 +112,9 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    override fun <T> onDone(outputList: ArrayList<T>) {
-        cookedDataList = outputList.filterIsInstance<LocationDisplayModel>() as ArrayList<LocationDisplayModel>
+    override fun <T> onComplete(outputList: ArrayList<T>) {
+        cookedDataList =
+            outputList.filterIsInstance<LocationDisplayModel>() as ArrayList<LocationDisplayModel>
         if (cookedDataList.isEmpty())
             onNoData()
         else {

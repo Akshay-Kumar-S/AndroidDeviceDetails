@@ -5,7 +5,7 @@ import androidx.room.*
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector
 import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 /**

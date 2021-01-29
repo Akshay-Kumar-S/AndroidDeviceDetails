@@ -16,5 +16,4 @@ class OnBootReceiver : BroadcastReceiver() {
                 else context.startService(it)
             }
     }
-
 }

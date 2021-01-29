@@ -5,8 +5,8 @@ import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.NetWorkUsageListAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
+import com.example.androidDeviceDetails.database.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
-import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.utils.Utils
 import java.util.*
@@ -22,13 +22,13 @@ class NetworkUsageViewModel(
     private var sortBy = SortBy.WIFI_DESCENDING.ordinal
 
     /**
-     * Overrides [onDone] in [BaseViewModel]
+     * Overrides [onComplete] in [BaseViewModel]
      *
      * Display provided data on UI.
      *
      * @param outputList List of cooked data.
      */
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         if (outputList.isNotEmpty()) {
             itemList =
                 outputList.filterIsInstance<AppNetworkUsageRaw>() as ArrayList<AppNetworkUsageRaw>

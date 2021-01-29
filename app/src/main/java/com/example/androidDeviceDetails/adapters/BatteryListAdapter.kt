@@ -10,7 +10,6 @@ import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.battery.BatteryItemViewHolder
 import com.example.androidDeviceDetails.utils.Utils
 
-
 class BatteryListAdapter(
     private var _context: Context, private var resource: Int,
     private var items: ArrayList<BatteryAppEntry>
@@ -39,4 +38,3 @@ class BatteryListAdapter(
         return vi!!
     }
 }
-

@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
+import com.example.androidDeviceDetails.database.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.databinding.ActivityAppDataBinding
 import com.example.androidDeviceDetails.fragments.SortBySheet
-import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.utils.SortBy
 import java.util.*
 

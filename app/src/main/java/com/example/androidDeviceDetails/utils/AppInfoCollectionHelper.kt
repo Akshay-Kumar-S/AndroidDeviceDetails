@@ -1,9 +1,9 @@
 package com.example.androidDeviceDetails.utils
 
 import android.content.Context
+import com.example.androidDeviceDetails.database.*
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
 import com.example.androidDeviceDetails.models.appInfo.EventType
-import com.example.androidDeviceDetails.models.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

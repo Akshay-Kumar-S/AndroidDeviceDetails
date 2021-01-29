@@ -7,7 +7,7 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.database.AppNetworkUsageRaw
+import com.example.androidDeviceDetails.database.AppNetworkUsageRaw
 import com.example.androidDeviceDetails.models.networkUsage.NetworkUsageItemViewHolder
 import com.example.androidDeviceDetails.utils.Utils
 
@@ -45,5 +45,3 @@ class NetWorkUsageListAdapter(
         return vi!!
     }
 }
-
-
