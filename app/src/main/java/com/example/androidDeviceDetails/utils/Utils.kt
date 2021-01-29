@@ -31,6 +31,7 @@ import java.io.File
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.ceil
 import kotlin.math.log10
 import kotlin.math.pow
 
@@ -255,4 +256,6 @@ object Utils {
             .show()
     }
 
+    fun graphCalculator(dataSize: Double, total: Double) =
+        ceil((dataSize).div(total).times(100)).toInt()
 }

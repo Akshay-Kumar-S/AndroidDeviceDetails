@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         swipeToRefresh()
     }
+
     private fun swipeToRefresh() {
         binding.pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.app_green)
         binding.pullToRefresh.setOnRefreshListener {
