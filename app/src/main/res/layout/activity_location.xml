@@ -12,6 +12,6 @@
         android:background="?attr/mainBackground"/>
 
     <include
-        android:id="@+id/bottomLocation"
+        android:id="@+id/locationBottomSheet"
         layout="@layout/bottom_sheet_location" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
