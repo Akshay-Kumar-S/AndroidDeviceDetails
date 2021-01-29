@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="50dp"
+    android:paddingTop="1dp"
     tools:context=".ui.MainActivity">
 
     <LinearLayout
@@ -23,10 +23,10 @@ xmlns:tools="http://schemas.android.com/tools">
 
         </include>
         <include
-            android:id="@+id/batteryInfo"
+            android:id="@+id/appInfoType"
             layout="@layout/main_activity_button"
             app:title='@{"System/User Apps"}'
-            app:iconSource='@{@drawable/ic_round_battery_std_24}'>
+            app:iconSource='@{@drawable/ic_baseline_apps_24}'>
 
         </include>
         <include

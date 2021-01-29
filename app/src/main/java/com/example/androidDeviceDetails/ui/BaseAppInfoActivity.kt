@@ -17,6 +17,7 @@ class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_base_app_info)
         binding.apply{
             binding.appInfo.button.setOnClickListener(this@BaseAppInfoActivity)
+            binding.appInfoType.button.setOnClickListener(this@BaseAppInfoActivity)
             binding.appPermissions.button.setOnClickListener(this@BaseAppInfoActivity)
         }
     }
@@ -24,6 +25,7 @@ class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.appInfo -> startActivity(Intent(this, AppInfoActivity::class.java))
+            R.id.appInfoType -> startActivity(Intent(this, AppTypeActivity::class.java))
             R.id.appPermissions -> startActivity(Intent(this, PermissionsActivity::class.java))
         }
     }

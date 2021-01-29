@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.batteryInfo.cardView ->
                 startActivity(Intent(this, BatteryActivity::class.java))
             binding.appInfo.cardView ->
-                startActivity(Intent(this, AppTypeActivity::class.java))
+                startActivity(Intent(this, BaseAppInfoActivity::class.java))
             binding.networkUsage.cardView ->
                 startActivity(Intent(this, NetworkUsageActivity::class.java))
             binding.signalData.cardView ->
