@@ -43,14 +43,14 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 object Utils {
-    private const val format = "dd/MM/yyyy HH:mm"
+    private const val format = "HH:mm dd MMM yyyy"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
     const val COLLECTION_INTERVAL: Long = 5 //in Minutes
-    const val LEVEL_POOR = 0
-    const val LEVEL_LOW = 1
-    const val LEVEL_MEDIUM = 2
-    const val LEVEL_GOOD = 3
-    const val LEVEL_EXCELLENT = 4
+    private const val LEVEL_POOR = 0
+    private const val LEVEL_LOW = 1
+    private const val LEVEL_MEDIUM = 2
+    private const val LEVEL_GOOD = 3
+    private const val LEVEL_EXCELLENT = 4
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 

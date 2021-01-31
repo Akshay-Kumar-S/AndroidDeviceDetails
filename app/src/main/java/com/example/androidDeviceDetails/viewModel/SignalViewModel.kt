@@ -20,7 +20,7 @@ class SignalViewModel(
     private var cellularStrengthPercentage = 0F
     private var wifiStrengthPercentage = 0F
     private val db = RoomDB.getDatabase()!!
-    var graphEntryList = arrayListOf<SignalGraphEntry>()
+    var graphEntryList = listOf<SignalGraphEntry>()
     private lateinit var mostUsedData: SignalCookedData
 
     init {
@@ -71,7 +71,7 @@ class SignalViewModel(
      */
     override fun <T> onDone(outputList: ArrayList<T>) {
         mostUsedData = outputList.filterIsInstance<SignalCookedData>().first()
-        graphEntryList = outputList.filterIsInstance<ArrayList<SignalGraphEntry>>().first()
+        graphEntryList = outputList.filterIsInstance<SignalGraphEntry>()
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
             cellularStrengthPercentage = mostUsedData.lastCellularStrength
             wifiStrengthPercentage = mostUsedData.lastWifiStrength
