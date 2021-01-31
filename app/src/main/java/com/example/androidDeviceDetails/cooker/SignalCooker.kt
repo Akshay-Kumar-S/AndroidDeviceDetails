@@ -146,10 +146,9 @@ class SignalCooker : BaseCooker() {
 
     private fun getMostUsed(
         key: String, usageMap: MutableMap<String, Long>, previousTime: Long, currentTime: Long
-    ): MutableMap<String, Long> {
+    ) {
         if (!usageMap.containsKey(key))
             usageMap[key] = 0
         usageMap[key] = usageMap.getValue(key) + (currentTime - previousTime)
-        return usageMap
     }
 }
