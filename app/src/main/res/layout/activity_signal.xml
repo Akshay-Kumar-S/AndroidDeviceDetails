@@ -143,10 +143,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:drawableEnd="@drawable/ic_baseline_double_arrow_24"
+            android:drawableTint="@color/white"
             android:text="@string/more_details"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cooked_data" />
+            app:layout_constraintTop_toBottomOf="@+id/cooked_data"
+            tools:targetApi="m" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
