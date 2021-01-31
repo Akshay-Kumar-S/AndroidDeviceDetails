@@ -69,6 +69,7 @@
     <string name="appTypeUser">User</string>
     <string name="appTypeAll">All</string>
     <string name="appTypeSystem">System</string>
+    <string name="more_details">More Details</string>
     <string name="filterAll">All</string>
     <string name="filterEnrolled">Enrolled</string>
     <string name="filterInstalled">Installed</string>
