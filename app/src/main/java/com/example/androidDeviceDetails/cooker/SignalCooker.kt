@@ -60,10 +60,10 @@ class SignalCooker : BaseCooker() {
             }
 
             if (cellularList.isNotEmpty()) {
-                val lastCellularEntity = cellularList.last()
+                val lastCellularRaw = cellularList.last()
                 var previousCellularEntity = cellularList.first()
                 startTime = previousCellularEntity.timeStamp
-                endTime = lastCellularEntity.timeStamp
+                endTime = lastCellularRaw.timeStamp
                 timeInterval = maxOf((endTime - startTime) / MAX_PLOT_POINTS, MINUTE)
 
                 cellularList.forEach { cellularEntity ->
@@ -99,7 +99,7 @@ class SignalCooker : BaseCooker() {
                 }
                 carrierNameList.sortBy { it.time }
                 cellularBandList.sortBy { it.time }
-                signalCookedData.lastCellularStrength = lastCellularEntity.strengthPercentage
+                signalCookedData.lastCellularStrength = lastCellularRaw.strengthPercentage
                 signalCookedData.mostUsedOperator = carrierNameList.last().name
                 signalCookedData.mostUsedCellularBand = cellularBandList.last().name
             }
