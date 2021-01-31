@@ -43,7 +43,7 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 object Utils {
-    private const val format = "dd/MM/yyyy HH:mm:ss:"
+    private const val format = "dd/MM/yyyy HH:mm"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
     const val COLLECTION_INTERVAL: Long = 5 //in Minutes
     const val LEVEL_POOR = 0

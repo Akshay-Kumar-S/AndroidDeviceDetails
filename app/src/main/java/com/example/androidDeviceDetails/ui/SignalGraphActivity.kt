@@ -28,11 +28,11 @@ class SignalGraphActivity : AppCompatActivity() {
 
         graphEntryList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
             first.forEach {
-                cellularTimeList.add(it.timeStamp)
+                cellularTimeList.add(Utils.getDateTime(it.timeStamp))
                 cellularValueList.add(it.strength)
             }
             second.forEach {
-                wifiTimeList.add(it.timeStamp)
+                wifiTimeList.add(Utils.getDateTime(it.timeStamp))
                 wifiValueList.add(it.strength)
             }
         }

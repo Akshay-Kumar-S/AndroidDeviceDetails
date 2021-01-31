@@ -7,9 +7,7 @@ import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
-import com.example.androidDeviceDetails.models.signal.Usage
 import com.example.androidDeviceDetails.utils.Signal
-import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -36,11 +34,10 @@ class SignalCooker : BaseCooker() {
      */
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
-            val graphEntryList = arrayListOf<SignalGraphEntry>()
-            var cellularBandList = ArrayList<Usage>()
-            var wifiLevelList = ArrayList<Usage>()
-            var carrierNameList = ArrayList<Usage>()
-            var ssidList = ArrayList<Usage>()
+            val cellularBandList = mutableMapOf<String, Long>()
+            val wifiLevelList = mutableMapOf<String, Long>()
+            val carrierNameList = mutableMapOf<String, Long>()
+            val ssidList = mutableMapOf<String, Long>()
             val cookedDataList = ArrayList<Any>()
             var startTime: Long
             var endTime: Long
@@ -68,14 +65,14 @@ class SignalCooker : BaseCooker() {
 
                 cellularList.forEach { cellularEntity ->
 
-                    cellularBandList = getMostUsed(
+                    getMostUsed(
                         cellularEntity.band!!,
                         cellularBandList,
                         previousCellularEntity.timeStamp,
                         cellularEntity.timeStamp
                     )
 
-                    carrierNameList = getMostUsed(
+                    getMostUsed(
                         cellularEntity.operatorName,
                         carrierNameList,
                         previousCellularEntity.timeStamp,
@@ -86,9 +83,9 @@ class SignalCooker : BaseCooker() {
                         signalCookedData.roamingTime += cellularEntity.timeStamp - previousCellularEntity.timeStamp
 
                     if (cellularEntity.timeStamp >= startTime) {
-                        graphEntryList.add(
+                        cookedDataList.add(
                             SignalGraphEntry(
-                                Utils.getDateTime(cellularEntity.timeStamp),
+                                cellularEntity.timeStamp,
                                 cellularEntity.signal,
                                 cellularEntity.strength
                             )
@@ -97,11 +94,10 @@ class SignalCooker : BaseCooker() {
                     }
                     previousCellularEntity = cellularEntity
                 }
-                carrierNameList.sortBy { it.time }
-                cellularBandList.sortBy { it.time }
-                signalCookedData.lastCellularStrength = lastCellularRaw.strengthPercentage
-                signalCookedData.mostUsedOperator = carrierNameList.last().name
-                signalCookedData.mostUsedCellularBand = cellularBandList.last().name
+                signalCookedData.lastCellularStrength = lastCellularEntity.strengthPercentage
+                signalCookedData.mostUsedOperator = carrierNameList.maxByOrNull { it.value }!!.key
+                signalCookedData.mostUsedCellularBand =
+                    cellularBandList.maxByOrNull { it.value }!!.key
             }
             if (wifiList.isNotEmpty()) {
                 var previousWifiEntity = wifiList.first()
@@ -112,14 +108,14 @@ class SignalCooker : BaseCooker() {
                 timeInterval = maxOf((endTime - startTime) / MAX_PLOT_POINTS, MINUTE)
 
                 wifiList.forEach { wifiEntity ->
-                    wifiLevelList = getMostUsed(
+                    getMostUsed(
                         previousWifiEntity.level,
                         wifiLevelList,
                         previousWifiEntity.timeStamp,
                         wifiEntity.timeStamp
                     )
 
-                    ssidList = getMostUsed(
+                    getMostUsed(
                         previousWifiEntity.operatorName,
                         ssidList,
                         previousWifiEntity.timeStamp,
@@ -127,9 +123,9 @@ class SignalCooker : BaseCooker() {
                     )
 
                     if (wifiEntity.timeStamp >= startTime) {
-                        graphEntryList.add(
+                        cookedDataList.add(
                             SignalGraphEntry(
-                                Utils.getDateTime(wifiEntity.timeStamp),
+                                wifiEntity.timeStamp,
                                 wifiEntity.signal,
                                 wifiEntity.strength
                             )
@@ -138,26 +134,25 @@ class SignalCooker : BaseCooker() {
                     }
                     previousWifiEntity = wifiEntity
                 }
-
-                wifiLevelList.sortBy { it.time }
-                ssidList.sortBy { it.time }
+                signalCookedData.mostUsedWifi = ssidList.maxByOrNull { it.value }!!.key
                 signalCookedData.lastWifiStrength = lastWifiEntity.strengthPercentage
-                signalCookedData.mostUsedWifi = ssidList.last().name
-                signalCookedData.mostUsedWifiLevel = wifiLevelList.last().name
+                //Log.d("zzz", "cook: $wifiLevelList")
+                signalCookedData.mostUsedWifiLevel = wifiLevelList.maxByOrNull { it.value }!!.key
+                // Log.d("zzz", "cook: ${signalCookedData.mostUsedWifiLevel}")
+
             }
 
             cookedDataList.add(signalCookedData)
-            cookedDataList.add(graphEntryList)
             callback.onDone(cookedDataList as ArrayList<T>)
         }
     }
 
     private fun getMostUsed(
-        dataValue: String, usageList: ArrayList<Usage>, previousTime: Long, currentTime: Long
-    ): ArrayList<Usage> {
-        if (usageList.none { it.name == dataValue })
-            usageList.add(Usage(dataValue, 0))
-        usageList.first { it.name == dataValue }.time += (currentTime - previousTime)
-        return usageList
+        key: String, usageMap: MutableMap<String, Long>, previousTime: Long, currentTime: Long
+    ): MutableMap<String, Long> {
+        if (!usageMap.containsKey(key))
+            usageMap[key] = 0
+        usageMap[key] = usageMap.getValue(key) + (currentTime - previousTime)
+        return usageMap
     }
 }
