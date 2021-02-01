@@ -26,7 +26,7 @@ class LocationAdapter(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.location_tittle, viewGroup, false)
+            .inflate(R.layout.location_tile, viewGroup, false)
         return ViewHolder(view)
     }
 
