@@ -27,14 +27,15 @@ class AppInfoCollector : BaseCollector() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             val packageName = intent.data?.schemeSpecificPart ?: "not found"
+            val appEventCollectionHelper = AppEventCollectionHelper()
 
             if (action == Intent.ACTION_PACKAGE_ADDED) {
                 if (!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false))
-                    AppEventCollectionHelper.appInstalled(context, packageName)
+                    appEventCollectionHelper.appInstalled(context, packageName)
                 else
-                    AppEventCollectionHelper.appUpgraded(context, packageName)
+                    appEventCollectionHelper.appUpgraded(context, packageName)
             } else if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
-                AppEventCollectionHelper.appUninstalled(packageName)
+                appEventCollectionHelper.appUninstalled(packageName)
             }
         }
     }

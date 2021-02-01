@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
  * [AppInfoDao] and [AppHistoryDao]
  *
  */
-object AppEventCollectionHelper {
+class AppEventCollectionHelper {
 
     val db = RoomDB.getDatabase()!!
 
@@ -38,11 +38,7 @@ object AppEventCollectionHelper {
                 val event =
                     if (currentAppHistory.appTitle != latestAppDetails.appTitle ||
                         currentAppHistory.currentVersionCode < latestAppDetails.versionCode
-                    ) {
-                        EventType.UPDATED.ordinal
-                    } else {
-                        EventType.INSTALLED.ordinal
-                    }
+                    ) EventType.UPDATED.ordinal else EventType.INSTALLED.ordinal
                 writeToAppHistoryDb(
                     id, event, latestAppDetails, db, currentAppHistory.currentVersionCode
                 )
@@ -79,15 +75,14 @@ object AppEventCollectionHelper {
      */
     fun appUpgraded(context: Context, packageName: String) {
         GlobalScope.launch(Dispatchers.IO) {
-            val latestAppDetails = Utils.getAppDetails(context, packageName)
+            val appDetails = Utils.getAppDetails(context, packageName)
             val id = db.appsDao().getIdByName(packageName)
             val appHistory = db.appsDao().getById(id)
-            if (appHistory.currentVersionCode < latestAppDetails.versionCode || appHistory.appTitle != latestAppDetails.appTitle) {
+            if (appHistory.currentVersionCode < appDetails.versionCode || appHistory.appTitle != appDetails.appTitle) {
                 writeToAppHistoryDb(
-                    id, EventType.UPDATED.ordinal, latestAppDetails,
-                    db, appHistory.currentVersionCode
+                    id, EventType.UPDATED.ordinal, appDetails, db, appHistory.currentVersionCode
                 )
-                writeToAppsDb(id, packageName, latestAppDetails, db)
+                writeToAppsDb(id, packageName, appDetails, db)
             }
         }
     }
