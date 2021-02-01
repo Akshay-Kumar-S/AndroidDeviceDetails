@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.models.appInfo.appType
+package com.example.androidDeviceDetails.models.appInfo
 
 import android.graphics.drawable.Drawable
 
