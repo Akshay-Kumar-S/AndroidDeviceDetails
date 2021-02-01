@@ -302,7 +302,9 @@ object Utils {
     fun getTimePeriod(timeStamp: Long): String {
         val hours: Int = timeStamp.toInt() / (1000 * 60 * 60)
         val minutes: Int = (timeStamp.toInt() / 1000 * 60 * 60) % 60
-        return "$hours hours $minutes min"
+        return if (hours != 0)
+            "$hours hours $minutes min"
+        else "$minutes min"
     }
 
     fun getSignalLevel(level: Int): String {

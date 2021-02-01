@@ -34,14 +34,7 @@ class SignalCooker : BaseCooker() {
      */
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
         GlobalScope.launch {
-            val cellularBandMap = mutableMapOf<String, Long>()
-            val wifiLevelMap = mutableMapOf<String, Long>()
-            val carrierNameMap = mutableMapOf<String, Long>()
-            val ssidMap = mutableMapOf<String, Long>()
             val cookedDataList = ArrayList<Any>()
-            var startTime: Long
-            var endTime: Long
-            var timeInterval: Long
             val cellularList = arrayListOf<SignalRaw>()
             val wifiList = arrayListOf<SignalRaw>()
             val signalCookedData = SignalCookedData()
@@ -55,90 +48,8 @@ class SignalCooker : BaseCooker() {
                     wifiList.add(it)
                 }
             }
-
-            if (cellularList.isNotEmpty()) {
-                val lastCellularRaw = cellularList.last()
-                var prevCellularRaw = cellularList.first()
-                startTime = prevCellularRaw.timeStamp
-                endTime = lastCellularRaw.timeStamp
-                timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
-
-                cellularList.forEach { cellularRaw ->
-                    getMostUsed(
-                        prevCellularRaw.band!!,
-                        cellularBandMap,
-                        prevCellularRaw.timeStamp,
-                        cellularRaw.timeStamp
-                    )
-
-                    getMostUsed(
-                        prevCellularRaw.operatorName,
-                        carrierNameMap,
-                        prevCellularRaw.timeStamp,
-                        cellularRaw.timeStamp
-                    )
-
-                    if (cellularRaw.isRoaming)
-                        signalCookedData.roamingTime += cellularRaw.timeStamp - prevCellularRaw.timeStamp
-
-                    if (cellularRaw.timeStamp >= startTime) {
-                        cookedDataList.add(
-                            SignalGraphEntry(
-                                cellularRaw.timeStamp,
-                                cellularRaw.signal,
-                                cellularRaw.strength
-                            )
-                        )
-                        startTime = (timeInterval + cellularRaw.timeStamp)
-                    }
-                    prevCellularRaw = cellularRaw
-                }
-                signalCookedData.lastCellularStrength = lastCellularRaw.strengthPercentage
-                signalCookedData.mostUsedOperator = carrierNameMap.maxByOrNull { it.value }!!.key
-                signalCookedData.mostUsedCellularBand =
-                    cellularBandMap.maxByOrNull { it.value }!!.key
-            }
-
-            if (wifiList.isNotEmpty()) {
-                var prevWifiRaw = wifiList.first()
-                val lastWifiRaw = wifiList.last()
-
-                startTime = prevWifiRaw.timeStamp
-                endTime = lastWifiRaw.timeStamp
-                timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
-
-                wifiList.forEach { wifiRaw ->
-                    getMostUsed(
-                        prevWifiRaw.level,
-                        wifiLevelMap,
-                        prevWifiRaw.timeStamp,
-                        wifiRaw.timeStamp
-                    )
-
-                    getMostUsed(
-                        prevWifiRaw.operatorName,
-                        ssidMap,
-                        prevWifiRaw.timeStamp,
-                        wifiRaw.timeStamp
-                    )
-
-                    if (wifiRaw.timeStamp >= startTime) {
-                        cookedDataList.add(
-                            SignalGraphEntry(
-                                wifiRaw.timeStamp,
-                                wifiRaw.signal,
-                                wifiRaw.strength
-                            )
-                        )
-                        startTime = (timeInterval + wifiRaw.timeStamp)
-                    }
-                    prevWifiRaw = wifiRaw
-                }
-                signalCookedData.lastWifiStrength = lastWifiRaw.strengthPercentage
-                signalCookedData.mostUsedWifi = ssidMap.maxByOrNull { it.value }!!.key
-                signalCookedData.mostUsedWifiLevel = wifiLevelMap.maxByOrNull { it.value }!!.key
-            }
-
+            cookCellularData(cellularList, signalCookedData, cookedDataList)
+            cookWifiData(wifiList, signalCookedData, cookedDataList)
             cookedDataList.add(signalCookedData)
             callback.onDone(cookedDataList as ArrayList<T>)
         }
@@ -150,5 +61,112 @@ class SignalCooker : BaseCooker() {
         if (!usageMap.containsKey(key))
             usageMap[key] = 0
         usageMap[key] = usageMap.getValue(key) + (currentTime - previousTime)
+    }
+
+    private fun cookCellularData(
+        cellularList: ArrayList<SignalRaw>,
+        signalCookedData: SignalCookedData,
+        cookedDataList: ArrayList<Any>
+    ) {
+        val cellularBandMap = mutableMapOf<String, Long>()
+        val carrierNameMap = mutableMapOf<String, Long>()
+        var startTime: Long
+        val endTime: Long
+        val timeInterval: Long
+
+        if (cellularList.isNotEmpty()) {
+            val lastCellularRaw = cellularList.last()
+            var prevCellularRaw = cellularList.first()
+            startTime = prevCellularRaw.timeStamp
+            endTime = lastCellularRaw.timeStamp
+            timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
+
+            cellularList.forEach { cellularRaw ->
+                getMostUsed(
+                    prevCellularRaw.band!!,
+                    cellularBandMap,
+                    prevCellularRaw.timeStamp,
+                    cellularRaw.timeStamp
+                )
+
+                getMostUsed(
+                    prevCellularRaw.operatorName,
+                    carrierNameMap,
+                    prevCellularRaw.timeStamp,
+                    cellularRaw.timeStamp
+                )
+
+                if (cellularRaw.isRoaming)
+                    signalCookedData.roamingTime += cellularRaw.timeStamp - prevCellularRaw.timeStamp
+
+                if (cellularRaw.timeStamp >= startTime) {
+                    cookedDataList.add(
+                        SignalGraphEntry(
+                            cellularRaw.timeStamp,
+                            cellularRaw.signal,
+                            cellularRaw.strength
+                        )
+                    )
+                    startTime = (timeInterval + cellularRaw.timeStamp)
+                }
+                prevCellularRaw = cellularRaw
+            }
+            signalCookedData.lastCellularStrength = lastCellularRaw.strengthPercentage
+            signalCookedData.mostUsedOperator = carrierNameMap.maxByOrNull { it.value }!!.key
+            signalCookedData.mostUsedCellularBand =
+                cellularBandMap.maxByOrNull { it.value }!!.key
+        }
+    }
+
+    private fun cookWifiData(
+        wifiList: ArrayList<SignalRaw>,
+        signalCookedData: SignalCookedData,
+        cookedDataList: ArrayList<Any>
+    ) {
+        val wifiLevelMap = mutableMapOf<String, Long>()
+        val ssidMap = mutableMapOf<String, Long>()
+        var startTime: Long
+        val endTime: Long
+        val timeInterval: Long
+
+        if (wifiList.isNotEmpty()) {
+            var prevWifiRaw = wifiList.first()
+            val lastWifiRaw = wifiList.last()
+
+            startTime = prevWifiRaw.timeStamp
+            endTime = lastWifiRaw.timeStamp
+            timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
+
+            wifiList.forEach { wifiRaw ->
+                getMostUsed(
+                    prevWifiRaw.level,
+                    wifiLevelMap,
+                    prevWifiRaw.timeStamp,
+                    wifiRaw.timeStamp
+                )
+
+                getMostUsed(
+                    prevWifiRaw.operatorName,
+                    ssidMap,
+                    prevWifiRaw.timeStamp,
+                    wifiRaw.timeStamp
+                )
+
+                if (wifiRaw.timeStamp >= startTime) {
+                    cookedDataList.add(
+                        SignalGraphEntry(
+                            wifiRaw.timeStamp,
+                            wifiRaw.signal,
+                            wifiRaw.strength
+                        )
+                    )
+                    startTime = (timeInterval + wifiRaw.timeStamp)
+                }
+                prevWifiRaw = wifiRaw
+            }
+            signalCookedData.lastWifiStrength = lastWifiRaw.strengthPercentage
+            signalCookedData.mostUsedWifi = ssidMap.maxByOrNull { it.value }!!.key
+            signalCookedData.mostUsedWifiLevel = wifiLevelMap.maxByOrNull { it.value }!!.key
+        }
     }
 }
