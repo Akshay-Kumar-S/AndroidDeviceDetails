@@ -3,12 +3,12 @@ package com.example.androidDeviceDetails.viewModel
 import android.content.Context
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
+import com.example.androidDeviceDetails.database.RoomDB
+import com.example.androidDeviceDetails.database.SignalRaw
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
-import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
-import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.utils.Utils
 
 /**
@@ -69,7 +69,7 @@ class SignalViewModel(
      * Overrides : [onDone] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         mostUsedData = outputList.filterIsInstance<SignalCookedData>().first()
         graphEntryList = outputList.filterIsInstance<SignalGraphEntry>()
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
@@ -88,5 +88,4 @@ class SignalViewModel(
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
     }
-
 }

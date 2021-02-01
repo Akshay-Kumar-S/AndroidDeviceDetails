@@ -1,13 +1,13 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.RoomDB
+import com.example.androidDeviceDetails.database.SignalRaw
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.database.SignalRaw
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
-import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.models.signal.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -30,9 +30,9 @@ class SignalCooker : BaseCooker() {
      * >
      * Overrides : [cook] in [BaseCooker]
      * @param time data class object that contains start time and end time.
-     * @param callback A callback that accepts the cooked list once cooking is done
+     * @param iCookingDone A callback that accepts the cooked list once cooking is done
      */
-    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch {
             val cookedDataList = ArrayList<Any>()
             val cellularList = arrayListOf<SignalRaw>()
@@ -51,7 +51,7 @@ class SignalCooker : BaseCooker() {
             cookCellularData(cellularList, signalCookedData, cookedDataList)
             cookWifiData(wifiList, signalCookedData, cookedDataList)
             cookedDataList.add(signalCookedData)
-            callback.onDone(cookedDataList as ArrayList<T>)
+            iCookingDone.onComplete(cookedDataList as ArrayList<T>)
         }
     }
 

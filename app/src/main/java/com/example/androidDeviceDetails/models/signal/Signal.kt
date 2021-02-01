@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.utils
+package com.example.androidDeviceDetails.models.signal
 
 /**
  * An enum class used to represent if the signal is CELLULAR or WIFI.
@@ -11,4 +11,3 @@ enum class Signal {
     CELLULAR,
     WIFI
 }
-

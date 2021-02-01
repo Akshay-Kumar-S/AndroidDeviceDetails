@@ -9,9 +9,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
-import com.example.androidDeviceDetails.models.database.RoomDB
-import com.example.androidDeviceDetails.models.database.SignalRaw
-import com.example.androidDeviceDetails.utils.Signal
+import com.example.androidDeviceDetails.database.RoomDB
+import com.example.androidDeviceDetails.database.SignalRaw
+import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
