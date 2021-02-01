@@ -30,12 +30,9 @@ class PermissionsCooker : BaseCooker() {
             val db = RoomDB.getDatabase()!!
             var allPerms = db.appPermissionDao().getAllPermissions()
             for (i in allPerms) {
-                var filtered = "[]"
-                var new = i.filterNot { filtered.indexOf(it) > -1 }
-                listOfPermissions.addAll(new.split(","))
+                listOfPermissions.addAll(i.filterNot { "[]".indexOf(it) > -1 }.split(","))
             }
             distinct = listOfPermissions.toSet().toList()
-            Log.e("hihe", distinct.toString())
             permissionList.addAll(distinct)
             callback.onDone(permissionList as ArrayList<T>)
         }
