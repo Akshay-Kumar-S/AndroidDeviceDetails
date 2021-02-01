@@ -73,15 +73,14 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
     }
 
     private fun fillList(
-        bucket: NetworkStats.Bucket, networkUsageList: ArrayList<AppNetworkUsageRaw>,
-        isWifi: Boolean
+        bucket: NetworkStats.Bucket, usageList: ArrayList<AppNetworkUsageRaw>, isWifi: Boolean
     ): ArrayList<AppNetworkUsageRaw> {
         val packageName = context.packageManager.getNameForUid(bucket.uid)
         if (packageName != null && packageName != "null")
-            if (networkUsageList.none { it.packageName == packageName })
-                networkUsageList.add(appNetworkUsageFactory(bucket, isWifi))
+            if (usageList.none { it.packageName == packageName })
+                usageList.add(appNetworkUsageFactory(bucket, isWifi))
             else {
-                networkUsageList.first {
+                usageList.first {
                     it.packageName == packageName
                 }.apply {
                     if (isWifi) {
@@ -93,7 +92,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
                     }
                 }
             }
-        return networkUsageList
+        return usageList
     }
 
     /**
@@ -128,8 +127,7 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
     }
 
     private fun appNetworkUsageFactory(
-        bucket: NetworkStats.Bucket,
-        wifiEnable: Boolean = true
+        bucket: NetworkStats.Bucket, wifiEnable: Boolean = true
     ): AppNetworkUsageRaw {
         val packageName = context.packageManager.getNameForUid(bucket.uid)!!
         val timeNow = System.currentTimeMillis()
@@ -143,6 +141,5 @@ class NetworkUsageCollector(var context: Context) : BaseCollector() {
                 0, timeNow.minus(timeNow.rem(60 * 1000)),
                 packageName, 0L, bucket.txBytes, 0L, bucket.rxBytes,
             )
-
     }
 }
