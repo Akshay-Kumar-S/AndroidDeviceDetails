@@ -16,7 +16,7 @@ import com.example.androidDeviceDetails.models.appInfo.EventType
 class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
     BaseViewModel() {
     companion object {
-        var eventFilter = 4
+        var eventFilter = EventType.ALL.ordinal
         var savedAppList = arrayListOf<AppInfoCookedData>()
     }
 
@@ -26,15 +26,12 @@ class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context
      * Overrides : [onComplete] in [BaseViewModel]
      * @param [outputList] list of cooked data
      */
-    @Suppress("UNCHECKED_CAST")
     override fun <T> onComplete(outputList: ArrayList<T>) {
-        val appList = outputList as ArrayList<AppInfoCookedData>
+        val appList =
+            outputList.filterIsInstance<AppInfoCookedData>() as ArrayList<AppInfoCookedData>
         var filteredList = appList.toMutableList()
         savedAppList = appList
-
-        if (eventFilter != EventType.EVENTS.ordinal) {
-            filteredList.removeAll { it.eventType.ordinal != eventFilter }
-        }
+        if (eventFilter != EventType.ALL.ordinal) filteredList.removeAll { it.eventType.ordinal != eventFilter }
         filteredList = filteredList.sortedBy { it.appName }.toMutableList()
         if (appList.isNotEmpty()) filteredList.add(0, appList[0])
         filteredList.removeAll { it.packageName == DeviceDetailsApplication.instance.packageName }
@@ -47,21 +44,17 @@ class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context
     }
 
     private fun calculateProgressbarStats(): DonutChartData {
-        val enrolledAppCount =
-            savedAppList.groupingBy { it.eventType.ordinal == EventType.ENROLL.ordinal }
-                .eachCount()[true] ?: 0
-        val installedAppCount =
+        val enrolled = savedAppList.groupingBy { it.eventType.ordinal == EventType.ENROLL.ordinal }
+            .eachCount()[true] ?: 0
+        val installed =
             savedAppList.groupingBy { it.eventType.ordinal == EventType.INSTALLED.ordinal }
                 .eachCount()[true] ?: 0
-        val updateAppCount =
-            savedAppList.groupingBy { it.eventType.ordinal == EventType.UPDATED.ordinal }
-                .eachCount()[true] ?: 0
-        val uninstalledAppCount =
+        val updated = savedAppList.groupingBy { it.eventType.ordinal == EventType.UPDATED.ordinal }
+            .eachCount()[true] ?: 0
+        val uninstalled =
             savedAppList.groupingBy { it.eventType.ordinal == EventType.UNINSTALLED.ordinal }
                 .eachCount()[true] ?: 0
-        return DonutChartData(
-            enrolledAppCount, installedAppCount, updateAppCount, uninstalledAppCount
-        )
+        return DonutChartData(enrolled, installed, updated, uninstalled)
     }
 
     /**
