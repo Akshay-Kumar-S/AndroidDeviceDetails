@@ -42,6 +42,7 @@ class LocationAdapter(
     fun refreshList(locationDisplayList: ArrayList<LocationData>) {
         list.clear()
         list.addAll(locationDisplayList)
+        list.sortBy { it.count }
         notifyDataSetChanged()
     }
 
