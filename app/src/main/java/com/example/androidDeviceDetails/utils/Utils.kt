@@ -22,8 +22,8 @@ import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
+import com.example.androidDeviceDetails.models.appInfo.AppTypeModel
 import com.example.androidDeviceDetails.models.appInfo.EventType
-import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
 import com.example.androidDeviceDetails.services.AppService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
