@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.utils.AppEventCollectionHelper
 
 /**
  * Implements [BaseCollector]
