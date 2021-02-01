@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
+import com.example.androidDeviceDetails.adapters.PermissionsAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
 
@@ -38,11 +38,11 @@ class PermissionsActivity : AppCompatActivity() {
     }
 
     private fun showApps(parent: AdapterView<*>, position: Int) {
-        val adapter = parent.adapter as PermissionsListAdapter
+        val adapter = parent.adapter as PermissionsAdapter
         val item = adapter.getItem(position)
-        val infoIntent = Intent(this@PermissionsActivity, PermittedAppsActivity::class.java)
-        infoIntent.putExtra("permission", item)
-        startActivity(infoIntent)
+        val intent = Intent(this@PermissionsActivity, PermittedAppsActivity::class.java)
+        intent.putExtra("permission", item)
+        startActivity(intent)
     }
 
 }

@@ -25,30 +25,47 @@ class PermittedAppsCooker() : BaseCooker() {
         GlobalScope.launch(Dispatchers.IO) {
             val db = RoomDB.getDatabase()!!
             val appList = arrayListOf<PermittedAppsCookedData>()
-            val ids = db.AppPermissionDao().getPermittedApps()
+            val ids = db.appPermissionDao().getPermittedApps()
             var permission = ""
             for (id in ids) {
-                when(PermittedAppsActivity.PERMISSION){
-                    "Phone" -> permission="PHONE"
-                    "Call Logs" -> permission="CALL_LOG"
-                    "Contacts" -> permission="CONTACTS"
-                    "SMS" -> permission="SMS"
-                    "Location" -> permission="LOCATION"
-                    "Camera" -> permission="CAMERA"
-                    "Microphone" -> permission="RECORD_AUDIO"
-                    "Storage" -> permission="STORAGE"
-                    "Calender" -> permission="CALENDAR"
-                    "Body Sensors" -> permission="BODY_SENSORS"
-                    "Physical Activity" -> permission="ACTIVITY_RECOGNITION"
+                when (PermittedAppsActivity.PERMISSION) {
+                    "Phone" -> permission = "PHONE"
+                    "Call Logs" -> permission = "CALL_LOG"
+                    "Contacts" -> permission = "CONTACTS"
+                    "SMS" -> permission = "SMS"
+                    "Location" -> permission = "LOCATION"
+                    "Camera" -> permission = "CAMERA"
+                    "Microphone" -> permission = "RECORD_AUDIO"
+                    "Storage" -> permission = "STORAGE"
+                    "Calender" -> permission = "CALENDAR"
+                    "Body Sensors" -> permission = "BODY_SENSORS"
+                    "Physical Activity" -> permission = "ACTIVITY_RECOGNITION"
                 }
-                if(id.allowed_permissions.contains(permission) && !id.denied_permissions.contains(permission)){
-                appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,true))
+                if (id.allowed_permissions.contains(permission) && !id.denied_permissions.contains(
+                        permission
+                    )
+                ) {
+                    appList.add(
+                        PermittedAppsCookedData(
+                            id.package_name,
+                            id.apk_title,
+                            id.version_name,
+                            true
+                        )
+                    )
                 }
-                if(id.denied_permissions.contains(permission)){
-                    appList.add(PermittedAppsCookedData(id.package_name,id.apk_title,id.version_name,false))
+                if (id.denied_permissions.contains(permission)) {
+                    appList.add(
+                        PermittedAppsCookedData(
+                            id.package_name,
+                            id.apk_title,
+                            id.version_name,
+                            false
+                        )
+                    )
                 }
             }
-                callback.onDone(appList as ArrayList<T>)
+            callback.onDone(appList as ArrayList<T>)
         }
     }
 }

@@ -2,7 +2,7 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
+import com.example.androidDeviceDetails.adapters.PermittedAppsAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.DeviceDetailsApplication
@@ -49,7 +49,7 @@ class PermittedAppsViewModel(private val binding: ActivityPermittedAppsBinding, 
         }
         binding.root.post {
             binding.permittedAppsListView.adapter =
-                PermittedAppsListAdapter(context, R.layout.permitted_app_info_tile, savedAppList)
+                PermittedAppsAdapter(context, R.layout.permitted_app_info_tile, savedAppList)
         }
     }
 
