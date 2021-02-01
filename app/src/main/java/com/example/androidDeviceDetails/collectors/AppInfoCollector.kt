@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.utils.AppInfoCollectionHelper
+import com.example.androidDeviceDetails.utils.AppEventCollectionHelper
 
 /**
  * Implements [BaseCollector]
@@ -31,11 +31,11 @@ class AppInfoCollector : BaseCollector() {
 
             if (action == Intent.ACTION_PACKAGE_ADDED) {
                 if (!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false))
-                    AppInfoCollectionHelper.appInstalled(context, packageName)
+                    AppEventCollectionHelper.appInstalled(context, packageName)
                 else
-                    AppInfoCollectionHelper.appUpgraded(context, packageName)
+                    AppEventCollectionHelper.appUpgraded(context, packageName)
             } else if (action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
-                AppInfoCollectionHelper.appUninstalled(packageName)
+                AppEventCollectionHelper.appUninstalled(packageName)
             }
         }
     }

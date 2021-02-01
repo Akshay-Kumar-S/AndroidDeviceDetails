@@ -122,12 +122,12 @@ class AppInfoListAdapter(
                 android.graphics.PorterDuff.Mode.MULTIPLY
             )
             holder.uninstallButton.tag = items[position].packageName
-            if (items[position].eventType.ordinal == EventType.APP_ENROLL.ordinal) {
+            if (items[position].eventType.ordinal == EventType.ENROLL.ordinal) {
                 holder.eventBadge.isVisible = false
             }
             if (items[position].isSystemApp) {
                 holder.uninstallButton.isVisible = false
-            } else if (items[position].eventType == EventType.APP_UNINSTALLED) {
+            } else if (items[position].eventType == EventType.UNINSTALLED) {
                 holder.uninstallButton.isVisible = false
             }
         } else {

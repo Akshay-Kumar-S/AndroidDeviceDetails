@@ -34,31 +34,31 @@ class AppEventCooker : BaseCooker() {
                 val initialRecord =
                     db.appHistoryDao().getInitialRecordBetween(id, time.startTime, time.endTime)
 
-                if (lastRecord.eventType == EventType.APP_ENROLL.ordinal) {
+                if (lastRecord.eventType == EventType.ENROLL.ordinal) {
                     appList.add(
                         AppInfoCookedData(
-                            lastRecord.appTitle, EventType.APP_ENROLL,
+                            lastRecord.appTitle, EventType.ENROLL,
                             lastRecord.currentVersionCode, lastRecord.appId, lastRecord.isSystemApp
                         )
                     )
                     continue
-                } else if (lastRecord.eventType == EventType.APP_UNINSTALLED.ordinal) {
+                } else if (lastRecord.eventType == EventType.UNINSTALLED.ordinal) {
                     appList.add(
                         AppInfoCookedData(
-                            lastRecord.appTitle, EventType.APP_UNINSTALLED,
+                            lastRecord.appTitle, EventType.UNINSTALLED,
                             lastRecord.previousVersionCode, lastRecord.appId, lastRecord.isSystemApp
                         )
                     )
                     continue
                 } else if (initialRecord.previousVersionCode != lastRecord.currentVersionCode) {
                     evt = AppInfoCookedData(
-                        lastRecord.appTitle, EventType.APP_UPDATED,
+                        lastRecord.appTitle, EventType.UPDATED,
                         lastRecord.currentVersionCode, lastRecord.appId, lastRecord.isSystemApp
                     )
                 }
                 if (initialRecord.previousVersionCode == 0L) {
                     evt = AppInfoCookedData(
-                        lastRecord.appTitle, EventType.APP_INSTALLED,
+                        lastRecord.appTitle, EventType.INSTALLED,
                         lastRecord.currentVersionCode, lastRecord.appId, lastRecord.isSystemApp
                     )
                 }

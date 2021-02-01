@@ -166,11 +166,11 @@ object Utils {
         GlobalScope.launch(Dispatchers.IO) {
             for (i in packages) {
                 val details = getAppDetails(context, i.packageName)
-                AppInfoCollectionHelper.writeToAppsDb(0, i.packageName, details, db)
+                AppEventCollectionHelper.writeToAppsDb(0, i.packageName, details, db)
                 val id = db.appsDao().getIdByName(i.packageName)
-                AppInfoCollectionHelper.writeToAppHistoryDb(
+                AppEventCollectionHelper.writeToAppHistoryDb(
                     id,
-                    EventType.APP_ENROLL.ordinal,
+                    EventType.ENROLL.ordinal,
                     details,
                     db
                 )
