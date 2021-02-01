@@ -36,6 +36,9 @@ interface AppPermissionDao {
     @Query("SELECT package_name,apk_title,version_name,allowed_permissions,denied_permissions FROM AppInfoRaw ,AppPermissionsInfo WHERE AppInfoRaw.uid = AppPermissionsInfo.uid")
     fun getPermittedApps():List<PermittedAppList>
 
+    @Query("SELECT allowed_permissions from AppPermissionsInfo")
+    fun getAllPermissions():List<String>
+
     @Insert
     fun insert(vararg appPermissionsInfo: AppPermissionsInfo)
 }
