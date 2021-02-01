@@ -19,7 +19,8 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun signalDao(): SignalDao
     abstract fun appNetworkUsageDao(): AppNetworkUsageDao
     abstract fun deviceNetworkUsageDao(): DeviceNetworkUsageDao
-    abstract fun AppPermissionDao(): AppPermissionDao
+    abstract fun appPermissionDao(): AppPermissionDao
+
     companion object {
         private var INSTANCE: RoomDB? = null
         fun getDatabase(context: Context = DeviceDetailsApplication.instance): RoomDB? {

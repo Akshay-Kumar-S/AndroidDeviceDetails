@@ -2,7 +2,7 @@ package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.PermissionsListAdapter
+import com.example.androidDeviceDetails.adapters.PermissionsAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
 
@@ -23,7 +23,7 @@ class PermissionsViewModel(private val binding: ActivityPermissionsBinding, val 
         var permissionList = outputList as ArrayList<String>
         binding.root.post {
             binding.permissionsListView.adapter =
-                PermissionsListAdapter(context, R.layout.permissions_tile, permissionList)
+                PermissionsAdapter(context, R.layout.permissions_tile, permissionList)
         }
     }
 }

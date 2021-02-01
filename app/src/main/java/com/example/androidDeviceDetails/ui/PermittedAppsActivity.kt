@@ -12,7 +12,7 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.adapters.PermittedAppsListAdapter
+import com.example.androidDeviceDetails.adapters.PermittedAppsAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
@@ -73,7 +73,7 @@ class PermittedAppsActivity : AppCompatActivity() {
     }
 
     private fun showApps(parent: AdapterView<*>, position: Int) {
-        val adapter = parent.adapter as PermittedAppsListAdapter
+        val adapter = parent.adapter as PermittedAppsAdapter
         val item = adapter.getItem(position)
         val infoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         infoIntent.addCategory(Intent.CATEGORY_DEFAULT)

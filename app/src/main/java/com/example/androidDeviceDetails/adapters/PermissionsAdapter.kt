@@ -1,4 +1,3 @@
-
 package com.example.androidDeviceDetails.adapters
 
 import android.annotation.SuppressLint
@@ -11,7 +10,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.appInfoModels.*
 
 
-class PermissionsListAdapter(
+class PermissionsAdapter(
     private var _context: Context,
     private var resource: Int,
     private var items: List<String>
@@ -30,19 +29,22 @@ class PermissionsListAdapter(
             )
             vi.tag = holder
         } else holder = vi?.tag as PermissionsItemViewHolder
-        holder = setPermissionsInfoHolder(holder,position)
+        holder = setPermissionsInfoHolder(holder, position)
 
         return vi!!
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setPermissionsInfoHolder(holder: PermissionsItemViewHolder, position: Int): PermissionsItemViewHolder{
+    private fun setPermissionsInfoHolder(
+        holder: PermissionsItemViewHolder,
+        position: Int
+    ): PermissionsItemViewHolder {
         holder.permissionNameTextView.text = items[position]
         holder.iconView.setImageResource(getPermissionIcon(position))
         return holder
     }
 
-    private fun getPermissionIcon(position:Int) : Int {
+    private fun getPermissionIcon(position: Int): Int {
         return when (position) {
             0 -> R.drawable.ic_baseline_smartphone_24
             1 -> R.drawable.ic_baseline_call_logs
