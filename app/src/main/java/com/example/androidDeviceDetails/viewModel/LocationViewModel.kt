@@ -14,7 +14,6 @@ import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.CustomMarkerCluster
-import com.github.davidmoten.geo.GeoHash.decodeHash
 import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
@@ -78,13 +77,12 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         cluster.setIcon(
             getDrawable(context, R.drawable.location_bubble)?.let { drawableToBitmap(it) })
         cluster.setRadius(90)
-        cluster.textPaint.textSize = 24F
+        cluster.textPaint.textSize = 26F
         for (location in cookedDataList) {
-            val latLong = decodeHash(location.geoHash)
             val marker = Marker(binding.mapView)
             binding.root.post {
-                marker.icon = generateMarker(location.count.toString())
-                marker.position = GeoPoint(latLong.lat, latLong.lon)
+                marker.icon = generateMarker(location.count)
+                marker.position = GeoPoint(location.avgLatitude, location.avgLongitude)
                 marker.infoWindow.view.visibility = GONE
                 marker.title = location.count.toString()
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
@@ -94,16 +92,17 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    private fun generateMarker(count: String): Drawable {
+    private fun generateMarker(count: Int): Drawable {
+        val countString = if (count < 10) "0$count" else count.toString()
         val icg = IconGenerator(context)
         icg.setBackground(getDrawable(context, R.drawable.location_bubble))
         icg.setTextAppearance(R.style.LocationBubble)
-        return BitmapDrawable(context.resources, icg.makeIcon(count))
+        icg.setContentPadding(30, 15, 0, 0)
+        return BitmapDrawable(context.resources, icg.makeIcon(countString))
     }
 
-    fun focusMapTo(geoHash: String) {
-        val latLong = decodeHash(geoHash)
-        val geoPoint = GeoPoint(latLong.lat, latLong.lon)
+    fun focusMapTo(avgLatitude: Double, avgLongitude: Double) {
+        val geoPoint = GeoPoint(avgLatitude, avgLongitude)
         binding.root.post {
             val mapController = binding.mapView.controller
             mapController.setZoom(15.0)
@@ -112,11 +111,11 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
     }
 
     override fun <T> onDone(outputList: ArrayList<T>) {
-        val cookedDataList= outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
+        val cookedDataList = outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
         if (cookedDataList.isEmpty())
             onNoData()
         else {
-            focusMapTo(cookedDataList.first().geoHash)
+            focusMapTo(cookedDataList.first().avgLatitude, cookedDataList.first().avgLongitude)
             addPointOnMap(cookedDataList)
             buildAdapterView(cookedDataList)
         }

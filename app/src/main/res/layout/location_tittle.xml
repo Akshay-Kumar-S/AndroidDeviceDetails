@@ -3,67 +3,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp">
 
     <ImageView
         android:id="@+id/locationIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/location_icon"
         android:padding="10dp"
-        android:src="@drawable/ic_location"
+        android:src="@drawable/location_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintEnd_toStartOf="@id/address"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/location_icon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/line1"
+    <TextView
+        android:id="@+id/address"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:alpha=".6"
+        android:text="@string/address"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/countText"
+        app:layout_constraintEnd_toStartOf="@id/countTimeLayout"
         app:layout_constraintStart_toEndOf="@id/locationIcon"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/geoHash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/geohash" />
-
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha=".4"
-            android:text="@string/address" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/countText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/countTimeLayout"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
-        android:text="@string/count"
-        android:alpha=".4"
+        android:orientation="vertical"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/count"
-        app:layout_constraintStart_toEndOf="@id/line1"
-        app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/count"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingEnd="10dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:text="@string/zero"
-        android:paddingStart="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/countText"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlSymmetry" />
+        app:layout_constraintStart_toEndOf="@id/address"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/countText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:alpha=".4"
+                android:text="@string/count" />
+
+            <TextView
+                android:id="@+id/count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="2dp"
+                android:text="@string/zero"
+                tools:ignore="RtlSymmetry" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:alpha=".8"
+            android:text="@string/durationFormat"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

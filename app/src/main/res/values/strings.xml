@@ -67,7 +67,9 @@
     <string name="default_text">DEFAULT TEXT</string>
     <string name="cellular">Cellular</string>
     <string name="time">Sl No</string>
-    <string name="count">Count:</string>
+    <string name="count">Count :</string>
+    <string name="tillToday">Till Today</string>
+    <string name="no_data">No Data</string>
     <string name="sort_direction_arrow">sort direction arrow</string>
     <string name="sort">Sort</string>
     <string name="zero">0</string>
@@ -77,6 +79,8 @@
     <string name="appTypeUser">User</string>
     <string name="appTypeAll">All</string>
     <string name="appTypeSystem">System</string>
+    <string name="min">Min</string>
+    <string name="durationFormat">123 days, 23 hrs, 59 min</string>
     <string name="more_details">More Details</string>
     <string name="filterAll">All</string>
     <string name="filterEnrolled">Enrolled</string>

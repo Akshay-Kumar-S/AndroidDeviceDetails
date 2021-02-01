@@ -55,7 +55,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
 
     private fun initRecyclerView() {
         val arrayList = ArrayList<LocationData>()
-        arrayList.add(LocationData("NoData", 0, ""))
         binding.locationBottomSheet.locationListView.adapter = LocationAdapter(arrayList, this)
         binding.locationBottomSheet.locationListView.isNestedScrollingEnabled = true
     }
@@ -171,7 +170,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     }
 
     override fun onItemClicked(clickedItem: LocationData) {
-        locationViewModel.focusMapTo(clickedItem.geoHash)
+        locationViewModel.focusMapTo(clickedItem.avgLatitude, clickedItem.avgLongitude)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
