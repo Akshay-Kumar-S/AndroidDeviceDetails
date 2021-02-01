@@ -52,7 +52,6 @@ class ActivityController<T>(
         cooker?.cook(timePeriod, onCookingDone)
     }
 
-
     fun setTime(context: Context, id: Int) {
         isStartCalendar = id == R.id.startTime
         val hour = startCalendar.get(Calendar.HOUR)
