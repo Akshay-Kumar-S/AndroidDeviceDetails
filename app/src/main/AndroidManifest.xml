@@ -43,6 +43,10 @@
             android:label="App Type"
             android:parentActivityName=".ui.MainActivity" />
         <activity
+            android:name=".ui.SignalGraphActivity"
+            android:label="Signal Strength Graph"
+            android:parentActivityName=".ui.SignalActivity" />
+        <activity
             android:name=".ui.NetworkUsageActivity"
             android:label="Network Usage"
             android:parentActivityName=".ui.MainActivity" />
@@ -61,8 +65,6 @@
             android:name=".ui.SignalActivity"
             android:label="Signal Strength"
             android:parentActivityName=".ui.MainActivity" />
-        <activity android:name=".ui.SignalGraphActivity" />
-
         <service
             android:name=".services.AppService"
             android:enabled="true" />

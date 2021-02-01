@@ -27,12 +27,12 @@
                 app:layout_constraintEnd_toStartOf="@id/pointerWifiSpeedometer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:sv_backgroundCircleColor="@color/white"
                 app:sv_centerCircleRadius="0dp"
                 app:sv_indicatorWidth="0dp"
-                app:sv_markColor="@color/white"
+                app:sv_markColor="?attr/sv_speedometerBackColor"
                 app:sv_maxSpeed="100"
                 app:sv_minSpeed="0"
+                app:sv_backgroundCircleColor="?attr/sv_speedometerBackColor"
                 app:sv_speedTextColor="@color/soti_blue"
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
@@ -51,10 +51,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintTop_toTopOf="parent"
-                app:sv_backgroundCircleColor="@color/white"
-                app:sv_centerCircleRadius="0dp"
+                app:sv_backgroundCircleColor="?attr/sv_speedometerBackColor"                app:sv_centerCircleRadius="0dp"
                 app:sv_indicatorWidth="0dp"
-                app:sv_markColor="@color/white"
+                app:sv_markColor="?attr/sv_speedometerBackColor"
                 app:sv_maxSpeed="100"
                 app:sv_minSpeed="0"
                 app:sv_speedTextColor="@color/soti_blue"
@@ -67,21 +66,21 @@
                 app:sv_withPointer="false"
                 app:sv_withTremble="false" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cellular"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_round_network_cell_18"
                 app:layout_constraintBottom_toBottomOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintEnd_toEndOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wifi"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_round_network_wifi_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/pointerWifiSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerWifiSpeedometer"

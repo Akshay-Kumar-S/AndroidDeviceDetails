@@ -39,14 +39,10 @@ class SignalCooker : BaseCooker() {
             val wifiList = arrayListOf<SignalRaw>()
             val signalCookedData = SignalCookedData()
 
-            db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
-                .partition { it.signal == Signal.CELLULAR.ordinal }.apply {
-                first.forEach {
-                    cellularList.add(it)
-                }
-                second.forEach {
-                    wifiList.add(it)
-                }
+            val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
+            signalRawList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
+                cookCellularData(first as ArrayList<SignalRaw>, signalCookedData, cookedDataList)
+                cookWifiData(second as ArrayList<SignalRaw>, signalCookedData, cookedDataList)
             }
             cookCellularData(cellularList, signalCookedData, cookedDataList)
             cookWifiData(wifiList, signalCookedData, cookedDataList)
@@ -55,7 +51,7 @@ class SignalCooker : BaseCooker() {
         }
     }
 
-    private fun getMostUsed(
+    private fun aggregateMostUsed(
         key: String, usageMap: MutableMap<String, Long>, previousTime: Long, currentTime: Long
     ) {
         if (!usageMap.containsKey(key))
@@ -82,29 +78,23 @@ class SignalCooker : BaseCooker() {
             timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
 
             cellularList.forEach { cellularRaw ->
-                getMostUsed(
-                    prevCellularRaw.band!!,
-                    cellularBandMap,
-                    prevCellularRaw.timeStamp,
+                aggregateMostUsed(
+                    prevCellularRaw.band!!, cellularBandMap, prevCellularRaw.timeStamp,
                     cellularRaw.timeStamp
                 )
 
-                getMostUsed(
-                    prevCellularRaw.operatorName,
-                    carrierNameMap,
-                    prevCellularRaw.timeStamp,
+                aggregateMostUsed(
+                    prevCellularRaw.operatorName, carrierNameMap, prevCellularRaw.timeStamp,
                     cellularRaw.timeStamp
                 )
 
-                if (cellularRaw.isRoaming)
+                if (prevCellularRaw.isRoaming)
                     signalCookedData.roamingTime += cellularRaw.timeStamp - prevCellularRaw.timeStamp
 
                 if (cellularRaw.timeStamp >= startTime) {
                     cookedDataList.add(
                         SignalGraphEntry(
-                            cellularRaw.timeStamp,
-                            cellularRaw.signal,
-                            cellularRaw.strength
+                            cellularRaw.timeStamp, cellularRaw.signal, cellularRaw.strength
                         )
                     )
                     startTime = (timeInterval + cellularRaw.timeStamp)
@@ -138,26 +128,18 @@ class SignalCooker : BaseCooker() {
             timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
 
             wifiList.forEach { wifiRaw ->
-                getMostUsed(
-                    prevWifiRaw.level,
-                    wifiLevelMap,
-                    prevWifiRaw.timeStamp,
-                    wifiRaw.timeStamp
+                aggregateMostUsed(
+                    prevWifiRaw.level, wifiLevelMap, prevWifiRaw.timeStamp, wifiRaw.timeStamp
                 )
 
-                getMostUsed(
-                    prevWifiRaw.operatorName,
-                    ssidMap,
-                    prevWifiRaw.timeStamp,
-                    wifiRaw.timeStamp
+                aggregateMostUsed(
+                    prevWifiRaw.operatorName, ssidMap, prevWifiRaw.timeStamp, wifiRaw.timeStamp
                 )
 
                 if (wifiRaw.timeStamp >= startTime) {
                     cookedDataList.add(
                         SignalGraphEntry(
-                            wifiRaw.timeStamp,
-                            wifiRaw.signal,
-                            wifiRaw.strength
+                            wifiRaw.timeStamp, wifiRaw.signal, wifiRaw.strength
                         )
                     )
                     startTime = (timeInterval + wifiRaw.timeStamp)
