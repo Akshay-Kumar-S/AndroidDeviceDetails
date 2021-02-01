@@ -54,7 +54,7 @@ class AppTypeViewModel(val binding: ActivityAppTypeBinding, val context: Context
     private fun divideList(appList: MutableList<AppInfoRaw>): Pair<List<AppInfoCookedData>, List<AppInfoCookedData>> {
         val convertedList = appList.map {
             AppInfoCookedData(
-                it.appTitle, EventType.EVENTS, it.currentVersionCode, it.uid,
+                it.appTitle, EventType.ALL, it.currentVersionCode, it.uid,
                 it.isSystemApp, it.packageName, it.appSize
             )
         }

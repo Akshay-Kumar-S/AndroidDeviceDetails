@@ -31,7 +31,7 @@ class AppEventActivity : AppCompatActivity(), View.OnClickListener {
         when (item.itemId) {
             R.id.spinner_all -> {
                 title.text = getString(R.string.filterAll)
-                filter = EventType.EVENTS.ordinal
+                filter = EventType.ALL.ordinal
             }
             R.id.spinner_enrolled -> {
                 title.text = getString(R.string.filterEnrolled)
