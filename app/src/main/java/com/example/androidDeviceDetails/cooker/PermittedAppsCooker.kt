@@ -26,23 +26,9 @@ class PermittedAppsCooker() : BaseCooker() {
             val db = RoomDB.getDatabase()!!
             val appList = arrayListOf<PermittedAppsCookedData>()
             val ids = db.appPermissionDao().getPermittedApps()
-            var permission = ""
             for (id in ids) {
-                when (PermittedAppsActivity.PERMISSION) {
-                    "Phone" -> permission = "PHONE"
-                    "Call Logs" -> permission = "CALL_LOG"
-                    "Contacts" -> permission = "CONTACTS"
-                    "SMS" -> permission = "SMS"
-                    "Location" -> permission = "LOCATION"
-                    "Camera" -> permission = "CAMERA"
-                    "Microphone" -> permission = "RECORD_AUDIO"
-                    "Storage" -> permission = "STORAGE"
-                    "Calender" -> permission = "CALENDAR"
-                    "Body Sensors" -> permission = "BODY_SENSORS"
-                    "Physical Activity" -> permission = "ACTIVITY_RECOGNITION"
-                }
-                if (id.allowed_permissions.contains(permission) && !id.denied_permissions.contains(
-                        permission
+                if (id.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !id.denied_permissions.contains(
+                        PermittedAppsActivity.PERMISSION
                     )
                 ) {
                     appList.add(
@@ -54,7 +40,7 @@ class PermittedAppsCooker() : BaseCooker() {
                         )
                     )
                 }
-                if (id.denied_permissions.contains(permission)) {
+                if (id.denied_permissions.contains(PermittedAppsActivity.PERMISSION)) {
                     appList.add(
                         PermittedAppsCookedData(
                             id.package_name,
