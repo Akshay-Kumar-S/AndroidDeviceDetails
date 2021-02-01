@@ -9,14 +9,18 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.SortBy
+import org.apache.commons.lang3.time.DurationFormatUtils.formatDuration
 
 
-class LocationAdapter(private var dataSet: ArrayList<LocationData>, private val onItemClickListener: OnItemClickListener):
+class LocationAdapter(
+    private var list: ArrayList<LocationData>,
+    private val onItemClickListener: OnItemClickListener
+) :
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val geoHash: TextView = view.findViewById(R.id.geoHash)
-        var  count: TextView = view.findViewById(R.id.count)
+        val count: TextView = view.findViewById(R.id.count)
+        val time: TextView = view.findViewById(R.id.time)
         val address: TextView = view.findViewById(R.id.address)
     }
 
@@ -26,25 +30,25 @@ class LocationAdapter(private var dataSet: ArrayList<LocationData>, private val 
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.geoHash.text = dataSet[position].geoHash
-        viewHolder.count.text = dataSet[position].count.toString()
-        viewHolder.address.text = dataSet[position].address
-        viewHolder.itemView.setOnClickListener { onItemClickListener.onItemClicked(dataSet[position]) }
+    override fun onBindViewHolder(viewHolder: ViewHolder, pos: Int) {
+        viewHolder.count.text = list[pos].count.toString()
+        viewHolder.address.text = list[pos].address
+        viewHolder.time.text = formatDuration(list[pos].totalTime, "d' days, 'H' hrs, 'mm' mins'")
+        viewHolder.itemView.setOnClickListener { onItemClickListener.onItemClicked(list[pos]) }
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = list.size
 
     fun refreshList(locationDisplayList: ArrayList<LocationData>) {
-        dataSet.clear()
-        dataSet.addAll(locationDisplayList)
+        list.clear()
+        list.addAll(locationDisplayList)
         notifyDataSetChanged()
     }
 
-    fun sortView(type: Int){
+    fun sortView(type: Int) {
         when (type) {
-            SortBy.ASCENDING.ordinal -> dataSet.sortBy { it.count }
-            else -> dataSet.sortByDescending { it.count }
+            SortBy.ASCENDING.ordinal -> list.sortBy { it.count }
+            else -> list.sortByDescending { it.count }
         }
         notifyDataSetChanged()
     }

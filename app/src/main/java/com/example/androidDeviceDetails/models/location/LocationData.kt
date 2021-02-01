@@ -6,8 +6,9 @@ import com.example.androidDeviceDetails.adapters.LocationAdapter
  * A data class used by the list view adaptor for displaying in the [LocationAdapter]
  */
 data class LocationData(
-    val geoHash: String,
-    val count: Int,
-    val address: String
-
+    var avgLatitude: Double,
+    var avgLongitude: Double,
+    var count: Int,
+    var address: String,
+    var totalTime: Long
 )
