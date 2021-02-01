@@ -62,7 +62,7 @@
                 app:sv_speedTextColor="#673AB7"
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
-                app:sv_speedometerColor="#673AB7"
+                app:sv_speedometerColor="#E1AA06"
                 app:sv_trembleDuration="@android:integer/config_longAnimTime"
                 app:sv_unit="%"
                 app:sv_textColor="?attr/sv_speedometerBackColor"
@@ -79,7 +79,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintEnd_toEndOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerCellularSpeedometer"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#673AB7"/>
 
             <ImageView
                 android:id="@+id/textView5"
@@ -89,7 +90,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/pointerWifiSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerWifiSpeedometer"
-                app:layout_constraintTop_toTopOf="@+id/pointerWifiSpeedometer" />
+                app:layout_constraintTop_toTopOf="@+id/pointerWifiSpeedometer"
+                app:tint="#E1AA06"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
