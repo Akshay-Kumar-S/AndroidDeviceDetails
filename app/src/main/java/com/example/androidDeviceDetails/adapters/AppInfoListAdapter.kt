@@ -22,17 +22,9 @@ class AppInfoListAdapter(
     private var isAppType: Boolean
 ) : ArrayAdapter<AppInfoCookedData>(_context, resource, items) {
 
-    override fun getViewTypeCount(): Int {
-        return 2
-    }
+    override fun getViewTypeCount(): Int = 2
 
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            0
-        } else {
-            1
-        }
-    }
+    override fun getItemViewType(position: Int): Int = if (position == 0) 0 else 1
 
     @SuppressLint("InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -47,26 +39,20 @@ class AppInfoListAdapter(
                     vi.findViewById(R.id.enroll_progressbar),
                     vi.findViewById(R.id.installed_progressBar),
                     vi.findViewById(R.id.uninstalled_progressbar),
-                    vi.findViewById(R.id.enroll_count),
-                    vi.findViewById(R.id.install_count),
-                    vi.findViewById(R.id.update_count),
-                    vi.findViewById(R.id.uninstall_count)
+                    vi.findViewById(R.id.enroll_count), vi.findViewById(R.id.install_count),
+                    vi.findViewById(R.id.update_count), vi.findViewById(R.id.uninstall_count)
                 )
                 vi.tag = holder
             } else holder = vi?.tag as ProgressbarViewHolder
             setProgressbarHolder(holder)
-
         } else {
             val holder: AppInfoItemViewHolder?
             if (convertView == null) {
                 vi = layoutInflater.inflate(resource, null)
                 holder = AppInfoItemViewHolder(
-                    vi.findViewById(R.id.appName),
-                    vi.findViewById(R.id.appVersionCode),
-                    vi.findViewById(R.id.appEvent),
-                    vi.findViewById(R.id.appIcon),
-                    vi.findViewById(R.id.event_badge),
-                    vi.findViewById(R.id.uninstall_button)
+                    vi.findViewById(R.id.appName), vi.findViewById(R.id.appVersionCode),
+                    vi.findViewById(R.id.appEvent), vi.findViewById(R.id.appIcon),
+                    vi.findViewById(R.id.event_badge), vi.findViewById(R.id.uninstall_button)
                 )
                 vi.tag = holder
             } else holder = vi?.tag as AppInfoItemViewHolder
@@ -95,21 +81,22 @@ class AppInfoListAdapter(
         return holder
     }
 
-    @SuppressLint("SetTextI18n")
     private fun setAppInfoHolder(
-        holder: AppInfoItemViewHolder,
-        position: Int
+        holder: AppInfoItemViewHolder, pos: Int
     ): AppInfoItemViewHolder {
-        holder.appNameView.text = items[position].appName
+        holder.appNameView.text = items[pos].appName
         holder.eventTypeTextView.isVisible = !isAppType
         holder.uninstallButton.isVisible = !isAppType
         holder.eventBadge.isVisible = !isAppType
-        holder.eventTypeTextView.text = " | Event : " + items[position].eventType.toString()
-        holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
+        (" | Event : " + items[pos].eventType.toString()).also {
+            holder.eventTypeTextView.text = it
+        }
+        holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[pos].packageName))
         if (!isAppType) {
-            holder.versionCodeTextView.text =
-                "Version Code : " + items[position].versionCode.toString()
-            val color = when (items[position].eventType.ordinal) {
+            ("Version Code: " + items[pos].versionCode.toString()).also {
+                holder.versionCodeTextView.text = it
+            }
+            val color = when (items[pos].eventType.ordinal) {
                 0 -> R.color.teal_700
                 1 -> R.color.purple_500
                 2 -> R.color.pink
@@ -118,22 +105,15 @@ class AppInfoListAdapter(
             }
             holder.uninstallButton.isVisible = true
             holder.eventBadge.setColorFilter(
-                ContextCompat.getColor(context, color),
-                android.graphics.PorterDuff.Mode.MULTIPLY
+                ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY
             )
-            holder.uninstallButton.tag = items[position].packageName
-            if (items[position].eventType.ordinal == EventType.ENROLL.ordinal) {
+            holder.uninstallButton.tag = items[pos].packageName
+            if (items[pos].eventType.ordinal == EventType.ENROLL.ordinal)
                 holder.eventBadge.isVisible = false
-            }
-            if (items[position].isSystemApp) {
+            if (items[pos].isSystemApp) holder.uninstallButton.isVisible = false
+            else if (items[pos].eventType == EventType.UNINSTALLED)
                 holder.uninstallButton.isVisible = false
-            } else if (items[position].eventType == EventType.UNINSTALLED) {
-                holder.uninstallButton.isVisible = false
-            }
-        } else {
-            holder.versionCodeTextView.text = items[position].packageName
-        }
+        } else holder.versionCodeTextView.text = items[pos].packageName
         return holder
     }
-
 }

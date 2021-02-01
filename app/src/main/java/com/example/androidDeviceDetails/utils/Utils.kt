@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
+import com.example.androidDeviceDetails.collectors.AppEventCollectionHelper
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
