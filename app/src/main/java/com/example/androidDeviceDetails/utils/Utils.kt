@@ -162,14 +162,15 @@ object Utils {
 
     @SuppressLint("QueryPermissionsNeeded")
     fun addInitialData(context: Context) {
+        val appEventCollectionHelper = AppEventCollectionHelper()
         val db = RoomDB.getDatabase(context)!!
         val packages = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
         GlobalScope.launch(Dispatchers.IO) {
             for (i in packages) {
                 val details = getAppDetails(context, i.packageName)
-                AppEventCollectionHelper.writeToAppsDb(0, i.packageName, details, db)
+                appEventCollectionHelper.writeToAppsDb(0, i.packageName, details, db)
                 val id = db.appsDao().getIdByName(i.packageName)
-                AppEventCollectionHelper.writeToAppHistoryDb(
+                appEventCollectionHelper.writeToAppHistoryDb(
                     id,
                     EventType.ENROLL.ordinal,
                     details,
