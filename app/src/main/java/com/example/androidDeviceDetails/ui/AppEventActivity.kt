@@ -31,24 +31,24 @@ class AppEventActivity : AppCompatActivity(), View.OnClickListener {
         when (item.itemId) {
             R.id.spinner_all -> {
                 title.text = getString(R.string.filterAll)
-                filter = EventType.ALL_EVENTS.ordinal
+                filter = EventType.EVENTS.ordinal
             }
             R.id.spinner_enrolled -> {
                 title.text = getString(R.string.filterEnrolled)
-                filter = EventType.APP_ENROLL.ordinal
+                filter = EventType.ENROLL.ordinal
 
             }
             R.id.spinner_installed -> {
                 title.text = getString(R.string.filterInstalled)
-                filter = EventType.APP_INSTALLED.ordinal
+                filter = EventType.INSTALLED.ordinal
             }
             R.id.spinner_updated -> {
                 title.text = getString(R.string.filterUpdated)
-                filter = EventType.APP_UPDATED.ordinal
+                filter = EventType.UPDATED.ordinal
             }
             R.id.spinner_uninstalled -> {
                 title.text = getString(R.string.filterUninstalled)
-                filter = EventType.APP_UNINSTALLED.ordinal
+                filter = EventType.UNINSTALLED.ordinal
             }
             R.id.filter_text -> {
             }

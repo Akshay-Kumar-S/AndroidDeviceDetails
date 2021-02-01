@@ -32,7 +32,7 @@ class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context
         var filteredList = appList.toMutableList()
         savedAppList = appList
 
-        if (eventFilter != EventType.ALL_EVENTS.ordinal) {
+        if (eventFilter != EventType.EVENTS.ordinal) {
             filteredList.removeAll { it.eventType.ordinal != eventFilter }
         }
         filteredList = filteredList.sortedBy { it.appName }.toMutableList()
@@ -48,16 +48,16 @@ class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context
 
     private fun calculateProgressbarStats(): DonutChartData {
         val enrolledAppCount =
-            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_ENROLL.ordinal }
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.ENROLL.ordinal }
                 .eachCount()[true] ?: 0
         val installedAppCount =
-            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_INSTALLED.ordinal }
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.INSTALLED.ordinal }
                 .eachCount()[true] ?: 0
         val updateAppCount =
-            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_UPDATED.ordinal }
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.UPDATED.ordinal }
                 .eachCount()[true] ?: 0
         val uninstalledAppCount =
-            savedAppList.groupingBy { it.eventType.ordinal == EventType.APP_UNINSTALLED.ordinal }
+            savedAppList.groupingBy { it.eventType.ordinal == EventType.UNINSTALLED.ordinal }
                 .eachCount()[true] ?: 0
         return DonutChartData(
             enrolledAppCount, installedAppCount, updateAppCount, uninstalledAppCount
