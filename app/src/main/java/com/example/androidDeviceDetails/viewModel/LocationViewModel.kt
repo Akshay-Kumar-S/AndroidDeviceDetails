@@ -55,7 +55,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 
     private fun onData(cookedDataList: ArrayList<LocationData>) {
         binding.root.post { binding.locationBottomSheet.noData.visibility = GONE }
-        focusMapTo(cookedDataList.first().avgLatitude, cookedDataList.first().avgLongitude)
+        focusMapTo(cookedDataList.first().latitude, cookedDataList.first().longitude)
         addPointOnMap(cookedDataList)
         buildAdapterView(cookedDataList)
     }
@@ -102,7 +102,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             val marker = Marker(binding.mapView)
             binding.root.post {
                 marker.icon = generateMarker(location.count)
-                marker.position = GeoPoint(location.avgLatitude, location.avgLongitude)
+                marker.position = GeoPoint(location.latitude, location.longitude)
                 marker.infoWindow.view.visibility = GONE
                 marker.title = location.count.toString()
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)

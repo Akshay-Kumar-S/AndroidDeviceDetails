@@ -41,8 +41,8 @@ class LocationCooker : BaseCooker() {
             val geoHash = GeoHash.encodeHash(loc.latitude, loc.longitude, Utils.GEOHASH_LENGTH)
             if (loc.latitude != preLoc.latitude && loc.longitude != preLoc.longitude) {
                 if (geoHash in processedLocations.keys) {
-                    processedLocations[geoHash]!!.avgLatitude += loc.latitude
-                    processedLocations[geoHash]!!.avgLongitude += loc.longitude
+                    processedLocations[geoHash]!!.latitude += loc.latitude
+                    processedLocations[geoHash]!!.longitude += loc.longitude
                     processedLocations[geoHash]!!.count += 1
                     processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
                 } else {
@@ -60,10 +60,10 @@ class LocationCooker : BaseCooker() {
 
     private fun cookProcessedData(processedData: HashMap<String, LocationData>): ArrayList<LocationData> {
         processedData.forEach { (_, loc) ->
-            loc.avgLatitude /= loc.count
-            loc.avgLongitude /= loc.count
+            loc.latitude /= loc.count
+            loc.longitude /= loc.count
             val address = Geocoder(DeviceDetailsApplication.instance).getFromLocation(
-                loc.avgLatitude, loc.avgLongitude, 1
+                loc.latitude, loc.longitude, 1
             ).first()
             loc.address = "${address.thoroughfare}, ${address.locality}"
         }
