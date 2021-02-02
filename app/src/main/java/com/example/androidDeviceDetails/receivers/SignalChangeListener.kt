@@ -45,7 +45,7 @@ object SignalChangeListener : PhoneStateListener() {
                 is CellSignalStrengthGsm -> {
                     strength = cellInfo.dbm
                     level = cellInfo.level
-                    band = "GSM"
+                    band = Signal.TYPE_GSM
                     networkBand = Signal.SECOND_GEN
                 }
                 is CellSignalStrengthCdma -> {
