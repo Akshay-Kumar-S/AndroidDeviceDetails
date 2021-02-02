@@ -45,12 +45,12 @@ class BatteryCollector : BaseCollector() {
             val db = RoomDB.getDatabase(context)
             val batteryRaw = BatteryRaw(
                 System.currentTimeMillis(),
-                intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
-                intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0),
-                intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)?.div(10),
+                intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0) ?: 0,
+                intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) ?: 0,
+                intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)?.div(10) ?: 0,
                 intent?.getIntExtra(BatteryManager.EXTRA_HEALTH, 0),
                 batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER),
-                intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0),
+                intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0) ?: 0,
             )
             GlobalScope.launch { db?.batteryDao()?.insert(batteryRaw) }
         }

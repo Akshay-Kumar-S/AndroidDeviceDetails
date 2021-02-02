@@ -31,12 +31,12 @@ import com.example.androidDeviceDetails.cooker.BatteryCooker
 @Entity
 data class BatteryRaw(
     @PrimaryKey val timeStamp: Long,
-    @ColumnInfo(name = "level") val level: Int?,
-    @ColumnInfo(name = "plugged") val plugged: Int?,
-    @ColumnInfo(name = "temp") val temp: Int?,
+    @ColumnInfo(name = "level") val level: Int,
+    @ColumnInfo(name = "plugged") val plugged: Int,
+    @ColumnInfo(name = "temp") val temp: Int,
     @ColumnInfo(name = "health") val health: Int?,
     @ColumnInfo(name = "estimatedCapacity") val estimatedCapacity: Int,
-    @ColumnInfo(name = "estimatedAccuracy") val estimatedAccuracy: Int?
+    @ColumnInfo(name = "estimatedAccuracy") val estimatedAccuracy: Int
 )
 
 /**
