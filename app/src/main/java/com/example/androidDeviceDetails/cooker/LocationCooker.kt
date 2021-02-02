@@ -24,7 +24,6 @@ class LocationCooker : BaseCooker() {
             if (res.isNotEmpty()) {
                 val processedData = processData(res)
                 val cookedData = cookProcessedData(processedData)
-                Log.d("Location", "cookedData:$cookedData ")
                 callback.onDone(cookedData as ArrayList<T>)
             } else {
                 callback.onDone(arrayListOf())
@@ -65,7 +64,9 @@ class LocationCooker : BaseCooker() {
             val address = Geocoder(DeviceDetailsApplication.instance).getFromLocation(
                 loc.latitude, loc.longitude, 1
             ).first()
-            loc.address = "${address.thoroughfare}, ${address.locality}"
+            if (address.featureName != null) loc.address += "${address.featureName}, "
+            if (address.locality != null) loc.address += "${address.locality}, "
+            if (address.adminArea != null) loc.address += address.adminArea
         }
         return processedData.values.toMutableList()
             .filter { it.totalTime > 0 } as ArrayList<LocationData>
