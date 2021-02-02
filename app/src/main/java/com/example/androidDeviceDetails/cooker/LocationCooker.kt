@@ -54,8 +54,6 @@ class LocationCooker : BaseCooker() {
             } else {
                 iCookingDone.onComplete(arrayListOf())
             }
-
         }
     }
-
 }

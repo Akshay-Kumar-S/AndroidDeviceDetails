@@ -120,5 +120,4 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             buildAdapterView(cookedDataList)
         }
     }
-
 }
