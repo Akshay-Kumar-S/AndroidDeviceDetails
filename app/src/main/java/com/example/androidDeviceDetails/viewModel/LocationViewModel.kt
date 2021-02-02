@@ -44,7 +44,6 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             binding.locationBottomSheet.sortButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 null, null, getDrawable(context, R.drawable.ic_arrow_upward), null
             )
-
         } else {
             binding.locationBottomSheet.sortButton.tag = "down"
             binding.locationBottomSheet.sortButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
