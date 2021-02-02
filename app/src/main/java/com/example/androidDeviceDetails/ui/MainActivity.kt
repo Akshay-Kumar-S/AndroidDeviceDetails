@@ -64,15 +64,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED)
-            Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show()
-        else {
-            if (!Utils.isUsageAccessGranted(this))
-                startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(Intent(this, AppService::class.java))
-            else startService(Intent(this, AppService::class.java))
-        }
+        if (grantResults.size >= 2)
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED)
+                Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show()
+            else {
+                if (!Utils.isUsageAccessGranted(this))
+                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    startForegroundService(Intent(this, AppService::class.java))
+                else startService(Intent(this, AppService::class.java))
+            }
     }
 
     override fun onClick(v: View?) {
