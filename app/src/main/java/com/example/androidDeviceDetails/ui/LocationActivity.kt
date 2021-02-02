@@ -60,19 +60,20 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
 
     private fun initMap() {
         osmConfig.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-        binding.apply {
-            mapView.setTileSource(TileSourceFactory.MAPNIK)
-            mapView.zoomController.display.setPositions(false, RIGHT, CENTER)
-            mapView.isHorizontalMapRepetitionEnabled = true
-            mapView.isVerticalMapRepetitionEnabled = false
-            mapView.setMultiTouchControls(true)
-            mapView.isTilesScaledToDpi = true
-            mapView.minZoomLevel = 2.0
-            mapView.setScrollableAreaLimitLatitude(
+        binding.mapView.apply {
+            setTileSource(TileSourceFactory.MAPNIK)
+            zoomController.display.setPositions(false, RIGHT, CENTER)
+            isHorizontalMapRepetitionEnabled = true
+            isVerticalMapRepetitionEnabled = false
+            setMultiTouchControls(true)
+            isTilesScaledToDpi = true
+            controller.setZoom(2.0)
+            minZoomLevel = 2.0
+            setScrollableAreaLimitLatitude(
                 getTileSystem().maxLatitude, getTileSystem().minLatitude, 0
             )
             when (resources?.configuration?.uiMode?.and(UI_MODE_NIGHT_MASK)) {
-                UI_MODE_NIGHT_YES -> mapView.overlayManager.tilesOverlay.setColorFilter(test())
+                UI_MODE_NIGHT_YES -> overlayManager.tilesOverlay.setColorFilter(test())
             }
         }
     }
