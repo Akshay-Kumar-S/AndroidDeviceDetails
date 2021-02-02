@@ -11,3 +11,9 @@ data class SignalCookedData(
     var lastWifiStrength: Float = 0F
     var mostUsedWifi: String = "Unknown"
 }
+
+data class SignalGraphEntry(
+    val timeStamp: Long,
+    val signal: Int,
+    val strength: Int,
+)

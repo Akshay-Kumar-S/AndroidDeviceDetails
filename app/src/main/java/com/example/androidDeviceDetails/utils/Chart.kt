@@ -1,9 +1,9 @@
-package com.example.androidDeviceDetails.models.signal
+package com.example.androidDeviceDetails.utils
 
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 
 data class Chart(
-    var aaChartView: AAChartView,
+    var chartView: AAChartView,
     var title: String,
     var yAxisMin: Float,
     var yAxisMax: Float,

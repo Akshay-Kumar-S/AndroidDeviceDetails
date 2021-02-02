@@ -19,13 +19,10 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
-import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
-import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.Chart
 import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.services.AppService
@@ -270,7 +267,7 @@ object Utils {
         ceil((dataSize).div(total).times(100)).toInt()
 
     fun drawChart(chart: Chart, xSet: Array<String>, ySet: Array<Any>) {
-        val aaChartView = chart.aaChartView
+        val aaChartView = chart.chartView
         val aaChartModel: AAChartModel = AAChartModel()
             .chartType(AAChartType.Spline)
             .title(chart.title)

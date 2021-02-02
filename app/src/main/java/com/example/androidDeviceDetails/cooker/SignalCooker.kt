@@ -79,7 +79,7 @@ class SignalCooker : BaseCooker() {
                     signalCookedData.roamingTime += timeInterval
 
                 if (cellularRaw.timeStamp >= startTime) {
-                    addGraphEntry(cellularRaw, signalCookedData)
+                    updateGraphEntry(cellularRaw, signalCookedData)
                     startTime = (graphTimeInterval + cellularRaw.timeStamp)
                 }
                 prevCellularRaw = cellularRaw
@@ -111,7 +111,7 @@ class SignalCooker : BaseCooker() {
                 aggregateMostUsed(prevWifiRaw.operatorName, ssidMap, timeInterval)
 
                 if (wifiRaw.timeStamp >= startTime) {
-                    addGraphEntry(wifiRaw, signalCookedData)
+                    updateGraphEntry(wifiRaw, signalCookedData)
                     startTime = (graphTimeInterval + wifiRaw.timeStamp)
                 }
                 prevWifiRaw = wifiRaw
@@ -122,7 +122,7 @@ class SignalCooker : BaseCooker() {
         }
     }
 
-    private fun addGraphEntry(signalRaw: SignalRaw, signalCookedData: SignalCookedData) {
+    private fun updateGraphEntry(signalRaw: SignalRaw, signalCookedData: SignalCookedData) {
         signalCookedData.garphEntryList.add(
             SignalGraphEntry(signalRaw.timeStamp, signalRaw.signal, signalRaw.strength)
         )

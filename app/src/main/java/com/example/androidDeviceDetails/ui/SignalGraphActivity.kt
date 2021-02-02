@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivitySignalGraphBinding
-import com.example.androidDeviceDetails.models.signal.Chart
+import com.example.androidDeviceDetails.utils.Chart
 import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.utils.Utils
@@ -38,7 +38,7 @@ class SignalGraphActivity : AppCompatActivity() {
         }
 
         val wifiChart = Chart(
-            aaChartView = signalGraphBinding.wifiChart,
+            chartView = signalGraphBinding.wifiChart,
             title = "WIFI",
             yAxisMin = -127f,
             yAxisMax = 0f,
@@ -47,7 +47,7 @@ class SignalGraphActivity : AppCompatActivity() {
         Utils.drawChart(wifiChart, wifiTimeList.toTypedArray(), wifiValueList.toArray())
 
         val cellularChart = Chart(
-            aaChartView = signalGraphBinding.cellularChart,
+            chartView = signalGraphBinding.cellularChart,
             title = "CELLULAR",
             yAxisMin = -150f,
             yAxisMax = -50f,
