@@ -28,6 +28,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:sv_backgroundCircleColor="?attr/sv_speedometerBackColor"
+                app:sv_centerCircleColor="?attr/sv_speedometerBackColor"
                 app:sv_centerCircleRadius="0dp"
                 app:sv_indicatorWidth="0dp"
                 app:sv_markColor="?attr/sv_speedometerBackColor"
@@ -37,10 +38,9 @@
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
                 app:sv_speedometerColor="#673AB7"
+                app:sv_textColor="?attr/sv_speedometerBackColor"
                 app:sv_trembleDuration="@android:integer/config_longAnimTime"
                 app:sv_unit="%"
-                app:sv_textColor="?attr/sv_speedometerBackColor"
-                app:sv_centerCircleColor="?attr/sv_speedometerBackColor"
                 app:sv_unitTextColor="#673AB7"
                 app:sv_withPointer="false"
                 app:sv_withTremble="false" />
@@ -54,6 +54,7 @@
                 app:layout_constraintStart_toEndOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintTop_toTopOf="parent"
                 app:sv_backgroundCircleColor="?attr/sv_speedometerBackColor"
+                app:sv_centerCircleColor="?attr/sv_speedometerBackColor"
                 app:sv_centerCircleRadius="0dp"
                 app:sv_indicatorWidth="0dp"
                 app:sv_markColor="?attr/sv_speedometerBackColor"
@@ -63,10 +64,9 @@
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
                 app:sv_speedometerColor="#E1AA06"
+                app:sv_textColor="?attr/sv_speedometerBackColor"
                 app:sv_trembleDuration="@android:integer/config_longAnimTime"
                 app:sv_unit="%"
-                app:sv_textColor="?attr/sv_speedometerBackColor"
-                app:sv_centerCircleColor="?attr/sv_speedometerBackColor"
                 app:sv_unitTextColor="#673AB7"
                 app:sv_withPointer="false"
                 app:sv_withTremble="false" />
@@ -75,23 +75,25 @@
                 android:id="@+id/imageViewCellular"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/cellular_gauge"
                 android:src="@drawable/ic_round_network_cell_18"
                 app:layout_constraintBottom_toBottomOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintEnd_toEndOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#673AB7"/>
+                app:tint="#673AB7" />
 
             <ImageView
                 android:id="@+id/imageViewWifi"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/wifi_gauge"
                 android:src="@drawable/ic_round_network_wifi_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/pointerWifiSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerWifiSpeedometer"
                 app:layout_constraintTop_toTopOf="@+id/pointerWifiSpeedometer"
-                app:tint="#E1AA06"/>
+                app:tint="#E1AA06" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

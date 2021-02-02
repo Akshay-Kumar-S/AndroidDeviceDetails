@@ -6,15 +6,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.BatteryActivity"
-        android:background="?attr/mainBackground">
+        android:background="?attr/mainBackground"
+        tools:context=".ui.BatteryActivity">
 
         <include
             android:id="@+id/picker_binding"
             layout="@layout/date_time_picker"
-            android:layout_marginTop="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

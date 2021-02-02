@@ -39,7 +39,7 @@ class SignalGraphActivity : AppCompatActivity() {
 
         val wifiChart = Chart(
             chartView = signalGraphBinding.wifiChart,
-            title = "WIFI",
+            title = "Wifi",
             yAxisMin = -127f,
             yAxisMax = 0f,
             color = "#ffc069"
@@ -48,7 +48,7 @@ class SignalGraphActivity : AppCompatActivity() {
 
         val cellularChart = Chart(
             chartView = signalGraphBinding.cellularChart,
-            title = "CELLULAR",
+            title = "Cellular",
             yAxisMin = -150f,
             yAxisMax = -50f,
             color = "#06caf4"

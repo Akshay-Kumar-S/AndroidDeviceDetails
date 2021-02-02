@@ -124,7 +124,7 @@ class SignalCooker : BaseCooker() {
     }
 
     private fun updateGraphEntry(signalRaw: SignalRaw, signalCookedData: SignalCookedData) {
-        signalCookedData.garphEntryList.add(
+        signalCookedData.graphEntryList.add(
             SignalGraphEntry(signalRaw.timeStamp, signalRaw.signal, signalRaw.strength)
         )
     }

@@ -27,10 +27,7 @@ import com.example.androidDeviceDetails.models.appInfo.AppTypeModel
 import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.services.AppService
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartZoomType
-import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.aachartmodel.aainfographics.aachartcreator.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -269,8 +266,8 @@ object Utils {
         ceil((dataSize).div(total).times(100)).toInt()
 
     fun drawChart(chart: Chart, xSet: Array<String>, ySet: Array<Any>) {
-        val aaChartView = chart.chartView
-        val aaChartModel: AAChartModel = AAChartModel()
+        val chartView = chart.chartView
+        val chartModel = AAChartModel()
             .chartType(AAChartType.Spline)
             .title(chart.title)
             .categories(xSet)
@@ -286,14 +283,8 @@ object Utils {
             .colorsTheme(arrayOf(chart.color))
             .legendEnabled(false)
             .zoomType(AAChartZoomType.XY)
-            .series(
-                arrayOf(
-                    AASeriesElement()
-                        .name(chart.title)
-                        .data(ySet),
-                )
-            )
-        aaChartView.aa_drawChartWithChartModel(aaChartModel)
+            .series(arrayOf(AASeriesElement().name(chart.title).data(ySet)))
+        chartView.aa_drawChartWithChartModel(chartModel)
     }
 
     fun getTimePeriod(timeStamp: Long): String {

@@ -3,7 +3,6 @@
     <style name="Theme.AndroidDeviceDetails" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:fontFamily">@string/default_font</item>
         <item name="android:textColorHint">#676767</item>
-        <item name="android:textColor">@color/black</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/app_green</item>
         <item name="colorPrimaryVariant">#006a99</item>

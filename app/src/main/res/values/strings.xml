@@ -75,6 +75,8 @@
     <string name="filterInstalled">Installed</string>
     <string name="filterUpdated">Updated</string>
     <string name="filterUninstalled">Uninstalled</string>
+    <string name="cellular_gauge">Cellular Gauge</string>
+    <string name="wifi_gauge">Wifi Gauge</string>
     <string name="enroll"> Enroll :</string>
     <string name="install">Install :</string>
     <string name="update">Update :</string>
