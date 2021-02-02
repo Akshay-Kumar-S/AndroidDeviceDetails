@@ -1,17 +1,43 @@
 <resources>
+
+    <!--    General -->
+    <string name="app_name">AndroidDeviceDetails</string>
+
+    <!--    Battery Section -->
+    <string name="battery_no_usage">No usage recorded</string>
+    <string name="battery_icon">Icon</string>
+    <string name="battery_tile_info">Info</string>
+    <string name="battery_drop">Dropped 2%</string>
+    <string name="battery_DES">Battery Drop (largest first)</string>
+    <string name="battery_ASC">Battery Drop (smallest first)</string>
+    <string name="battery_PkgName_ALPH">Package Name (A to Z)</string>
+    <string name="battery_PkgName_REV_APLH">Package Name (Z to A)</string>
+
+    <!--    Date Time Picker -->
+    <string name="picker_start">FROM</string>
+    <string name="picker_11_00">11:00</string>
+    <string name="picker_pm">pm</string>
+    <string name="picker__21_jan_2020">21, Jan 2020</string>
+    <string name="picker_end">TO</string>
+
+    <!--    Sort BottomSheet -->
+    <string name="sort_by">Sort By</string>
+    <string name="sort_selected">Selected</string>
+    <string name="sort_DES">Battery Drop (largest first)</string>
+
+    <!--    Apply BottomSheet -->
+    <string name="apply">Apply</string>
+
+
     <string name="location_data">Location Data</string>
     <string name="signal_data">Signal Data</string>
-    <string name="app_name">AndroidDeviceDetails</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">longitude</string>
-    <string name="save_to_database">Save to Database</string>
-    <string name="display">Display</string>
     <string name="get_location">Get Location</string>
     <string name="count_location">Count Location</string>
     <string name="location">Locations</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
-    <string name="battery_info">Battery Info</string>
     <string name="icon">Icon</string>
     <string name="battery_usage">Battery Usage</string>
     <string name="info">Info</string>
@@ -19,18 +45,11 @@
     <string name="no_usage_recorded">No usage recorded</string>
     <string name="right">Right</string>
     <string name="left">Left</string>
-    <string name="date">Mon, 14 Dec</string>
     <string name="pie_chart_size">200dp</string>
-    <string name="day_wise">Day wise</string>
     <string name="network_usage">Network Usage</string>
     <string name="wifi_data_usage">550 MB</string>
     <string name="cellular_data_usage">10 MB</string>
     <string name="wifi">Wifi</string>
-    <string name="start">FROM</string>
-    <string name="pm">pm</string>
-    <string name="_21_jan_2020">21, Jan 2020</string>
-    <string name="end">TO</string>
-    <string name="_11_00">11:00</string>
     <string name="device_usage">Device Usage</string>
     <string name="label">filter</string>
     <string name="uninstall">UNINSTALL</string>
@@ -40,8 +59,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start_time">START TIME</string>
     <string name="end_time">END TIME</string>
-    <string name="cancel">Cancel</string>
-    <string name="apply">Apply</string>
     <string name="level">Level</string>
     <string name="default_font" translatable="false">sans-serif</string>
     <string name="strength">Strength</string>
@@ -49,19 +66,14 @@
     <string name="no_records_found">No records found</string>
     <string name="default_text">DEFAULT TEXT</string>
     <string name="cellular">Cellular</string>
-    <string name="select_date">select Date</string>
     <string name="time">Sl No</string>
     <string name="count">Count:</string>
-    <string name="tillToday">Till Today</string>
-    <string name="no_data">No Data</string>
     <string name="sort_direction_arrow">sort direction arrow</string>
     <string name="sort">Sort</string>
     <string name="zero">0</string>
     <string name="geohash">GeoHash</string>
     <string name="address">Address</string>
     <string name="location_icon">location icon</string>
-    <string name="sort_by">Sort By</string>
-    <string name="selected">Selected</string>
     <string name="appTypeUser">User</string>
     <string name="appTypeAll">All</string>
     <string name="appTypeSystem">System</string>
@@ -81,8 +93,4 @@
     <string name="percentage">%</string>
     <string name="used">Used</string>
     <string name="visited">Visited</string>
-    <string name="BatteryDrop_DES">Battery Drop (largest first)</string>
-    <string name="BatteryDrop_ASC">Battery Drop (smallest first)</string>
-    <string name="PkgName_ALPH">Package Name (A to Z)</string>
-    <string name="PkgName_REV_APLH">Package Name (Z to A)</string>
 </resources>

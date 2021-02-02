@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="4dp"
-                android:text="@string/start"
+                android:text="@string/picker_start"
                 android:textSize="10sp"
                 tools:ignore="RtlSymmetry,SmallSp" />
 
@@ -33,7 +33,7 @@
                     android:id="@+id/startTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_11_00"
+                    android:text="@string/picker_11_00"
                     android:textAlignment="center"
                     android:textColor="?attr/startBlue"
                     android:textSize="32sp" />
@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="6dp"
-                    android:text="@string/pm"
+                    android:text="@string/picker_pm"
                     android:textAlignment="center"
                     android:textColor="?attr/startBlue"
                     android:textSize="14sp" />
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="4dp"
-                android:text="@string/_21_jan_2020"
+                android:text="@string/picker__21_jan_2020"
                 android:textColor="?attr/batteryTitle"
                 tools:ignore="RtlSymmetry" />
 
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="4dp"
-                android:text="@string/end"
+                android:text="@string/picker_end"
                 android:textSize="10sp"
                 tools:ignore="RtlSymmetry,SmallSp" />
 
@@ -86,7 +86,7 @@
                     android:id="@+id/endTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_11_00"
+                    android:text="@string/picker_11_00"
                     android:textAlignment="center"
                     android:textColor="?attr/endOrange"
                     android:textSize="32sp" />
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="6dp"
-                    android:text="@string/pm"
+                    android:text="@string/picker_pm"
                     android:textAlignment="center"
                     android:textColor="?attr/endOrange"
                     android:textSize="14sp" />
@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="4dp"
-                android:text="@string/_21_jan_2020"
+                android:text="@string/picker__21_jan_2020"
                 android:textColor="?attr/batteryTitle"
                 tools:ignore="RtlSymmetry" />
 
