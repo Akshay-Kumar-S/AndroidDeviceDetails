@@ -43,13 +43,10 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         binding = DataBindingUtil.setContentView(this, R.layout.activity_location)
         initRecyclerView()
         initBottomSheet()
-        initDatePicker()
+        initOnClickListeners()
         initMap()
         activityController = ActivityController(this, NAME, binding)
         locationViewModel = activityController.viewModel as LocationViewModel
-        binding.apply {
-            locationBottomSheet.sortButton.setOnClickListener(this@LocationActivity)
-        }
     }
 
     private fun initRecyclerView() {
@@ -130,7 +127,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         return ColorMatrixColorFilter(scaleMatrix)
     }
 
-    private fun initDatePicker() {
+    private fun initOnClickListeners() {
         binding.apply {
             locationBottomSheet.dateTimePickerLayout.startTime
                 .setOnClickListener(this@LocationActivity)
@@ -140,6 +137,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
                 .setOnClickListener(this@LocationActivity)
             locationBottomSheet.dateTimePickerLayout.endDate
                 .setOnClickListener(this@LocationActivity)
+            locationBottomSheet.sortButton.setOnClickListener(this@LocationActivity)
         }
     }
 
