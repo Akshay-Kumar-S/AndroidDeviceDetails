@@ -32,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords
+import org.apache.commons.lang3.time.DurationFormatUtils
 import java.io.File
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -302,4 +303,13 @@ object Utils {
             else -> "Unknown"
         }
     }
+    fun durationInWords(time: Long): String {
+        var timeString = DurationFormatUtils.formatDurationWords(time, true, true)
+        timeString = timeString.replace("hours", "hrs")
+        timeString = timeString.replace("minutes", "mins")
+        timeString = timeString.replace("seconds", "sec")
+        return timeString
+    }
+
+
 }

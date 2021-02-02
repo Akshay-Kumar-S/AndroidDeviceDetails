@@ -9,7 +9,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.SortBy
-import org.apache.commons.lang3.time.DurationFormatUtils.formatDuration
+import com.example.androidDeviceDetails.utils.Utils
 
 
 class LocationAdapter(
@@ -33,7 +33,10 @@ class LocationAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, pos: Int) {
         viewHolder.count.text = list[pos].count.toString()
         viewHolder.address.text = list[pos].address
-        viewHolder.time.text = formatDuration(list[pos].totalTime, "d' days, 'H' hrs, 'mm' mins'")
+        viewHolder.time.text = when {
+            list[pos].totalTime < 0 -> "<5 minutes"
+            else -> Utils.durationInWords(list[pos].totalTime)
+        }
         viewHolder.itemView.setOnClickListener { onItemClickListener.onItemClicked(list[pos]) }
     }
 
