@@ -46,14 +46,9 @@ class LocationCooker : BaseCooker() {
                     processedLocations[geoHash]!!.count += 1
                     processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
                 } else {
-                    processedLocations[geoHash] =
-                        LocationData(
-                            loc.latitude,
-                            loc.longitude,
-                            1,
-                            "",
-                            loc.timeStamp - preLoc.timeStamp
-                        )
+                    processedLocations[geoHash] = LocationData(
+                        loc.latitude, loc.longitude, 1, "", loc.timeStamp - preLoc.timeStamp
+                    )
                 }
             } else {
                 processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
