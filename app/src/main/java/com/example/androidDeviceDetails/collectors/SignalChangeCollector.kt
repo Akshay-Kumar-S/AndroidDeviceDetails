@@ -33,6 +33,4 @@ class SignalChangeCollector : BaseCollector() {
     override fun stop() {
         mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
     }
-
-
 }

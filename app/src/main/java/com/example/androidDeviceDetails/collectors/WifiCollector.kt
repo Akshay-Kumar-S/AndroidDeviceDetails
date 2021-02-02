@@ -70,7 +70,8 @@ class WifiCollector(val context: Context) : BaseCollector() {
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)
-                    wifiPercentage = (Signal.WIFI_MIN - strength) / Signal.WIFI_RANGE.toFloat() * 100
+                    wifiPercentage =
+                        (Signal.WIFI_MIN - strength) / Signal.WIFI_RANGE.toFloat() * 100
                 }
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
