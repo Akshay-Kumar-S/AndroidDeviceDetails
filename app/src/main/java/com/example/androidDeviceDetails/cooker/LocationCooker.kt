@@ -15,6 +15,23 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LocationCooker : BaseCooker() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+        GlobalScope.launch {
+            val res = RoomDB.getDatabase()!!.locationDao()
+                .readDataFromDate(time.startTime, time.endTime) as ArrayList<LocationModel>
+            if (res.isNotEmpty()) {
+                val processedData = processData(res)
+                val cookedData = cookProcessedData(processedData)
+                Log.d("Location", "cookedData:$cookedData ")
+                callback.onDone(cookedData as ArrayList<T>)
+            } else {
+                callback.onDone(arrayListOf())
+            }
+        }
+    }
+
     private fun processData(locationList: ArrayList<LocationModel>): HashMap<String, LocationData> {
         val processedLocations = HashMap<String, LocationData>()
         var preLoc = locationList.first()
@@ -30,7 +47,13 @@ class LocationCooker : BaseCooker() {
                     processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
                 } else {
                     processedLocations[geoHash] =
-                        LocationData(loc.latitude, loc.longitude, 1, "", loc.timeStamp - preLoc.timeStamp)
+                        LocationData(
+                            loc.latitude,
+                            loc.longitude,
+                            1,
+                            "",
+                            loc.timeStamp - preLoc.timeStamp
+                        )
                 }
             } else {
                 processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
@@ -49,22 +72,7 @@ class LocationCooker : BaseCooker() {
             ).first()
             loc.address = "${address.thoroughfare}, ${address.locality}"
         }
-        return processedData.values.toMutableList().filter { it.totalTime>0 } as ArrayList<LocationData>
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
-        GlobalScope.launch {
-            val res = RoomDB.getDatabase()!!.locationDao()
-                .readDataFromDate(time.startTime, time.endTime) as ArrayList<LocationModel>
-            if (res.isNotEmpty()) {
-                val processedData = processData(res)
-                val cookedData = cookProcessedData(processedData)
-                Log.d("Location", "cookedData:$cookedData ")
-                iCookingDone.onComplete(cookedData as ArrayList<T>)
-            } else {
-                iCookingDone.onComplete(arrayListOf())
-            }
-        }
+        return processedData.values.toMutableList()
+            .filter { it.totalTime > 0 } as ArrayList<LocationData>
     }
 }
