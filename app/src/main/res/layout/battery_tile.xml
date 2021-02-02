@@ -13,7 +13,7 @@
         android:id="@+id/appIcon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:contentDescription="@string/icon"
+        android:contentDescription="@string/battery_icon"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
             android:id="@+id/dropText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_info"
+            android:text="@string/battery_drop"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:background="@android:color/transparent"
-        android:contentDescription="@string/info"
+        android:contentDescription="@string/battery_tile_info"
         android:src="@drawable/ic_outline_info_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
