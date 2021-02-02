@@ -129,14 +129,10 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
 
     private fun initOnClickListeners() {
         binding.apply {
-            locationBottomSheet.dateTimePickerLayout.startTime
-                .setOnClickListener(this@LocationActivity)
-            locationBottomSheet.dateTimePickerLayout.startDate
-                .setOnClickListener(this@LocationActivity)
-            locationBottomSheet.dateTimePickerLayout.endTime
-                .setOnClickListener(this@LocationActivity)
-            locationBottomSheet.dateTimePickerLayout.endDate
-                .setOnClickListener(this@LocationActivity)
+            locationBottomSheet.dateTimePicker.startDate.setOnClickListener(this@LocationActivity)
+            locationBottomSheet.dateTimePicker.startTime.setOnClickListener(this@LocationActivity)
+            locationBottomSheet.dateTimePicker.endDate.setOnClickListener(this@LocationActivity)
+            locationBottomSheet.dateTimePicker.endTime.setOnClickListener(this@LocationActivity)
             locationBottomSheet.sortButton.setOnClickListener(this@LocationActivity)
         }
     }
@@ -150,15 +146,15 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.sortButton -> {
-                if (binding.locationBottomSheet.sortButton.tag == "down") {
+                if (binding.locationBottomSheet.sortButton.tag == "down")
                     activityController.sortView(SortBy.DESCENDING.ordinal)
-                } else
+                else
                     activityController.sortView(SortBy.ASCENDING.ordinal)
             }
-            R.id.startTime -> activityController.setTime(this, R.id.startTime)
             R.id.startDate -> activityController.setDate(this, R.id.startDate)
-            R.id.endTime -> activityController.setTime(this, R.id.endTime)
+            R.id.startTime -> activityController.setTime(this, R.id.startTime)
             R.id.endDate -> activityController.setDate(this, R.id.endDate)
+            R.id.endTime -> activityController.setTime(this, R.id.endTime)
         }
     }
 
