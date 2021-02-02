@@ -5,6 +5,8 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.database.RoomDB
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
+import com.example.androidDeviceDetails.ui.PermittedAppsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,22 +25,40 @@ class PermissionsCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
-        var distinct: List<String> = listOf()
         GlobalScope.launch(Dispatchers.IO) {
             var listOfPermissions: MutableList<String> = ArrayList()
-            val permissionList = arrayListOf<String>()
             val db = RoomDB.getDatabase()!!
-            var allowedPerms = db.appPermissionDao().getAllowedPermissions()
-            var deniedPerms = db.appPermissionDao().getDeniedPermissions()
-            for (i in allowedPerms) {
-                    listOfPermissions.addAll(i.filterNot { "[]".indexOf(it) > -1 }.split(", "))
+            val appList = arrayListOf<PermittedAppsCookedData>()
+            val ids = db.appPermissionDao().getPermittedApps()
+            for (id in ids) {
+                listOfPermissions.addAll(id.allowed_permissions.filterNot { "[]".indexOf(it) > -1 }.split(", "))
+                listOfPermissions.addAll(id.denied_permissions.filterNot { "[]".indexOf(it) > -1 }.split(", "))
+                if (id.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !id.denied_permissions.contains(
+                        PermittedAppsActivity.PERMISSION
+                    )
+                ) {
+                    appList.add(
+                        PermittedAppsCookedData(
+                            id.package_name,
+                            id.apk_title,
+                            id.version_name,
+                            true
+                        )
+                    )
+                }
+                if (id.denied_permissions.contains(PermittedAppsActivity.PERMISSION)) {
+                    appList.add(
+                        PermittedAppsCookedData(
+                            id.package_name,
+                            id.apk_title,
+                            id.version_name,
+                            false
+                        )
+                    )
+                }
             }
-            for (i in deniedPerms) {
-                listOfPermissions.addAll(i.filterNot { "[]".indexOf(it) > -1 }.split(", "))
-            }
-            distinct = listOfPermissions.toSet().toList()
-            permissionList.addAll(distinct)
-            callback.onDone(permissionList as ArrayList<T>)
+            listOfPermissions=(listOfPermissions.toSet().toMutableList())
+            callback.onDone(listOfPermissions as ArrayList<T>)
         }
     }
 }
