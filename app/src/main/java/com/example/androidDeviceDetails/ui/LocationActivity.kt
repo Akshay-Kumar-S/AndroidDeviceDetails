@@ -70,12 +70,12 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
                 getTileSystem().maxLatitude, getTileSystem().minLatitude, 0
             )
             when (resources?.configuration?.uiMode?.and(UI_MODE_NIGHT_MASK)) {
-                UI_MODE_NIGHT_YES -> overlayManager.tilesOverlay.setColorFilter(test())
+                UI_MODE_NIGHT_YES -> overlayManager.tilesOverlay.setColorFilter(mapColorFilter())
             }
         }
     }
 
-    private fun test(): ColorMatrixColorFilter {
+    private fun mapColorFilter(): ColorMatrixColorFilter {
         val inverseMatrix = ColorMatrix(
             floatArrayOf(
                 -1.0f, 0.0f, 0.0f, 0.0f, 255f,
