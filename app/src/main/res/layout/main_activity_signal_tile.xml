@@ -138,7 +138,7 @@
                         app:sv_withTremble="false" />
 
                     <ImageView
-                        android:id="@+id/textView4"
+                        android:id="@+id/imageViewCellular"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ic_round_network_cell_18"
@@ -150,7 +150,7 @@
                         android:contentDescription="@string/icon" />
 
                     <ImageView
-                        android:id="@+id/textView5"
+                        android:id="@+id/imageViewWifi"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ic_round_network_wifi_24"

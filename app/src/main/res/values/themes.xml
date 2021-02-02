@@ -26,7 +26,7 @@
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/mainBackground</item>
+        <item name="android:statusBarColor">?attr/mainBackground</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

@@ -5,9 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
-import com.example.androidDeviceDetails.models.signal.SignalDao
-import com.example.androidDeviceDetails.models.signal.SignalRaw
-
 
 @Database(
     entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppInfoRaw::class, AppHistoryRaw::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],

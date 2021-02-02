@@ -20,14 +20,18 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.collectors.AppEventCollectionHelper
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
+import com.example.androidDeviceDetails.models.Chart
 import com.example.androidDeviceDetails.models.appInfo.AppDetails
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.AppTypeModel
 import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.services.AppService
+import com.github.aachartmodel.aainfographics.aachartcreator.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords
 import java.io.File
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -37,7 +41,7 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 object Utils {
-    private const val format = "dd/MM/yyyy HH:mm:ss:"
+    private const val format = "HH:mm dd MMM yyyy"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
     const val COLLECTION_INTERVAL: Long = 5 //in Minutes
 
@@ -260,4 +264,41 @@ object Utils {
 
     fun graphCalculator(dataSize: Double, total: Double) =
         ceil((dataSize).div(total).times(100)).toInt()
+
+    fun drawChart(chart: Chart, xSet: Array<String>, ySet: Array<Any>) {
+        val chartView = chart.chartView
+        val chartModel = AAChartModel()
+            .chartType(AAChartType.Spline)
+            .title(chart.title)
+            .categories(xSet)
+            .yAxisLabelsEnabled(true)
+            .yAxisGridLineWidth(0f)
+            .xAxisLabelsEnabled(false)
+            .touchEventEnabled(true)
+            .backgroundColor(R.attr.mainBackground)
+            .yAxisMin(chart.yAxisMin)
+            .yAxisMax(chart.yAxisMax)
+            .yAxisTitle("strength")
+            .tooltipValueSuffix("dBm")
+            .colorsTheme(arrayOf(chart.color))
+            .legendEnabled(false)
+            .zoomType(AAChartZoomType.XY)
+            .series(arrayOf(AASeriesElement().name(chart.title).data(ySet)))
+        chartView.aa_drawChartWithChartModel(chartModel)
+    }
+
+    fun getTimePeriod(timeStamp: Long): String {
+        return formatDurationWords(timeStamp, true, true)
+    }
+
+    fun getSignalLevel(level: Int): String {
+        return when (level) {
+            Signal.LEVEL_POOR -> "Poor"
+            Signal.LEVEL_LOW -> "Low"
+            Signal.LEVEL_MEDIUM -> "Medium"
+            Signal.LEVEL_GOOD -> "Good"
+            Signal.LEVEL_EXCELLENT -> "Excellent"
+            else -> "Unknown"
+        }
+    }
 }

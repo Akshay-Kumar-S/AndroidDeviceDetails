@@ -48,6 +48,7 @@
     <string name="type">Type:</string>
     <string name="no_records_found">No records found</string>
     <string name="default_text">DEFAULT TEXT</string>
+    <string name="cellular">Cellular</string>
     <string name="select_date">select Date</string>
     <string name="time">Sl No</string>
     <string name="count">Count:</string>
@@ -68,11 +69,14 @@
     <string name="appTypeUser">User</string>
     <string name="appTypeAll">All</string>
     <string name="appTypeSystem">System</string>
+    <string name="more_details">More Details</string>
     <string name="filterAll">All</string>
     <string name="filterEnrolled">Enrolled</string>
     <string name="filterInstalled">Installed</string>
     <string name="filterUpdated">Updated</string>
     <string name="filterUninstalled">Uninstalled</string>
+    <string name="cellular_gauge">Cellular Gauge</string>
+    <string name="wifi_gauge">Wifi Gauge</string>
     <string name="enroll"> Enroll :</string>
     <string name="install">Install :</string>
     <string name="update">Update :</string>

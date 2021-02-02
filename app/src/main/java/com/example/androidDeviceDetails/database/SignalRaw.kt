@@ -1,11 +1,10 @@
-package com.example.androidDeviceDetails.models.signal
+package com.example.androidDeviceDetails.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.androidDeviceDetails.collectors.SignalChangeCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector
 import com.example.androidDeviceDetails.cooker.SignalCooker
-import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 
 /**
@@ -18,7 +17,8 @@ import com.example.androidDeviceDetails.viewModel.SignalViewModel
  *
  * 1 for WIFI.
  * @param strength Signal strength in dBm.
- * @param attribute LinkSpeed in Mbps for WIFI and CellInfo Type for CELLULAR
+ * @param cellInfoType cellInfo Type for CELLULAR
+ * @param linkSpeed LinkSpeed in Mbps for WIFI
  * @param level Signal level.
  *
  *  @see [RoomDB]
@@ -29,10 +29,14 @@ data class SignalRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "signal") val signal: Int,
     @ColumnInfo(name = "strength") val strength: Int,
-    @ColumnInfo(name = "attribute") val attribute: String,//linkspeed for wifi and type for cellular
-    @ColumnInfo(name = "level") val level: Int
+    @ColumnInfo(name = "cellInfoType") val cellInfoType: String?,
+    @ColumnInfo(name = "linkSpeed") val linkSpeed: Int?,
+    @ColumnInfo(name = "level") val level: String,
+    @ColumnInfo(name = "operatorName") val operatorName: String,
+    @ColumnInfo(name = "isRoaming") val isRoaming: Boolean,
+    @ColumnInfo(name = "band") val band: String?,
+    @ColumnInfo(name = "percentage") val strengthPercentage: Float
 )
-
 
 /**
  * An interface that contains functions to handle database operations.
@@ -41,18 +45,11 @@ data class SignalRaw(
 interface SignalDao {
 
     /**
-     * Retrieve all records from [SignalRaw] table.
-     * @return List of [SignalRaw].
-     */
-    @Query("SELECT * FROM SignalRaw")
-    fun getAll(): List<SignalRaw>
-
-    /**
      * Insert the [signalRaw] into the table.
      * @param signalRaw record to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg signalRaw: SignalRaw)
+    fun insert(vararg signalRaw: SignalRaw)
 
     /**
      * Delete the [signalRaw] record from the [SignalRaw] table.
@@ -67,7 +64,7 @@ interface SignalDao {
      * @return [SignalRaw] which is used to update UI in [SignalViewModel].
      */
     @Query("SELECT * FROM SignalRaw ORDER BY timeStamp DESC LIMIT 1")
-    fun getLastLive(): LiveData<SignalRaw>
+    fun getLastRaw(): LiveData<SignalRaw>
 
     /**
      * Returns all the [SignalRaw] in the given time frame.
@@ -75,12 +72,15 @@ interface SignalDao {
      * @param endTime End Time.
      * @return List of [SignalRaw].
      */
-    @Query("SELECT * FROM SignalRaw WHERE timeStamp BETWEEN (:startTime) AND (:endTime)")
-    fun getAllBetween(startTime: Long, endTime: Long): List<SignalRaw>
+    @Query("SELECT * FROM SignalRaw WHERE (timeStamp BETWEEN (:startTime) AND (:endTime))")
+    fun getAll(startTime: Long, endTime: Long): List<SignalRaw>
 
     /**
      * Delete all the records in the [SignalRaw] table.
      */
     @Query("DELETE FROM SignalRaw")
     fun deleteAll()
+
+    @Insert
+    fun insertAll(signalRawList: List<SignalRaw>)
 }

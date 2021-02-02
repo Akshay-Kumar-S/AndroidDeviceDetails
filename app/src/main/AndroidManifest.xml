@@ -24,7 +24,6 @@
 
     <application
         android:name=".DeviceDetailsApplication"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
@@ -44,6 +43,10 @@
             android:label="App Type"
             android:parentActivityName=".ui.MainActivity" />
         <activity
+            android:name=".ui.SignalGraphActivity"
+            android:label="Signal Strength Graph"
+            android:parentActivityName=".ui.SignalActivity" />
+        <activity
             android:name=".ui.NetworkUsageActivity"
             android:label="Network Usage"
             android:parentActivityName=".ui.MainActivity" />
@@ -58,14 +61,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.LocationActivity"
-            android:label="Location Details"
-            android:parentActivityName=".ui.MainActivity"/>
         <activity
             android:name=".ui.SignalActivity"
             android:label="Signal Strength"
             android:parentActivityName=".ui.MainActivity" />
-
         <service
             android:name=".services.AppService"
             android:enabled="true" />
