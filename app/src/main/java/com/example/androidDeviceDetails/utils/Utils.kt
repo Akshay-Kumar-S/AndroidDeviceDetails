@@ -306,10 +306,8 @@ object Utils {
     fun durationInWords(time: Long): String {
         var timeString = DurationFormatUtils.formatDurationWords(time, true, true)
         timeString = timeString.replace("hours", "hrs")
-        timeString = timeString.replace("minutes", "mins")
+        timeString = timeString.replace("minute", "mins")
         timeString = timeString.replace("seconds", "sec")
         return timeString
     }
-
-
 }
