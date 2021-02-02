@@ -163,7 +163,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     }
 
     override fun onItemClicked(clickedItem: LocationData) {
-        locationViewModel.focusMapTo(clickedItem.avgLatitude, clickedItem.avgLongitude)
+        locationViewModel.focusMapTo(clickedItem.latitude, clickedItem.longitude)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 }
