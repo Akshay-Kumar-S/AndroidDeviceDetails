@@ -97,4 +97,5 @@
     <string name="percentage">%</string>
     <string name="used">Used</string>
     <string name="visited">Visited</string>
+    <string name="Toast_onNoData">No data on selected date</string>
 </resources>

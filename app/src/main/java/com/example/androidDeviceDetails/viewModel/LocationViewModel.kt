@@ -39,7 +39,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
 
     private fun onNoData() =
         binding.root.post {
-            Toast.makeText(context, "No data on selected date", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.Toast_onNoData), Toast.LENGTH_SHORT).show()
         }
 
 
