@@ -61,11 +61,7 @@
     <string name="address">Address</string>
     <string name="location_icon">location icon</string>
     <string name="sort_by">Sort By</string>
-    <string name="battery_drop_largest_first">Battery Drop (largest first)</string>
     <string name="selected">Selected</string>
-    <string name="battery_drop_smallest_first">Battery Drop (smallest first)</string>
-    <string name="package_name_a_to_z">Package Name (A to Z)</string>
-    <string name="package_name_z_to_a">Package Name (Z to A)</string>
     <string name="appTypeUser">User</string>
     <string name="appTypeAll">All</string>
     <string name="appTypeSystem">System</string>
@@ -85,4 +81,8 @@
     <string name="percentage">%</string>
     <string name="used">Used</string>
     <string name="visited">Visited</string>
+    <string name="BatteryDrop_DES">Battery Drop (largest first)</string>
+    <string name="BatteryDrop_ASC">Battery Drop (smallest first)</string>
+    <string name="PkgName_ALPH">Package Name (A to Z)</string>
+    <string name="PkgName_REV_APLH">Package Name (Z to A)</string>
 </resources>
