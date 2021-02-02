@@ -35,21 +35,6 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         binding.root.post {
             (binding.locationBottomSheet.locationListView.adapter as LocationAdapter).sortView(type)
         }
-        toggleSortButton()
-    }
-
-    private fun toggleSortButton() {
-        if (binding.locationBottomSheet.sortButton.tag == "down") {
-            binding.locationBottomSheet.sortButton.tag = "up"
-            binding.locationBottomSheet.sortButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null, null, getDrawable(context, R.drawable.ic_arrow_upward), null
-            )
-        } else {
-            binding.locationBottomSheet.sortButton.tag = "down"
-            binding.locationBottomSheet.sortButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null, null, getDrawable(context, R.drawable.ic_arrow_downward), null
-            )
-        }
     }
 
     private fun onData(cookedDataList: ArrayList<LocationData>) {

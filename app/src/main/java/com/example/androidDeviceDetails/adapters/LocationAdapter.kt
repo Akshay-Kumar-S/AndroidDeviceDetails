@@ -48,6 +48,8 @@ class LocationAdapter(
     fun sortView(type: Int) {
         when (type) {
             SortBy.ASCENDING.ordinal -> list.sortBy { it.count }
+            SortBy.TIME_ASCENDING.ordinal -> list.sortBy { it.totalTime }
+            SortBy.TIME_DESCENDING.ordinal -> list.sortByDescending { it.totalTime }
             else -> list.sortByDescending { it.count }
         }
         notifyDataSetChanged()
