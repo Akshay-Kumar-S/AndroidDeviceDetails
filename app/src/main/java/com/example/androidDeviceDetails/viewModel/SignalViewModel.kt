@@ -6,9 +6,9 @@ import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.database.SignalRaw
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
+import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
-import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.utils.Utils
 
 /**
@@ -44,8 +44,8 @@ class SignalViewModel(
      */
     private fun updateStrengthPercentage(signalRaw: SignalRaw) {
         when (signalRaw.signal) {
-            Signal.WIFI.ordinal -> wifiStrengthPercentage = signalRaw.strengthPercentage
-            Signal.CELLULAR.ordinal -> cellularStrengthPercentage = signalRaw.strengthPercentage
+            Signal.WIFI -> wifiStrengthPercentage = signalRaw.strengthPercentage
+            Signal.CELLULAR -> cellularStrengthPercentage = signalRaw.strengthPercentage
         }
         updateGauge()
     }

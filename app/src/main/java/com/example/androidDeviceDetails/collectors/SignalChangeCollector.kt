@@ -27,11 +27,6 @@ class SignalChangeCollector : BaseCollector() {
     private var mTelephonyManager: TelephonyManager =
         DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-    companion object {
-        const val CELLULAR_MIN: Int = -120
-        const val CELLULAR_RANGE = 96
-    }
-
     /**
      * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
      **/
@@ -46,7 +41,7 @@ class SignalChangeCollector : BaseCollector() {
         override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
             val signalDB = RoomDB.getDatabase()
             var level = 0
-            var strength = CELLULAR_MIN
+            var strength = Signal.CELLULAR_MIN
             var band = "unknown"
             var networkBand = "unknown"
             val strengthPercentage: Float
@@ -124,10 +119,10 @@ class SignalChangeCollector : BaseCollector() {
                         }
             }
 
-            strengthPercentage = (CELLULAR_MIN - strength) / CELLULAR_RANGE.toFloat() * (-100)
+            strengthPercentage = (Signal.CELLULAR_MIN - strength) / Signal.CELLULAR_RANGE.toFloat() * (-100)
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
-                signal = Signal.CELLULAR.ordinal,
+                signal = Signal.CELLULAR,
                 strength = strength,
                 cellInfoType = band,
                 linkSpeed = null,

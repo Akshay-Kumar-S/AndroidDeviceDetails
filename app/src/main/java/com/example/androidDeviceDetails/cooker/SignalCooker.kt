@@ -5,9 +5,9 @@ import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.database.SignalRaw
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
-import com.example.androidDeviceDetails.models.signal.Signal
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -40,7 +40,7 @@ class SignalCooker : BaseCooker() {
             val signalCookedData = SignalCookedData()
 
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
-            signalRawList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
+            signalRawList.partition { it.signal == Signal.CELLULAR }.apply {
                 cookCellularData(first as ArrayList<SignalRaw>, signalCookedData, cookedDataList)
                 cookWifiData(second as ArrayList<SignalRaw>, signalCookedData, cookedDataList)
             }

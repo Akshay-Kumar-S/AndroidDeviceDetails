@@ -25,12 +25,6 @@ import kotlinx.coroutines.launch
  **/
 class WifiCollector(val context: Context) : BaseCollector() {
 
-    companion object {
-        const val WIFI_MIN = -120
-        const val WIFI_LEVEL = 45
-        const val WIFI_RANGE = 97
-    }
-
     /**
      * A [BroadcastReceiver] which gets notified from [WifiManager.RSSI_CHANGED_ACTION] and
      * [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
@@ -58,18 +52,18 @@ class WifiCollector(val context: Context) : BaseCollector() {
             when {
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
                     level = wifiManager.calculateSignalLevel(strength)
-                    wifiPercentage = (WIFI_MIN - strength) / WIFI_RANGE.toFloat() * 100
+                    wifiPercentage = (Signal.WIFI_MIN - strength) / Signal.WIFI_RANGE.toFloat() * 100
                 }
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
-                    wifiPercentage = WifiManager.calculateSignalLevel(strength, WIFI_LEVEL) /
-                            WIFI_LEVEL.toFloat() * 100
+                    wifiPercentage = WifiManager.calculateSignalLevel(strength, Signal.WIFI_LEVEL) /
+                            Signal.WIFI_LEVEL.toFloat() * 100
                 }
             }
 
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
-                signal = Signal.WIFI.ordinal,
+                signal = Signal.WIFI,
                 strength = strength,
                 cellInfoType = null,
                 linkSpeed = wifiManager.connectionInfo.linkSpeed,

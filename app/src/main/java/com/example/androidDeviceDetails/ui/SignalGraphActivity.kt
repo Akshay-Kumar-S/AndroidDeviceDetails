@@ -6,8 +6,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivitySignalGraphBinding
 import com.example.androidDeviceDetails.models.signal.Chart
-import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.models.signal.Signal
+import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.utils.Utils
 import com.google.gson.Gson
 
@@ -26,7 +26,7 @@ class SignalGraphActivity : AppCompatActivity() {
         val wifiValueList = arrayListOf<Int>()
         val wifiTimeList = arrayListOf<String>()
 
-        graphEntryList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
+        graphEntryList.partition { it.signal == Signal.CELLULAR }.apply {
             first.forEach {
                 cellularTimeList.add(Utils.getDateTime(it.timeStamp))
                 cellularValueList.add(it.strength)

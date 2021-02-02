@@ -27,6 +27,7 @@ import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
 import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.signal.Chart
+import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.services.AppService
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
@@ -47,11 +48,6 @@ object Utils {
     private const val format = "HH:mm dd MMM yyyy"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
     const val COLLECTION_INTERVAL: Long = 5 //in Minutes
-    private const val LEVEL_POOR = 0
-    private const val LEVEL_LOW = 1
-    private const val LEVEL_MEDIUM = 2
-    private const val LEVEL_GOOD = 3
-    private const val LEVEL_EXCELLENT = 4
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 
@@ -311,11 +307,11 @@ object Utils {
 
     fun getSignalLevel(level: Int): String {
         return when (level) {
-            LEVEL_POOR -> "Poor"
-            LEVEL_LOW -> "Low"
-            LEVEL_MEDIUM -> "Medium"
-            LEVEL_GOOD -> "Good"
-            LEVEL_EXCELLENT -> "Excellent"
+            Signal.LEVEL_POOR -> "Poor"
+            Signal.LEVEL_LOW -> "Low"
+            Signal.LEVEL_MEDIUM -> "Medium"
+            Signal.LEVEL_GOOD -> "Good"
+            Signal.LEVEL_EXCELLENT -> "Excellent"
             else -> "Unknown"
         }
     }
