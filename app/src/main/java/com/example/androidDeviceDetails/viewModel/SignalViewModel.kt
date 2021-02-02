@@ -33,7 +33,7 @@ class SignalViewModel(
      * And on notification, updates values via [updateStrengthPercentage].
      */
     private fun observeSignal() {
-        db.signalDao().getLastLive().observe(signalBinding.lifecycleOwner!!) {
+        db.signalDao().getLastRaw().observe(signalBinding.lifecycleOwner!!) {
             if (it != null) updateStrengthPercentage(it)
         }
     }

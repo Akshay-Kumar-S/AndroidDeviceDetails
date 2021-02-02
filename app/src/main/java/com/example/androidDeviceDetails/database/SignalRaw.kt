@@ -64,7 +64,7 @@ interface SignalDao {
      * @return [SignalRaw] which is used to update UI in [SignalViewModel].
      */
     @Query("SELECT * FROM SignalRaw ORDER BY timeStamp DESC LIMIT 1")
-    fun getLastLive(): LiveData<SignalRaw>
+    fun getLastRaw(): LiveData<SignalRaw>
 
     /**
      * Returns all the [SignalRaw] in the given time frame.
@@ -73,7 +73,7 @@ interface SignalDao {
      * @return List of [SignalRaw].
      */
     @Query("SELECT * FROM SignalRaw WHERE (timeStamp BETWEEN (:startTime) AND (:endTime))")
-    fun getAllSignalBetween(startTime: Long, endTime: Long): List<SignalRaw>
+    fun getAll(startTime: Long, endTime: Long): List<SignalRaw>
 
     /**
      * Delete all the records in the [SignalRaw] table.

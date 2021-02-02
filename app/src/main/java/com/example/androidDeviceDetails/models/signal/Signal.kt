@@ -8,6 +8,7 @@ object Signal {
     const val WIFI_MIN = -120
     const val WIFI_LEVEL = 45
     const val WIFI_RANGE = 97
+    const val GRAPH_PLOT_POINTS: Int = 40
     const val LEVEL_POOR = 0
     const val LEVEL_LOW = 1
     const val LEVEL_MEDIUM = 2
