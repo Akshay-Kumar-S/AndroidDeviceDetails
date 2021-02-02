@@ -60,11 +60,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".ui.LocationActivity"
+            android:label="Location Details"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.SignalActivity"
             android:label="Signal Strength"
             android:parentActivityName=".ui.MainActivity" />
+
         <service
             android:name=".services.AppService"
             android:enabled="true" />
@@ -77,5 +81,4 @@
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>
