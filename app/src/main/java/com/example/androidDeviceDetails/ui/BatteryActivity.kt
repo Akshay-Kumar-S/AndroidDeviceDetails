@@ -56,7 +56,8 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.title == "Sort By") sortBySheet.show(supportFragmentManager, "Sort By")
+        if (item.title == getString(R.string.sort_by))
+            sortBySheet.show(supportFragmentManager, getString(R.string.sort_by))
         return super.onOptionsItemSelected(item)
     }
 
@@ -70,10 +71,10 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val options = arrayListOf(
-        "Battery Drop (largest first)" to SortBy.DESCENDING.ordinal,
-        "Battery Drop (smallest first)" to SortBy.ASCENDING.ordinal,
-        "Package Name (A to Z)" to SortBy.ALPHABETICAL.ordinal,
-        "Package Name (Z to A)" to SortBy.REVERSE_ALPHABETICAL.ordinal
+        getString(R.string.BatteryDrop_DES) to SortBy.DESCENDING.ordinal,
+        getString(R.string.BatteryDrop_ASC) to SortBy.ASCENDING.ordinal,
+        getString(R.string.PkgName_ALPH) to SortBy.ALPHABETICAL.ordinal,
+        getString(R.string.PkgName_REV_APLH) to SortBy.REVERSE_ALPHABETICAL.ordinal
     )
 
     companion object {
