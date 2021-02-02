@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getDrawable
 import com.example.androidDeviceDetails.R
@@ -22,6 +23,21 @@ import org.osmdroid.views.overlay.Marker
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
+    override fun <T> onDone(outputList: ArrayList<T>) {
+        val cookedDataList = outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
+        if (cookedDataList.isEmpty())
+            onNoData(cookedDataList)
+        else
+            onData(cookedDataList)
+    }
+
+    override fun sort(type: Int) {
+        binding.root.post {
+            (binding.locationBottomSheet.locationListView.adapter as LocationAdapter).sortView(type)
+        }
+        toggleSortButton()
+    }
+
     private fun toggleSortButton() {
         if (binding.locationBottomSheet.sortButton.tag == "down") {
             binding.locationBottomSheet.sortButton.tag = "up"
@@ -37,17 +53,21 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         }
     }
 
-    private fun onNoData() =
-        binding.root.post {
-            Toast.makeText(context, context.getString(R.string.Toast_onNoData), Toast.LENGTH_SHORT).show()
-        }
+    private fun onData(cookedDataList: ArrayList<LocationData>) {
+        binding.root.post { binding.locationBottomSheet.noData.visibility = GONE }
+        focusMapTo(cookedDataList.first().avgLatitude, cookedDataList.first().avgLongitude)
+        addPointOnMap(cookedDataList)
+        buildAdapterView(cookedDataList)
+    }
 
-
-    override fun sort(type: Int) {
+    private fun onNoData(cookedDataList: ArrayList<LocationData>) {
         binding.root.post {
-            (binding.locationBottomSheet.locationListView.adapter as LocationAdapter).sortView(type)
+            binding.locationBottomSheet.noData.visibility = VISIBLE
+            binding.mapView.overlays.clear()
+            Toast.makeText(context, context.getString(R.string.Toast_onNoData), Toast.LENGTH_SHORT)
+                .show()
+            buildAdapterView(cookedDataList)
         }
-        toggleSortButton()
     }
 
     private fun buildAdapterView(cookedDataList: ArrayList<LocationData>) {
@@ -107,17 +127,6 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
             val mapController = binding.mapView.controller
             mapController.setZoom(15.0)
             mapController.setCenter(geoPoint)
-        }
-    }
-
-    override fun <T> onDone(outputList: ArrayList<T>) {
-        val cookedDataList = outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
-        if (cookedDataList.isEmpty())
-            onNoData()
-        else {
-            focusMapTo(cookedDataList.first().avgLatitude, cookedDataList.first().avgLongitude)
-            addPointOnMap(cookedDataList)
-            buildAdapterView(cookedDataList)
         }
     }
 }
