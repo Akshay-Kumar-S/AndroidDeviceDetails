@@ -53,7 +53,7 @@
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="Overlay"
+                        android:contentDescription="@string/icon"
                         android:scaleType="fitCenter"
                          android:src="@{iconSource}"
                         card_view:tint="#83b899" />
@@ -80,7 +80,8 @@
                     card_view:layout_constraintVertical_bias=".088"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    android:backgroundTint="#83b899">
+                    android:backgroundTint="#83b899"
+                    android:contentDescription="@string/icon">
 
                 </ImageView>
                 <LinearLayout
@@ -157,7 +158,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
-                                android:text="20 "
                                 android:textColor="?attr/progressbarFirst" />
                         </LinearLayout>
 
@@ -176,7 +176,6 @@
                                 android:id="@+id/label_2_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="20 "
                                 android:textStyle="bold"
                                 android:textColor="?attr/progressbarSecond" />
                         </LinearLayout>

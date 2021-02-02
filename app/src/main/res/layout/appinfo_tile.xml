@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
@@ -14,11 +13,10 @@
         android:layout_height="30dp"
         android:contentDescription="@string/icon"
         android:src="@drawable/ic_launcher_background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/linearLayout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/event_badge"
@@ -30,7 +28,6 @@
         android:src="@drawable/ic_baseline_add_circle_24_new_event"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -74,20 +71,19 @@
 
     <ImageButton
         android:id="@+id/uninstall_button"
-        android:onClick="deleteApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@null"
+        android:contentDescription="@string/delete_icon"
+        android:onClick="deleteApp"
         android:src="@drawable/ic_baseline_delete_forever_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.967"
         app:layout_constraintStart_toEndOf="@id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
-        android:contentDescription="@string/delete_icon" />
-
+        app:layout_constraintVertical_bias="0.4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

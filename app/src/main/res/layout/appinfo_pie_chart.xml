@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/pieChartLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -101,6 +102,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/icon"
                 android:src="@drawable/ic_baseline_donut_large_24"
                 app:tint="@color/teal_700">
 
@@ -111,8 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="Enroll : "
-                android:textColor="?attr/batteryTitle"> test</TextView>
+                android:text="@string/enroll"
+                android:textColor="?attr/batteryTitle" />
 
             <TextView
                 android:id="@+id/enroll_count"
@@ -120,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:textColor="?attr/batteryTitle" />
         </LinearLayout>
 
         <LinearLayout
@@ -132,6 +134,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/icon"
                 android:src="@drawable/ic_baseline_donut_large_24"
                 app:tint="@color/purple_500">
 
@@ -143,8 +146,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="Install : "
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:text="@string/install"
+                android:textColor="?attr/batteryTitle" />
 
             <TextView
                 android:id="@+id/install_count"
@@ -164,6 +167,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/icon"
                 android:src="@drawable/ic_baseline_donut_large_24"
                 app:tint="@color/pink">
 
@@ -175,8 +179,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="Update : "
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:text="@string/update"
+                android:textColor="?attr/batteryTitle" />
 
             <TextView
                 android:id="@+id/update_count"
@@ -184,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:textColor="?attr/batteryTitle" />
         </LinearLayout>
 
         <LinearLayout
@@ -197,6 +201,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/icon"
                 android:src="@drawable/ic_baseline_donut_large_24"
                 app:tint="@color/mat_yellow">
 
@@ -207,8 +212,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="Uninstall : "
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:text="@string/uninstall_count"
+                android:textColor="?attr/batteryTitle" />
 
             <TextView
                 android:id="@+id/uninstall_count"
@@ -216,9 +221,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:textColor="?attr/batteryTitle">test</TextView>
+                android:textColor="?attr/batteryTitle" />
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

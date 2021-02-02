@@ -42,7 +42,7 @@
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="Overlay"
+                        android:contentDescription="@string/icon"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_round_battery_std_24"
                         card_view:tint="#83b899" />
@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:textColor="?attr/batteryTitle"
-                        android:text="Battery Usage"
+                        android:text="@string/battery_usage"
                         android:textAlignment="viewEnd"
                         android:textSize="20sp" />
 
@@ -70,7 +70,8 @@
                     card_view:layout_constraintVertical_bias=".088"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    android:backgroundTint="#83b899">
+                    android:backgroundTint="#83b899"
+                    android:contentDescription="@string/icon">
 
                 </ImageView>
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,8 +94,9 @@
                             android:id="@+id/mainValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/batteryPercentage"
                             android:textSize="70sp"
+                            android:paddingStart="0dp"
                             android:paddingEnd="4dp"
                             card_view:layout_constraintBottom_toBottomOf="parent"
                             card_view:layout_constraintStart_toStartOf="parent"
@@ -104,7 +106,7 @@
                             android:id="@+id/superscript"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="%"
+                            android:text="@string/percentage"
                             android:textSize="14sp"
                             card_view:layout_constraintBottom_toBottomOf="parent"
                             card_view:layout_constraintStart_toEndOf="@id/mainValue"
@@ -115,7 +117,7 @@
                             android:id="@+id/subscript"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Used"
+                            android:text="@string/used"
                             android:textSize="14sp"
                             card_view:layout_constraintBottom_toBottomOf="parent"
                             card_view:layout_constraintStart_toEndOf="@id/mainValue"
@@ -140,14 +142,14 @@
                             android:src="@drawable/ic_launcher_background"
                             card_view:layout_constraintEnd_toEndOf="parent"
                             card_view:layout_constraintTop_toTopOf="parent"
-                            card_view:layout_constraintBottom_toTopOf="@id/app1"/>
+                            card_view:layout_constraintBottom_toTopOf="@id/app1"
+                            android:contentDescription="@string/icon" />
                         <TextView
                             android:id="@+id/app1"
                             android:layout_marginTop="4dp"
                             android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20"
                             card_view:layout_constraintStart_toStartOf="@id/app1Icon"
                             card_view:layout_constraintTop_toBottomOf="@id/app1Icon"
                             card_view:layout_constraintBottom_toBottomOf="parent"
@@ -162,14 +164,14 @@
                             card_view:layout_constraintEnd_toStartOf="@id/app1Icon"
                             card_view:layout_constraintStart_toEndOf="@id/app3Icon"
                             card_view:layout_constraintTop_toTopOf="parent"
-                            card_view:layout_constraintBottom_toTopOf="@id/app2"/>
+                            card_view:layout_constraintBottom_toTopOf="@id/app2"
+                            android:contentDescription="@string/icon" />
                         <TextView
                             android:id="@+id/app2"
                             android:visibility="gone"
                             android:layout_marginTop="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20"
                             card_view:layout_constraintStart_toStartOf="@id/app2Icon"
                             card_view:layout_constraintTop_toBottomOf="@id/app2Icon"
                             card_view:layout_constraintBottom_toBottomOf="parent"
@@ -183,7 +185,8 @@
                             card_view:layout_constraintEnd_toStartOf="@id/app2Icon"
                             card_view:layout_constraintStart_toStartOf="parent"
                             card_view:layout_constraintTop_toTopOf="parent"
-                            card_view:layout_constraintBottom_toTopOf="@id/app3"/>
+                            card_view:layout_constraintBottom_toTopOf="@id/app3"
+                            android:contentDescription="@string/icon"/>
 
                         <TextView
                             android:layout_marginTop="4dp"
@@ -191,7 +194,6 @@
                             android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20"
                             card_view:layout_constraintStart_toStartOf="@id/app3Icon"
                             card_view:layout_constraintTop_toBottomOf="@id/app3Icon"
                             card_view:layout_constraintBottom_toBottomOf="parent"
