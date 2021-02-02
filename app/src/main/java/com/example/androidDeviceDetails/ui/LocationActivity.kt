@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.ui
 
-import android.content.Context
 import android.content.res.Configuration.*
 import android.graphics.Color
 import android.graphics.ColorMatrix
@@ -60,11 +59,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     }
 
     private fun initMap() {
-        osmConfig.getInstance().load(
-            applicationContext, getSharedPreferences(
-                "my.app.packagename_preferences", Context.MODE_PRIVATE
-            )
-        )
         osmConfig.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         binding.apply {
             mapView.setTileSource(TileSourceFactory.MAPNIK)
