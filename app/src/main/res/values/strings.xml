@@ -8,7 +8,7 @@
     <string name="display">Display</string>
     <string name="get_location">Get Location</string>
     <string name="count_location">Count Location</string>
-    <string name="location">Location</string>
+    <string name="location">Locations</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
     <string name="battery_info">Battery Info</string>
@@ -73,4 +73,12 @@
     <string name="filterInstalled">Installed</string>
     <string name="filterUpdated">Updated</string>
     <string name="filterUninstalled">Uninstalled</string>
+    <string name="enroll"> Enroll :</string>
+    <string name="install">Install :</string>
+    <string name="update">Update :</string>
+    <string name="uninstall_count">Uninstall :</string>
+    <string name="batteryPercentage">0</string>
+    <string name="percentage">%</string>
+    <string name="used">Used</string>
+    <string name="visited">Visited</string>
 </resources>

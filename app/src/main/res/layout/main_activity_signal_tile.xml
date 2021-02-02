@@ -43,9 +43,9 @@
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="Overlay"
+                        android:contentDescription="@string/icon"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_twotone_cell_wifi_24"
+                        android:src="@drawable/ic_two_tone_cell_wifi_24"
                         card_view:tint="#83b899" />
 
                     <TextView
@@ -53,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Signal Data"
+                        android:text="@string/signal_data"
                         android:textAlignment="viewEnd"
                         android:textColor="?attr/batteryTitle"
                         android:textSize="20sp" />
@@ -70,7 +70,8 @@
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias=".088">
+                    card_view:layout_constraintVertical_bias=".088"
+                    android:contentDescription="@string/icon">
 
                 </ImageView>
 
@@ -145,7 +146,8 @@
                         app:layout_constraintEnd_toEndOf="@+id/pointerCellularSpeedometer"
                         app:layout_constraintStart_toStartOf="@+id/pointerCellularSpeedometer"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="#673AB7" />
+                        app:tint="#673AB7"
+                        android:contentDescription="@string/icon" />
 
                     <ImageView
                         android:id="@+id/textView5"
@@ -156,7 +158,8 @@
                         app:layout_constraintEnd_toEndOf="@+id/pointerWifiSpeedometer"
                         app:layout_constraintStart_toStartOf="@+id/pointerWifiSpeedometer"
                         app:layout_constraintTop_toTopOf="@+id/pointerWifiSpeedometer"
-                        app:tint="#E1AA06" />
+                        app:tint="#E1AA06"
+                        android:contentDescription="@string/icon" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
