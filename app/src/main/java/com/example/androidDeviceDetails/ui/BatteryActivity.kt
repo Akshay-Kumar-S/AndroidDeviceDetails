@@ -29,6 +29,12 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(null)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_battery)
         controller = ActivityController(this, NAME, binding)
+        val options = arrayListOf(
+            getString(R.string.BatteryDrop_DES) to SortBy.DESCENDING.ordinal,
+            getString(R.string.BatteryDrop_ASC) to SortBy.ASCENDING.ordinal,
+            getString(R.string.PkgName_ALPH) to SortBy.ALPHABETICAL.ordinal,
+            getString(R.string.PkgName_REV_APLH) to SortBy.REVERSE_ALPHABETICAL.ordinal
+        )
         sortBySheet = SortBySheet(options, controller::sortView, SortBy.DESCENDING.ordinal)
         binding.apply {
             listView.setOnItemClickListener { parent, _, position, _ ->
@@ -69,13 +75,6 @@ class BatteryActivity : AppCompatActivity(), View.OnClickListener {
         infoIntent.data = Uri.parse("package:${item?.packageId}")
         startActivity(infoIntent)
     }
-
-    private val options = arrayListOf(
-        getString(R.string.BatteryDrop_DES) to SortBy.DESCENDING.ordinal,
-        getString(R.string.BatteryDrop_ASC) to SortBy.ASCENDING.ordinal,
-        getString(R.string.PkgName_ALPH) to SortBy.ALPHABETICAL.ordinal,
-        getString(R.string.PkgName_REV_APLH) to SortBy.REVERSE_ALPHABETICAL.ordinal
-    )
 
     companion object {
         const val NAME = "battery"
