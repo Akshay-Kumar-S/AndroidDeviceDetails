@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FullscreenAttrs">
-        <attr name="mainBackground" format="color"/>
-        <attr name="sv_speedometerBackColor" format="color"/>
-        <attr name="cardBackground" format="color"/>
+        <attr name="mainBackground" format="color" />
+        <attr name="sv_speedometerBackColor" format="color" />
+        <attr name="cardBackground" format="color" />
         <attr name="batteryTitle" format="color" />
         <attr name="bottomSheetDialogColor" format="color" />
-        <attr name="mainButtonBg" format="color"/>
+        <attr name="mainButtonBg" format="color" />
         <attr name="startBlue" format="color" />
         <attr name="endOrange" format="color" />
-        <attr name="progressbarFirst" format="color"/>
-        <attr name="progressbarSecond" format="color"/>
+        <attr name="progressbarFirst" format="color" />
+        <attr name="progressbarSecond" format="color" />
     </declare-styleable>
     <declare-styleable name="TimeDateBubbleColor">
         <attr name="TimeDateBackground" format="color" />
     </declare-styleable>
     <declare-styleable name="IconTint">
-        <attr name="iconTint" format="color"/>
+        <attr name="iconTint" format="color" />
     </declare-styleable>
 </resources>

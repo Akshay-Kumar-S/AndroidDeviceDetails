@@ -3,6 +3,7 @@
     <style name="Theme.AndroidDeviceDetails" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:fontFamily">@string/default_font</item>
         <item name="android:textColorHint">#676767</item>
+        <item name="android:textColor">@color/black</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/app_green</item>
         <item name="colorPrimaryVariant">#006a99</item>
@@ -26,7 +27,7 @@
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/mainBackground</item>
+        <item name="android:statusBarColor">?attr/mainBackground</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

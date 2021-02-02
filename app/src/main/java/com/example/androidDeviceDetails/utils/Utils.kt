@@ -283,6 +283,7 @@ object Utils {
             .yAxisGridLineWidth(0f)
             .xAxisLabelsEnabled(false)
             .touchEventEnabled(true)
+            .backgroundColor(R.attr.mainBackground)
             .yAxisMin(chart.yAxisMin)
             .yAxisMax(chart.yAxisMax)
             .yAxisTitle("strength")
