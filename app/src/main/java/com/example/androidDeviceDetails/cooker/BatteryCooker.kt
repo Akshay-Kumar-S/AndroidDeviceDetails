@@ -21,9 +21,10 @@ class BatteryCooker : BaseCooker() {
      * @param time data class object that contains start time and end time.
      * @param iCookingDone A callback that accepts the cooked list once cooking is done
      */
+    @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch {
-            val appEntryList = arrayListOf<BatteryAppEntry>()
+            val appEntryMap = mutableMapOf<String, BatteryAppEntry>()
             val db: RoomDB = RoomDB.getDatabase()!!
             val appEventList = db.appEventDao().getAllBetween(time.startTime, time.endTime)
             val batteryList = db.batteryDao().getAllBetween(time.startTime, time.endTime)
@@ -31,27 +32,30 @@ class BatteryCooker : BaseCooker() {
             if (batteryList.isNotEmpty() && appEventList.isNotEmpty()) {
                 val batteryIterator = batteryList.iterator()
                 var batteryInfo = batteryList.first()
-                var previousBattery = batteryList.first()
-                var previousApp = appEventList.first()
+                var previousLevel = batteryList.first().level
+                var previousApp = appEventList.first().packageName
+
                 for (appEvent in appEventList) {
                     while ((appEvent.timeStamp > batteryInfo.timeStamp || batteryInfo.health == 0) && batteryIterator.hasNext())
                         batteryInfo = batteryIterator.next()
-                    if (batteryInfo.plugged == 0 && previousBattery.level!! > batteryInfo.level!!)
-                        if (appEntryList.none { it.packageId == previousApp.packageName })
-                            appEntryList.add(
-                                BatteryAppEntry(
-                                    previousApp.packageName,
-                                    previousBattery.level!!.minus(batteryInfo.level!!)
-                                )
-                            )
-                        else appEntryList.first { it.packageId == previousApp.packageName }.drop +=
-                            previousBattery.level!!.minus(batteryInfo.level!!)
-                    previousApp = appEvent
-                    previousBattery = batteryInfo
+                    getAggregate(previousLevel, previousApp, batteryInfo.level, appEntryMap)
+                    previousApp = appEvent.packageName
+                    previousLevel = batteryInfo.level
                 }
-                @Suppress("UNCHECKED_CAST")
-                iCookingDone.onComplete(appEntryList as ArrayList<T>)
+                iCookingDone.onComplete(ArrayList(appEntryMap.values) as ArrayList<T>)
             } else iCookingDone.onComplete(arrayListOf())
+        }
+    }
+
+    private fun getAggregate(
+        previousLevel: Int, previousApp: String, currentLevel: Int,
+        appEntryMap: MutableMap<String, BatteryAppEntry>
+    ) {
+        if (previousLevel > currentLevel) {
+            val drop = previousLevel - currentLevel
+            if (appEntryMap.containsKey(previousApp))
+                appEntryMap[previousApp]!!.drop += drop
+            else appEntryMap[previousApp] = BatteryAppEntry(previousApp, drop)
         }
     }
 }
