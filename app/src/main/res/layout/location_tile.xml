@@ -21,9 +21,10 @@
     <TextView
         android:id="@+id/address"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:alpha=".6"
         android:text="@string/address"
+        android:paddingEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/countTimeLayout"
         app:layout_constraintStart_toEndOf="@id/locationIcon"
