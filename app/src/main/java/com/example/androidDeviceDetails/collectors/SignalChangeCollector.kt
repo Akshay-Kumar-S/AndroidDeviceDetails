@@ -28,6 +28,20 @@ class SignalChangeCollector : BaseCollector() {
         DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     /**
+     * Registers the [SignalChangeListener] with [LISTEN_SIGNAL_STRENGTHS].
+     **/
+    override fun start() {
+        mTelephonyManager.listen(SignalChangeListener, LISTEN_SIGNAL_STRENGTHS)
+    }
+
+    /**
+     * Unregisters the [SignalChangeListener] with [LISTEN_NONE].
+     **/
+    override fun stop() {
+        mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
+    }
+
+    /**
      * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
      **/
     object SignalChangeListener : PhoneStateListener() {
@@ -48,75 +62,74 @@ class SignalChangeCollector : BaseCollector() {
             val telephonyManager =
                 DeviceDetailsApplication.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                if (signalStrength.cellSignalStrengths.isNotEmpty())
-                    when (val cellInfo = signalStrength.cellSignalStrengths[0]) {
-                        is CellSignalStrengthLte -> {
-                            strength = cellInfo.rsrp
-                            level = cellInfo.level
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && signalStrength.cellSignalStrengths.isNotEmpty()) {
+                when (val cellInfo = signalStrength.cellSignalStrengths[0]) {
+                    is CellSignalStrengthLte -> {
+                        strength = cellInfo.rsrp
+                        level = cellInfo.level
+                        band = "LTE"
+                        networkBand = "4g"
+                    }
+                    is CellSignalStrengthGsm -> {
+                        strength = cellInfo.dbm
+                        level = cellInfo.level
+                        band = "GSM"
+                        networkBand = "2g"
+                    }
+                    is CellSignalStrengthCdma -> {
+                        strength = cellInfo.cdmaDbm
+                        band = "CDMA"
+                        level = cellInfo.level
+                        networkBand = "3g"
+                    }
+                    is CellSignalStrengthWcdma -> {
+                        strength = cellInfo.dbm
+                        band = "WCDMA"
+                        level = cellInfo.level
+                        networkBand = "3g"
+                    }
+                    is CellSignalStrengthNr -> {
+                        strength = cellInfo.csiRsrp
+                        band = "NR"
+                        level = cellInfo.level
+                        networkBand = "5g"
+                    }
+                    is CellSignalStrengthTdscdma -> {
+                        strength = cellInfo.dbm
+                        band = "TDSCDMA"
+                        level = cellInfo.level
+                        networkBand = "3g"
+                    }
+                }
+            } else {
+                if (DeviceDetailsApplication.instance.checkCallingOrSelfPermission("android.Manifest.permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_GRANTED && telephonyManager.allCellInfo.isNotEmpty()) {
+                    when (val cellInfo = telephonyManager.allCellInfo[0]) {
+                        is CellInfoLte -> {
                             band = "LTE"
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
                             networkBand = "4g"
                         }
-                        is CellSignalStrengthGsm -> {
-                            strength = cellInfo.dbm
-                            level = cellInfo.level
+                        is CellInfoGsm -> {
                             band = "GSM"
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
                             networkBand = "2g"
                         }
-                        is CellSignalStrengthCdma -> {
-                            strength = cellInfo.cdmaDbm
+                        is CellInfoCdma -> {
                             band = "CDMA"
-                            level = cellInfo.level
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
                             networkBand = "3g"
                         }
-                        is CellSignalStrengthWcdma -> {
-                            strength = cellInfo.dbm
+                        is CellInfoWcdma -> {
                             band = "WCDMA"
-                            level = cellInfo.level
-                            networkBand = "3g"
-                        }
-                        is CellSignalStrengthNr -> {
-                            strength = cellInfo.csiRsrp
-                            band = "NR"
-                            level = cellInfo.level
-                            networkBand = "5g"
-                        }
-                        is CellSignalStrengthTdscdma -> {
-                            strength = cellInfo.dbm
-                            band = "TDSCDMA"
-                            level = cellInfo.level
+                            strength = cellInfo.cellSignalStrength.dbm
+                            level = cellInfo.cellSignalStrength.level
                             networkBand = "3g"
                         }
                     }
-            } else {
-                if (DeviceDetailsApplication.instance.checkCallingOrSelfPermission("android.Manifest.permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_GRANTED)
-                    if (telephonyManager.allCellInfo.isNotEmpty())
-                        when (val cellInfo = telephonyManager.allCellInfo[0]) {
-                            is CellInfoLte -> {
-                                band = "LTE"
-                                strength = cellInfo.cellSignalStrength.dbm
-                                level = cellInfo.cellSignalStrength.level
-                                networkBand = "4g"
-                            }
-                            is CellInfoGsm -> {
-                                band = "GSM"
-                                strength = cellInfo.cellSignalStrength.dbm
-                                level = cellInfo.cellSignalStrength.level
-                                networkBand = "2g"
-                            }
-                            is CellInfoCdma -> {
-                                band = "CDMA"
-                                strength = cellInfo.cellSignalStrength.dbm
-                                level = cellInfo.cellSignalStrength.level
-                                networkBand = "3g"
-                            }
-                            is CellInfoWcdma -> {
-                                band = "WCDMA"
-                                strength = cellInfo.cellSignalStrength.dbm
-                                level = cellInfo.cellSignalStrength.level
-                                networkBand = "3g"
-                            }
-                        }
+                }
             }
 
             strengthPercentage = (Signal.CELLULAR_MIN - strength) / Signal.CELLULAR_RANGE.toFloat() * (-100)
@@ -134,19 +147,5 @@ class SignalChangeCollector : BaseCollector() {
             )
             GlobalScope.launch { signalDB?.signalDao()?.insert(signalRaw) }
         }
-    }
-
-    /**
-     * Registers the [SignalChangeListener] with [LISTEN_SIGNAL_STRENGTHS].
-     **/
-    override fun start() {
-        mTelephonyManager.listen(SignalChangeListener, LISTEN_SIGNAL_STRENGTHS)
-    }
-
-    /**
-     * Unregisters the [SignalChangeListener] with [LISTEN_NONE].
-     **/
-    override fun stop() {
-        mTelephonyManager.listen(SignalChangeListener, LISTEN_NONE)
     }
 }

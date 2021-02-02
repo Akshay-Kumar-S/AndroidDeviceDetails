@@ -35,28 +35,25 @@ class SignalCooker : BaseCooker() {
     override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch {
             val cookedDataList = ArrayList<Any>()
-            val cellularList = arrayListOf<SignalRaw>()
-            val wifiList = arrayListOf<SignalRaw>()
             val signalCookedData = SignalCookedData()
-
             val signalRawList = db.signalDao().getAllSignalBetween(time.startTime, time.endTime)
-            signalRawList.partition { it.signal == Signal.CELLULAR }.apply {
+
+            signalRawList.partition { it.signal == Signal.CELLULAR.ordinal }.apply {
                 cookCellularData(first as ArrayList<SignalRaw>, signalCookedData, cookedDataList)
                 cookWifiData(second as ArrayList<SignalRaw>, signalCookedData, cookedDataList)
             }
-            cookCellularData(cellularList, signalCookedData, cookedDataList)
-            cookWifiData(wifiList, signalCookedData, cookedDataList)
+
             cookedDataList.add(signalCookedData)
             iCookingDone.onComplete(cookedDataList as ArrayList<T>)
         }
     }
 
     private fun aggregateMostUsed(
-        key: String, usageMap: MutableMap<String, Long>, previousTime: Long, currentTime: Long
+        key: String, usageMap: MutableMap<String, Long>, timeInterval: Long
     ) {
         if (!usageMap.containsKey(key))
             usageMap[key] = 0
-        usageMap[key] = usageMap.getValue(key) + (currentTime - previousTime)
+        usageMap[key] = usageMap.getValue(key) + timeInterval
     }
 
     private fun cookCellularData(
@@ -71,21 +68,22 @@ class SignalCooker : BaseCooker() {
         val timeInterval: Long
 
         if (cellularList.isNotEmpty()) {
-            val lastCellularRaw = cellularList.last()
             var prevCellularRaw = cellularList.first()
+            val lastCellularRaw = cellularList.last()
             startTime = prevCellularRaw.timeStamp
             endTime = lastCellularRaw.timeStamp
             timeInterval = maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, MINUTE)
 
             cellularList.forEach { cellularRaw ->
                 aggregateMostUsed(
-                    prevCellularRaw.band!!, cellularBandMap, prevCellularRaw.timeStamp,
-                    cellularRaw.timeStamp
+                    prevCellularRaw.band!!,
+                    cellularBandMap,
+                    cellularRaw.timeStamp - prevCellularRaw.timeStamp
                 )
 
                 aggregateMostUsed(
-                    prevCellularRaw.operatorName, carrierNameMap, prevCellularRaw.timeStamp,
-                    cellularRaw.timeStamp
+                    prevCellularRaw.operatorName, carrierNameMap,
+                    cellularRaw.timeStamp - prevCellularRaw.timeStamp
                 )
 
                 if (prevCellularRaw.isRoaming)
@@ -129,11 +127,11 @@ class SignalCooker : BaseCooker() {
 
             wifiList.forEach { wifiRaw ->
                 aggregateMostUsed(
-                    prevWifiRaw.level, wifiLevelMap, prevWifiRaw.timeStamp, wifiRaw.timeStamp
+                    prevWifiRaw.level, wifiLevelMap, wifiRaw.timeStamp-prevWifiRaw.timeStamp
                 )
 
                 aggregateMostUsed(
-                    prevWifiRaw.operatorName, ssidMap, prevWifiRaw.timeStamp, wifiRaw.timeStamp
+                    prevWifiRaw.operatorName, ssidMap,  wifiRaw.timeStamp-prevWifiRaw.timeStamp
                 )
 
                 if (wifiRaw.timeStamp >= startTime) {
