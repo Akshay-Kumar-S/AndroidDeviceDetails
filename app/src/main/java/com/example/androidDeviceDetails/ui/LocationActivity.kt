@@ -2,6 +2,8 @@ package com.example.androidDeviceDetails.ui
 
 import android.content.res.Configuration.*
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -10,6 +12,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.fragments.SortBySheet
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.ColorFilter
@@ -31,6 +34,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var binding: ActivityLocationBinding
+    private lateinit var sortBySheet: SortBySheet
 
     companion object {
         const val NAME = "LOCATION_ACTIVITY"
@@ -45,6 +49,17 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         initMap()
         activityController = ActivityController(this, NAME, binding)
         locationViewModel = activityController.viewModel as LocationViewModel
+        sortBySheet = SortBySheet(options, activityController::sortView, SortBy.ASCENDING.ordinal)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.sort_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.title == "Sort By") sortBySheet.show(supportFragmentManager, "Sort By")
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView() {
@@ -79,7 +94,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
             locationBottomSheet.dateTimePicker.startTime.setOnClickListener(this@LocationActivity)
             locationBottomSheet.dateTimePicker.endDate.setOnClickListener(this@LocationActivity)
             locationBottomSheet.dateTimePicker.endTime.setOnClickListener(this@LocationActivity)
-            locationBottomSheet.sortButton.setOnClickListener(this@LocationActivity)
         }
     }
 
@@ -91,12 +105,6 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.sortButton -> {
-                if (binding.locationBottomSheet.sortButton.tag == "down")
-                    activityController.sortView(SortBy.DESCENDING.ordinal)
-                else
-                    activityController.sortView(SortBy.ASCENDING.ordinal)
-            }
             R.id.startDate -> activityController.setDate(this, R.id.startDate)
             R.id.startTime -> activityController.setTime(this, R.id.startTime)
             R.id.endDate -> activityController.setDate(this, R.id.endDate)
@@ -108,4 +116,11 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         locationViewModel.focusMapTo(clickedItem.latitude, clickedItem.longitude)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
+
+    private val options = arrayListOf(
+        "Count (Most visited first)" to SortBy.DESCENDING.ordinal,
+        "Count (Least visited first)" to SortBy.ASCENDING.ordinal,
+        "Duration (Largest first)" to SortBy.TIME_DESCENDING.ordinal,
+        "Duration (Smallest first)" to SortBy.TIME_ASCENDING.ordinal
+    )
 }
