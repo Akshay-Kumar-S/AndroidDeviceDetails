@@ -29,7 +29,7 @@ class LocationCooker : BaseCooker() {
         return processedLocations
     }
 
-    private fun cookProcessedData(processedData: HashMap<String, LocationData>): List<LocationData> {
+    private fun cookProcessedData(processedData: HashMap<String, LocationData>): ArrayList<LocationData> {
         processedData.forEach { (_, loc) ->
             loc.avgLatitude /= loc.count
             loc.avgLongitude /= loc.count
@@ -38,7 +38,7 @@ class LocationCooker : BaseCooker() {
             ).first()
             loc.address = "${address.thoroughfare}, ${address.locality}"
         }
-        return processedData.values.toList()
+        return processedData.values.toMutableList() as ArrayList<LocationData>
     }
 
     @Suppress("UNCHECKED_CAST")
