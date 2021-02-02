@@ -13,8 +13,7 @@ import com.example.androidDeviceDetails.utils.Utils
 
 
 class LocationAdapter(
-    private var list: ArrayList<LocationData>,
-    private val onItemClickListener: OnItemClickListener
+    private var list: ArrayList<LocationData>, private val onItemClickListener: OnItemClickListener
 ) :
     RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
 
