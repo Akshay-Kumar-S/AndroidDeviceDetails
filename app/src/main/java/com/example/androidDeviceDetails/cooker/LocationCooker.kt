@@ -15,14 +15,25 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LocationCooker : BaseCooker() {
-    private fun cookData(locationList: ArrayList<LocationModel>): ArrayList<LocationData> {
-        val geoHashList = ArrayList<String>()
-        var prevLocationHash = ""
-        for (loc in locationList) {
-            val newHash = GeoHash.encodeHash(loc.latitude, loc.longitude, 8)
-            if (newHash != prevLocationHash) {
-                prevLocationHash = newHash
-                geoHashList.add(newHash)
+    private fun processData(locationList: ArrayList<LocationModel>): HashMap<String, LocationData> {
+        val processedLocations = HashMap<String, LocationData>()
+        var preLoc = locationList.first()
+        val firstHash = GeoHash.encodeHash(preLoc.latitude, preLoc.longitude, Utils.GEOHASH_LENGTH)
+        processedLocations[firstHash] = LocationData(preLoc.latitude, preLoc.longitude, 1, "", 0)
+        for (loc in locationList.subList(1, locationList.size)) {
+            val geoHash = GeoHash.encodeHash(loc.latitude, loc.longitude, Utils.GEOHASH_LENGTH)
+            if (loc.latitude != preLoc.latitude && loc.longitude != preLoc.longitude) {
+                if (geoHash in processedLocations.keys) {
+                    processedLocations[geoHash]!!.avgLatitude += loc.latitude
+                    processedLocations[geoHash]!!.avgLongitude += loc.longitude
+                    processedLocations[geoHash]!!.count += 1
+                    processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
+                } else {
+                    processedLocations[geoHash] =
+                        LocationData(loc.latitude, loc.longitude, 1, "", loc.timeStamp - preLoc.timeStamp)
+                }
+            } else {
+                processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
             }
             preLoc = loc
         }
@@ -38,7 +49,7 @@ class LocationCooker : BaseCooker() {
             ).first()
             loc.address = "${address.thoroughfare}, ${address.locality}"
         }
-        return processedData.values.toMutableList() as ArrayList<LocationData>
+        return processedData.values.toMutableList().filter { it.totalTime>0 } as ArrayList<LocationData>
     }
 
     @Suppress("UNCHECKED_CAST")
