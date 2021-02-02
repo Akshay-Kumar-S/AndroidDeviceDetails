@@ -44,7 +44,7 @@ class SignalCooker : BaseCooker() {
     }
 
     /**
-     *The function finds aggregate time for each unique Entry.
+     *The function finds aggregate time for each distinct Entry.
      */
     private fun aggregateMostUsed(
         key: String, usageMap: MutableMap<String, Long>, timeInterval: Long

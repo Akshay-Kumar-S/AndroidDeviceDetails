@@ -33,6 +33,7 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords
 import java.io.File
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -295,11 +296,8 @@ object Utils {
     }
 
     fun getTimePeriod(timeStamp: Long): String {
-        val hours: Int = timeStamp.toInt() / (1000 * 60 * 60)
-        val minutes: Int = (timeStamp.toInt() / 1000 * 60 * 60) % 60
-        return if (hours != 0)
-            "$hours hours $minutes min"
-        else "$minutes min"
+        return formatDurationWords(timeStamp, true, true)
+
     }
 
     fun getSignalLevel(level: Int): String {
