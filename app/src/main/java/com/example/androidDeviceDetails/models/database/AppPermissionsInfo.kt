@@ -37,7 +37,10 @@ interface AppPermissionDao {
     fun getPermittedApps():List<PermittedAppList>
 
     @Query("SELECT allowed_permissions from AppPermissionsInfo")
-    fun getAllPermissions():List<String>
+    fun getAllowedPermissions():List<String>
+
+    @Query("SELECT denied_permissions from AppPermissionsInfo")
+    fun getDeniedPermissions():List<String>
 
     @Insert
     fun insert(vararg appPermissionsInfo: AppPermissionsInfo)
