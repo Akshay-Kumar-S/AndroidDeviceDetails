@@ -173,5 +173,4 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         locationViewModel.focusMapTo(clickedItem.avgLatitude, clickedItem.avgLongitude)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
-
 }
