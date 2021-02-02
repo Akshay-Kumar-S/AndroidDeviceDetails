@@ -68,5 +68,5 @@
     <string name="appTypeUser">User</string>
     <string name="appTypeAll">All</string>
     <string name="appTypeSystem">System</string>
-    <string name="versionCode">Version Code : </string>
+    <string name="version_name">Version Name</string>
 </resources>
