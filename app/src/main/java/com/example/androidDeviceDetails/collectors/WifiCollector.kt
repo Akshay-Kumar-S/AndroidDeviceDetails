@@ -26,6 +26,24 @@ import kotlinx.coroutines.launch
 class WifiCollector(val context: Context) : BaseCollector() {
 
     /**
+     * Registers the [WifiCollector] with [WifiManager.RSSI_CHANGED_ACTION]
+     * and [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
+     **/
+    override fun start() {
+        val wifiIntentFilter = IntentFilter()
+        wifiIntentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION)
+        wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        context.registerReceiver(WifiReceiver, wifiIntentFilter)
+    }
+
+    /**
+     * Unregisters the [WifiCollector].
+     **/
+    override fun stop() {
+        context.unregisterReceiver(WifiReceiver)
+    }
+
+    /**
      * A [BroadcastReceiver] which gets notified from [WifiManager.RSSI_CHANGED_ACTION] and
      * [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
      **/
@@ -75,23 +93,5 @@ class WifiCollector(val context: Context) : BaseCollector() {
             )
             GlobalScope.launch { db?.signalDao()?.insert(signalRaw) }
         }
-    }
-
-    /**
-     * Registers the [WifiCollector] with [WifiManager.RSSI_CHANGED_ACTION]
-     * and [WifiManager.SCAN_RESULTS_AVAILABLE_ACTION].
-     **/
-    override fun start() {
-        val wifiIntentFilter = IntentFilter()
-        wifiIntentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION)
-        wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
-        context.registerReceiver(WifiReceiver, wifiIntentFilter)
-    }
-
-    /**
-     * Unregisters the [WifiCollector].
-     **/
-    override fun stop() {
-        context.unregisterReceiver(WifiReceiver)
     }
 }

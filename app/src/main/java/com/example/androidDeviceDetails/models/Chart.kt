@@ -1,4 +1,4 @@
-package com.example.androidDeviceDetails.utils
+package com.example.androidDeviceDetails.models
 
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 

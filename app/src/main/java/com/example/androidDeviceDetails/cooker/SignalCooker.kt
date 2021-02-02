@@ -49,9 +49,10 @@ class SignalCooker : BaseCooker() {
     private fun aggregateMostUsed(
         key: String, usageMap: MutableMap<String, Long>, timeInterval: Long
     ) {
-        if (!usageMap.containsKey(key))
+        if (usageMap.containsKey(key))
+            usageMap[key] = usageMap.getValue(key) + timeInterval
+        else
             usageMap[key] = 0
-        usageMap[key] = usageMap.getValue(key) + timeInterval
     }
 
     private fun cookCellularData(

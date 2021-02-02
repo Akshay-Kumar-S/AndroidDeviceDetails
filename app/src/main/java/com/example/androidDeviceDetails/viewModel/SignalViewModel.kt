@@ -71,7 +71,7 @@ class SignalViewModel(
      */
     override fun <T> onComplete(outputList: ArrayList<T>) {
         mostUsedData = outputList.filterIsInstance<SignalCookedData>().first()
-        graphEntryList = outputList.filterIsInstance<SignalGraphEntry>()
+        graphEntryList = mostUsedData.garphEntryList
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
             cellularStrengthPercentage = mostUsedData.lastCellularStrength
             wifiStrengthPercentage = mostUsedData.lastWifiStrength

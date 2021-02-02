@@ -8,12 +8,13 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
+import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 import com.google.gson.Gson
 
 class SignalActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySignalBinding
-    private lateinit var signalController: ActivityController<Any>
+    private lateinit var signalController: ActivityController<SignalCookedData>
     private lateinit var signalViewModel: SignalViewModel
 
     companion object {

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivitySignalGraphBinding
-import com.example.androidDeviceDetails.utils.Chart
+import com.example.androidDeviceDetails.models.Chart
 import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
 import com.example.androidDeviceDetails.utils.Utils
