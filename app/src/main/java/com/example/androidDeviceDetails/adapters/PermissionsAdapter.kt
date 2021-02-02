@@ -1,13 +1,22 @@
 package com.example.androidDeviceDetails.adapters
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
+import android.content.pm.PermissionGroupInfo
+import android.content.pm.PermissionInfo
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.annotation.Nullable
 import com.example.androidDeviceDetails.R
-import com.example.androidDeviceDetails.models.appInfoModels.*
+import com.example.androidDeviceDetails.models.appInfoModels.PermissionsItemViewHolder
 
 
 class PermissionsAdapter(
@@ -15,7 +24,6 @@ class PermissionsAdapter(
     private var resource: Int,
     private var items: List<String>
 ) : ArrayAdapter<String>(_context, resource, items) {
-
     @SuppressLint("InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
@@ -39,8 +47,11 @@ class PermissionsAdapter(
         holder: PermissionsItemViewHolder,
         position: Int
     ): PermissionsItemViewHolder {
+        val permission: String = items[position]
+        val drawable = getPermissionDrawable(permission)
         holder.permissionNameTextView.text = items[position]
-        holder.iconView.setImageResource(getPermissionIcon(position))
+        holder.iconView.setImageResource(drawable)
+//        holder.iconView.setImageDrawable(drawable)
         return holder
     }
 
@@ -61,4 +72,17 @@ class PermissionsAdapter(
 //        }
     }
 
+    private fun getPermissionDrawable(permission: String): Int {
+        var drawable: Int = R.drawable.ic_baseline_android_24
+        try {
+            val permissionInfo: PermissionInfo = context.packageManager.getPermissionInfo(permission, 0)
+            Log.d("Group",permissionInfo.group.toString())
+            val groupInfo: PermissionGroupInfo =
+                context.packageManager.getPermissionGroupInfo(permissionInfo.group.toString(), 0)
+            drawable = groupInfo.icon
+        } catch (e: PackageManager.NameNotFoundException) {
+        } catch (e: Resources.NotFoundException) {
+        }
+        return drawable
+    }
 }
