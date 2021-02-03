@@ -21,7 +21,8 @@ class PermissionsViewModel(private val binding: ActivityPermissionsBinding, val 
      */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
-        var permissionList = outputList as ArrayList<Pair<List<String>, List<PermittedAppsCookedData>>>
+        var permissionList =
+            outputList as ArrayList<Pair<List<String>, List<PermittedAppsCookedData>>>
         binding.root.post {
             binding.permissionsListView.adapter =
                 PermissionsAdapter(context, R.layout.permissions_tile, permissionList[0].first)

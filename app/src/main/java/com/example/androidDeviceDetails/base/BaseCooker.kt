@@ -1,12 +1,9 @@
 package com.example.androidDeviceDetails.base
 
-import android.location.Location
 import com.example.androidDeviceDetails.cooker.*
-import com.example.androidDeviceDetails.databinding.ActivityPermittedAppsBinding
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.ui.*
-import com.example.androidDeviceDetails.viewModel.PermittedAppsViewModel
 
 abstract class BaseCooker {
     abstract fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>)
@@ -21,7 +18,7 @@ abstract class BaseCooker {
                 SignalActivity.NAME -> SignalCooker()
                 LocationActivity.NAME -> LocationCooker()
                 AppTypeActivity.NAME -> AppTypeCooker()
-                PermissionsActivity.NAME -> PermissionsCooker()
+                AppPermissionsActivity.NAME -> PermissionsCooker()
                 PermittedAppsActivity.NAME -> PermittedAppsCooker()
                 else -> null
             }

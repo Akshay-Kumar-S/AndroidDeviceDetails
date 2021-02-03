@@ -54,9 +54,9 @@ class PermittedAppsAdapter(
         holder: PermittedAppInfoItemViewHolder,
         position: Int
     ): PermittedAppInfoItemViewHolder {
-        holder.appNameView.text = items[position].apk_title
-        holder.versionCodeTextView.append(items[position].version_name)
-        holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].package_name))
+        holder.appNameView.text = items[position].apkTitle
+        holder.versionCodeTextView.append(items[position].versionName)
+        holder.appIconView.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
         return holder
     }
 

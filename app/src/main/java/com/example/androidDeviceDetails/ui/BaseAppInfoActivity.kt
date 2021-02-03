@@ -7,7 +7,6 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityBaseAppInfoBinding
-import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 
 class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -15,7 +14,7 @@ class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_base_app_info)
-        binding.apply{
+        binding.apply {
             binding.appInfo.button.setOnClickListener(this@BaseAppInfoActivity)
             binding.appInfoType.button.setOnClickListener(this@BaseAppInfoActivity)
             binding.appPermissions.button.setOnClickListener(this@BaseAppInfoActivity)
@@ -26,7 +25,7 @@ class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.appInfo -> startActivity(Intent(this, AppInfoActivity::class.java))
             R.id.appInfoType -> startActivity(Intent(this, AppTypeActivity::class.java))
-            R.id.appPermissions -> startActivity(Intent(this, PermissionsActivity::class.java))
+            R.id.appPermissions -> startActivity(Intent(this, AppPermissionsActivity::class.java))
         }
     }
 
