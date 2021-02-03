@@ -1,10 +1,10 @@
 package com.example.androidDeviceDetails.ui
 
-import android.content.res.Configuration.*
+import android.content.res.Configuration.UI_MODE_NIGHT_MASK
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -25,8 +25,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsDisplay.HorizontalPosition.RIGHT
 import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
 import org.osmdroid.views.MapView.getTileSystem
-import java.util.*
-import kotlin.collections.ArrayList
 import org.osmdroid.config.Configuration as osmConfig
 
 
@@ -46,12 +44,14 @@ class LocationActivity : AppCompatActivity(), OnItemClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_location)
         initRecyclerView()
         initBottomSheet()
-        initOnClickListeners()
         initMap()
         activityController = ActivityController(this, NAME, binding)
         locationViewModel = activityController.viewModel as LocationViewModel
         sortBySheet = SortBySheet(options, activityController::sortView, SortBy.ASCENDING.ordinal)
-        DateTimePicker(this, binding.bottomLocation.dateTimePickerLayout, activityController::setTime, activityController::setDate)
+        DateTimePicker(
+            this, binding.locationBottomSheet.dateTimePicker,
+            activityController::setTime, activityController::setDate
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
