@@ -15,7 +15,7 @@ class ApplicationController {
         "WifiReceiver" to WifiCollector(DeviceDetailsApplication.instance),
         "AppStateReceiver" to AppInfoCollector(),
         "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
-        "SignalChangeListener" to SignalChangeCollector(),
+        "SignalChangeListener" to SignalChangeCollector(DeviceDetailsApplication.instance),
         "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance),
         "LocationCollector" to LocationCollector(DeviceDetailsApplication.instance)
     )

@@ -13,8 +13,8 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="20dp"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -110,55 +110,54 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginVertical="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/picker_binding"
-            app:layout_constraintBottom_toTopOf="@id/more_details">
+            app:layout_constraintBottom_toTopOf="@id/more_details"
+            app:layout_constraintTop_toBottomOf="@+id/picker_binding">
 
             <include
                 android:id="@+id/most_used_operator"
+                layout="@layout/signal_activity_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/signal_activity_data"
                 app:data='@{"Most used operator"}'
-                app:value='@{"no data available"}'
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/most_used_band"
-                />
+                app:layout_constraintTop_toTopOf="parent"
+                app:value='@{"no data available"}' />
 
             <include
                 android:id="@+id/most_used_band"
+                layout="@layout/signal_activity_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/signal_activity_data"
                 app:data='@{"Most used band"}'
-                app:value='@{"no data available"}'
+                app:layout_constraintBottom_toTopOf="@id/roaming_time"
                 app:layout_constraintTop_toBottomOf="@id/most_used_operator"
-                app:layout_constraintBottom_toTopOf="@id/roaming_time" />
+                app:value='@{"no data available"}' />
 
 
-<!--            <include-->
-<!--                android:id="@+id/most_used_operator"-->
-<!--                layout="@layout/battery_tile"-->
-<!--                app:data='@{"Most used operator"}'-->
-<!--                app:value='@{"no data available"}'-->
-<!--                app:layout_constraintTop_toTopOf="parent"/>-->
+            <!--            <include-->
+            <!--                android:id="@+id/most_used_operator"-->
+            <!--                layout="@layout/battery_tile"-->
+            <!--                app:data='@{"Most used operator"}'-->
+            <!--                app:value='@{"no data available"}'-->
+            <!--                app:layout_constraintTop_toTopOf="parent"/>-->
 
-<!--            <include-->
-<!--                android:id="@+id/most_used_band"-->
-<!--                layout="@layout/battery_tile"-->
-<!--                app:data='@{"Most used band"}'-->
-<!--                app:value='@{"no data available"}'-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--             />-->
+            <!--            <include-->
+            <!--                android:id="@+id/most_used_band"-->
+            <!--                layout="@layout/battery_tile"-->
+            <!--                app:data='@{"Most used band"}'-->
+            <!--                app:value='@{"no data available"}'-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--             />-->
 
-                        <include
+            <include
                 android:id="@+id/roaming_time"
                 layout="@layout/signal_activity_data"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:data='@{"Roaming Time"}'
-                app:value='@{"no data available"}'
                 app:layout_constraintBottom_toTopOf="@id/most_used_wifi"
-                app:layout_constraintTop_toBottomOf="@id/most_used_band"/>
+                app:layout_constraintTop_toBottomOf="@id/most_used_band"
+                app:value='@{"no data available"}' />
 
             <include
                 android:id="@+id/most_used_wifi"
@@ -166,9 +165,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:data='@{"Most used wifi"}'
-                app:value='@{"no data available"}'
                 app:layout_constraintBottom_toTopOf="@id/most_used_wifi_level"
-                app:layout_constraintTop_toBottomOf="@id/roaming_time"/>
+                app:layout_constraintTop_toBottomOf="@id/roaming_time"
+                app:value='@{"no data available"}' />
 
             <include
                 android:id="@+id/most_used_wifi_level"
@@ -176,9 +175,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:data='@{"Most used wifi speed"}'
-                app:value='@{"no data available"}'
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/most_used_wifi"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:value='@{"no data available"}' />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

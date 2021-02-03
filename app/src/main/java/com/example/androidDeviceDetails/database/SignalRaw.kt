@@ -17,19 +17,17 @@ import com.example.androidDeviceDetails.viewModel.SignalViewModel
  *
  * 1 for WIFI.
  * @param strength Signal strength in dBm.
- * @param cellInfoType cellInfo Type for CELLULAR
  * @param linkSpeed LinkSpeed in Mbps for WIFI
  * @param level Signal level.
  *
  *  @see [RoomDB]
  *  @see[SignalDao]
- **/
+ */
 @Entity
 data class SignalRaw(
     @PrimaryKey val timeStamp: Long,
     @ColumnInfo(name = "signal") val signal: Int,
     @ColumnInfo(name = "strength") val strength: Int,
-    @ColumnInfo(name = "cellInfoType") val cellInfoType: String?,
     @ColumnInfo(name = "linkSpeed") val linkSpeed: Int?,
     @ColumnInfo(name = "level") val level: String,
     @ColumnInfo(name = "operatorName") val operatorName: String,
