@@ -8,8 +8,8 @@ import com.example.androidDeviceDetails.database.LocationModel
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
+import com.example.androidDeviceDetails.models.location.LocationConstants
 import com.example.androidDeviceDetails.models.location.LocationData
-import com.example.androidDeviceDetails.utils.Utils
 import com.github.davidmoten.geo.GeoHash
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -34,10 +34,12 @@ class LocationCooker : BaseCooker() {
     private fun processData(locationList: ArrayList<LocationModel>): HashMap<String, LocationData> {
         val processedLocations = HashMap<String, LocationData>()
         var preLoc = locationList.first()
-        val firstHash = GeoHash.encodeHash(preLoc.latitude, preLoc.longitude, Utils.GEOHASH_LENGTH)
+        val firstHash =
+            GeoHash.encodeHash(preLoc.latitude, preLoc.longitude, LocationConstants.GEO_HASH_LENGTH)
         processedLocations[firstHash] = LocationData(preLoc.latitude, preLoc.longitude, 1, "", 0)
         for (loc in locationList.subList(1, locationList.size)) {
-            val geoHash = GeoHash.encodeHash(loc.latitude, loc.longitude, Utils.GEOHASH_LENGTH)
+            val geoHash =
+                GeoHash.encodeHash(loc.latitude, loc.longitude, LocationConstants.GEO_HASH_LENGTH)
             if (loc.latitude != preLoc.latitude && loc.longitude != preLoc.longitude) {
                 if (geoHash in processedLocations.keys) {
                     processedLocations[geoHash]!!.latitude += loc.latitude

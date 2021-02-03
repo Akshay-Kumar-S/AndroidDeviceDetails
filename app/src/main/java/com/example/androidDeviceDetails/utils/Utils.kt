@@ -34,7 +34,6 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.apache.commons.lang3.time.DurationFormatUtils
 import org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords
 import java.io.File
 import java.text.DecimalFormat
@@ -48,7 +47,6 @@ object Utils {
     private const val format = "HH:mm dd MMM yyyy"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
     const val COLLECTION_INTERVAL: Long = 1 //in Minutes
-    const val GEOHASH_LENGTH = 6
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 
