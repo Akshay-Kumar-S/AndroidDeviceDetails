@@ -87,10 +87,7 @@ class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
                 .setOnClickListener(this@AppInfoActivity)
             dateTimePickerLayout.endDate
                 .setOnClickListener(this@AppInfoActivity)
-
         }
-        //PermissionCollector(this).installedApps()
-
     }
 
     fun deleteApp(view: View) {

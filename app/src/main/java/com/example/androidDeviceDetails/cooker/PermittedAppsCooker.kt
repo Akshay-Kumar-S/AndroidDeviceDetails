@@ -27,25 +27,25 @@ class PermittedAppsCooker() : BaseCooker() {
             val appList = arrayListOf<PermittedAppsCookedData>()
             val ids = db.appPermissionDao().getPermittedApps()
             for (id in ids) {
-                if (id.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !id.denied_permissions.contains(
+                if (id.allowedPermissions.contains(PermittedAppsActivity.PERMISSION) && !id.deniedPermissions.contains(
                         PermittedAppsActivity.PERMISSION
                     )
                 ) {
                     appList.add(
                         PermittedAppsCookedData(
-                            id.package_name,
-                            id.apk_title,
-                            id.version_name,
+                            id.packageName,
+                            id.apkTitle,
+                            id.versionName,
                             true
                         )
                     )
                 }
-                if (id.denied_permissions.contains(PermittedAppsActivity.PERMISSION)) {
+                if (id.deniedPermissions.contains(PermittedAppsActivity.PERMISSION)) {
                     appList.add(
                         PermittedAppsCookedData(
-                            id.package_name,
-                            id.apk_title,
-                            id.version_name,
+                            id.packageName,
+                            id.apkTitle,
+                            id.versionName,
                             false
                         )
                     )

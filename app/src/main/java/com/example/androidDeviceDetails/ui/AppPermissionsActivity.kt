@@ -9,8 +9,9 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsAdapter
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 
-class PermissionsActivity : AppCompatActivity() {
+class AppPermissionsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPermissionsBinding
     private lateinit var controller: ActivityController<String>
@@ -40,7 +41,7 @@ class PermissionsActivity : AppCompatActivity() {
     private fun showApps(parent: AdapterView<*>, position: Int) {
         val adapter = parent.adapter as PermissionsAdapter
         val item = adapter.getItem(position)
-        val intent = Intent(this@PermissionsActivity, PermittedAppsActivity::class.java)
+        val intent = Intent(this@AppPermissionsActivity, PermittedAppsActivity::class.java)
         intent.putExtra("permission", item)
         startActivity(intent)
     }

@@ -38,9 +38,9 @@
         <activity
             android:name=".ui.PermittedAppsActivity"
             android:label="Permitted Apps"
-            android:parentActivityName=".ui.PermissionsActivity"/>
+            android:parentActivityName=".ui.AppPermissionsActivity"/>
         <activity
-            android:name=".ui.PermissionsActivity"
+            android:name=".ui.AppPermissionsActivity"
             android:label="App Permissions"
             android:parentActivityName=".ui.MainActivity" />
         <activity
