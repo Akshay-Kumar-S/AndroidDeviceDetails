@@ -1,8 +1,8 @@
 package com.example.androidDeviceDetails.cooker
 
 import android.location.Geocoder
-import android.util.Log
 import com.example.androidDeviceDetails.DeviceDetailsApplication
+import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
@@ -67,6 +67,8 @@ class LocationCooker : BaseCooker() {
             if (address.featureName != null) loc.address += "${address.featureName}, "
             if (address.locality != null) loc.address += "${address.locality}, "
             if (address.adminArea != null) loc.address += address.adminArea
+            if (loc.address == "") loc.address =
+                DeviceDetailsApplication.instance.getString(R.string.Unknown_location)
         }
         return processedData.values.toMutableList()
             .filter { it.totalTime > 0 } as ArrayList<LocationData>
