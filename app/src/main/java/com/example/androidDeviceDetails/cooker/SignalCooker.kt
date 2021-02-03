@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.cooker
 
-import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.database.SignalRaw
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Implements [BaseCooker].
  * A cooker class for handling the logic for cooking signal data.
- **/
+ */
 @Suppress("UNCHECKED_CAST")
 class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!
@@ -39,9 +38,8 @@ class SignalCooker : BaseCooker() {
                 cookCellularData(first as ArrayList<SignalRaw>, signalCookedData)
                 cookWifiData(second as ArrayList<SignalRaw>, signalCookedData)
             }
-            Log.e("cook","cook")
-            iCookingDone.onComplete(arrayListOf(signalCookedData) as ArrayList<T>)
 
+            iCookingDone.onComplete(arrayListOf(signalCookedData) as ArrayList<T>)
         }
     }
 
