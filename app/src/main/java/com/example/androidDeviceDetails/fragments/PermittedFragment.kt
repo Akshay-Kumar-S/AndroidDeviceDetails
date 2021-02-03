@@ -83,11 +83,19 @@ class PermittedFragment(private var userApps: List<PermittedAppsCookedData>) : F
         val packageInfo = context.packageManager.getPackageInfo(appInfoCookedData.packageName, 0)
         val pInfo = context.packageManager.getApplicationInfo(appInfoCookedData.packageName, 0)
         val file = File(pInfo.sourceDir)
+        var versionCode: Long = 0
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            versionCode = packageInfo.longVersionCode
+        } else {
+            @Suppress("DEPRECATION")
+            versionCode = packageInfo.versionCode.toLong()
+        }
+
         return AppTypeModel(
             Utils.getApplicationIcon(appInfoCookedData.packageName),
             appInfoCookedData.apkTitle,
             appInfoCookedData.packageName,
-            appInfoCookedData.versionName,
+            versionCode.toString(),
             packageInfo.versionName.toString(),
             Utils.getFileSize(file.length()),
             simpleDateFormat.format(Date(packageInfo.firstInstallTime)),
