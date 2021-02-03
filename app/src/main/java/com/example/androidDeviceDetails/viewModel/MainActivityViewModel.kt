@@ -98,8 +98,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
 
     private fun updateSignalDataCard(outputList: ArrayList<SignalCookedData>) {
         binding.signalData.pointerCellularSpeedometer.speedTo(
-            outputList.first().lastCellularStrength,
-            1000
+            outputList.first().lastCellularStrength, 1000
         )
         binding.signalData.pointerWifiSpeedometer.speedTo(outputList.first().lastWifiStrength, 1000)
     }
