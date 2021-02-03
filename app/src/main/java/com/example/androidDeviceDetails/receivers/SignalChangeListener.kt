@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.receivers
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -25,7 +24,6 @@ object SignalChangeListener : PhoneStateListener() {
      *  These values are made into a [SignalRaw] and saved into the [RoomDB.signalDao].
      *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
      */
-    @SuppressLint("MissingPermission")
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
         val signalDB = RoomDB.getDatabase()
         var level = 0
