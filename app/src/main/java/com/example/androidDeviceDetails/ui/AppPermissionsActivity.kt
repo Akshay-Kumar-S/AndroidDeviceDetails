@@ -27,13 +27,7 @@ class AppPermissionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_permissions)
-        controller = ActivityController(
-            NAME,
-            binding,
-            this,
-            null,
-            supportFragmentManager
-        )
+        controller = ActivityController(this, NAME, binding)
         binding.apply {
             permissionsListView.isEnabled = true
             permissionsListView.setOnItemClickListener { parent, _, position, _ ->

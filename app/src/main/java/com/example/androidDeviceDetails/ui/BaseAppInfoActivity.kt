@@ -23,7 +23,7 @@ class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.appInfo -> startActivity(Intent(this, AppInfoActivity::class.java))
+            R.id.appInfo -> startActivity(Intent(this, AppEventActivity::class.java))
             R.id.appInfoType -> startActivity(Intent(this, AppTypeActivity::class.java))
             R.id.appPermissions -> startActivity(Intent(this, AppPermissionsActivity::class.java))
         }

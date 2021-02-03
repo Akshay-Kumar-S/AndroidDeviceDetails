@@ -13,7 +13,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermittedAppsAdapter
 import com.example.androidDeviceDetails.databinding.AppTypeMoreInfoBinding
 import com.example.androidDeviceDetails.databinding.FragmentPermittedBinding
-import com.example.androidDeviceDetails.models.appInfo.appType.AppTypeModel
+import com.example.androidDeviceDetails.models.appInfo.AppTypeModel
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.example.androidDeviceDetails.utils.Utils
 import java.io.File

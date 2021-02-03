@@ -104,4 +104,5 @@
     <string name="wifi_gauge">Wifi Gauge</string>
     <string name="Toast_onNoData">No data on selected date</string>
     <string name="Unknown_location">Unknown Location</string>
+    <string name="version_name">Version Name :</string>
 </resources>

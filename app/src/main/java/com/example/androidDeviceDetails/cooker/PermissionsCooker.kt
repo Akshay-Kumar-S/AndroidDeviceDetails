@@ -1,9 +1,9 @@
 package com.example.androidDeviceDetails.cooker
 
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -36,7 +36,7 @@ class PermissionsCooker : BaseCooker() {
             listOfPermissions = (listOfPermissions.toSet().toMutableList())
             var cookedPair: MutableList<Pair<List<String>, List<PermittedAppList>>> = ArrayList()
             cookedPair.add(Pair(listOfPermissions, appList))
-            callback.onDone(cookedPair as ArrayList<T>)
+            callback.onComplete(cookedPair as ArrayList<T>)
         }
     }
 }

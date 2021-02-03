@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.models.database
 
 import androidx.room.*
+import com.example.androidDeviceDetails.database.AppInfoRaw
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
 
 /**
