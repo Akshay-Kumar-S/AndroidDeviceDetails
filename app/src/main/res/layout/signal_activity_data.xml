@@ -15,13 +15,12 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:orientation="horizontal">
+        android:layout_margin="3dp">
 
         <TextView
             android:id="@+id/cookedTitle"
             android:layout_width="155dp"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="16dp"
             android:text="@{data}"
@@ -32,7 +31,7 @@
         <TextView
             android:id="@+id/cookedValue"
             android:layout_width="136dp"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginTop="16dp"
             android:text="@{value}"

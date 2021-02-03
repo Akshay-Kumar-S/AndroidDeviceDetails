@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.cooker
 
+import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.database.SignalRaw
@@ -38,8 +39,9 @@ class SignalCooker : BaseCooker() {
                 cookCellularData(first as ArrayList<SignalRaw>, signalCookedData)
                 cookWifiData(second as ArrayList<SignalRaw>, signalCookedData)
             }
-
+            Log.e("cook","cook")
             iCookingDone.onComplete(arrayListOf(signalCookedData) as ArrayList<T>)
+
         }
     }
 
