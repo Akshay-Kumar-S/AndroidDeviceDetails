@@ -8,7 +8,6 @@ import com.example.androidDeviceDetails.database.DeviceNetworkUsageRaw
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.location.LocationData
-import com.example.androidDeviceDetails.models.location.LocationDisplayModel
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.utils.Utils
 
@@ -28,7 +27,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
                     is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
                     is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
                     is LocationData -> locationList.add(outputList[i] as LocationData)
-                    is SignalRaw -> signalList.add(outputList[i] as SignalCookedData)
+                    is SignalCookedData -> signalList.add(outputList[i] as SignalCookedData)
                 }
             }
         } catch (e: Exception) {
@@ -98,7 +97,10 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
     }
 
     private fun updateSignalDataCard(outputList: ArrayList<SignalCookedData>) {
-        binding.signalData.pointerCellularSpeedometer.speedTo(outputList.first().lastCellularStrength, 1000)
+        binding.signalData.pointerCellularSpeedometer.speedTo(
+            outputList.first().lastCellularStrength,
+            1000
+        )
         binding.signalData.pointerWifiSpeedometer.speedTo(outputList.first().lastWifiStrength, 1000)
     }
 }
