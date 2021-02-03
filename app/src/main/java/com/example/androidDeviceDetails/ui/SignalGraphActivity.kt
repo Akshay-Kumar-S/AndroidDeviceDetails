@@ -25,21 +25,31 @@ class SignalGraphActivity : AppCompatActivity() {
         val cellularValueList = arrayListOf<Int>()
         val wifiValueList = arrayListOf<Int>()
         val wifiTimeList = arrayListOf<String>()
+        var wifiCount = 0
+        var cellularCount = 0
+        var wifiMarkerRadius = .75f
+        var cellularMarkerRadius = .75f
 
         graphEntryList.partition { it.signal == Signal.CELLULAR }.apply {
             first.forEach {
                 cellularTimeList.add(Utils.getDateTime(it.timeStamp))
                 cellularValueList.add(it.strength)
+                cellularCount += 1
             }
             second.forEach {
                 wifiTimeList.add(Utils.getDateTime(it.timeStamp))
                 wifiValueList.add(it.strength)
+                wifiCount += 1
             }
         }
+
+        if (wifiCount < 2) wifiMarkerRadius = 6f
+        if (cellularCount < 2) cellularMarkerRadius = 6f
 
         val wifiChart = Chart(
             chartView = signalGraphBinding.wifiChart,
             title = "Wifi",
+            markerRadius = wifiMarkerRadius,
             yAxisMin = -127f,
             yAxisMax = 0f,
             color = "#ffc069"
@@ -49,6 +59,7 @@ class SignalGraphActivity : AppCompatActivity() {
         val cellularChart = Chart(
             chartView = signalGraphBinding.cellularChart,
             title = "Cellular",
+            markerRadius = cellularMarkerRadius,
             yAxisMin = -150f,
             yAxisMax = -50f,
             color = "#06caf4"

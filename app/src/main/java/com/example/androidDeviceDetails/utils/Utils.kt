@@ -278,7 +278,7 @@ object Utils {
             .categories(xSet)
             .yAxisLabelsEnabled(true)
             .yAxisGridLineWidth(0f)
-            .markerRadius(1f)
+            .markerRadius(chart.markerRadius)
             .xAxisLabelsEnabled(false)
             .touchEventEnabled(true)
             .backgroundColor(R.attr.mainBackground)

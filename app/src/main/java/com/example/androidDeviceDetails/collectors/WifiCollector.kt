@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
@@ -32,7 +33,8 @@ class WifiCollector(val context: Context) : BaseCollector() {
     override fun start() {
         val wifiIntentFilter = IntentFilter()
         wifiIntentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION)
-        wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        wifiIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
+        wifiIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
         context.registerReceiver(WifiReceiver, wifiIntentFilter)
     }
 
@@ -75,10 +77,14 @@ class WifiCollector(val context: Context) : BaseCollector() {
                 }
                 else -> {
                     level = WifiManager.calculateSignalLevel(strength, 5)
-                    wifiPercentage = WifiManager.calculateSignalLevel(strength, Signal.WIFI_LEVEL) /
-                            Signal.WIFI_LEVEL.toFloat() * 100
+                    /*                  wifiPercentage = WifiManager.calculateSignalLevel(strength, Signal.WIFI_LEVEL) /
+                                              Signal.WIFI_LEVEL.toFloat() * 100*/
+                    wifiPercentage =
+                        (strength - Signal.WIFI_MIN) / Signal.WIFI_RANGE.toFloat() * 100
                 }
             }
+            Log.d("ooo", "onWifi---------------: $strength")
+
 
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),
