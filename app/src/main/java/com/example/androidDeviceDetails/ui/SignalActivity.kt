@@ -9,6 +9,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivitySignalBinding
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
+import com.example.androidDeviceDetails.utils.DateTimePicker
 import com.example.androidDeviceDetails.viewModel.SignalViewModel
 import com.google.gson.Gson
 
@@ -27,12 +28,9 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signal)
         binding.lifecycleOwner = this
         signalController = ActivityController(this, NAME, binding)
-        binding.pickerBinding.apply {
-            startTime.setOnClickListener(this@SignalActivity)
-            startDate.setOnClickListener(this@SignalActivity)
-            endTime.setOnClickListener(this@SignalActivity)
-            endDate.setOnClickListener(this@SignalActivity)
-        }
+        DateTimePicker(
+            this, binding.pickerBinding, signalController::setTime, signalController::setDate
+        )
         binding.moreDetails.setOnClickListener(this@SignalActivity)
     }
 
