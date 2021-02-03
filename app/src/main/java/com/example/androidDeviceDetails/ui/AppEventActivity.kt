@@ -12,10 +12,10 @@ import com.example.androidDeviceDetails.controller.ActivityController
 import com.example.androidDeviceDetails.databinding.ActivityAppInfoBinding
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 import com.example.androidDeviceDetails.models.appInfo.EventType
+import com.example.androidDeviceDetails.utils.DateTimePicker
 import com.example.androidDeviceDetails.utils.Utils
-import java.util.*
 
-class AppEventActivity : AppCompatActivity(), View.OnClickListener {
+class AppEventActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppInfoBinding
     private lateinit var controller: ActivityController<AppInfoCookedData>
@@ -64,26 +64,13 @@ class AppEventActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_info)
         controller = ActivityController(this, NAME, binding)
         binding.appInfoListView.isEnabled = true
-        binding.apply {
-            pickerBinding.startTime.setOnClickListener(this@AppEventActivity)
-            pickerBinding.startDate.setOnClickListener(this@AppEventActivity)
-            pickerBinding.endTime.setOnClickListener(this@AppEventActivity)
-            pickerBinding.endDate.setOnClickListener(this@AppEventActivity)
-        }
+        DateTimePicker(this, binding.pickerBinding, controller::setTime, controller::setDate)
     }
 
     fun deleteApp(view: View) {
         Utils.uninstallApp(view.tag as String, packageManager, this)
     }
 
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.startTime -> controller.setTime(this, R.id.startTime)
-            R.id.startDate -> controller.setDate(this, R.id.startDate)
-            R.id.endTime -> controller.setTime(this, R.id.endTime)
-            R.id.endDate -> controller.setDate(this, R.id.endDate)
-        }
-    }
 
     companion object {
         const val NAME = "appInfo"
