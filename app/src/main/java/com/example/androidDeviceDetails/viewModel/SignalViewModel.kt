@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
+import android.util.Log
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.database.RoomDB
@@ -75,10 +76,11 @@ class SignalViewModel(
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
             cellularStrengthPercentage = mostUsedData.lastCellularStrength
             wifiStrengthPercentage = mostUsedData.lastWifiStrength
-            updateGauge()
+            signalBinding.root.post { updateGauge() }
             signalBinding.pointerCellularSpeedometer.tag = "false"
         }
-        updateList()
+        signalBinding.root.post { updateList() }
+        Log.e("ondone","done")
     }
 
     private fun updateList() {

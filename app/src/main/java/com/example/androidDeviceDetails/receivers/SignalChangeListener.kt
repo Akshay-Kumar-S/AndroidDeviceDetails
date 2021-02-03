@@ -86,7 +86,7 @@ object SignalChangeListener : PhoneStateListener() {
             Log.d("zzz", "onSignalStrengthsChanged===============: $strength $level $networkBand")
 
         } else {
-            if (/*DeviceDetailsApplication.instance.checkCallingOrSelfPermission("android.Manifest.permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_GRANTED &&*/ telephonyManager.allCellInfo.isNotEmpty()) {
+            if (DeviceDetailsApplication.instance.checkCallingOrSelfPermission("android.Manifest.permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_GRANTED && telephonyManager.allCellInfo.isNotEmpty()) {
                 when (val cellInfo = telephonyManager.allCellInfo[0]) {
                     is CellInfoLte -> {
                         band = Signal.TYPE_LTE

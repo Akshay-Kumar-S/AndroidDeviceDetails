@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.collectors.WifiCollector.WifiReceiver
@@ -83,8 +82,6 @@ class WifiCollector(val context: Context) : BaseCollector() {
                         (strength - Signal.WIFI_MIN) / Signal.WIFI_RANGE.toFloat() * 100
                 }
             }
-            Log.d("ooo", "onWifi---------------: $strength")
-
 
             val signalRaw = SignalRaw(
                 timeStamp = System.currentTimeMillis(),

@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.base
 
 import android.content.Context
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.databinding.*
@@ -69,7 +70,9 @@ abstract class BaseViewModel {
 
     open fun isLoading(binding: ViewBinding, enable: Boolean, type: String) {
         getPickerBinding(type, binding)?.apply {
-            root.post { progressBar.isVisible = enable }
+            root.post {
+                Log.e("cook","$enable")
+                progressBar.isVisible = enable }
         }
     }
 }
