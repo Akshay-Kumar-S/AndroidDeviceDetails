@@ -45,9 +45,8 @@ class AppPermissionsActivity : AppCompatActivity() {
     private fun showApps(parent: AdapterView<*>, position: Int) {
         appPermissionsViewModel = controller.viewModel as PermissionsViewModel
         val adapter = parent.adapter as PermissionsAdapter
-        val item = adapter.getItem(position)
-        PermittedAppsActivity.PERMISSION = item.toString()
-        val appList = getAppPermissionsAppList(appPermissionsViewModel)
+        val item = adapter.getItem(position).toString()
+        val appList = getAppPermissionsAppList(appPermissionsViewModel, item)
         val signalJson = Gson().toJson(appList)
         val intent = Intent(this@AppPermissionsActivity, PermittedAppsActivity::class.java)
         intent.putExtra("permission", item)
@@ -55,28 +54,31 @@ class AppPermissionsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun getAppPermissionsAppList(appPermissionsViewModel: PermissionsViewModel): ArrayList<PermittedAppsCookedData> {
+    private fun getAppPermissionsAppList(
+        appPermissionsViewModel: PermissionsViewModel,
+        permission: String
+    ): ArrayList<PermittedAppsCookedData> {
         var appList = arrayListOf<PermittedAppsCookedData>()
-        for (apps in appPermissionsViewModel.permittedAppList) {
-            if (apps.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !apps.denied_permissions.contains(
-                    PermittedAppsActivity.PERMISSION
+        for (id in appPermissionsViewModel.permittedAppList) {
+            if (id.allowed_permissions.contains(permission) && !id.denied_permissions.contains(
+                    permission
                 )
             ) {
                 appList.add(
                     PermittedAppsCookedData(
-                        apps.package_name,
-                        apps.apk_title,
-                        apps.version_name,
+                        id.package_name,
+                        id.apk_title,
+                        id.version_name,
                         true
                     )
                 )
             }
-            if (apps.denied_permissions.contains(PermittedAppsActivity.PERMISSION)) {
+            if (id.denied_permissions.contains(permission)) {
                 appList.add(
                     PermittedAppsCookedData(
-                        apps.package_name,
-                        apps.apk_title,
-                        apps.version_name,
+                        id.package_name,
+                        id.apk_title,
+                        id.version_name,
                         false
                     )
                 )
@@ -84,5 +86,4 @@ class AppPermissionsActivity : AppCompatActivity() {
         }
         return appList
     }
-
 }
