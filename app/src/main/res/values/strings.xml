@@ -2,6 +2,7 @@
 
     <!--    General -->
     <string name="app_name">AndroidDeviceDetails</string>
+    <string name="icon">Icon</string>
 
     <!--    Battery Section -->
     <string name="battery_no_usage">No usage recorded</string>
@@ -12,6 +13,7 @@
     <string name="battery_ASC">Battery Drop (smallest first)</string>
     <string name="battery_PkgName_ALPH">Package Name (A to Z)</string>
     <string name="battery_PkgName_REV_APLH">Package Name (Z to A)</string>
+    <string name="no_usage_recorded">No usage recorded</string>
 
     <!--    Date Time Picker -->
     <string name="picker_start">FROM</string>
@@ -28,29 +30,33 @@
     <!--    Apply BottomSheet -->
     <string name="apply">Apply</string>
 
-
+    <!-- Main Activity Section -->
     <string name="location_data">Location Data</string>
     <string name="signal_data">Signal Data</string>
+    <string name="batteryPercentage">0</string>
+    <string name="percentage">%</string>
+    <string name="used">Used</string>
+    <string name="visited">Visited</string>
+    <string name="location">Locations</string>
+    <string name="network_usage">Network Usage</string>
+    <string name="battery_usage">Battery Usage</string>
+
     <string name="latitude">Latitude</string>
     <string name="longitude">longitude</string>
     <string name="get_location">Get Location</string>
     <string name="count_location">Count Location</string>
-    <string name="location">Locations</string>
     <string name="service">Service</string>
     <string name="app_info">App info</string>
-    <string name="icon">Icon</string>
-    <string name="battery_usage">Battery Usage</string>
     <string name="info">Info</string>
     <string name="till_today">Till today</string>
-    <string name="no_usage_recorded">No usage recorded</string>
     <string name="right">Right</string>
     <string name="left">Left</string>
-    <string name="pie_chart_size">200dp</string>
-    <string name="network_usage">Network Usage</string>
+
+    <!-- Network Usage Section-->
     <string name="wifi_data_usage">550 MB</string>
     <string name="cellular_data_usage">10 MB</string>
     <string name="wifi">Wifi</string>
-    <string name="device_usage">Device Usage</string>
+
     <string name="label">filter</string>
     <string name="uninstall">UNINSTALL</string>
     <string name="delete_icon">delete Icon</string>
@@ -93,10 +99,6 @@
     <string name="install">Install :</string>
     <string name="update">Update :</string>
     <string name="uninstall_count">Uninstall :</string>
-    <string name="batteryPercentage">0</string>
-    <string name="percentage">%</string>
-    <string name="used">Used</string>
-    <string name="visited">Visited</string>
     <string name="Toast_onNoData">No data on selected date</string>
     <string name="Unknown_location">Unknown Location</string>
 </resources>
