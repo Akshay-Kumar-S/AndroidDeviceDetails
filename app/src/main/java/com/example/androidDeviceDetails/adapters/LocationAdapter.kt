@@ -32,7 +32,7 @@ class LocationAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, pos: Int) {
         viewHolder.count.text = list[pos].count.toString()
         viewHolder.address.text = list[pos].address
-        viewHolder.time.text = Utils.durationInWords(list[pos].totalTime)
+        viewHolder.time.text = Utils.getTimePeriodInWords(list[pos].totalTime)
         viewHolder.itemView.setOnClickListener { onItemClickListener.onItemClicked(list[pos]) }
     }
 

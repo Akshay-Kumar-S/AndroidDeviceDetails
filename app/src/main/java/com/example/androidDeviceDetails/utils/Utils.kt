@@ -27,12 +27,15 @@ import com.example.androidDeviceDetails.models.appInfo.AppTypeModel
 import com.example.androidDeviceDetails.models.appInfo.EventType
 import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.services.AppService
-import com.github.aachartmodel.aainfographics.aachartcreator.*
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartZoomType
+import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords
 import org.apache.commons.lang3.time.DurationFormatUtils
+import org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords
 import java.io.File
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -44,7 +47,7 @@ import kotlin.math.pow
 object Utils {
     private const val format = "HH:mm dd MMM yyyy"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
-    const val COLLECTION_INTERVAL: Long = 5 //in Minutes
+    const val COLLECTION_INTERVAL: Long = 1 //in Minutes
     const val GEOHASH_LENGTH = 6
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
@@ -289,8 +292,12 @@ object Utils {
         chartView.aa_drawChartWithChartModel(chartModel)
     }
 
-    fun getTimePeriod(timeStamp: Long): String {
-        return formatDurationWords(timeStamp, true, true)
+    fun getTimePeriodInWords(timeStamp: Long): String {
+        var timeString = formatDurationWords(timeStamp, true, true)
+        timeString = timeString.replace("hour", "hr")
+        timeString = timeString.replace("minute", "min")
+        timeString = timeString.replace("second", "sec")
+        return timeString
     }
 
     fun getSignalLevel(level: Int): String {
@@ -302,12 +309,5 @@ object Utils {
             Signal.LEVEL_EXCELLENT -> "Excellent"
             else -> "Unknown"
         }
-    }
-    fun durationInWords(time: Long): String {
-        var timeString = DurationFormatUtils.formatDurationWords(time, true, true)
-        timeString = timeString.replace("hour", "hr")
-        timeString = timeString.replace("minute", "min")
-        timeString = timeString.replace("second", "sec")
-        return timeString
     }
 }

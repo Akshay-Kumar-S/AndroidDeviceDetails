@@ -4,10 +4,10 @@ import android.location.Geocoder
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.base.BaseCooker
+import com.example.androidDeviceDetails.database.LocationModel
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.database.LocationModel
-import com.example.androidDeviceDetails.models.database.RoomDB
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.Utils
 import com.github.davidmoten.geo.GeoHash
@@ -17,16 +17,16 @@ import kotlinx.coroutines.launch
 class LocationCooker : BaseCooker() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> cook(time: TimePeriod, callback: ICookingDone<T>) {
+    override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch {
             val res = RoomDB.getDatabase()!!.locationDao()
                 .readDataFromDate(time.startTime, time.endTime) as ArrayList<LocationModel>
             if (res.isNotEmpty()) {
                 val processedData = processData(res)
                 val cookedData = cookProcessedData(processedData)
-                callback.onDone(cookedData as ArrayList<T>)
+                iCookingDone.onComplete(cookedData as ArrayList<T>)
             } else {
-                callback.onDone(arrayListOf())
+                iCookingDone.onComplete(arrayListOf())
             }
         }
     }
