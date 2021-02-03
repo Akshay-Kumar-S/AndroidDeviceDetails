@@ -17,7 +17,7 @@ class ApplicationController {
         "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
         "SignalChangeListener" to SignalChangeCollector(),
         "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance),
-        //"LocationCollector" to LocationCollector(DeviceDetailsApplication.instance)
+        "LocationCollector" to LocationCollector(DeviceDetailsApplication.instance)
     )
 
     fun runTimer(intervalInMinuets: Long) {

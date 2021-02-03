@@ -23,7 +23,7 @@ import org.osmdroid.views.overlay.Marker
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 
-    override fun <T> onDone(outputList: ArrayList<T>) {
+    override fun <T> onComplete(outputList: ArrayList<T>) {
         val cookedDataList = outputList.filterIsInstance<LocationData>() as ArrayList<LocationData>
         if (cookedDataList.isEmpty())
             onNoData(cookedDataList)

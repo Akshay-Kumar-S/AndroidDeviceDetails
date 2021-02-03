@@ -40,7 +40,7 @@ abstract class BaseViewModel {
                 BatteryActivity.NAME -> (binding as ActivityBatteryBinding).pickerBinding
                 AppEventActivity.NAME -> (binding as ActivityAppInfoBinding).pickerBinding
                 SignalActivity.NAME -> (binding as ActivitySignalBinding).pickerBinding
-                LocationActivity.NAME -> (binding as ActivityLocationBinding).bottomLocation.dateTimePickerLayout
+                LocationActivity.NAME -> (binding as ActivityLocationBinding).locationBottomSheet.dateTimePicker
                 NetworkUsageActivity.NAME -> (binding as ActivityAppDataBinding).pickerBinding
                 else -> null
             }

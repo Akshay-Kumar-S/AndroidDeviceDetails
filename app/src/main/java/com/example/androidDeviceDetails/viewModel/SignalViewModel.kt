@@ -66,7 +66,7 @@ class SignalViewModel(
      * This method is called once the [SignalCooker] finishes cooking.
      * This method separates the cooked data into CELLULAR list and WIFI list
      * >
-     * Overrides : [onDone] in [BaseViewModel].
+     * Overrides : [onComplete] in [BaseViewModel].
      * @param outputList List of cooked data.
      */
     override fun <T> onComplete(outputList: ArrayList<T>) {
@@ -84,7 +84,7 @@ class SignalViewModel(
     private fun updateList() {
         signalBinding.mostUsedOperator.cookedValue.text = mostUsedData.mostUsedOperator
         signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedCellularBand
-        signalBinding.roamingTime.cookedValue.text = Utils.getTimePeriod(mostUsedData.roamingTime)
+        signalBinding.roamingTime.cookedValue.text = Utils.getTimePeriodInWords(mostUsedData.roamingTime)
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
     }
