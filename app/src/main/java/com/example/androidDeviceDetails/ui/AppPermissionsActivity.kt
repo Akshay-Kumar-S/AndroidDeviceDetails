@@ -55,28 +55,28 @@ class AppPermissionsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun getAppPermissionsAppList(appPermissionsViewModel:PermissionsViewModel): ArrayList<PermittedAppsCookedData>{
+    private fun getAppPermissionsAppList(appPermissionsViewModel: PermissionsViewModel): ArrayList<PermittedAppsCookedData> {
         var appList = arrayListOf<PermittedAppsCookedData>()
-        for (id in appPermissionsViewModel.permittedAppList) {
-            if (id.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !id.denied_permissions.contains(
+        for (apps in appPermissionsViewModel.permittedAppList) {
+            if (apps.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !apps.denied_permissions.contains(
                     PermittedAppsActivity.PERMISSION
                 )
             ) {
                 appList.add(
                     PermittedAppsCookedData(
-                        id.package_name,
-                        id.apk_title,
-                        id.version_name,
+                        apps.package_name,
+                        apps.apk_title,
+                        apps.version_name,
                         true
                     )
                 )
             }
-            if (id.denied_permissions.contains(PermittedAppsActivity.PERMISSION)) {
+            if (apps.denied_permissions.contains(PermittedAppsActivity.PERMISSION)) {
                 appList.add(
                     PermittedAppsCookedData(
-                        id.package_name,
-                        id.apk_title,
-                        id.version_name,
+                        apps.package_name,
+                        apps.apk_title,
+                        apps.version_name,
                         false
                     )
                 )

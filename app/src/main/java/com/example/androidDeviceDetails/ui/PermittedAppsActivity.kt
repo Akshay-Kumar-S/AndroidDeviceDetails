@@ -14,6 +14,7 @@ import com.google.gson.Gson
 class PermittedAppsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPermittedAppsBinding
+
     companion object {
         const val NAME = "permittedApps"
         var PERMISSION = ""
@@ -24,7 +25,10 @@ class PermittedAppsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_permitted_apps)
         this.title = intent.getStringExtra("permission").toString()
         PERMISSION = intent.getStringExtra("permission").toString()
-        val appList = Gson().fromJson(intent.getStringExtra("appList").toString(), Array<PermittedAppsCookedData>::class.java)
+        val appList = Gson().fromJson(
+            intent.getStringExtra("appList").toString(),
+            Array<PermittedAppsCookedData>::class.java
+        )
         binding.tabLayout.setTabTextColors(
             ContextCompat.getColor(this, R.color.white),
             ContextCompat.getColor(this, R.color.white)

@@ -33,7 +33,6 @@ abstract class BaseViewModel {
                 )
                 AppPermissionsActivity.NAME -> PermissionsViewModel(binding as ActivityPermissionsBinding, context)
                 AppTypeActivity.NAME -> AppTypeViewModel(binding as ActivityAppTypeBinding, context)
-                PermittedAppsActivity.NAME -> PermittedAppsViewModel(binding as ActivityPermittedAppsBinding, context)
                 else -> null
             }
 
