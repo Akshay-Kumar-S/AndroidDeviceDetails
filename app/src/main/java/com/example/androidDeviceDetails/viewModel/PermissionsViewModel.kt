@@ -5,6 +5,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
+import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 
 /**
  * Implements [BaseViewModel]
@@ -20,10 +21,10 @@ class PermissionsViewModel(private val binding: ActivityPermissionsBinding, val 
      */
     @Suppress("UNCHECKED_CAST")
     override fun <T> onDone(outputList: ArrayList<T>) {
-        var permissionList = outputList as ArrayList<String>
+        var permissionList = outputList as ArrayList<Pair<List<String>, List<PermittedAppsCookedData>>>
         binding.root.post {
             binding.permissionsListView.adapter =
-                PermissionsAdapter(context, R.layout.permissions_tile, permissionList)
+                PermissionsAdapter(context, R.layout.permissions_tile, permissionList[0].first)
         }
     }
 }

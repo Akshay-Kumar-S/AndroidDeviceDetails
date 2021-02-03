@@ -31,8 +31,10 @@ class PermissionsCooker : BaseCooker() {
             val appList = arrayListOf<PermittedAppsCookedData>()
             val ids = db.appPermissionDao().getPermittedApps()
             for (id in ids) {
-                listOfPermissions.addAll(id.allowed_permissions.filterNot { "[]".indexOf(it) > -1 }.split(", "))
-                listOfPermissions.addAll(id.denied_permissions.filterNot { "[]".indexOf(it) > -1 }.split(", "))
+                listOfPermissions.addAll(id.allowed_permissions.filterNot { "[]".indexOf(it) > -1 }
+                    .split(", "))
+                listOfPermissions.addAll(id.denied_permissions.filterNot { "[]".indexOf(it) > -1 }
+                    .split(", "))
                 if (id.allowed_permissions.contains(PermittedAppsActivity.PERMISSION) && !id.denied_permissions.contains(
                         PermittedAppsActivity.PERMISSION
                     )
@@ -57,8 +59,10 @@ class PermissionsCooker : BaseCooker() {
                     )
                 }
             }
-            listOfPermissions=(listOfPermissions.toSet().toMutableList())
-            callback.onDone(listOfPermissions as ArrayList<T>)
+            listOfPermissions = (listOfPermissions.toSet().toMutableList())
+            var a: MutableList<Pair<List<String>, List<PermittedAppsCookedData>>> = ArrayList()
+            a.add(Pair(listOfPermissions, appList))
+            callback.onDone(a as ArrayList<T>)
         }
     }
 }
