@@ -27,7 +27,7 @@ class LocationCollector(private val context: Context) : BaseCollector() {
         val locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
         val hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
         val hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
-        Log.d("Location", "gps:$hasGps network:$hasNetwork ")
+        Log.d("LocationConstants", "gps:$hasGps network:$hasNetwork ")
         if (checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
             && checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
         ) {

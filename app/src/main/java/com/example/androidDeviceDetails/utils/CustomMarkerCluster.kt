@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
+import com.example.androidDeviceDetails.models.location.LocationConstants
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.bonuspack.clustering.StaticCluster
 import org.osmdroid.views.MapView
@@ -25,7 +26,7 @@ class CustomMarkerCluster(context: Context) : RadiusMarkerClusterer(context) {
         iconCanvas.drawText(
             if (count > 999) "999+" else count.toString(),
             mTextAnchorU * finalIcon.width,
-            mTextAnchorV * finalIcon.height - textHeight / 2 - 10,
+            mTextAnchorV * finalIcon.height - textHeight / 2 - LocationConstants.TEXT_OFFSET,
             mTextPaint
         )
         m.icon = BitmapDrawable(mapView!!.context.resources, finalIcon)

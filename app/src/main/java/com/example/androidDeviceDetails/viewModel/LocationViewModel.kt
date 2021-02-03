@@ -13,6 +13,7 @@ import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.LocationAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityLocationBinding
+import com.example.androidDeviceDetails.models.location.LocationConstants
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.CustomMarkerCluster
 import com.google.maps.android.ui.IconGenerator
@@ -80,8 +81,8 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         val cluster = CustomMarkerCluster(context)
         cluster.setIcon(
             getDrawable(context, R.drawable.location_bubble)?.let { drawableToBitmap(it) })
-        cluster.setRadius(90)
-        cluster.textPaint.textSize = 26F
+        cluster.setRadius(LocationConstants.CLUSTER_RADIUS)
+        cluster.textPaint.textSize = LocationConstants.TEXT_SIZE
         for (location in cookedDataList) {
             val marker = Marker(binding.mapView)
             binding.root.post {
@@ -109,7 +110,7 @@ class LocationViewModel(private val binding: ActivityLocationBinding, val contex
         val geoPoint = GeoPoint(avgLatitude, avgLongitude)
         binding.root.post {
             val mapController = binding.mapView.controller
-            mapController.setZoom(15.0)
+            mapController.setZoom(LocationConstants.SET_ZOOM)
             mapController.setCenter(geoPoint)
         }
     }
