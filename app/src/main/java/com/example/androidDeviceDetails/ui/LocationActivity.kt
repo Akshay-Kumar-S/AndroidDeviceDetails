@@ -16,6 +16,7 @@ import com.example.androidDeviceDetails.fragments.SortBySheet
 import com.example.androidDeviceDetails.interfaces.OnItemClickListener
 import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.utils.ColorFilter
+import com.example.androidDeviceDetails.utils.DateTimePicker
 import com.example.androidDeviceDetails.utils.SortBy
 import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,7 +30,7 @@ import kotlin.collections.ArrayList
 import org.osmdroid.config.Configuration as osmConfig
 
 
-class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickListener {
+class LocationActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var activityController: ActivityController<LocationData>
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
@@ -50,6 +51,7 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         activityController = ActivityController(this, NAME, binding)
         locationViewModel = activityController.viewModel as LocationViewModel
         sortBySheet = SortBySheet(options, activityController::sortView, SortBy.ASCENDING.ordinal)
+        DateTimePicker(this, binding.bottomLocation.dateTimePickerLayout, activityController::setTime, activityController::setDate)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -88,29 +90,12 @@ class LocationActivity : AppCompatActivity(), View.OnClickListener, OnItemClickL
         }
     }
 
-    private fun initOnClickListeners() {
-        binding.apply {
-            locationBottomSheet.dateTimePicker.startDate.setOnClickListener(this@LocationActivity)
-            locationBottomSheet.dateTimePicker.startTime.setOnClickListener(this@LocationActivity)
-            locationBottomSheet.dateTimePicker.endDate.setOnClickListener(this@LocationActivity)
-            locationBottomSheet.dateTimePicker.endTime.setOnClickListener(this@LocationActivity)
-        }
-    }
-
     private fun initBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.locationBottomSheet.bottomSheet)
         bottomSheetBehavior.peekHeight = 300
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.startDate -> activityController.setDate(this, R.id.startDate)
-            R.id.startTime -> activityController.setTime(this, R.id.startTime)
-            R.id.endDate -> activityController.setDate(this, R.id.endDate)
-            R.id.endTime -> activityController.setTime(this, R.id.endTime)
-        }
-    }
 
     override fun onItemClicked(clickedItem: LocationData) {
         locationViewModel.focusMapTo(clickedItem.latitude, clickedItem.longitude)
