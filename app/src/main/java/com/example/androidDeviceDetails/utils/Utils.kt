@@ -31,6 +31,8 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartZoomType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.aachartmodel.aainfographics.aachartcreator.*
+import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -276,12 +278,13 @@ object Utils {
             .categories(xSet)
             .yAxisLabelsEnabled(true)
             .yAxisGridLineWidth(0f)
+            .markerRadius(1f)
             .xAxisLabelsEnabled(false)
             .touchEventEnabled(true)
             .backgroundColor(R.attr.mainBackground)
             .yAxisMin(chart.yAxisMin)
             .yAxisMax(chart.yAxisMax)
-            .yAxisTitle("strength")
+            .yAxisTitle("")
             .tooltipValueSuffix("dBm")
             .colorsTheme(arrayOf(chart.color))
             .legendEnabled(false)
