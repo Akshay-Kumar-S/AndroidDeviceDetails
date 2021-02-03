@@ -37,10 +37,6 @@ class SignalActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         signalViewModel = signalController.viewModel as SignalViewModel
         when (v!!.id) {
-            R.id.startTime -> signalController.setTime(this, R.id.startTime)
-            R.id.startDate -> signalController.setDate(this, R.id.startDate)
-            R.id.endTime -> signalController.setTime(this, R.id.endTime)
-            R.id.endDate -> signalController.setDate(this, R.id.endDate)
             R.id.more_details -> {
                 val signalJson = Gson().toJson(signalViewModel.graphEntryList)
                 val intent = Intent(this@SignalActivity, SignalGraphActivity::class.java)
