@@ -3,6 +3,7 @@
     <!--    General -->
     <string name="app_name">AndroidDeviceDetails</string>
     <string name="icon">Icon</string>
+    <string name="no_usage_recorded">No usage recorded</string>
 
     <!--    Battery Section -->
     <string name="battery_no_usage">No usage recorded</string>
@@ -13,7 +14,6 @@
     <string name="battery_ASC">Battery Drop (smallest first)</string>
     <string name="battery_PkgName_ALPH">Package Name (A to Z)</string>
     <string name="battery_PkgName_REV_APLH">Package Name (Z to A)</string>
-    <string name="no_usage_recorded">No usage recorded</string>
 
     <!--    Date Time Picker -->
     <string name="picker_start">FROM</string>
@@ -66,7 +66,6 @@
     <string name="service">Service</string>
     <string name="app_info">App info</string>
     <string name="info">Info</string>
-    <string name="till_today">Till today</string>
     <string name="right">Right</string>
     <string name="left">Left</string>
 
