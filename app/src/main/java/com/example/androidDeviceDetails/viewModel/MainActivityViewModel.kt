@@ -5,10 +5,11 @@ import android.view.View.VISIBLE
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.database.AppInfoRaw
 import com.example.androidDeviceDetails.database.DeviceNetworkUsageRaw
-import com.example.androidDeviceDetails.database.SignalRaw
 import com.example.androidDeviceDetails.databinding.ActivityMainBinding
 import com.example.androidDeviceDetails.models.battery.BatteryAppEntry
 import com.example.androidDeviceDetails.models.location.LocationData
+import com.example.androidDeviceDetails.models.location.LocationDisplayModel
+import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.utils.Utils
 
 
@@ -19,7 +20,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         val batteryList = arrayListOf<BatteryAppEntry>()
         val dataUsageList = arrayListOf<DeviceNetworkUsageRaw>()
         val locationList = arrayListOf<LocationData>()
-        val signalList = arrayListOf<SignalRaw>()
+        val signalList = arrayListOf<SignalCookedData>()
         try {
             for (i in 0 until outputList.size) {
                 when (outputList[i]) {
@@ -27,7 +28,7 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
                     is BatteryAppEntry -> batteryList.add(outputList[i] as BatteryAppEntry)
                     is DeviceNetworkUsageRaw -> dataUsageList.add(outputList[i] as DeviceNetworkUsageRaw)
                     is LocationData -> locationList.add(outputList[i] as LocationData)
-                    is SignalRaw -> signalList.add(outputList[i] as SignalRaw)
+                    is SignalRaw -> signalList.add(outputList[i] as SignalCookedData)
                 }
             }
         } catch (e: Exception) {
@@ -96,8 +97,8 @@ class MainActivityViewModel(private val binding: ActivityMainBinding, val contex
         binding.locationInfo.mainValue.text = outputList.size.toString()
     }
 
-    private fun updateSignalDataCard(outputList: ArrayList<SignalRaw>) {
-        binding.signalData.pointerCellularSpeedometer.speedTo(50F, 1000)
-        binding.signalData.pointerWifiSpeedometer.speedTo(70F, 1000)
+    private fun updateSignalDataCard(outputList: ArrayList<SignalCookedData>) {
+        binding.signalData.pointerCellularSpeedometer.speedTo(outputList.first().lastCellularStrength, 1000)
+        binding.signalData.pointerWifiSpeedometer.speedTo(outputList.first().lastWifiStrength, 1000)
     }
 }
