@@ -9,7 +9,7 @@ package com.example.androidDeviceDetails.models.permissionsModel
  * @param allowed_permissions String of allowed permissions
  * @param denied_permissions String of denied permissions
  */
-data class PermittedAppList(
+data class PermittedAppListData(
     var package_name: String,
     var apk_title: String,
     var version_name: String,

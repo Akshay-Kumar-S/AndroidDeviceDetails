@@ -11,7 +11,7 @@ import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCoo
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 
-class PermittedAppsActivity : AppCompatActivity() {
+class PermissionDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPermittedAppsBinding
 
@@ -42,7 +42,7 @@ class PermittedAppsActivity : AppCompatActivity() {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Denied"))
             binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
             val adapter = PermittedAppsFragmentAdapter(
-                (this as AppCompatActivity).supportFragmentManager, binding.tabLayout.tabCount,
+                (this as AppCompatActivity).supportFragmentManager,
                 divideList(appList)
             )
             binding.viewPager.adapter = adapter

@@ -1,9 +1,9 @@
-package com.example.androidDeviceDetails.models.appInfoModels
+package com.example.androidDeviceDetails.models.permissionsModel
 
 import android.widget.ImageView
 import android.widget.TextView
 
 data class PermissionsItemViewHolder(
-    var permissionNameTextView: TextView,
-    var iconView: ImageView
+    var permission: TextView,
+    var icon: ImageView
 )

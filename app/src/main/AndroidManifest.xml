@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -31,11 +30,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.BaseAppInfoActivity"
+        <activity
+            android:name=".ui.AppInfoActivity"
             android:label="Base App Info"
             android:parentActivityName=".ui.MainActivity"/>
         <activity
-            android:name=".ui.PermittedAppsActivity"
+            android:name=".ui.PermissionDetailsActivity"
             android:label="Permitted Apps"
             android:parentActivityName=".ui.AppPermissionsActivity"/>
         <activity
@@ -45,7 +45,7 @@
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
-            android:parentActivityName=".ui.BaseAppInfoActivity">
+            android:parentActivityName=".ui.AppInfoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />

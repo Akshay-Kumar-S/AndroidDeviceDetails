@@ -18,7 +18,7 @@ abstract class BaseCooker {
                 SignalActivity.NAME -> SignalCooker()
                 LocationActivity.NAME -> LocationCooker()
                 AppTypeActivity.NAME -> AppTypeCooker()
-                AppPermissionsActivity.NAME -> PermissionsCooker()
+                AppPermissionsActivity.NAME -> AppPermissionsCooker()
                 else -> null
             }
         }

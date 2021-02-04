@@ -8,16 +8,16 @@ import androidx.databinding.DataBindingUtil
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.databinding.ActivityBaseAppInfoBinding
 
-class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
+class AppInfoActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityBaseAppInfoBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_base_app_info)
         binding.apply {
-            binding.appInfo.button.setOnClickListener(this@BaseAppInfoActivity)
-            binding.appInfoType.button.setOnClickListener(this@BaseAppInfoActivity)
-            binding.appPermissions.button.setOnClickListener(this@BaseAppInfoActivity)
+            binding.appInfo.button.setOnClickListener(this@AppInfoActivity)
+            binding.appInfoType.button.setOnClickListener(this@AppInfoActivity)
+            binding.appPermissions.button.setOnClickListener(this@AppInfoActivity)
         }
     }
 
@@ -28,6 +28,4 @@ class BaseAppInfoActivity : AppCompatActivity(), View.OnClickListener {
             R.id.appPermissions -> startActivity(Intent(this, AppPermissionsActivity::class.java))
         }
     }
-
-
 }

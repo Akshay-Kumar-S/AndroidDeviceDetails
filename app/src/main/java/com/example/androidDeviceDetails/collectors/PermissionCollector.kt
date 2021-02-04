@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.database.RoomDB
-import com.example.androidDeviceDetails.models.database.AppPermissionsInfo
+import com.example.androidDeviceDetails.models.database.AppPermissionsRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -16,26 +16,26 @@ import kotlinx.coroutines.launch
  */
 
 class PermissionCollector(var context: Context) : BaseCollector() {
-    /**
-     * Collect permissions that are allowed and denied for each app using [PackageManager.GET_PERMISSIONS]
-     * store it as a List<[AppPermissionsInfo]>
-     * and writes into [RoomDB.appPermissionDao].
-     */
 
     override fun collect() {
-        installedApps()
+        getInstalledAppsPermission()
     }
 
-    private fun installedApps() {
+    /**
+     * Collect permissions that are allowed and denied for each app using [PackageManager.GET_PERMISSIONS]
+     * store it as a List<[AppPermissionsRaw]>
+     * and writes into [RoomDB.appPermissionDao].
+     */
+    private fun getInstalledAppsPermission() {
         val db = RoomDB.getDatabase()!!
         val appList = context.packageManager.getInstalledPackages(PackageManager.GET_PERMISSIONS)
-        for (packageInfo in appList) {
-            val packageName = packageInfo.packageName.toString()
-            val perms = getPermissions(packageInfo)
+        for (app in appList) {
+            val packageName = app.packageName
+            val perms = getPermissions(app)
             GlobalScope.launch {
                 val uid = db.appsDao().getIdByName(packageName)
                 val appPermissions =
-                    AppPermissionsInfo(uid, perms[0].toString(), perms[1].toString())
+                    AppPermissionsRaw(uid, perms[0].toString(), perms[1].toString())
                 try {
                     db.appPermissionDao().insert(appPermissions)
                 } catch (e: SQLiteConstraintException) {
@@ -50,9 +50,9 @@ class PermissionCollector(var context: Context) : BaseCollector() {
      * and returns it to installedApps().
      */
     private fun getPermissions(packageInfo: PackageInfo): List<List<String>> {
-        val allowed: MutableList<String> = ArrayList()
-        val denied: MutableList<String> = ArrayList()
-        val listOfPermissions: MutableList<List<String>> = ArrayList()
+        val allowed = ArrayList<String>()
+        val denied = ArrayList<String>()
+        val listOfPermissions = ArrayList<List<String>>()
         try {
             for (i in packageInfo.requestedPermissions.indices) {
                 if (packageInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED != 0) {

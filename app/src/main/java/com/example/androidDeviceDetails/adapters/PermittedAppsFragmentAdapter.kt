@@ -7,9 +7,9 @@ import com.example.androidDeviceDetails.fragments.PermittedFragment
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 
 class PermittedAppsFragmentAdapter(
-    fm: FragmentManager, private var totalTabs: Int,
+    fragmentManager: FragmentManager,
     private var appList: Pair<List<PermittedAppsCookedData>, List<PermittedAppsCookedData>>
-) : FragmentPagerAdapter(fm) {
+) : FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
@@ -18,6 +18,5 @@ class PermittedAppsFragmentAdapter(
         }
     }
 
-    override fun getCount() = totalTabs
-
+    override fun getCount() = 2
 }

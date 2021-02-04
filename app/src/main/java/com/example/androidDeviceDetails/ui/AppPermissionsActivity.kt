@@ -2,7 +2,6 @@ package com.example.androidDeviceDetails.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -28,6 +27,7 @@ class AppPermissionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_permissions)
         controller = ActivityController(this, NAME, binding)
+
         binding.apply {
             permissionsListView.isEnabled = true
             permissionsListView.setOnItemClickListener { parent, _, position, _ ->
@@ -42,7 +42,7 @@ class AppPermissionsActivity : AppCompatActivity() {
         val item = adapter.getItem(position).toString()
         val appList = getAppPermissionsAppList(appPermissionsViewModel, item)
         val signalJson = Gson().toJson(appList)
-        val intent = Intent(this@AppPermissionsActivity, PermittedAppsActivity::class.java)
+        val intent = Intent(this@AppPermissionsActivity, PermissionDetailsActivity::class.java)
         intent.putExtra("permission", item)
         intent.putExtra("appList", signalJson)
         startActivity(intent)
