@@ -34,14 +34,14 @@
                 app:sv_markColor="?attr/sv_speedometerBackColor"
                 app:sv_maxSpeed="100"
                 app:sv_minSpeed="0"
-                app:sv_speedTextColor="#673AB7"
+                app:sv_speedTextColor="@color/soti_blue"
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
-                app:sv_speedometerColor="#673AB7"
+                app:sv_speedometerColor="@color/soti_coral"
                 app:sv_textColor="?attr/sv_speedometerBackColor"
                 app:sv_trembleDuration="@android:integer/config_longAnimTime"
                 app:sv_unit="%"
-                app:sv_unitTextColor="#673AB7"
+                app:sv_unitTextColor="@color/soti_blue"
                 app:sv_withPointer="false"
                 app:sv_withTremble="false" />
 
@@ -60,14 +60,14 @@
                 app:sv_markColor="?attr/sv_speedometerBackColor"
                 app:sv_maxSpeed="100"
                 app:sv_minSpeed="0"
-                app:sv_speedTextColor="#673AB7"
+                app:sv_speedTextColor="@color/soti_blue"
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
-                app:sv_speedometerColor="#E1AA06"
+                app:sv_speedometerColor="@color/soti_coral"
                 app:sv_textColor="?attr/sv_speedometerBackColor"
                 app:sv_trembleDuration="@android:integer/config_longAnimTime"
                 app:sv_unit="%"
-                app:sv_unitTextColor="#673AB7"
+                app:sv_unitTextColor="@color/soti_blue"
                 app:sv_withPointer="false"
                 app:sv_withTremble="false" />
 
@@ -81,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerCellularSpeedometer"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#673AB7" />
+                app:tint="@color/soti_blue" />
 
             <ImageView
                 android:id="@+id/imageViewWifi"
@@ -93,7 +93,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/pointerWifiSpeedometer"
                 app:layout_constraintStart_toStartOf="@+id/pointerWifiSpeedometer"
                 app:layout_constraintTop_toTopOf="@+id/pointerWifiSpeedometer"
-                app:tint="#E1AA06" />
+                app:tint="@color/soti_blue" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,22 +132,6 @@
                 app:layout_constraintBottom_toTopOf="@id/roaming_time"
                 app:layout_constraintTop_toBottomOf="@id/most_used_operator"
                 app:value='@{"no data available"}' />
-
-
-            <!--            <include-->
-            <!--                android:id="@+id/most_used_operator"-->
-            <!--                layout="@layout/battery_tile"-->
-            <!--                app:data='@{"Most used operator"}'-->
-            <!--                app:value='@{"no data available"}'-->
-            <!--                app:layout_constraintTop_toTopOf="parent"/>-->
-
-            <!--            <include-->
-            <!--                android:id="@+id/most_used_band"-->
-            <!--                layout="@layout/battery_tile"-->
-            <!--                app:data='@{"Most used band"}'-->
-            <!--                app:value='@{"no data available"}'-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--             />-->
 
             <include
                 android:id="@+id/roaming_time"
@@ -197,21 +181,25 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginStart="36dp"
                 android:text="@string/more_details"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/arrow"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/arrow"
                 android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_marginBottom="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="15dp"
+                android:layout_width="15dp"
+                app:tint="@color/black" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
