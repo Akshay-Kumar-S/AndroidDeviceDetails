@@ -34,7 +34,7 @@
                 app:sv_markColor="?attr/sv_speedometerBackColor"
                 app:sv_maxSpeed="100"
                 app:sv_minSpeed="0"
-                app:sv_speedTextColor="@color/soti_blue"
+                app:sv_speedTextColor="@android:color/transparent"
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
                 app:sv_speedometerColor="@color/soti_coral"
@@ -166,40 +166,24 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/more_details"
+            android:id="@+id/more_details_layout"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="60dp"
             android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="0dp">
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#f1f3f6"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
+            <Button
+                android:id="@+id/more_details"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:background="@android:color/transparent"
                 android:text="@string/more_details"
-                android:layout_marginEnd="10dp"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:drawableEnd="@drawable/ic_baseline_arrow_right_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/arrow"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-            <ImageView
-                android:id="@+id/arrow"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="3dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_height="15dp"
-                android:layout_width="15dp"
-                app:tint="@color/black" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
