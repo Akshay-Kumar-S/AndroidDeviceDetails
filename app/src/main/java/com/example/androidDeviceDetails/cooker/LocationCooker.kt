@@ -63,16 +63,16 @@ class LocationCooker : BaseCooker() {
         processedData.forEach { (_, loc) ->
             loc.latitude /= loc.count
             loc.longitude /= loc.count
-            loc.address= getAddress(loc.latitude, loc.longitude)
+            loc.address = getAddress(loc.latitude, loc.longitude)
         }
         return processedData.values.toMutableList()
             .filter { it.totalTime > 0 } as ArrayList<LocationData>
     }
 
     private fun getAddress(latitude: Double, longitude: Double): String {
-        val address = Geocoder(DeviceDetailsApplication.instance).getFromLocation(
-            latitude, longitude, 1)
-        var formattedAddress =""
+        val address =
+            Geocoder(DeviceDetailsApplication.instance).getFromLocation(latitude, longitude, 1)
+        var formattedAddress = ""
         return if (address.isNotEmpty()) {
             val firstAddress = address.first()
             if (!firstAddress.featureName.isNullOrEmpty()) formattedAddress += "${firstAddress.featureName}, "
