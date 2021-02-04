@@ -63,16 +63,25 @@ class LocationCooker : BaseCooker() {
         processedData.forEach { (_, loc) ->
             loc.latitude /= loc.count
             loc.longitude /= loc.count
-            val address = Geocoder(DeviceDetailsApplication.instance).getFromLocation(
-                loc.latitude, loc.longitude, 1
-            ).first()
-            if (address.featureName != null) loc.address += "${address.featureName}, "
-            if (address.locality != null) loc.address += "${address.locality}, "
-            if (address.adminArea != null) loc.address += address.adminArea
-            if (loc.address == "") loc.address =
-                DeviceDetailsApplication.instance.getString(R.string.Unknown_location)
+            loc.address= getAddress(loc.latitude, loc.longitude)
         }
         return processedData.values.toMutableList()
             .filter { it.totalTime > 0 } as ArrayList<LocationData>
+    }
+
+    private fun getAddress(latitude: Double, longitude: Double): String {
+        val address = Geocoder(DeviceDetailsApplication.instance).getFromLocation(
+            latitude, longitude, 1)
+        var formattedAddress =""
+        return if (address.isNotEmpty()) {
+            val firstAddress = address.first()
+            if (!firstAddress.featureName.isNullOrEmpty()) formattedAddress += "${firstAddress.featureName}, "
+            if (!firstAddress.locality.isNullOrEmpty()) formattedAddress += "${firstAddress.locality}, "
+            if (!firstAddress.adminArea.isNullOrBlank()) formattedAddress += firstAddress.adminArea
+            if (formattedAddress.isBlank()) formattedAddress =
+                DeviceDetailsApplication.instance.getString(R.string.Unknown_location)
+            formattedAddress
+        } else
+            DeviceDetailsApplication.instance.getString(R.string.Unknown_location)
     }
 }
