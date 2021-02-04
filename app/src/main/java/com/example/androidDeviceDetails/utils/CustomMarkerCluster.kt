@@ -26,7 +26,7 @@ class CustomMarkerCluster(context: Context) : RadiusMarkerClusterer(context) {
         iconCanvas.drawText(
             if (count > 999) "999+" else count.toString(),
             mTextAnchorU * finalIcon.width,
-            mTextAnchorV * finalIcon.height - textHeight / 2 - LocationConstants.TEXT_OFFSET,
+            mTextAnchorV * finalIcon.height - textHeight / 2 - LocationConstants.TEXT_OFFSET_Y,
             mTextPaint
         )
         m.icon = BitmapDrawable(mapView!!.context.resources, finalIcon)
