@@ -1,7 +1,6 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
-import android.util.Log
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.cooker.SignalCooker
 import com.example.androidDeviceDetails.database.RoomDB
@@ -80,13 +79,13 @@ class SignalViewModel(
             signalBinding.pointerCellularSpeedometer.tag = "false"
         }
         signalBinding.root.post { updateList() }
-        Log.e("ondone","done")
     }
 
     private fun updateList() {
         signalBinding.mostUsedOperator.cookedValue.text = mostUsedData.mostUsedOperator
         signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedCellularBand
-        signalBinding.roamingTime.cookedValue.text = Utils.getTimePeriodInWords(mostUsedData.roamingTime)
+        signalBinding.roamingTime.cookedValue.text =
+            Utils.getTimePeriodInWords(mostUsedData.roamingTime)
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
     }

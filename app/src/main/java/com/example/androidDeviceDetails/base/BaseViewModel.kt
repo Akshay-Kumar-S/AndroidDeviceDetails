@@ -7,7 +7,6 @@ import androidx.viewbinding.ViewBinding
 import com.example.androidDeviceDetails.databinding.*
 import com.example.androidDeviceDetails.ui.*
 import com.example.androidDeviceDetails.viewModel.*
-import com.example.androidDeviceDetails.viewModel.LocationViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +23,10 @@ abstract class BaseViewModel {
             when (type) {
                 MainActivity.NAME -> MainActivityViewModel(binding as ActivityMainBinding, context)
                 BatteryActivity.NAME -> BatteryViewModel(binding as ActivityBatteryBinding, context)
-                AppEventActivity.NAME -> AppEventViewModel(binding as ActivityAppInfoBinding, context)
+                AppEventActivity.NAME -> AppEventViewModel(
+                    binding as ActivityAppInfoBinding,
+                    context
+                )
                 SignalActivity.NAME -> SignalViewModel(binding as ActivitySignalBinding, context)
                 LocationActivity.NAME -> LocationViewModel(
                     binding as ActivityLocationBinding, context
@@ -71,8 +73,9 @@ abstract class BaseViewModel {
     open fun isLoading(binding: ViewBinding, enable: Boolean, type: String) {
         getPickerBinding(type, binding)?.apply {
             root.post {
-                Log.e("cook","$enable")
-                progressBar.isVisible = enable }
+                Log.e("cook", "$enable")
+                progressBar.isVisible = enable
+            }
         }
     }
 }
