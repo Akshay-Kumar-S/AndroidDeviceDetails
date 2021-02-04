@@ -13,6 +13,8 @@ import com.example.androidDeviceDetails.models.location.LocationData
 import com.github.davidmoten.geo.GeoHash
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class LocationCooker : BaseCooker() {
 
@@ -21,52 +23,52 @@ class LocationCooker : BaseCooker() {
         GlobalScope.launch {
             val res = RoomDB.getDatabase()!!.locationDao()
                 .readDataFromDate(time.startTime, time.endTime) as ArrayList<LocationModel>
-            if (res.isNotEmpty()) {
-                val processedData = processData(res)
-                val cookedData = cookProcessedData(processedData)
-                iCookingDone.onComplete(cookedData as ArrayList<T>)
-            } else {
+            if (res.isNotEmpty())
+                iCookingDone.onComplete(cookData(res) as ArrayList<T>)
+            else
                 iCookingDone.onComplete(arrayListOf())
-            }
         }
     }
 
-    private fun processData(locationList: ArrayList<LocationModel>): HashMap<String, LocationData> {
-        val processedLocations = HashMap<String, LocationData>()
+    private fun cookData(locationList: ArrayList<LocationModel>): ArrayList<LocationData> {
+        val geoHashMap = HashMap<String, LocationData>()
+        val countMap = HashMap<String, Int>()
         var preLoc = locationList.first()
-        val firstHash =
-            GeoHash.encodeHash(preLoc.latitude, preLoc.longitude, LocationConstants.GEO_HASH_LENGTH)
-        processedLocations[firstHash] = LocationData(preLoc.latitude, preLoc.longitude, 1, "", 0)
+        var prevHash = getGeoHash(preLoc.latitude, preLoc.longitude)
+        geoHashMap[prevHash] = LocationData(preLoc.latitude, preLoc.longitude, 1, "", 0)
+        countMap[prevHash] = 1
         for (loc in locationList.subList(1, locationList.size)) {
-            val geoHash =
-                GeoHash.encodeHash(loc.latitude, loc.longitude, LocationConstants.GEO_HASH_LENGTH)
-            if (loc.latitude != preLoc.latitude && loc.longitude != preLoc.longitude) {
-                if (geoHash in processedLocations.keys) {
-                    processedLocations[geoHash]!!.latitude += loc.latitude
-                    processedLocations[geoHash]!!.longitude += loc.longitude
-                    processedLocations[geoHash]!!.count += 1
-                    processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
-                } else {
-                    processedLocations[geoHash] = LocationData(
-                        loc.latitude, loc.longitude, 1, "", loc.timeStamp - preLoc.timeStamp
-                    )
+            val newHash = getGeoHash(loc.latitude, loc.longitude)
+            if (newHash in geoHashMap.keys) {
+                countMap[newHash] = countMap[newHash]!! + 1
+                geoHashMap[newHash]?.run {
+                    latitude += loc.latitude
+                    longitude += loc.longitude
+                    totalTime += loc.timeStamp - preLoc.timeStamp
                 }
+                if (prevHash != newHash)
+                    geoHashMap[newHash]!!.count += 1
             } else {
-                processedLocations[geoHash]!!.totalTime += loc.timeStamp - preLoc.timeStamp
+                geoHashMap[newHash] = LocationData(
+                    loc.latitude, loc.longitude, 1, "", loc.timeStamp - preLoc.timeStamp
+                )
+                countMap[newHash] = 1
             }
+            prevHash = newHash
             preLoc = loc
         }
-        return processedLocations
+        return cookProcessedData(geoHashMap, countMap)
     }
 
-    private fun cookProcessedData(processedData: HashMap<String, LocationData>): ArrayList<LocationData> {
-        processedData.forEach { (_, loc) ->
-            loc.latitude /= loc.count
-            loc.longitude /= loc.count
+    private fun cookProcessedData(
+        geoHashMap: HashMap<String, LocationData>, countMap: HashMap<String, Int>
+    ): ArrayList<LocationData> {
+        geoHashMap.forEach { (geoHash, loc) ->
+            loc.latitude /= countMap[geoHash]!!
+            loc.longitude /= countMap[geoHash]!!
             loc.address = getAddress(loc.latitude, loc.longitude)
         }
-        return processedData.values.toMutableList()
-            .filter { it.totalTime > 0 } as ArrayList<LocationData>
+        return geoHashMap.values.toMutableList() as ArrayList<LocationData>
     }
 
     private fun getAddress(latitude: Double, longitude: Double): String {
@@ -75,7 +77,7 @@ class LocationCooker : BaseCooker() {
         var formattedAddress = ""
         return if (address.isNotEmpty()) {
             val firstAddress = address.first()
-            if (!firstAddress.featureName.isNullOrEmpty()) formattedAddress += "${firstAddress.featureName}, "
+            if (!firstAddress.featureName.isNullOrBlank()) formattedAddress += "${firstAddress.featureName}, "
             if (!firstAddress.locality.isNullOrEmpty()) formattedAddress += "${firstAddress.locality}, "
             if (!firstAddress.adminArea.isNullOrBlank()) formattedAddress += firstAddress.adminArea
             if (formattedAddress.isBlank()) formattedAddress =
@@ -84,4 +86,7 @@ class LocationCooker : BaseCooker() {
         } else
             DeviceDetailsApplication.instance.getString(R.string.Unknown_location)
     }
+
+    private fun getGeoHash(latitude: Double, longitude: Double): String =
+        GeoHash.encodeHash(latitude, longitude, LocationConstants.GEO_HASH_LENGTH)
 }
