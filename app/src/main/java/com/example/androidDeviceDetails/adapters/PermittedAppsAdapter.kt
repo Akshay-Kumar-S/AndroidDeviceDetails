@@ -17,18 +17,6 @@ class PermittedAppsAdapter(
     private var items: List<PermittedAppsCookedData>
 ) : ArrayAdapter<PermittedAppsCookedData>(_context, resource, items) {
 
-    override fun getViewTypeCount(): Int {
-        return 2
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            0
-        } else {
-            1
-        }
-    }
-
     @SuppressLint("InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)

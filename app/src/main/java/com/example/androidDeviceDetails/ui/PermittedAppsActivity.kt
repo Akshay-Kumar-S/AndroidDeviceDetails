@@ -28,15 +28,14 @@ class PermittedAppsActivity : AppCompatActivity() {
             Array<PermittedAppsCookedData>::class.java
         )
         binding.tabLayout.setTabTextColors(
-            ContextCompat.getColor(this, R.color.white),
+            ContextCompat.getColor(this, R.color.labelBackGround),
             ContextCompat.getColor(this, R.color.white)
         )
         onDone(appList)
     }
 
-    fun onDone(outputList: Array<PermittedAppsCookedData>) {
-        var appList =
-            (outputList.filterIsInstance<PermittedAppsCookedData>() as ArrayList).toMutableList()
+    private fun onDone(outputList: Array<PermittedAppsCookedData>) {
+        var appList = outputList.toMutableList()
         appList = appList.sortedBy { it.packageName }.toMutableList()
         binding.root.post {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Allowed"))

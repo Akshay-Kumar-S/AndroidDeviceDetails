@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
 import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,6 @@ class PermissionsAdapter(
         try {
             val permissionInfo: PermissionInfo =
                 context.packageManager.getPermissionInfo(permission, 0)
-            Log.d("Group", permissionInfo.group.toString())
             val groupInfo: PermissionGroupInfo =
                 context.packageManager.getPermissionGroupInfo(permissionInfo.group.toString(), 0)
             drawable = groupInfo.icon

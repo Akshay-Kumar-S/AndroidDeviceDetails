@@ -6,7 +6,6 @@ import com.example.androidDeviceDetails.adapters.PermissionsAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
 import com.example.androidDeviceDetails.databinding.ActivityPermissionsBinding
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import java.io.Serializable
 
 /**
@@ -20,7 +19,7 @@ class PermissionsViewModel(private val binding: ActivityPermissionsBinding, val 
     /**
      * Displays provided data on UI as List view
      *
-     * Overrides : [onDone] in [BaseViewModel]
+     * Overrides : [onComplete] in [BaseViewModel]
      * @param [outputList] list of cooked data
      */
     @Suppress("UNCHECKED_CAST")

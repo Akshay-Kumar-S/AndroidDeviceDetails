@@ -12,9 +12,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Implements [BaseCollector].
- *
  * A time based collector which collects the allowed and denied permissions of individual apps.
- *
  */
 
 class PermissionCollector(var context: Context) : BaseCollector() {
@@ -22,7 +20,6 @@ class PermissionCollector(var context: Context) : BaseCollector() {
      * Collect permissions that are allowed and denied for each app using [PackageManager.GET_PERMISSIONS]
      * store it as a List<[AppPermissionsInfo]>
      * and writes into [RoomDB.appPermissionDao].
-     *
      */
 
     override fun collect() {
@@ -51,7 +48,6 @@ class PermissionCollector(var context: Context) : BaseCollector() {
      * Collects the allowed and denied permission list for each app
      * store it as a List<List<String>>
      * and returns it to installedApps().
-     *
      */
     private fun getPermissions(packageInfo: PackageInfo): List<List<String>> {
         val allowed: MutableList<String> = ArrayList()
