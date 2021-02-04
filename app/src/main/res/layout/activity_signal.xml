@@ -175,7 +175,7 @@
             android:textColor="@color/soti_blue"
             android:layout_marginEnd="10dp"
             android:drawableTint="@color/soti_blue"
-            android:drawableEnd="@drawable/ic_baseline_arrow_right_24"
+            android:drawableEnd="@drawable/ic_double_angle_pointing_to_right"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:letterSpacing=".05"
