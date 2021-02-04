@@ -48,7 +48,7 @@ import kotlin.math.pow
 object Utils {
     private const val format = "HH:mm dd MMM yyyy"
     private val f = SimpleDateFormat(format, Locale.ENGLISH)
-    const val COLLECTION_INTERVAL: Long = 1 //in Minutes
+    const val COLLECTION_INTERVAL: Long = 5 //in Minutes
 
     fun getDateTime(millis: Long): String = f.format(Date(millis))
 
