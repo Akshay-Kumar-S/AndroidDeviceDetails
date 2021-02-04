@@ -34,7 +34,7 @@
                 app:sv_markColor="?attr/sv_speedometerBackColor"
                 app:sv_maxSpeed="100"
                 app:sv_minSpeed="0"
-                app:sv_speedTextColor="@android:color/transparent"
+                app:sv_speedTextColor="@color/soti_blue"
                 app:sv_speedTextPosition="BOTTOM_CENTER"
                 app:sv_speedTextSize="20sp"
                 app:sv_speedometerColor="@color/soti_coral"
@@ -110,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginVertical="20dp"
-            app:layout_constraintBottom_toTopOf="@id/more_details"
+            app:layout_constraintBottom_toTopOf="@id/more_details_layout"
             app:layout_constraintTop_toBottomOf="@+id/picker_binding">
 
             <include
@@ -179,6 +179,7 @@
                 android:layout_height="0dp"
                 android:background="@android:color/transparent"
                 android:text="@string/more_details"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:drawableEnd="@drawable/ic_baseline_arrow_right_24"
                 app:layout_constraintBottom_toBottomOf="parent"
