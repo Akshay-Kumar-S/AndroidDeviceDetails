@@ -31,9 +31,9 @@ class PermissionCollector(var context: Context) : BaseCollector() {
         val appList = context.packageManager.getInstalledPackages(PackageManager.GET_PERMISSIONS)
         for (packageInfo in appList) {
             val packageName = packageInfo.packageName.toString()
-            var perms = getPermissions(packageInfo)
+            val perms = getPermissions(packageInfo)
             GlobalScope.launch {
-                var uid = db.appsDao().getIdByName(packageName)
+                val uid = db.appsDao().getIdByName(packageName)
                 val appPermissions =
                     AppPermissionsInfo(uid, perms[0].toString(), perms[1].toString())
                 try {
@@ -52,7 +52,7 @@ class PermissionCollector(var context: Context) : BaseCollector() {
     private fun getPermissions(packageInfo: PackageInfo): List<List<String>> {
         val allowed: MutableList<String> = ArrayList()
         val denied: MutableList<String> = ArrayList()
-        var listOfPermissions: MutableList<List<String>> = ArrayList()
+        val listOfPermissions: MutableList<List<String>> = ArrayList()
         try {
             for (i in packageInfo.requestedPermissions.indices) {
                 if (packageInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED != 0) {

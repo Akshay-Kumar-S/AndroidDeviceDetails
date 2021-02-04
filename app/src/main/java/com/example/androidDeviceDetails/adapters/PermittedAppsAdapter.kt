@@ -22,7 +22,7 @@ class PermittedAppsAdapter(
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
 
-        var holder: PermittedAppInfoItemViewHolder?
+        val holder: PermittedAppInfoItemViewHolder?
         if (convertView == null) {
             vi = layoutInflater.inflate(resource, null)
             holder = PermittedAppInfoItemViewHolder(
@@ -32,7 +32,7 @@ class PermittedAppsAdapter(
             )
             vi.tag = holder
         } else holder = vi?.tag as PermittedAppInfoItemViewHolder
-        holder = setAppInfoHolder(holder, position)
+        setAppInfoHolder(holder, position)
 
         return vi!!
     }

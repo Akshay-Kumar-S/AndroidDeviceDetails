@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.models.appInfoModels.PermissionsItemViewHolder
 
-
 class PermissionsAdapter(
     private var _context: Context,
     private var resource: Int,
@@ -23,7 +22,7 @@ class PermissionsAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView
-        var holder: PermissionsItemViewHolder?
+        val holder: PermissionsItemViewHolder?
         if (convertView == null) {
             vi = layoutInflater.inflate(resource, null)
             holder = PermissionsItemViewHolder(
@@ -32,7 +31,7 @@ class PermissionsAdapter(
             )
             vi.tag = holder
         } else holder = vi?.tag as PermissionsItemViewHolder
-        holder = setPermissionsInfoHolder(holder, position)
+        setPermissionsInfoHolder(holder, position)
 
         return vi!!
     }

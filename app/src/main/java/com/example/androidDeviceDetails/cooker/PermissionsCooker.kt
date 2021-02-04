@@ -10,7 +10,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-
 class PermissionsCooker : BaseCooker() {
 
     /**
@@ -34,7 +33,7 @@ class PermissionsCooker : BaseCooker() {
                     .split(", "))
             }
             listOfPermissions = (listOfPermissions.toSet().toMutableList())
-            var cookedPair: MutableList<Pair<List<String>, List<PermittedAppList>>> = ArrayList()
+            val cookedPair: MutableList<Pair<List<String>, List<PermittedAppList>>> = ArrayList()
             cookedPair.add(Pair(listOfPermissions, appList))
             callback.onComplete(cookedPair as ArrayList<T>)
         }
