@@ -11,6 +11,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
 class CustomMarkerCluster(context: Context) : RadiusMarkerClusterer(context) {
+
     override fun buildClusterMarker(cluster: StaticCluster?, mapView: MapView?): Marker {
         val m = Marker(mapView)
         m.position = cluster!!.position

@@ -27,7 +27,6 @@ import org.osmdroid.views.CustomZoomButtonsDisplay.VerticalPosition.CENTER
 import org.osmdroid.views.MapView.getTileSystem
 import org.osmdroid.config.Configuration as osmConfig
 
-
 class LocationActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var activityController: ActivityController<LocationData>
     private lateinit var locationViewModel: LocationViewModel
@@ -95,7 +94,6 @@ class LocationActivity : AppCompatActivity(), OnItemClickListener {
         bottomSheetBehavior.peekHeight = 300
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
-
 
     override fun onItemClicked(clickedItem: LocationData) {
         locationViewModel.focusMapTo(clickedItem.latitude, clickedItem.longitude)
