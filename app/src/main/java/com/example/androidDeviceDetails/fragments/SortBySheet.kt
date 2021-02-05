@@ -15,6 +15,7 @@ class SortBySheet(
     var sortFunction: (Int) -> Unit, default: Int = SortBy.ALPHABETICAL.ordinal
 ) :
     BottomSheetDialogFragment() {
+
     private var selectedOption = default
     private var v: View? = null
 
