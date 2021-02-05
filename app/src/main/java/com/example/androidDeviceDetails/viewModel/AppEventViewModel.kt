@@ -15,6 +15,7 @@ import com.example.androidDeviceDetails.models.appInfo.EventType
  */
 class AppEventViewModel(private val binding: ActivityAppInfoBinding, val context: Context) :
     BaseViewModel() {
+
     companion object {
         var eventFilter = EventType.ALL.ordinal
         var savedAppList = arrayListOf<AppInfoCookedData>()

@@ -71,7 +71,6 @@ class AppEventActivity : AppCompatActivity() {
         Utils.uninstallApp(view.tag as String, packageManager, this)
     }
 
-
     companion object {
         const val NAME = "appInfo"
     }
