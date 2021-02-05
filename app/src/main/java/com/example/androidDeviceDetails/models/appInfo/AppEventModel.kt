@@ -61,12 +61,12 @@ data class DonutChartData(
 )
 
 data class ProgressbarViewHolder(
-    val updated_progressBar: ProgressBar,
-    val enroll_progressbar: ProgressBar,
-    val installed_progressBar: ProgressBar,
-    val uninstalled_progressbar: ProgressBar,
-    val enroll_count: TextView,
-    val install_count: TextView,
-    val update_count: TextView,
-    val uninstall_count: TextView
+    val updatedProgressbar: ProgressBar,
+    val enrollProgressbar: ProgressBar,
+    val installedProgressbar: ProgressBar,
+    val uninstalledProgressbar: ProgressBar,
+    val enrollCount: TextView,
+    val installCount: TextView,
+    val updateCount: TextView,
+    val uninstallCount: TextView
 )
