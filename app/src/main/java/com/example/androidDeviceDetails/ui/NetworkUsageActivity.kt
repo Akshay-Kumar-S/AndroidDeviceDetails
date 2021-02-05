@@ -14,6 +14,7 @@ import com.example.androidDeviceDetails.utils.DateTimePicker
 import com.example.androidDeviceDetails.utils.SortBy
 
 class NetworkUsageActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityAppDataBinding
     private lateinit var controller: ActivityController<AppNetworkUsageRaw>
     private lateinit var sortBySheet: SortBySheet

@@ -11,9 +11,9 @@ import com.example.androidDeviceDetails.models.location.LocationData
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.utils.Utils
 
-
 class MainActivityViewModel(private val binding: ActivityMainBinding, val context: Context) :
     BaseViewModel() {
+
     override fun <T> onComplete(outputList: ArrayList<T>) {
         val appInfoList = arrayListOf<AppInfoRaw>()
         val batteryList = arrayListOf<BatteryAppEntry>()

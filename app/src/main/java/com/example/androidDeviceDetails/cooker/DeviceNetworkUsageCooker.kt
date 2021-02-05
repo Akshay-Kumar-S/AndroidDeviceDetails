@@ -31,6 +31,5 @@ class DeviceNetworkUsageCooker : BaseCooker() {
                 iCookingDone.onComplete(totalDataUsageList as ArrayList<T>)
             } else iCookingDone.onComplete(arrayListOf())
         }
-
     }
 }
