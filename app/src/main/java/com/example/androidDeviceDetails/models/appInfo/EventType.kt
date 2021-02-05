@@ -9,10 +9,4 @@ package com.example.androidDeviceDetails.models.appInfo
  * [UNINSTALLED] - When app is uninstalled
  * [ALL] - Used for filtering events
  */
-enum class EventType {
-    ENROLL,
-    INSTALLED,
-    UPDATED,
-    UNINSTALLED,
-    ALL
-}
+enum class EventType { ENROLL, INSTALLED, UPDATED, UNINSTALLED, ALL }

@@ -150,7 +150,7 @@ object Utils {
         return cal.timeInMillis
     }
 
-    fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
+    private fun isPackageInstalled(packageName: String, packageManager: PackageManager): Boolean {
         return try {
             packageManager.getPackageInfo(packageName, 0)
             true

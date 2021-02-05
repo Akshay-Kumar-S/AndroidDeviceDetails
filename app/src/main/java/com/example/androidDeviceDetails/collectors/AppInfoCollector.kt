@@ -57,6 +57,4 @@ class AppInfoCollector : BaseCollector() {
     override fun stop() {
         DeviceDetailsApplication.instance.unregisterReceiver(AppInfoReceiver)
     }
-
 }
-

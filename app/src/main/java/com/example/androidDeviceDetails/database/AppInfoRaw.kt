@@ -29,6 +29,7 @@ data class AppInfoRaw(
  */
 @Dao
 interface AppInfoDao {
+
     /**
      * Retrieve all the records from [AppInfoDao]
      * @return List of [AppInfoRaw]

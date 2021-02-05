@@ -20,7 +20,7 @@ class AppTypeViewModel(val binding: ActivityAppTypeBinding, val context: Context
     /**
      * Displays provided data on UI as List view
      *
-     * Overrides : [onDone] in [BaseViewModel]
+     * Overrides : [onComplete] in [BaseViewModel]
      * @param [outputList] list of cooked data
      */
     override fun <T> onComplete(outputList: ArrayList<T>) {
