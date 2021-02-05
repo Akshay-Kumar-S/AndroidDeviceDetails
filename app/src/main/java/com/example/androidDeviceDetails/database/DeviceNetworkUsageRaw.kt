@@ -27,6 +27,7 @@ data class DeviceNetworkUsageRaw(
  * An interface that contains functions to handle database operations.
  */
 interface DeviceNetworkUsageDao {
+
     /**
      * Retrieve all the records from [DeviceNetworkUsageDao]
      * @return A list of [DeviceNetworkUsageRaw].

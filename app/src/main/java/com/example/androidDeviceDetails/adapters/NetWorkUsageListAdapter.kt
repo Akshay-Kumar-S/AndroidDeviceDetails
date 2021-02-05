@@ -15,6 +15,7 @@ class NetWorkUsageListAdapter(
     private var _context: Context, private var resource: Int,
     private var items: ArrayList<AppNetworkUsageRaw>
 ) : ArrayAdapter<AppNetworkUsageRaw>(_context, resource, items) {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = LayoutInflater.from(_context)
         var vi = convertView

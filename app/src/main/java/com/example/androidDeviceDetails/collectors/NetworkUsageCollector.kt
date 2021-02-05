@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
  */
 @RequiresApi(Build.VERSION_CODES.M)
 class NetworkUsageCollector(var context: Context) : BaseCollector() {
+
     private val firstInstallTime =
         context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     val db = RoomDB.getDatabase()!!

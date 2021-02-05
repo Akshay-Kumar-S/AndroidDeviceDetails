@@ -46,7 +46,6 @@ abstract class BaseViewModel {
                 NetworkUsageActivity.NAME -> (binding as ActivityAppDataBinding).pickerBinding
                 else -> null
             }
-
     }
 
     fun updateDateTimeUI(
