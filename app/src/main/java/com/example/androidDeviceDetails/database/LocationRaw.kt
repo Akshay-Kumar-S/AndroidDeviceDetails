@@ -21,6 +21,7 @@ data class LocationModel(
 
 @Dao
 interface ILocationDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocation(location: LocationModel)
 

@@ -5,6 +5,7 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 
 object ColorFilter {
+
     val darkModeFilter: ColorMatrixColorFilter
         get() = mapColorFilter()
 
