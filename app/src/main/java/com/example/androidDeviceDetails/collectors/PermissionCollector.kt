@@ -45,7 +45,7 @@ class PermissionCollector(var context: Context) : BaseCollector() {
             GlobalScope.launch {
                 val uid = db.appsDao().getIdByName(packageName)
                 val appPermissions =
-                    AppPermissionsRaw(uid, Gson().toJson(allowed), Gson().toJson(denied))
+                    AppPermissionsRaw(uid, allowed.toString(),denied.toString())
                 try {
                     db.appPermissionDao().insert(appPermissions)
                 } catch (e: SQLiteConstraintException) {
