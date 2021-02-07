@@ -1,6 +1,5 @@
 package com.example.androidDeviceDetails.cooker
 
-import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
@@ -13,7 +12,6 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 import kotlin.collections.ArrayList
 
 class AppPermissionsCooker : BaseCooker() {
@@ -41,13 +39,29 @@ class AppPermissionsCooker : BaseCooker() {
             listOfPermissions = (listOfPermissions.toSet().toMutableList())
 
             for (perm in listOfPermissions) {
-                var allowedAppList = ArrayList<String>()
-                var deniedAppList = ArrayList<String>()
+                val allowedAppList = ArrayList<PermittedAppListData>()
+                val deniedAppList = ArrayList<PermittedAppListData>()
                 for (apps in appList) {
                     if (apps.allowed_permissions.contains(perm)) {
-                        allowedAppList.add(apps.apk_title)
+                        allowedAppList.add(
+                            PermittedAppListData(
+                                apps.package_name,
+                                apps.apk_title,
+                                apps.version_name,
+                                "",
+                                ""
+                            )
+                        )
                     } else if (apps.denied_permissions.contains(perm)) {
-                        deniedAppList.add(apps.apk_title)
+                        deniedAppList.add(
+                            PermittedAppListData(
+                                apps.package_name,
+                                apps.apk_title,
+                                apps.version_name,
+                                "",
+                                ""
+                            )
+                        )
                     }
                 }
                 listOfPerm.add(AppPermissionData(perm, allowedAppList, deniedAppList))
@@ -58,33 +72,28 @@ class AppPermissionsCooker : BaseCooker() {
 
     fun getAppPermissionsAppList(
         appPermissionsViewModel: PermissionsViewModel,
-        permission: String
+        position: Int
     ): String {
-        var appList = arrayListOf<PermittedAppsCookedData>()
-        for (app in appPermissionsViewModel.permittedAppList) {
-            if (app.allowed_permissions.contains(permission) && !app.denied_permissions.contains(
-                    permission
+        val appList = arrayListOf<PermittedAppsCookedData>()
+        for (allowed in appPermissionsViewModel.permittedAppList[position].allowedAppList) {
+            appList.add(
+                PermittedAppsCookedData(
+                    allowed.package_name,
+                    allowed.apk_title,
+                    allowed.version_name,
+                    true
                 )
-            ) {
-                appList.add(
-                    PermittedAppsCookedData(
-                        app.package_name,
-                        app.apk_title,
-                        app.version_name,
-                        true
-                    )
+            )
+        }
+        for (denied in appPermissionsViewModel.permittedAppList[position].deniedAppList) {
+            appList.add(
+                PermittedAppsCookedData(
+                    denied.package_name,
+                    denied.apk_title,
+                    denied.version_name,
+                    false
                 )
-            }
-            if (app.denied_permissions.contains(permission)) {
-                appList.add(
-                    PermittedAppsCookedData(
-                        app.package_name,
-                        app.apk_title,
-                        app.version_name,
-                        false
-                    )
-                )
-            }
+            )
         }
         return Gson().toJson(appList)
     }
