@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.models.database.AppPermissionsRaw
+import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -31,40 +32,25 @@ class PermissionCollector(var context: Context) : BaseCollector() {
         val appList = context.packageManager.getInstalledPackages(PackageManager.GET_PERMISSIONS)
         for (app in appList) {
             val packageName = app.packageName
-            val perms = getPermissions(app)
+            val allowed = ArrayList<String>()
+            val denied = ArrayList<String>()
+            try {
+                for (i in app.requestedPermissions.indices) {
+                    if (app.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED != 0) {
+                        allowed.add(app.requestedPermissions[i])
+                    } else denied.add(app.requestedPermissions[i])
+                }
+            } catch (e: Exception) {
+            }
             GlobalScope.launch {
                 val uid = db.appsDao().getIdByName(packageName)
                 val appPermissions =
-                    AppPermissionsRaw(uid, perms[0].toString(), perms[1].toString())
+                    AppPermissionsRaw(uid, Gson().toJson(allowed), Gson().toJson(denied))
                 try {
                     db.appPermissionDao().insert(appPermissions)
                 } catch (e: SQLiteConstraintException) {
                 }
             }
         }
-    }
-
-    /**
-     * Collects the allowed and denied permission list for each app
-     * store it as a List<List<String>>
-     * and returns it to installedApps().
-     */
-    private fun getPermissions(packageInfo: PackageInfo): List<List<String>> {
-        val allowed = ArrayList<String>()
-        val denied = ArrayList<String>()
-        val listOfPermissions = ArrayList<List<String>>()
-        try {
-            for (i in packageInfo.requestedPermissions.indices) {
-                if (packageInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED != 0) {
-                    allowed.add(packageInfo.requestedPermissions[i])
-                } else if (packageInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED == 0) {
-                    denied.add(packageInfo.requestedPermissions[i])
-                }
-            }
-        } catch (e: Exception) {
-        }
-        listOfPermissions.add(allowed)
-        listOfPermissions.add(denied)
-        return listOfPermissions
     }
 }

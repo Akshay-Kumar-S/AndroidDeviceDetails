@@ -4,14 +4,14 @@ import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppListData
+import com.example.androidDeviceDetails.models.permissionsModel.AppPermissionData
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.example.androidDeviceDetails.viewModel.PermissionsViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import kotlin.collections.ArrayList
 
 class AppPermissionsCooker : BaseCooker() {
 
@@ -25,19 +25,20 @@ class AppPermissionsCooker : BaseCooker() {
     @Suppress("UNCHECKED_CAST")
     override fun <T> cook(time: TimePeriod, iCookingDone: ICookingDone<T>) {
         GlobalScope.launch(Dispatchers.IO) {
-            var listOfPermissions: MutableList<String> = ArrayList()
             val db = RoomDB.getDatabase()!!
+            val listOfPermissions = ArrayList<AppPermissionData>()
             val appList = db.appPermissionDao().getPermittedApps()
-            for (apps in appList) {
-                listOfPermissions.addAll(apps.allowed_permissions.filterNot { "[]".indexOf(it) > -1 }
-                    .split(", "))
-                listOfPermissions.addAll(apps.denied_permissions.filterNot { "[]".indexOf(it) > -1 }
-                    .split(", "))
+            for (app in appList) {
+                listOfPermissions.add(
+                    AppPermissionData(
+                        app.package_name,
+                        app.version_name,
+                        app.allowed_permissions,
+                        app.denied_permissions
+                    )
+                )
             }
-            listOfPermissions = (listOfPermissions.toSet().toMutableList())
-            val cookedPair: MutableList<Pair<List<String>, List<PermittedAppListData>>> = ArrayList()
-            cookedPair.add(Pair(listOfPermissions, appList))
-            iCookingDone.onComplete(cookedPair as ArrayList<T>)
+            iCookingDone.onComplete(listOfPermissions as ArrayList<T>)
         }
     }
 

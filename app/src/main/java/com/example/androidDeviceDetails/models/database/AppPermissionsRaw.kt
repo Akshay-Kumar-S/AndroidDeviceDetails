@@ -39,4 +39,7 @@ interface AppPermissionDao {
 
     @Insert
     fun insert(vararg appPermissionsInfo: AppPermissionsRaw)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(appPermissionsInfoList: List<AppPermissionsRaw>)
 }
