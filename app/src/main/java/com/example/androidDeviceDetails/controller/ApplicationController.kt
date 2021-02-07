@@ -8,7 +8,9 @@ import com.example.androidDeviceDetails.collectors.*
 import java.util.*
 
 class ApplicationController {
+
     lateinit var timer: Timer
+
     @RequiresApi(Build.VERSION_CODES.M)
     var instanceMap: MutableMap<String, BaseCollector> = mutableMapOf(
         "BatteryReceiver" to BatteryCollector(),
@@ -34,5 +36,4 @@ class ApplicationController {
             0, 1000 * 60 * intervalInMinuets
         )
     }
-
 }

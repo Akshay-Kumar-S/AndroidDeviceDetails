@@ -32,7 +32,7 @@ class PermittedFragment(private var userApps: List<PermittedAppsCookedData>) : F
                 PermittedAppsAdapter(mContext!!, R.layout.permitted_app_info_tile, userApps)
         }
         binding.appList.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, _, position, _ ->
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 showAlertDialog(
                     mContext!!, getDetails(mContext!!, userApps[position])
                 )

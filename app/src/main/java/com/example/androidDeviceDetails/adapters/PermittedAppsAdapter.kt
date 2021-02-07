@@ -40,7 +40,7 @@ class PermittedAppsAdapter(
         position: Int
     ): PermissionDetailsItemViewHolder {
         holder.appName.text = items[position].apkTitle
-        holder.versionCode.append(items[position].versionName)
+        holder.versionCode.text = "Version Name : ${items[position].versionName}"
         holder.appIcon.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
         return holder
     }
