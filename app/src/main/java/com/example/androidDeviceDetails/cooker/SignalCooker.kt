@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.cooker
 
+import android.util.Log
 import com.example.androidDeviceDetails.base.BaseCooker
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.database.SignalRaw
@@ -9,6 +10,7 @@ import com.example.androidDeviceDetails.models.signal.Signal
 import com.example.androidDeviceDetails.models.signal.Signal.GRAPH_PLOT_POINTS
 import com.example.androidDeviceDetails.models.signal.SignalCookedData
 import com.example.androidDeviceDetails.models.signal.SignalGraphEntry
+import com.example.androidDeviceDetails.utils.Utils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -33,6 +35,7 @@ class SignalCooker : BaseCooker() {
         GlobalScope.launch {
             val signalCookedData = SignalCookedData()
             val signalRawList = db.signalDao().getAll(time.startTime, time.endTime)
+            Log.d("zzz", "cook: $signalRawList")
 
             signalRawList.partition { it.signal == Signal.CELLULAR }.apply {
                 cookCellularData(first as ArrayList<SignalRaw>, signalCookedData)
@@ -85,6 +88,7 @@ class SignalCooker : BaseCooker() {
                 }
                 prevCellularRaw = cellularRaw
             }
+
             signalCookedData.lastCellularStrength = lastCellularRaw.strengthPercentage
             signalCookedData.mostUsedOperator = carrierNameMap.maxByOrNull { it.value }!!.key
             signalCookedData.mostUsedCellularBand =
@@ -106,20 +110,25 @@ class SignalCooker : BaseCooker() {
                 maxOf((endTime - startTime) / GRAPH_PLOT_POINTS, TimeUnit.MINUTES.toMillis(1))
 
             wifiList.forEach { wifiRaw ->
+                Log.d("zzz", "cookWifiData: ${Utils.getDateTime(wifiRaw.timeStamp)}")
+
                 timeInterval = wifiRaw.timeStamp - prevWifiRaw.timeStamp
 
                 aggregateMostUsed(prevWifiRaw.level, wifiLevelMap, timeInterval)
                 aggregateMostUsed(prevWifiRaw.operatorName, ssidMap, timeInterval)
 
                 if (wifiRaw.timeStamp >= startTime) {
+                    Log.d("yyy", "cookWifiData: ${Utils.getDateTime(startTime)}")
                     updateGraphEntry(wifiRaw, signalCookedData)
                     startTime = (graphTimeInterval + wifiRaw.timeStamp)
                 }
                 prevWifiRaw = wifiRaw
             }
+            ssidMap.remove("<unknown ssid>")
             signalCookedData.lastWifiStrength = lastWifiRaw.strengthPercentage
             signalCookedData.mostUsedWifi = ssidMap.maxByOrNull { it.value }!!.key
             signalCookedData.mostUsedWifiLevel = wifiLevelMap.maxByOrNull { it.value }!!.key
+            Log.d("zzz", "cookWifiData: $ssidMap")
         }
     }
 
