@@ -17,6 +17,7 @@ import com.example.androidDeviceDetails.utils.Utils
 class SignalViewModel(
     private val signalBinding: ActivitySignalBinding, val context: Context
 ) : BaseViewModel() {
+
     private var cellularStrengthPercentage = 0F
     private var wifiStrengthPercentage = 0F
     private val db = RoomDB.getDatabase()!!

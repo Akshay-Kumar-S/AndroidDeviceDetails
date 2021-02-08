@@ -12,8 +12,9 @@ import com.example.androidDeviceDetails.utils.Utils
 import com.google.gson.Gson
 
 class SignalGraphActivity : AppCompatActivity() {
+
     private lateinit var signalGraphBinding: ActivitySignalGraphBinding
-    var markerRadius = 0.0f
+    private var markerRadius = 0.0f
         set(value) {
             field = if (value > 2) .75f else 6f
         }
