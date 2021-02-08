@@ -12,7 +12,7 @@ import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppList
  */
 @Entity(foreignKeys = [ForeignKey(entity = AppInfoRaw::class, parentColumns = ["uid"], childColumns =["uid"] )])
 data class AppPermissionsRaw(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey val uid: Int?,
     @ColumnInfo(name = "allowed_permissions") var allowed_permissions: String,
     @ColumnInfo(name = "denied_permissions") var denied_permissions: String,
 )

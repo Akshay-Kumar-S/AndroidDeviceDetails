@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.database.AppPermissionsRaw
+import com.example.androidDeviceDetails.models.permissionsModel.InstalledPackages
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -14,7 +15,6 @@ import kotlinx.coroutines.launch
  * Implements [BaseCollector].
  * A time based collector which collects the allowed and denied permissions of individual apps.
  */
-
 class PermissionCollector(var context: Context) : BaseCollector() {
 
     override fun collect() {
@@ -29,8 +29,8 @@ class PermissionCollector(var context: Context) : BaseCollector() {
     private fun getInstalledAppsPermission() {
         val db = RoomDB.getDatabase()!!
         val appList = context.packageManager.getInstalledPackages(PackageManager.GET_PERMISSIONS)
+        val installedPackages = ArrayList<InstalledPackages>()
         for (app in appList) {
-            val packageName = app.packageName
             val allowed = ArrayList<String>()
             val denied = ArrayList<String>()
             try {
@@ -41,18 +41,25 @@ class PermissionCollector(var context: Context) : BaseCollector() {
                 }
             } catch (e: Exception) {
             }
-            GlobalScope.launch {
-                val uid = db.appsDao().getIdByName(packageName)
-                val appPermissions =
+            installedPackages.add(InstalledPackages(app.packageName, allowed, denied))
+        }
+
+        GlobalScope.launch {
+            val appInfo = db.appsDao().getAll()
+            val uidMap = appInfo.map { it.packageName to it.uid }.toMap()
+            val appPermissions = ArrayList<AppPermissionsRaw>()
+            for (app in installedPackages) {
+                appPermissions.add(
                     AppPermissionsRaw(
-                        uid,
-                        allowed.toString(),
-                        denied.toString()
+                        uidMap[app.packageName],
+                        app.allowedList.toString(),
+                        app.deniedList.toString()
                     )
-                try {
-                    db.appPermissionDao().insert(appPermissions)
-                } catch (e: SQLiteConstraintException) {
-                }
+                )
+            }
+            try {
+                db.appPermissionDao().insertAll(appPermissions)
+            } catch (e: SQLiteConstraintException) {
             }
         }
     }
