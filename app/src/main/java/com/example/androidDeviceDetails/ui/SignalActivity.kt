@@ -14,6 +14,7 @@ import com.example.androidDeviceDetails.viewModel.SignalViewModel
 import com.google.gson.Gson
 
 class SignalActivity : AppCompatActivity(), View.OnClickListener {
+
     private lateinit var binding: ActivitySignalBinding
     private lateinit var signalController: ActivityController<SignalCookedData>
     private lateinit var signalViewModel: SignalViewModel

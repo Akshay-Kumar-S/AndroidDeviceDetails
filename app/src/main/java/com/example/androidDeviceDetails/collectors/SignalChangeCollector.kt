@@ -16,6 +16,7 @@ import com.example.androidDeviceDetails.receivers.SignalChangeListener
  *  This listener requires [android.Manifest.permission.ACCESS_FINE_LOCATION] permission.
  */
 class SignalChangeCollector(val context: Context) : BaseCollector() {
+
     private var mTelephonyManager =
         context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 

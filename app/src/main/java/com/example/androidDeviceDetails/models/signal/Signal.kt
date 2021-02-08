@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.models.signal
 
 object Signal {
+
     const val CELLULAR = 0
     const val WIFI = 1
     const val CELLULAR_MIN = -120

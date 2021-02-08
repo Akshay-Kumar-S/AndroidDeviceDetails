@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
  * A [PhoneStateListener] which gets notified from [LISTEN_SIGNAL_STRENGTHS]
  */
 object SignalChangeListener : PhoneStateListener() {
+
     /**
      * Listener which gets notified when a change in signal strength occurs.
      *  Method is called when the strength of signal changes.
