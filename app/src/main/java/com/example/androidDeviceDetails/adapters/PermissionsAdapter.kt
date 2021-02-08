@@ -1,9 +1,11 @@
 package com.example.androidDeviceDetails.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
+import android.content.pm.PermissionInfo.PROTECTION_NORMAL
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -45,13 +47,14 @@ class PermissionsAdapter(
         return holder
     }
 
+    @SuppressLint("WrongConstant")
     private fun getPermissionDrawable(permission: String): Int {
         var drawable = R.drawable.ic_android_24
         try {
             val permissionInfo: PermissionInfo =
-                context.packageManager.getPermissionInfo(permission, 0)
+                context.packageManager.getPermissionInfo(permission, PROTECTION_NORMAL)
             val groupInfo: PermissionGroupInfo =
-                context.packageManager.getPermissionGroupInfo(permissionInfo.group.toString(), 0)
+                context.packageManager.getPermissionGroupInfo(permissionInfo.group.toString(), PROTECTION_NORMAL)
             drawable = groupInfo.icon
         } catch (e: PackageManager.NameNotFoundException) {
         } catch (e: Resources.NotFoundException) {

@@ -5,16 +5,19 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.androidDeviceDetails.fragments.PermittedFragment
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
+import com.example.androidDeviceDetails.viewModel.PermissionsDetailsViewModel
 
 class PermittedAppsFragmentAdapter(
     fragmentManager: FragmentManager,
-    private var appList: Pair<List<PermittedAppsCookedData>, List<PermittedAppsCookedData>>
+    private var appList: List<PermittedAppsCookedData>
 ) : FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {
+        val allowedAppsList = appList.partition { !it.isAllowed }.first
+        val deniedAppsList = appList.partition { !it.isAllowed }.second
         return when (position) {
-            0 -> PermittedFragment(appList.second)
-            else -> PermittedFragment(appList.first)
+            PermissionsDetailsViewModel.allowedAppsFragment -> PermittedFragment(allowedAppsList)
+            else -> PermittedFragment(deniedAppsList)
         }
     }
 

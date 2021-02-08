@@ -11,6 +11,9 @@ class PermissionsDetailsViewModel(
     private val binding: ActivityPermittedAppsBinding,
     val context: Context
 ) {
+    companion object {
+        const val allowedAppsFragment = 1
+    }
 
     fun onDone(outputList: Array<PermittedAppsCookedData>) {
         var appList = outputList.toList()
@@ -21,7 +24,7 @@ class PermissionsDetailsViewModel(
             binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
             val adapter = PermittedAppsFragmentAdapter(
                 (context as AppCompatActivity).supportFragmentManager,
-                divideList(appList)
+                appList
             )
             binding.viewPager.adapter = adapter
             binding.viewPager.addOnPageChangeListener(
@@ -38,15 +41,5 @@ class PermissionsDetailsViewModel(
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
         }
-    }
-
-    private fun divideList(appList: List<PermittedAppsCookedData>): Pair<List<PermittedAppsCookedData>, List<PermittedAppsCookedData>> {
-        val convertedList = appList.map {
-            PermittedAppsCookedData(
-                it.packageName, it.apkTitle, it.versionName,
-                it.isAllowed
-            )
-        }
-        return convertedList.partition { !it.isAllowed }
     }
 }

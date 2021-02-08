@@ -6,8 +6,7 @@ import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import com.example.androidDeviceDetails.base.BaseCollector
 import com.example.androidDeviceDetails.database.RoomDB
-import com.example.androidDeviceDetails.models.database.AppPermissionsRaw
-import com.google.gson.Gson
+import com.example.androidDeviceDetails.database.AppPermissionsRaw
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -45,7 +44,11 @@ class PermissionCollector(var context: Context) : BaseCollector() {
             GlobalScope.launch {
                 val uid = db.appsDao().getIdByName(packageName)
                 val appPermissions =
-                    AppPermissionsRaw(uid, allowed.toString(),denied.toString())
+                    AppPermissionsRaw(
+                        uid,
+                        allowed.toString(),
+                        denied.toString()
+                    )
                 try {
                     db.appPermissionDao().insert(appPermissions)
                 } catch (e: SQLiteConstraintException) {
