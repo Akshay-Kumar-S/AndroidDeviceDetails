@@ -39,7 +39,7 @@ class AppPermissionsActivity : AppCompatActivity() {
         appPermissionsViewModel = controller.viewModel as PermissionsViewModel
         val adapter = parent.adapter as PermissionsAdapter
         val item = adapter.getItem(position).toString()
-        val appListJson = AppPermissionsCooker().getAppPermissionsAppList(appPermissionsViewModel, position)
+        val appListJson = AppPermissionsCooker().getAppPermissionsAppList(appPermissionsViewModel.permittedAppList[position])
         val intent = Intent(this@AppPermissionsActivity, PermissionDetailsActivity::class.java)
         intent.putExtra("permission", item)
         intent.putExtra("appList", appListJson)
