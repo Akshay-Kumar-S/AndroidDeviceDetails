@@ -1,12 +1,7 @@
 package com.example.androidDeviceDetails.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.pm.PermissionGroupInfo
-import android.content.pm.PermissionInfo
-import android.content.pm.PermissionInfo.PROTECTION_NORMAL
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,28 +31,22 @@ class PermissionsAdapter(
         return vi!!
     }
 
-    private fun setPermissionsInfoHolder(
-        holder: PermissionsItemViewHolder,
-        position: Int
-    ): PermissionsItemViewHolder {
+    private fun setPermissionsInfoHolder(holder: PermissionsItemViewHolder,position: Int) {
         val permission = items[position]
         val drawable = getPermissionDrawable(permission)
         holder.permission.text = items[position]
         holder.icon.setImageResource(drawable)
-        return holder
     }
 
-    @SuppressLint("WrongConstant")
     private fun getPermissionDrawable(permission: String): Int {
         var drawable = R.drawable.ic_android_24
         try {
-            val permissionInfo: PermissionInfo =
-                context.packageManager.getPermissionInfo(permission, PROTECTION_NORMAL)
-            val groupInfo: PermissionGroupInfo =
-                context.packageManager.getPermissionGroupInfo(permissionInfo.group.toString(), PROTECTION_NORMAL)
+            val permissionInfo =
+                context.packageManager.getPermissionInfo(permission, PackageManager.GET_META_DATA)
+            val groupInfo =
+                context.packageManager.getPermissionGroupInfo(permissionInfo.group.toString(), PackageManager.GET_META_DATA)
             drawable = groupInfo.icon
-        } catch (e: PackageManager.NameNotFoundException) {
-        } catch (e: Resources.NotFoundException) {
+        } catch (e: Exception) {
         }
         return drawable
     }

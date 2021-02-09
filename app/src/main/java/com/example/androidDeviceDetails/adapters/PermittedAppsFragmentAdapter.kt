@@ -10,7 +10,7 @@ import com.example.androidDeviceDetails.viewModel.PermissionsDetailsViewModel
 class PermittedAppsFragmentAdapter(
     fragmentManager: FragmentManager,
     private var appList: List<PermittedAppsCookedData>
-) : FragmentPagerAdapter(fragmentManager) {
+) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         val allowedAppsList = appList.partition { !it.isAllowed }.first

@@ -27,10 +27,9 @@ class PermittedFragment(private var userApps: List<PermittedAppsCookedData>) : F
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding.root.post {
-            binding.appList.adapter =
-                PermittedAppsAdapter(mContext!!, R.layout.permitted_app_info_tile, userApps)
-        }
+        binding.appList.adapter =
+            PermittedAppsAdapter(mContext!!, R.layout.permitted_app_info_tile, userApps)
+
         binding.appList.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 showAlertDialog(

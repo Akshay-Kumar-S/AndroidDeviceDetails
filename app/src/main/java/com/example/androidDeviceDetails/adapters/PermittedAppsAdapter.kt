@@ -35,13 +35,9 @@ class PermittedAppsAdapter(
         return vi!!
     }
 
-    private fun setAppInfoHolder(
-        holder: PermissionDetailsItemViewHolder,
-        position: Int
-    ): PermissionDetailsItemViewHolder {
+    private fun setAppInfoHolder(holder: PermissionDetailsItemViewHolder, position: Int) {
         holder.appName.text = items[position].apkTitle
         holder.versionCode.text = items[position].versionName
         holder.appIcon.setImageDrawable(Utils.getApplicationIcon(items[position].packageName))
-        return holder
     }
 }
