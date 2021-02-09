@@ -7,7 +7,6 @@ import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.permissionsModel.AppPermissionData
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppListData
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
-import com.example.androidDeviceDetails.viewModel.PermissionsViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,11 +37,11 @@ class AppPermissionsCooker : BaseCooker() {
             }
             listOfPermissions = (listOfPermissions.toSet().toMutableList())
 
-            for (perm in listOfPermissions) {
+            for (permission in listOfPermissions) {
                 val allowedAppList = ArrayList<PermittedAppListData>()
                 val deniedAppList = ArrayList<PermittedAppListData>()
                 for (apps in appList) {
-                    if (apps.allowed_permissions.contains(perm)) {
+                    if (apps.allowed_permissions.contains(permission)) {
                         allowedAppList.add(
                             PermittedAppListData(
                                 apps.package_name,
@@ -52,7 +51,7 @@ class AppPermissionsCooker : BaseCooker() {
                                 ""
                             )
                         )
-                    } else if (apps.denied_permissions.contains(perm)) {
+                    } else if (apps.denied_permissions.contains(permission)) {
                         deniedAppList.add(
                             PermittedAppListData(
                                 apps.package_name,
@@ -64,18 +63,15 @@ class AppPermissionsCooker : BaseCooker() {
                         )
                     }
                 }
-                listOfPerm.add(AppPermissionData(perm, allowedAppList, deniedAppList))
+                listOfPerm.add(AppPermissionData(permission, allowedAppList, deniedAppList))
             }
             iCookingDone.onComplete(listOfPerm as ArrayList<T>)
         }
     }
 
-    fun getAppPermissionsAppList(
-        appPermissionsViewModel: PermissionsViewModel,
-        position: Int
-    ): String {
+    fun getAppPermissionsAppList(appPermissionData: AppPermissionData): String {
         val appList = arrayListOf<PermittedAppsCookedData>()
-        for (allowed in appPermissionsViewModel.permittedAppList[position].allowedAppList) {
+        for (allowed in appPermissionData.allowedAppList) {
             appList.add(
                 PermittedAppsCookedData(
                     allowed.package_name,
@@ -85,7 +81,7 @@ class AppPermissionsCooker : BaseCooker() {
                 )
             )
         }
-        for (denied in appPermissionsViewModel.permittedAppList[position].deniedAppList) {
+        for (denied in appPermissionData.deniedAppList) {
             appList.add(
                 PermittedAppsCookedData(
                     denied.package_name,
