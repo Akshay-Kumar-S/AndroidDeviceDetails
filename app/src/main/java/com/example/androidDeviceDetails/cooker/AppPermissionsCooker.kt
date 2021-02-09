@@ -5,6 +5,7 @@ import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.permissionsModel.AppPermissionData
+import com.example.androidDeviceDetails.models.permissionsModel.CookedPermittedList
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppListData
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.google.gson.Gson
@@ -38,27 +39,23 @@ class AppPermissionsCooker : BaseCooker() {
             listOfPermissions = (listOfPermissions.toSet().toMutableList())
 
             for (permission in listOfPermissions) {
-                val allowedAppList = ArrayList<PermittedAppListData>()
-                val deniedAppList = ArrayList<PermittedAppListData>()
+                val allowedAppList = ArrayList<CookedPermittedList>()
+                val deniedAppList = ArrayList<CookedPermittedList>()
                 for (apps in appList) {
                     if (apps.allowed_permissions.contains(permission)) {
                         allowedAppList.add(
-                            PermittedAppListData(
+                            CookedPermittedList(
                                 apps.package_name,
                                 apps.apk_title,
                                 apps.version_name,
-                                "",
-                                ""
                             )
                         )
                     } else if (apps.denied_permissions.contains(permission)) {
                         deniedAppList.add(
-                            PermittedAppListData(
+                            CookedPermittedList(
                                 apps.package_name,
                                 apps.apk_title,
                                 apps.version_name,
-                                "",
-                                ""
                             )
                         )
                     }

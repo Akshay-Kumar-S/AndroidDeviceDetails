@@ -42,11 +42,16 @@ data class PermissionDetailsItemViewHolder(
 )
 data class AppPermissionData(
     var permissionName: String,
-    var allowedAppList: List<PermittedAppListData>,
-    var deniedAppList: List<PermittedAppListData>
+    var allowedAppList: List<CookedPermittedList>,
+    var deniedAppList: List<CookedPermittedList>
 )
 data class InstalledPackages(
     var packageName : String,
     var allowedList : ArrayList<String>,
     var deniedList : ArrayList<String>
+)
+data class CookedPermittedList(
+    var package_name: String,
+    var apk_title: String,
+    var version_name: String,
 )
