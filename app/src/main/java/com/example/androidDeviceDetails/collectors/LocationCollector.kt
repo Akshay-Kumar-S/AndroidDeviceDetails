@@ -6,9 +6,11 @@ import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
+import android.os.Bundle
 import android.util.Log
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.example.androidDeviceDetails.base.BaseCollector
@@ -25,29 +27,32 @@ class LocationCollector(private val context: Context) : BaseCollector() {
     private lateinit var locationNetwork: Location
 
     override fun start() {
-        val locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
-        val hasGps = locationManager.isProviderEnabled(GPS_PROVIDER)
-        val hasNetwork = locationManager.isProviderEnabled(NETWORK_PROVIDER)
+        val manager = context.getSystemService(LOCATION_SERVICE) as LocationManager
+        val hasGps = manager.isProviderEnabled(GPS_PROVIDER)
+        val hasNetwork = manager.isProviderEnabled(NETWORK_PROVIDER)
+        val listener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                Log.d("Location", "provider :${location.provider}")
+                if (location.provider == "gps")
+                    locationGps = location
+                else
+                    locationNetwork = location
+            }
+
+            override fun onProviderEnabled(provider: String) {}
+
+            override fun onProviderDisabled(provider: String) {}
+
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+        }
         Log.d("LocationConstants", "gps:$hasGps network:$hasNetwork ")
         if (checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
             && checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
         ) {
-            if (hasGps) {
-                locationManager.requestLocationUpdates(
-                    GPS_PROVIDER, TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL), 0F
-                ) { location ->
-                    Log.d("CodeAndroidLocation", "gpsLocation :$location")
-                    locationGps = location
-                }
-            }
-            if (hasNetwork) {
-                locationManager.requestLocationUpdates(
-                    NETWORK_PROVIDER, TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL), 0F
-                ) { location ->
-                    Log.d("CodeAndroidLocation", "networkLocation :$location")
-                    locationNetwork = location
-                }
-            }
+            if (hasGps)
+                manager.requestLocationUpdates(GPS_PROVIDER, timeInterval(), 0F, listener)
+            if (hasNetwork)
+                manager.requestLocationUpdates(NETWORK_PROVIDER, timeInterval(), 0F, listener)
         }
     }
 
@@ -74,4 +79,6 @@ class LocationCollector(private val context: Context) : BaseCollector() {
             RoomDB.getDatabase()!!.locationDao().insertLocation(locationObj)
         }
     }
+
+    private fun timeInterval() = TimeUnit.MINUTES.toMillis(Utils.COLLECTION_INTERVAL)
 }
