@@ -44,7 +44,7 @@
         <activity
             android:name=".ui.AppPermissionsActivity"
             android:label="App Permissions"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.AppInfoActivity" />
         <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
@@ -56,7 +56,7 @@
         <activity
             android:name=".ui.AppTypeActivity"
             android:label="App Type"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.AppInfoActivity" />
         <activity
             android:name=".ui.SignalGraphActivity"
             android:label="Signal Strength Graph"
