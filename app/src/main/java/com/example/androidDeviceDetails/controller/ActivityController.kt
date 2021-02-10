@@ -41,6 +41,7 @@ class ActivityController<T>(
     fun refreshCooker() {
         startCalendar.set(Calendar.HOUR_OF_DAY, 0)
         startCalendar.set(Calendar.MINUTE, 0)
+        endCalendar= Calendar.getInstance()
         previousStartTime = startCalendar.timeInMillis
         previousEndTime = endCalendar.timeInMillis
         showInitialData()
