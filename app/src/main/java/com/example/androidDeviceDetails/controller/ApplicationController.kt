@@ -8,6 +8,7 @@ import com.example.androidDeviceDetails.collectors.*
 import java.util.*
 
 class ApplicationController {
+
     lateinit var timer: Timer
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -18,7 +19,8 @@ class ApplicationController {
         "AppEventCollector" to AppEventCollector(DeviceDetailsApplication.instance),
         "SignalChangeListener" to SignalChangeCollector(DeviceDetailsApplication.instance),
         "NetworkUsageCollector" to NetworkUsageCollector(DeviceDetailsApplication.instance),
-        "LocationCollector" to LocationCollector(DeviceDetailsApplication.instance)
+        "LocationCollector" to LocationCollector(DeviceDetailsApplication.instance),
+        "PermissionCollector" to PermissionCollector(DeviceDetailsApplication.instance)
     )
 
     fun runTimer(intervalInMinuets: Long) {
@@ -34,5 +36,4 @@ class ApplicationController {
             0, 1000 * 60 * intervalInMinuets
         )
     }
-
 }

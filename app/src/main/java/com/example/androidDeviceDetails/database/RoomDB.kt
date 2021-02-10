@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.androidDeviceDetails.DeviceDetailsApplication
 
 @Database(
-    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppInfoRaw::class, AppHistoryRaw::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class],
+    entities = [AppEventRaw::class, BatteryRaw::class, LocationModel::class, AppInfoRaw::class, AppHistoryRaw::class, SignalRaw::class, AppNetworkUsageRaw::class, DeviceNetworkUsageRaw::class, AppPermissionsRaw::class],
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
@@ -20,6 +20,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun signalDao(): SignalDao
     abstract fun appNetworkUsageDao(): AppNetworkUsageDao
     abstract fun deviceNetworkUsageDao(): DeviceNetworkUsageDao
+    abstract fun appPermissionDao(): AppPermissionDao
 
     companion object {
         private var INSTANCE: RoomDB? = null

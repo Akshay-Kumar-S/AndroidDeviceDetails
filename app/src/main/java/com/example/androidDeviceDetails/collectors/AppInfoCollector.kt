@@ -1,5 +1,6 @@
 package com.example.androidDeviceDetails.collectors
 
+import com.example.androidDeviceDetails.collectors.PermissionCollector
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent

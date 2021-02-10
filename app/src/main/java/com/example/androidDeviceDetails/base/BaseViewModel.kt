@@ -33,6 +33,7 @@ abstract class BaseViewModel {
                 NetworkUsageActivity.NAME -> NetworkUsageViewModel(
                     binding as ActivityAppDataBinding, context
                 )
+                AppPermissionsActivity.NAME -> PermissionsViewModel(binding as ActivityPermissionsBinding, context)
                 AppTypeActivity.NAME -> AppTypeViewModel(binding as ActivityAppTypeBinding, context)
                 else -> null
             }

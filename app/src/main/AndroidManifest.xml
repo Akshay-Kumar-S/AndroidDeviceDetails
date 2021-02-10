@@ -34,9 +34,21 @@
         android:theme="@style/Theme.AndroidDeviceDetails"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".ui.AppInfoActivity"
+            android:label="Base App Info"
+            android:parentActivityName=".ui.MainActivity"/>
+        <activity
+            android:name=".ui.PermissionDetailsActivity"
+            android:label="Permitted Apps"
+            android:parentActivityName=".ui.AppPermissionsActivity"/>
+        <activity
+            android:name=".ui.AppPermissionsActivity"
+            android:label="App Permissions"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
             android:name=".ui.AppEventActivity"
             android:label="Application Info"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName=".ui.AppInfoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
