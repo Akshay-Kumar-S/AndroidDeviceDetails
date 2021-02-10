@@ -95,7 +95,7 @@ class SignalCooker : BaseCooker() {
 
     private fun cookWifiData(wifiList: ArrayList<SignalRaw>, signalCookedData: SignalCookedData) {
         val wifiLevelMap = mutableMapOf<String, Long>()
-        val ssIdMap = mutableMapOf<String, Long>()
+        val ssidMap = mutableMapOf<String, Long>()
         var timeInterval: Long
 
         if (wifiList.isNotEmpty()) {
@@ -110,7 +110,7 @@ class SignalCooker : BaseCooker() {
                 timeInterval = wifiRaw.timeStamp - prevWifiRaw.timeStamp
 
                 aggregateMostUsed(prevWifiRaw.level, wifiLevelMap, timeInterval)
-                aggregateMostUsed(prevWifiRaw.operatorName, ssIdMap, timeInterval)
+                aggregateMostUsed(prevWifiRaw.operatorName, ssidMap, timeInterval)
 
                 if (wifiRaw.timeStamp >= startTime) {
                     updateGraphEntry(wifiRaw, signalCookedData)
@@ -119,7 +119,7 @@ class SignalCooker : BaseCooker() {
                 prevWifiRaw = wifiRaw
             }
             signalCookedData.lastWifiStrength = lastWifiRaw.strengthPercentage
-            signalCookedData.mostUsedWifi = ssIdMap.maxByOrNull { it.value }!!.key
+            signalCookedData.mostUsedWifi = ssidMap.maxByOrNull { it.value }!!.key
             signalCookedData.mostUsedWifiLevel = wifiLevelMap.maxByOrNull { it.value }!!.key
         }
     }
