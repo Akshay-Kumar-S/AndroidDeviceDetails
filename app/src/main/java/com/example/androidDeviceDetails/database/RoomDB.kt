@@ -11,6 +11,7 @@ import com.example.androidDeviceDetails.DeviceDetailsApplication
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
+
     abstract fun batteryDao(): BatteryDao
     abstract fun appEventDao(): AppEventDao
     abstract fun locationDao(): ILocationDao

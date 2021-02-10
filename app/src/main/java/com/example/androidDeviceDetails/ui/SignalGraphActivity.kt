@@ -13,6 +13,10 @@ import com.google.gson.Gson
 
 class SignalGraphActivity : AppCompatActivity() {
     private lateinit var signalGraphBinding: ActivitySignalGraphBinding
+    var markerRadius = 0.0f
+        set(value) {
+            field = if (value > 2) .75f else 6f
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,30 +29,38 @@ class SignalGraphActivity : AppCompatActivity() {
         val cellularValueList = arrayListOf<Int>()
         val wifiValueList = arrayListOf<Int>()
         val wifiTimeList = arrayListOf<String>()
+        var wifiCount = 0
+        var cellularCount = 0
 
         graphEntryList.partition { it.signal == Signal.CELLULAR }.apply {
             first.forEach {
                 cellularTimeList.add(Utils.getDateTime(it.timeStamp))
                 cellularValueList.add(it.strength)
+                cellularCount += 1
             }
             second.forEach {
                 wifiTimeList.add(Utils.getDateTime(it.timeStamp))
                 wifiValueList.add(it.strength)
+                wifiCount += 1
             }
         }
 
+        markerRadius = wifiCount.toFloat()
         val wifiChart = Chart(
             chartView = signalGraphBinding.wifiChart,
             title = "Wifi",
+            markerRadius = markerRadius,
             yAxisMin = -127f,
             yAxisMax = 0f,
             color = "#ffc069"
         )
         Utils.drawChart(wifiChart, wifiTimeList.toTypedArray(), wifiValueList.toArray())
 
+        markerRadius = cellularCount.toFloat()
         val cellularChart = Chart(
             chartView = signalGraphBinding.cellularChart,
             title = "Cellular",
+            markerRadius = markerRadius,
             yAxisMin = -150f,
             yAxisMax = -50f,
             color = "#06caf4"

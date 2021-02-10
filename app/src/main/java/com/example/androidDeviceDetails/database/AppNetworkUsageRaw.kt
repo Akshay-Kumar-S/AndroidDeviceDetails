@@ -33,6 +33,7 @@ data class AppNetworkUsageRaw(
  */
 @Dao
 interface AppNetworkUsageDao {
+
     /**
      * Retrieve all the records from [AppNetworkUsageDao]
      * @return A list of [AppNetworkUsageRaw].

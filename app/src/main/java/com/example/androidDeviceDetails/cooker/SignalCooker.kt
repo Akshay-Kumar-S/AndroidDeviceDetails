@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Implements [BaseCooker].
  * A cooker class for handling the logic for cooking signal data.
- **/
+ */
 @Suppress("UNCHECKED_CAST")
 class SignalCooker : BaseCooker() {
     private var db: RoomDB = RoomDB.getDatabase()!!

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.androidDeviceDetails.fragments.AppTypeFragment
 import com.example.androidDeviceDetails.models.appInfo.AppInfoCookedData
 
+@Suppress("DEPRECATION")
 class AppTypeAdapter(
     fm: FragmentManager, private var totalTabs: Int,
     private var appList: Pair<List<AppInfoCookedData>, List<AppInfoCookedData>>

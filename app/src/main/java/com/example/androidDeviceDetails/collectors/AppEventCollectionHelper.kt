@@ -54,15 +54,17 @@ class AppEventCollectionHelper {
     fun appUninstalled(packageName: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val id = db.appsDao().getIdByName(packageName)
-            val appHistory = db.appsDao().getById(id)
-            val appDetails = AppDetails(
-                0, appHistory.versionName, appHistory.appSize,
-                appHistory.appTitle, appHistory.isSystemApp
-            )
-            writeToAppHistoryDb(
-                id, EventType.UNINSTALLED.ordinal, appDetails, db, appHistory.currentVersionCode
-            )
-            writeToAppsDb(id, packageName, appDetails, db)
+            if(id !=0) {
+                val appHistory = db.appsDao().getById(id)
+                val appDetails = AppDetails(
+                    0, appHistory.versionName, appHistory.appSize,
+                    appHistory.appTitle, appHistory.isSystemApp
+                )
+                writeToAppHistoryDb(
+                    id, EventType.UNINSTALLED.ordinal, appDetails, db, appHistory.currentVersionCode
+                )
+                writeToAppsDb(id, packageName, appDetails, db)
+            }
         }
     }
 
@@ -77,12 +79,14 @@ class AppEventCollectionHelper {
         GlobalScope.launch(Dispatchers.IO) {
             val appDetails = Utils.getAppDetails(context, packageName)
             val id = db.appsDao().getIdByName(packageName)
-            val appHistory = db.appsDao().getById(id)
-            if (appHistory.currentVersionCode < appDetails.versionCode || appHistory.appTitle != appDetails.appTitle) {
-                writeToAppHistoryDb(
-                    id, EventType.UPDATED.ordinal, appDetails, db, appHistory.currentVersionCode
-                )
-                writeToAppsDb(id, packageName, appDetails, db)
+            if(id != 0) {
+                val appHistory = db.appsDao().getById(id)
+                if (appHistory.currentVersionCode < appDetails.versionCode || appHistory.appTitle != appDetails.appTitle) {
+                    writeToAppHistoryDb(
+                        id, EventType.UPDATED.ordinal, appDetails, db, appHistory.currentVersionCode
+                    )
+                    writeToAppsDb(id, packageName, appDetails, db)
+                }
             }
         }
     }

@@ -38,6 +38,7 @@ data class AppHistoryRaw(
  */
 @Dao
 interface AppHistoryDao {
+
     /**
      * Retrieve all the records from [AppHistoryDao]
      * @return List of [AppHistoryRaw]

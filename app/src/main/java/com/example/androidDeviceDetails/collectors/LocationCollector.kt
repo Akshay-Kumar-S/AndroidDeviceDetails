@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class LocationCollector(private val context: Context) : BaseCollector() {
+
     private lateinit var locationGps: Location
     private lateinit var locationNetwork: Location
 

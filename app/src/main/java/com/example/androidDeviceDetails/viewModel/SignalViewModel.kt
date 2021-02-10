@@ -75,16 +75,17 @@ class SignalViewModel(
         if (signalBinding.pointerCellularSpeedometer.tag == "true") {
             cellularStrengthPercentage = mostUsedData.lastCellularStrength
             wifiStrengthPercentage = mostUsedData.lastWifiStrength
-            updateGauge()
+            signalBinding.root.post { updateGauge() }
             signalBinding.pointerCellularSpeedometer.tag = "false"
         }
-        updateList()
+        signalBinding.root.post { updateList() }
     }
 
     private fun updateList() {
         signalBinding.mostUsedOperator.cookedValue.text = mostUsedData.mostUsedOperator
         signalBinding.mostUsedBand.cookedValue.text = mostUsedData.mostUsedCellularBand
-        signalBinding.roamingTime.cookedValue.text = Utils.getTimePeriodInWords(mostUsedData.roamingTime)
+        signalBinding.roamingTime.cookedValue.text =
+            Utils.getTimePeriodInWords(mostUsedData.roamingTime)
         signalBinding.mostUsedWifi.cookedValue.text = mostUsedData.mostUsedWifi
         signalBinding.mostUsedWifiLevel.cookedValue.text = mostUsedData.mostUsedWifiLevel
     }

@@ -17,6 +17,7 @@ import java.util.*
 class NetworkUsageViewModel(
     private val binding: ActivityAppDataBinding, val context: Context
 ) : BaseViewModel() {
+
     private var itemList = ArrayList<AppNetworkUsageRaw>()
     private var sortBy = SortBy.WIFI_DESCENDING.ordinal
 

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class PrefManager {
+
     private val name = "AppInfo"
     private val mode = Context.MODE_PRIVATE
     private lateinit var sharedPreferences: SharedPreferences

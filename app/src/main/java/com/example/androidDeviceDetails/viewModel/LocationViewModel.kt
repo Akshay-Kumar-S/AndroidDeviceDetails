@@ -20,7 +20,6 @@ import com.google.maps.android.ui.IconGenerator
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
 
-
 class LocationViewModel(private val binding: ActivityLocationBinding, val context: Context) :
     BaseViewModel() {
 

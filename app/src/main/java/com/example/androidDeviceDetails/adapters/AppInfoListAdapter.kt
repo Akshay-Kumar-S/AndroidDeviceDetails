@@ -68,15 +68,15 @@ class AppInfoListAdapter(
             val installed = ceil((chart.value2.toDouble().div(total).times(100)))
             val updated = ceil((chart.value3.toDouble().div(total).times(100)))
             val uninstalled = ceil((chart.value4.toDouble().div(total).times(100)))
-            holder.updated_progressBar.progress = (updated.toInt())
-            holder.installed_progressBar.progress = (updated + installed).toInt()
-            holder.enroll_progressbar.progress = (updated + installed + enrolled).toInt()
-            holder.uninstalled_progressbar.progress =
+            holder.updatedProgressbar.progress = (updated.toInt())
+            holder.installedProgressbar.progress = (updated + installed).toInt()
+            holder.enrollProgressbar.progress = (updated + installed + enrolled).toInt()
+            holder.uninstalledProgressbar.progress =
                 (updated + installed + enrolled + uninstalled).toInt()
-            holder.enroll_count.text = chart.value1.toString()
-            holder.install_count.text = chart.value2.toString()
-            holder.update_count.text = chart.value3.toString()
-            holder.uninstall_count.text = chart.value4.toString()
+            holder.enrollCount.text = chart.value1.toString()
+            holder.installCount.text = chart.value2.toString()
+            holder.updateCount.text = chart.value3.toString()
+            holder.uninstallCount.text = chart.value4.toString()
         }
         return holder
     }
