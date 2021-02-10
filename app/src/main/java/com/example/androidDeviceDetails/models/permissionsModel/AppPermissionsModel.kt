@@ -1,4 +1,5 @@
 package com.example.androidDeviceDetails.models.permissionsModel
+
 import android.widget.ImageView
 import android.widget.TextView
 /**

@@ -5,9 +5,8 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import com.example.androidDeviceDetails.base.BaseCollector
-import com.example.androidDeviceDetails.database.RoomDB
-import com.example.androidDeviceDetails.models.database.AppPermissionsRaw
 import com.example.androidDeviceDetails.database.AppPermissionsRaw
+import com.example.androidDeviceDetails.database.RoomDB
 import com.example.androidDeviceDetails.models.permissionsModel.InstalledPackages
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
