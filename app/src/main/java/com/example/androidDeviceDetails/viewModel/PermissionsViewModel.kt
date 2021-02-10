@@ -1,6 +1,7 @@
 package com.example.androidDeviceDetails.viewModel
 
 import android.content.Context
+import androidx.core.view.isVisible
 import com.example.androidDeviceDetails.R
 import com.example.androidDeviceDetails.adapters.PermissionsAdapter
 import com.example.androidDeviceDetails.base.BaseViewModel
@@ -33,6 +34,7 @@ class PermissionsViewModel(private val binding: ActivityPermissionsBinding, val 
         binding.root.post {
             binding.permissionsListView.adapter =
                 PermissionsAdapter(context, R.layout.permissions_tile, permissionList)
+            binding.progressBar.isVisible = false
         }
         permittedAppList = appPermissionData
     }
