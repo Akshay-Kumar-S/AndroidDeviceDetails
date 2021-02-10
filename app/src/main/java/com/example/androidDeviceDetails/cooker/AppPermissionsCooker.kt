@@ -6,7 +6,6 @@ import com.example.androidDeviceDetails.interfaces.ICookingDone
 import com.example.androidDeviceDetails.models.TimePeriod
 import com.example.androidDeviceDetails.models.permissionsModel.AppPermissionData
 import com.example.androidDeviceDetails.models.permissionsModel.CookedPermittedList
-import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppListData
 import com.example.androidDeviceDetails.models.permissionsModel.PermittedAppsCookedData
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
